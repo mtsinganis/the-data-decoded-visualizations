@@ -40,3 +40,13 @@ the-data-decoded-visualizations/
 │   └── theme_data_decoder.R
 │
 └── docs/                # Auto-generated HTML files (GitHub Pages output)
+
+Each .qmd file inside visuals/ contains:
+
+The R code that generates the visualization
+
+The rendered chart
+
+A short explanation and data source
+
+The homepage (index.qmd) automatically lists all visuals.
