@@ -5,5 +5,12 @@
     "title": "The Data Decoded",
     "section": "",
     "text": "Welcome to The Data Decoded — a living gallery of data stories and charts shared on X.\nEach visualization includes its R code, chart, and a short description.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAirbnb Demand in the UK (2018–2024)\n\n\n\ntourism\n\nairbnb\n\nuk\n\n\n\nTrend in guest nights based on AirDNA data.\n\n\n\nJan 10, 2025\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "visuals/2025-01_airbnb-demand.html",
+    "href": "visuals/2025-01_airbnb-demand.html",
+    "title": "Airbnb Demand in the UK (2018–2024)",
+    "section": "",
+    "text": "library(tidyverse) source(“R/theme_data_decoded.R”) theme_set(theme_data_decoded())\nairbnb &lt;- read_csv(“data/airbnb_demand_uk_2018_2024.csv”)\nggplot(airbnb, aes(year, demand, group = 1)) + geom_line(linewidth = 1.1, color = “#192951”) + geom_point(size = 2, color = “#192951”) + labs( title = “Airbnb Guest Nights in the UK (2018–2024)”, caption = “Source: AirDNA” )"
   }
 ]
