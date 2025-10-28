@@ -1,0 +1,17 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "The Data Decoded"
+  navbar:
+    right:
+      - href: index.qmd
+        text: Home
+      - href: visuals/
+        text: Visuals
+
+format:
+  html:
+    theme: flatly
+    toc: false
