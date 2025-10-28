@@ -2,7 +2,7 @@
 title: "Airbnb Demand in the UK (2018–2024)"
 date: "2025-01-10"
 categories: [tourism, airbnb, uk]
-image: ../plots/2025-01_airbnb-demand.png
+image: plots/2025-01_airbnb-demand.png
 description: "Trend in guest nights based on AirDNA data."
 format: html
 ---
@@ -14,10 +14,13 @@ theme_set(theme_data_decoded())
 
 airbnb <- read_csv("data/airbnb_demand_uk_2018_2024.csv")
 
-ggplot(airbnb, aes(year, demand, group = 1)) +
-geom_line(linewidth = 1.1, color = "#192951") +
-geom_point(size = 2, color = "#192951") +
-labs(
-title = "Airbnb Guest Nights in the UK (2018–2024)",
-caption = "Source: AirDNA"
-)
+p <- ggplot(airbnb, aes(year, demand, group = 1)) +
+  geom_line(linewidth = 1.1, color = "#192951") +
+  geom_point(size = 2, color = "#192951") +
+  labs(title = "Airbnb Guest Nights in the UK (2018–2024)",
+       caption = "Source: AirDNA")
+
+p
+
+# Save thumbnail for the listing (site root is the working dir in a Quarto project)
+ggsave("plots/2025-01_airbnb-demand.png", p, width = 1200/96, height = 800/96, dpi = 96)
