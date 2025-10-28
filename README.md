@@ -1,3 +1,17 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/your-username/The-Data-Decoded/main/plots/banner.png" width="800" alt="The Data Decoded">
+</p>
+
+<h3 align="center">Turning data into insight — one chart at a time</h3>
+
+<p align="center">
+  <a href="https://x.com/TheDataDecoder">X (Twitter)</a> •
+  <a href="https://yourusername.github.io/The-Data-Decoded">Website</a>
+</p>
+
+---
+
+
 # 🧠 The Data Decoded Visualizations
 
 Welcome to **The Data Decoded Visualizations** — a public collection of data-driven stories and charts shared on [X (Twitter)](https://x.com/TheDataDecoded).  
