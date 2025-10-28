@@ -1,6 +1,6 @@
-# 🧠 The Data Decoder Visualizations
+# 🧠 The Data Decoded Visualizations
 
-Welcome to **The Data Decoder Visualizations** — a public collection of data-driven stories and charts shared on [X (Twitter)](https://x.com/TheDataDecoder).  
+Welcome to **The Data Decoded Visualizations** — a public collection of data-driven stories and charts shared on [X (Twitter)](https://x.com/TheDataDecoded).  
 Each visualization is built with **R** and **Quarto**, combining open data, transparent code, and thoughtful design.
 
 ---
@@ -8,7 +8,7 @@ Each visualization is built with **R** and **Quarto**, combining open data, tran
 ## 📁 Repository Structure
 
 ```text
-the-data-decoder-visualizations/
+the-data-decoded-visualizations/
 │
 ├── _quarto.yml          # Quarto configuration file (website setup)
 ├── index.qmd            # Homepage listing all visuals
