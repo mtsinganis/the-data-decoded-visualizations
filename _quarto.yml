@@ -1,6 +1,11 @@
 project:
   type: website
   output-dir: docs
+  resources:
+    - plots/**
+
+execute:
+  dir: project
 
 website:
   title: "The Data Decoded"

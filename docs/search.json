@@ -11,6 +11,6 @@
     "href": "visuals/2025-01_airbnb-demand.html",
     "title": "Airbnb Demand in the UK (2018–2024)",
     "section": "",
-    "text": "library(tidyverse) source(“R/theme_data_decoded.R”) theme_set(theme_data_decoded())\nairbnb &lt;- read_csv(“data/airbnb_demand_uk_2018_2024.csv”)\nggplot(airbnb, aes(year, demand, group = 1)) + geom_line(linewidth = 1.1, color = “#192951”) + geom_point(size = 2, color = “#192951”) + labs( title = “Airbnb Guest Nights in the UK (2018–2024)”, caption = “Source: AirDNA” )"
+    "text": "library(tidyverse) # source(“R/theme_data_decoded.R”) # theme_set(theme_data_decoded())\n\nRead dataset from the data folder\nairbnb &lt;- read_csv(“data/airbnb_demand_uk_2018_2024.csv”)\n\n\nCreate the plot\np &lt;- ggplot(airbnb, aes(x = year, y = demand, group = 1)) + geom_line(linewidth = 1.2, color = “#192951”) + geom_point(size = 2.5, color = “#192951”) + scale_y_continuous(labels = scales::comma) + labs( title = “Airbnb Guest Nights in the UK (2018–2024)”, subtitle = “Based on AirDNA data covering guest nights across Airbnb listings”, x = “Year”, y = “Guest Nights”, caption = “Source: AirDNA” ) + theme_data_decoded()\n\n\nDisplay the plot\np\n\n\nSave thumbnail image (so the homepage can display it)\nggsave( filename = “plots/2025-01_airbnb-demand.png”, plot = p, width = 8, height = 5, dpi = 96 )"
   }
 ]
