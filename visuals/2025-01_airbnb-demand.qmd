@@ -10,14 +10,20 @@ execute:
 ---
 
 ```{r}
+# Load required packages
 library(tidyverse)
-source("R/theme_data_decoded.R")
+
+# Source custom ggplot theme
+message("Current working directory: ", getwd())
+source("../R/theme_data_decoded.R")
+
+# Apply theme globally
 theme_set(theme_data_decoded())
 
-# Read dataset from the data folder
-airbnb <- read_csv("data/airbnb_demand_uk_2018_2024.csv")
+# Read dataset
+airbnb <- read_csv("../data/airbnb_demand_uk_2018_2024.csv")
 
-# Create the plot
+# Create plot
 p <- ggplot(airbnb, aes(x = year, y = demand, group = 1)) +
   geom_line(linewidth = 1.2, color = "#192951") +
   geom_point(size = 2.5, color = "#192951") +
@@ -31,14 +37,13 @@ p <- ggplot(airbnb, aes(x = year, y = demand, group = 1)) +
   ) +
   theme_data_decoded()
 
-# Display the plot
+# Show plot in the page
 p
 
-# Save thumbnail image (so the homepage can display it)
-ggsave(
-  filename = "plots/2025-01_airbnb-demand.png",
-  plot = p,
-  width = 8,
-  height = 5,
-  dpi = 96
-)
+# Save thumbnail for homepage card (explicit path)
+out_file <- normalizePath(file.path("plots", "2025-01_airbnb-demand.png"), mustWork = FALSE)
+ggsave(filename = out_file, plot = p, width = 8, height = 5, dpi = 96)
+
+# Quick confirmation in render log
+message("Saved thumbnail to: ", out_file)
+```

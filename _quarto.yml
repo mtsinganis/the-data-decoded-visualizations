@@ -6,6 +6,8 @@ project:
 
 execute:
   dir: project
+  code-after: |
+    message("Running from: ", getwd())
 
 website:
   title: "The Data Decoded"
