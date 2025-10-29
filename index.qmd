@@ -8,5 +8,4 @@ listing:
   fields: [image, title, date, categories, description]
 ---
 
-Welcome to **The Data Decoded** — a living gallery of data stories and charts shared on X.  
-Each visualization includes its R code, chart, and a short description.
+Welcome to **The Data Decoded** — a living gallery of data stories and charts shared on X. Each visualization includes its R code, chart, and a short description.
