@@ -21,4 +21,5 @@ website:
 format:
   html:
     theme: flatly
+    css: styles.css
     toc: false

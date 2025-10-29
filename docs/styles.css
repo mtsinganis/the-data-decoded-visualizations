@@ -1,0 +1,14 @@
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5em;
+}
+
+.gallery img {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gallery img:hover {
+  transform: scale(1.04);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}

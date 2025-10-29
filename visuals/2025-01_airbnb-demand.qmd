@@ -41,7 +41,8 @@ p <- ggplot(airbnb, aes(x = year, y = demand, group = 1)) +
     x = "Year",
     y = "Guest Nights",
     caption = "Source: AirDNA"
-  ) + annotate("text", x = 2021, y = 40000000, label = "Some text")
+  ) +
+  annotate("text", x = 2021, y = 40000000, label = "Some text") +
   theme_data_decoded()
 
 # Show plot in the page
