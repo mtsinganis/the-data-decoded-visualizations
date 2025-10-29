@@ -1,13 +1,13 @@
 project:
   type: website
   output-dir: docs
+  execute-dir: project
   resources:
     - plots/**
 
-execute:
-  dir: project
-  code-after: |
-    message("Running from: ", getwd())
+  render:
+    - index.qmd
+    - visuals/*.qmd
 
 website:
   title: "The Data Decoded"
