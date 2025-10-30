@@ -22,9 +22,12 @@ message("Current working directory: ", getwd())
 
 # Apply theme globally
 #theme_set(theme_data_decoded())
+folder_name <- "2025-01-airbnb-demand"
+
+data_path <- file.path("visuals", folder_name, "data", "/")
 
 # Read dataset
-airbnb <- read_csv("data/airbnb_demand_uk_2018_2024.csv")
+airbnb <- read_csv(paste0(data_path, "airbnb_demand_uk_2018_2024.csv"))
 
 # Create plot
 p <- ggplot(airbnb, aes(x = year, y = demand, group = 1)) +
