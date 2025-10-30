@@ -1,10 +1,11 @@
 ---
 title: "The Data Decoded"
 listing:
-  contents: visuals
+  contents:
+    - visuals/*/index.qmd      # include each folder’s page
   type: grid
   sort: "date desc"
-  image-height: 180px
+  image-height: 220px
   fields: [image, title, date, categories, description]
 ---
 

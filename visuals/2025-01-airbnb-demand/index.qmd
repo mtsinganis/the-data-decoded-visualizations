@@ -2,30 +2,26 @@
 title: "Airbnb Demand in the UK (2018–2024)"
 date: "2025-01-10"
 categories: [tourism, airbnb, uk]
-image: ../plots/2025-01_airbnb-demand.png
+image: plots/thumb.png       # thumbnail for listings
 description: "Trend in guest nights based on AirDNA data."
 format: html
 execute:
   dir: project
 ---
 
-```{r}
-root <- rprojroot::find_root(rprojroot::has_file("_quarto.yml"))
-```
+# Text explaining chart
 
-
-```{r knitr::opts_knit$set(root.dir = root)}
+```{r echo=FALSE, output=FALSE}
 # Load required packages
 library(tidyverse)
 library(rprojroot)
 
-
 # Source custom ggplot theme
 message("Current working directory: ", getwd())
-source("R/theme_data_decoded.R")
+#source("R/theme_data_decoded.R")
 
 # Apply theme globally
-theme_set(theme_data_decoded())
+#theme_set(theme_data_decoded())
 
 # Read dataset
 airbnb <- read_csv("data/airbnb_demand_uk_2018_2024.csv")
@@ -42,13 +38,18 @@ p <- ggplot(airbnb, aes(x = year, y = demand, group = 1)) +
     y = "Guest Nights",
     caption = "Source: AirDNA"
   ) +
-  annotate("text", x = 2021, y = 40000000, label = "Some text") +
-  theme_data_decoded()
+  annotate("text", x = 2021, y = 40000000, label = "A NEW TEST")
+  # +
+  # theme_data_decoded()
+```
 
+```{r echo=FALSE}
 # Show plot in the page
 p
+```
 
+```{r echo=FALSE, output=FALSE}
 # Save thumbnail for homepage card (explicit path)
-out_file <- file.path(root, "plots", "2025-01_airbnb-demand.png")
-ggsave(filename = out_file, plot = p, width = 8, height = 5, dpi = 96)
+if (!dir.exists("plots")) dir.create("plots", recursive = TRUE)
+ggsave("plots/thumb.png", p, width = 8, height = 5, dpi = 120)
 ```

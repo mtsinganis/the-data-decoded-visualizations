@@ -3,11 +3,15 @@ project:
   output-dir: docs
   execute-dir: project
   resources:
-    - plots/**
+    - visuals/**/plots/**      # publish per-post images
+    - assets/**
 
   render:
     - index.qmd
     - visuals/*.qmd
+
+execute:
+  dir: project
 
 website:
   title: "The Data Decoded"
@@ -15,8 +19,6 @@ website:
     right:
       - href: index.qmd
         text: Home
-      - href: visuals/
-        text: Visuals
 
 format:
   html:
