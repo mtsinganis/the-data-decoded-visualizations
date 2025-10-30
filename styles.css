@@ -1,91 +1,33 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@600;700&display=swap');
 
-body {
-  font-family: 'Inter', sans-serif;
-  font-weight: 400;
-  color: #222;
-}
+body { font-family: 'Inter', sans-serif; color:#222; }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6,
+.quarto-title-banner h1, .quarto-title h1, .page-title, .title,
+.navbar .navbar-brand {
   font-family: 'Poppins', sans-serif;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  color: #192951; /* your brand blue */
-}
-
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 1.5em;
-}
-
-.gallery img {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.gallery img:hover {
-  transform: scale(1.04);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-}
-
-/* --- Ensure page title (in banner or top section) also uses heading font --- */
-.quarto-title-banner h1,
-.quarto-title h1,
-.page-title,
-.title {
-  font-family: 'Poppins', sans-serif !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.02em;
+  font-weight: 700;
+  letter-spacing: .02em;
   color: #192951;
 }
 
-/* Navbar brand (title in the top band) */
-.navbar-brand,
-.navbar .navbar-brand,
-.navbar .navbar-title {
-  font-family: 'Space Grotesk', sans-serif !important; /* or your choice */
-  font-weight: 700 !important;
-  letter-spacing: 0.02em;
-}
-
-/* Optional: size tweak for better presence */
-.navbar-brand {
-  font-size: 1.25rem;   /* adjust to taste */
-  line-height: 1.2;
-}
-
-/* --- Top banner / navbar color palette --- */
-.navbar,
-.navbar.navbar-dark {
-  background-color: #b8e0d2 !important; /* light pastel green */
-  --bs-navbar-color: #114c3a;
-  --bs-navbar-hover-color: #0d392b;
-  --bs-navbar-active-color: #0d392b;
-  --bs-navbar-brand-color: #114c3a;
-  --bs-navbar-brand-hover-color: #0d392b;
-  --bs-navbar-toggler-border-color: rgba(17, 76, 58, 0.4);
+.navbar { /* colors via variables */
+  background-color:#192951;
+  --bs-navbar-color:#114c3a;
+  --bs-navbar-hover-color:#0d392b;
+  --bs-navbar-active-color:#0d392b;
+  --bs-navbar-brand-color:#114c3a;
+  --bs-navbar-brand-hover-color:#0d392b;
+  --bs-navbar-toggler-border-color: rgba(17,76,58,.4);
   --bs-navbar-toggler-icon-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(17,76,58,0.75)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
 
-.navbar .navbar-brand,
-.navbar .navbar-nav .nav-link,
-.navbar .navbar-text {
-  color: var(--bs-navbar-color) !important;
-}
+.navbar .navbar-brand, .navbar .navbar-nav .nav-link, .navbar .navbar-text { color: var(--bs-navbar-color); }
+.navbar .navbar-nav .nav-link:hover, .navbar .navbar-nav .nav-link:focus { color: var(--bs-navbar-hover-color); }
 
-.navbar .navbar-nav .nav-link:hover,
-.navbar .navbar-nav .nav-link:focus {
-  color: var(--bs-navbar-hover-color) !important;
-}
+.quarto-title-banner { background:#b8e0d2; color:#114c3a; border-bottom:1px solid rgba(17,76,58,.15); }
+.quarto-title-banner .title, .quarto-title-banner .quarto-title-meta, .quarto-title-banner .description { color: inherit; }
 
-.quarto-title-banner {
-  background-color: #b8e0d2 !important;
-  color: #114c3a !important;
-  border-bottom: 1px solid rgba(17, 76, 58, 0.15);
-}
-
-.quarto-title-banner .title,
-.quarto-title-banner .quarto-title-meta,
-.quarto-title-banner .description {
-  color: inherit !important;
-}
+.gallery { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:1.5em; }
+.gallery img { transition: transform .2s ease, box-shadow .2s ease; }
+.gallery img:hover { transform:scale(1.04); box-shadow:0 6px 12px rgba(0,0,0,.3); }
