@@ -53,3 +53,39 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 1.25rem;   /* adjust to taste */
   line-height: 1.2;
 }
+
+/* --- Top banner / navbar color palette --- */
+.navbar,
+.navbar.navbar-dark {
+  background-color: #b8e0d2 !important; /* light pastel green */
+  --bs-navbar-color: #114c3a;
+  --bs-navbar-hover-color: #0d392b;
+  --bs-navbar-active-color: #0d392b;
+  --bs-navbar-brand-color: #114c3a;
+  --bs-navbar-brand-hover-color: #0d392b;
+  --bs-navbar-toggler-border-color: rgba(17, 76, 58, 0.4);
+  --bs-navbar-toggler-icon-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(17,76,58,0.75)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.navbar .navbar-brand,
+.navbar .navbar-nav .nav-link,
+.navbar .navbar-text {
+  color: var(--bs-navbar-color) !important;
+}
+
+.navbar .navbar-nav .nav-link:hover,
+.navbar .navbar-nav .nav-link:focus {
+  color: var(--bs-navbar-hover-color) !important;
+}
+
+.quarto-title-banner {
+  background-color: #b8e0d2 !important;
+  color: #114c3a !important;
+  border-bottom: 1px solid rgba(17, 76, 58, 0.15);
+}
+
+.quarto-title-banner .title,
+.quarto-title-banner .quarto-title-meta,
+.quarto-title-banner .description {
+  color: inherit !important;
+}
