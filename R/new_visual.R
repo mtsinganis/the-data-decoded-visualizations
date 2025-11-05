@@ -2,7 +2,6 @@
 # Function: new_visual()
 # Purpose : Create a new visualization folder structure
 #           with template files and subdirectories.
-# Author  : The Data Decoded setup
 # =====================================================
 
 new_visual <- function(slug, title, date = Sys.Date()) {
