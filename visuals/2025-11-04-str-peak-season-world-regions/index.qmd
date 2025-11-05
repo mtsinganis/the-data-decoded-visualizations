@@ -7,6 +7,8 @@ description: "Peaks of monthly available listings and occupancy in world regions
 format: html
 execute:
   dir: project
+  echo: false
+  output: false
 ---
 
 # Text explaining chart
@@ -14,29 +16,157 @@ execute:
 ```{r echo=FALSE, output=FALSE}
 # Load required packages
 library(tidyverse)
-# library(rprojroot)  # optional, if needed for root detection
 
-# Source custom ggplot theme if applicable
-# source("R/theme_data_decoded.R")
-# theme_set(theme_data_decoded())
+# List all CSV files
+files <- list.files("data", pattern = "\\.csv$", full.names = TRUE)
 
-# Read dataset (adjust path and filename)
-# data <- read_csv("visuals/2025-11-04-str-peak-season-world-regions/data/your_dataset.csv")
+# Extract ISO2 from filenames (e.g., "market_summary_ES.csv" -> "ES")
+file_key <- tibble(
+  file = files,
+  ISO2 = toupper(stringr::str_match(files, "data/market-summary-([A-Za-z]{2})\\.csv")[,2])
+)
 
-# Create plot (edit this example)
-# p <- ggplot(data, aes(x, y)) +
-#   geom_line(linewidth = 1.2, color = "#192951") +
-#   geom_point(size = 2.5, color = "#192951")
+# Read lookup table
+iso_lookup <- read_csv("../../lookups/country_ISO_codes.csv", show_col_types = FALSE) |>
+  rename(ISO2 = "Code") |>
+  rename(country = "Name")
+
+# Helper function to read a single file and tag ISO2
+read_one <- function(path, iso2) {
+  
+  country_name <- iso_lookup |> 
+    filter(ISO2 == iso2) |> 
+    pull(country)
+  
+  read_csv(path, show_col_types = FALSE) |>
+    janitor::clean_names() |>
+    mutate(ISO2 = iso2, country = country_name)
+}
+
+# Read and combine all files using modern purrr syntax
+all_data <- map2(file_key$file, file_key$ISO2, read_one) |>
+  list_rbind()
+
+# Save combined dataset
+write_csv(all_data, "data/combined_countries.csv")
+```
+
+```{r}
+library(lubridate)
+
+all_data <- all_data %>%
+  mutate(month = month(date, label = TRUE, abbr = TRUE)) %>%
+  relocate(month, .after = date)
+
+```
+
+```{r}
+# Read UNWTO country → region mapping
+
+encoding <- guess_encoding("../../lookups/unwto_country_region_mapping.csv")["encoding"]
+
+unwto_map <- read_csv("../../lookups/unwto_country_region_mapping.csv",
+                      show_col_types = FALSE,
+                      locale = locale(encoding = paste(encoding))) %>%
+  janitor::clean_names() %>%
+  rename(
+    world_region = region,      # rename for clarity
+    world_subregion = subregion # keep subregion if you want to facet later
+  ) %>%
+  mutate(
+    country = trimws(country),
+    world_region = trimws(world_region)
+  )
+
+# Add ISO2 to UNWTO via countrycode, then patch edge cases ---
+library(countrycode)
+
+unwto_map <- unwto_map %>%
+  mutate(
+    ISO2 = countrycode(country, origin = "country.name", destination = "iso2c")
+  )
+
+# Manual patches for the known problematic names
+fix_iso <- tribble(
+  ~country,                                        ~ISO2,
+  "Bolivia, Plurinational State of",               "BO",
+  "Curaçao",                                       "CW",
+  "Korea, Republic of",                            "KR",
+  "Lao People's Democratic Republic",              "LA",
+  "Macedonia, the Former Yugoslav Republic of",    "MK",  # (North Macedonia; ISO2 still MK)
+  "Turkey",                                        "TR",  # or "Türkiye" -> TR
+  "Taiwan, Province of China",                     "TW",
+  "Tanzania, United Republic of",                  "TZ",
+  "Venezuela, Bolivarian Republic of",             "VE"
+)
+
+unwto_map <- unwto_map %>%
+  left_join(fix_iso, by = "country", suffix = c("", "_fix")) %>%
+  mutate(ISO2 = coalesce(ISO2_fix, ISO2)) %>%
+  select(-ISO2_fix)
+
+# (Optional) sanity check: which UNWTO rows still lack ISO2?
+still_na <- unwto_map %>% filter(is.na(ISO2))
+if (nrow(still_na)) {
+  warning("UNWTO rows without ISO2: ", paste(still_na$country, collapse = ", "))
+}
+
+```
+
+```{r}
+# Add world_region to all_data (join by country) ---
+# (Assumes all_data already has a 'country' column; if not, join by ISO2 if present in the mapping)
+
+all_data <- all_data %>%
+  # ensure ISO2 is clean
+  #mutate(ISO2 = toupper(trimws(ISO2))) %>%
+  # attach region using ISO2
+  left_join(unwto_map %>% select(ISO2, world_region, world_subregion), by = "ISO2")
+
+# verify coverage
+missing_after_join <- all_data %>% filter(is.na(world_region)) %>% distinct(ISO2)
+if (nrow(missing_after_join)) {
+  warning("No UNWTO region for ISO2: ", paste(missing_after_join$ISO2, collapse = ", "))
+}
+
+# Order countries alphabetically within facets ---
+# Create a global alphabetical factor; facets with free_y will show subset in alpha order
+all_data <- all_data %>%
+  mutate(country_factor = factor(country, levels = sort(unique(country))))
+
+# Normalize occupancy
+all_data <- all_data %>%
+  group_by(country) %>%
+  mutate(occ_norm = (occupancy - min(occupancy, na.rm = TRUE)) /
+                    (max(occupancy, na.rm = TRUE) - min(occupancy, na.rm = TRUE))) %>%
+  ungroup()
+```
+
+
+```{r}
+p <- ggplot(all_data[all_data$world_region=="Americas",], aes(x = month, y = country_factor, fill = occ_norm)) +
+  geom_tile() +
+  facet_grid(world_subregion ~ ., scales = "free_y", space = "free_y") +
+  scale_fill_viridis_c(name = "Normalized\n(0–1)", limits = c(0, 1), oob = scales::squish) +
+  labs(
+    x = NULL, y = NULL,
+    title = "Seasonality Heatmap by World Region",
+    subtitle = "Normalized monthly STR metric by country (Jan–Dec 2024)",
+    caption = "Source: AirDNA (country CSVs), UN Tourism mapping"
+  ) +
+  theme_minimal(base_family = "Inter") +
+  theme(
+    panel.grid = element_blank(),
+    strip.text.y = element_text(face = "bold", angle = 0),
+    axis.text.x = element_text(angle = 0, hjust = 0.5),
+    axis.text.y = element_text(size = 7)
+  )
 
 # Display plot
-# p
+p
 
 # Save thumbnail for homepage listing
-
-
-
 if (!dir.exists("visuals/2025-11-04-str-peak-season-world-regions/plots")) dir.create("visuals/2025-11-04-str-peak-season-world-regions/plots", recursive = TRUE)
 
-ggsave("visuals/2025-11-04-str-peak-season-world-regions/plots/thumb.png", p, width = 8, height = 5, dpi = 220)
-
-
+ggsave("visuals/2025-11-04-str-peak-season-world-regions/plots/thumb.png", p, width = 10, height = 15, dpi = 300)
+```
