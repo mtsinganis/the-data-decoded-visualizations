@@ -1,7 +1,7 @@
 ---
 title: "Short-term rental market peak season by world region"
 date: "2025-11-04"
-categories: [STR, global, listings]
+categories: [STR, Europe, occupancy]
 image: plots/thumb.png
 description: "Peaks of monthly available listings and occupancy in world regions based on AirDNA data"
 format: html
@@ -14,30 +14,32 @@ execute:
 # Text explaining chart
 
 ```{r echo=FALSE, output=FALSE}
+#| cache: false
+
 # Load required packages
 library(tidyverse)
 
 project_path <- file.path("visuals", "2025-11-04-str-europe-peak-season")
 
 # List all CSV files
-files <- list.files(paste("project_path", "/data"), pattern = "\\.csv$", full.names = TRUE)
+files <- list.files(paste0(project_path, "/data"), pattern = "\\.csv$", full.names = TRUE)
 
 # Extract ISO2 from filenames (e.g., "market_summary_ES.csv" -> "ES")
 file_key <- tibble(
   file = files,
-  ISO2 = toupper(stringr::str_match(files, "data/market-summary-([A-Za-z]{2})\\.csv")[,2])
+  ISO2 = toupper(stringr::str_match(files, paste0(project_path, "/data/market-summary-([A-Za-z]{2})\\.csv"))[,2])
 )
 
 # Read lookup table
-iso_lookup <- read_csv("../../lookups/country_ISO_codes.csv", show_col_types = FALSE) |>
+iso_lookup <- read_csv("lookups/country_ISO_codes.csv", show_col_types = FALSE) |>
   rename(ISO2 = "Code") |>
   rename(country = "Name")
 
 # Read UNWTO country → region mapping
 
-encoding <- guess_encoding("../../lookups/unwto_country_region_mapping.csv")["encoding"]
+encoding <- guess_encoding("lookups/unwto_country_region_mapping.csv")["encoding"]
 
-unwto_map <- read_csv("../../lookups/unwto_country_region_mapping.csv",
+unwto_map <- read_csv("lookups/unwto_country_region_mapping.csv",
                       show_col_types = FALSE,
                       locale = locale(encoding = paste(encoding))) %>%
   janitor::clean_names() %>%
@@ -141,8 +143,12 @@ europe_top_25 <- all_data %>% filter(world_region == "Europe") %>% group_by(coun
     # mutate(rank = 1:40)
     top_n(25) %>% pull(country)
 
+# Create folder for generated datasets
+if (!dir.exists(paste0(project_path, "/data/derived")))
+dir.create(paste0(project_path, "/data/derived"), recursive = TRUE)
+
 # Save combined dataset
-write_csv(all_data, "data/combined_countries.csv")
+write_csv(all_data, paste0(project_path, "/data/derived/combined_countries.csv"))
 ```
 
 
@@ -184,6 +190,9 @@ europe_long <- europe_wide %>%
 
 ```{r}
 library(heatmaply)
+library(showtext)
+font_add_google("Poppins", "Momo Trust Display")
+showtext_auto()
 
 p <- ggplot(europe_long, aes(x = month, y = country, fill = occ_norm)) +
   geom_tile() +
@@ -199,7 +208,7 @@ p <- ggplot(europe_long, aes(x = month, y = country, fill = occ_norm)) +
     subtitle = "Normalized monthly STR metric by country (Jan–Dec 2024)",
     caption = "Source: AirDNA (country CSVs), UN Tourism mapping"
   ) +
-  theme_minimal() +
+  theme_minimal(base_family = "Momo Trust Display", base_size = 23) +
   theme(
     #panel.grid = element_blank(),
     strip.text.y = element_text(face = "bold", angle = 0),
@@ -207,11 +216,16 @@ p <- ggplot(europe_long, aes(x = month, y = country, fill = occ_norm)) +
     #axis.text.y = element_text(size = 7)
   )
 
-# Display plot
-p
-
 # Save thumbnail for homepage listing
-# if (!dir.exists("visuals/2025-11-04-str-peak-season-world-regions/plots")) dir.create("visuals/2025-11-04-str-peak-season-world-regions/plots", recursive = TRUE)
-# 
-# ggsave("visuals/2025-11-04-str-peak-season-world-regions/plots/thumb.png", p, width = 10, height = 15, dpi = 300)
+
+if (!dir.exists(paste0(project_path, "/plots")))
+dir.create(paste0(project_path, "/plots"), recursive = TRUE)
+
+ggsave(paste0(project_path, "/plots/thumb.png"), p, width = 6, height = 8, dpi = 300)
 ```
+
+```{r}
+#| output: true
+print(p)
+```
+
