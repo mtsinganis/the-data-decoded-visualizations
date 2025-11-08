@@ -31,36 +31,6 @@ iso_lookup <- read_csv("../../lookups/country_ISO_codes.csv", show_col_types = F
   rename(ISO2 = "Code") |>
   rename(country = "Name")
 
-# Helper function to read a single file and tag ISO2
-read_one <- function(path, iso2) {
-  
-  country_name <- iso_lookup |> 
-    filter(ISO2 == iso2) |> 
-    pull(country)
-  
-  read_csv(path, show_col_types = FALSE) |>
-    janitor::clean_names() |>
-    mutate(ISO2 = iso2, country = country_name)
-}
-
-# Read and combine all files using modern purrr syntax
-all_data <- map2(file_key$file, file_key$ISO2, read_one) |>
-  list_rbind()
-
-# Save combined dataset
-write_csv(all_data, "data/combined_countries.csv")
-```
-
-```{r}
-library(lubridate)
-
-all_data <- all_data %>%
-  mutate(month = month(date, label = TRUE, abbr = TRUE)) %>%
-  relocate(month, .after = date)
-
-```
-
-```{r}
 # Read UNWTO country → region mapping
 
 encoding <- guess_encoding("../../lookups/unwto_country_region_mapping.csv")["encoding"]
@@ -111,6 +81,31 @@ if (nrow(still_na)) {
   warning("UNWTO rows without ISO2: ", paste(still_na$country, collapse = ", "))
 }
 
+
+# Helper function to read a single file and tag ISO2
+read_one <- function(path, iso2) {
+  
+  country_name <- unwto_map |> 
+    filter(ISO2 == iso2) |> 
+    pull(country)
+  
+  read_csv(path, show_col_types = FALSE) |>
+    janitor::clean_names() |>
+    mutate(ISO2 = iso2, country = country_name)
+}
+
+# Read and combine all files using modern purrr syntax
+all_data <- map2(file_key$file, file_key$ISO2, read_one) |>
+  list_rbind()
+```
+
+```{r}
+library(lubridate)
+
+all_data <- all_data %>%
+  mutate(month = month(date, label = TRUE, abbr = TRUE)) %>%
+  relocate(month, .after = date)
+
 ```
 
 ```{r}
@@ -118,9 +113,6 @@ if (nrow(still_na)) {
 # (Assumes all_data already has a 'country' column; if not, join by ISO2 if present in the mapping)
 
 all_data <- all_data %>%
-  # ensure ISO2 is clean
-  #mutate(ISO2 = toupper(trimws(ISO2))) %>%
-  # attach region using ISO2
   left_join(unwto_map %>% select(ISO2, world_region, world_subregion), by = "ISO2")
 
 # verify coverage
@@ -129,44 +121,95 @@ if (nrow(missing_after_join)) {
   warning("No UNWTO region for ISO2: ", paste(missing_after_join$ISO2, collapse = ", "))
 }
 
-# Order countries alphabetically within facets ---
-# Create a global alphabetical factor; facets with free_y will show subset in alpha order
-all_data <- all_data %>%
-  mutate(country_factor = factor(country, levels = sort(unique(country))))
-
 # Normalize occupancy
 all_data <- all_data %>%
   group_by(country) %>%
   mutate(occ_norm = (occupancy - min(occupancy, na.rm = TRUE)) /
                     (max(occupancy, na.rm = TRUE) - min(occupancy, na.rm = TRUE))) %>%
+  # mutate(occ_norm_index = occupancy / max(occupancy, na.rm = TRUE)) %>% # Index-to-peak normalization (relative to annual max)
+  # mutate(occ_z = (occupancy - mean(occupancy, na.rm = TRUE)) /
+  #                sd(occupancy, na.rm = TRUE)) %>% # Z-score standardization
+  # mutate(occ_share = occupancy / sum(occupancy, na.rm = TRUE)) %>% # Share of yearly total
   ungroup()
+
+# Top 25 European countries (>10k average listings in 2024)
+europe_top_25 <- all_data %>% filter(world_region == "Europe") %>% group_by(country) %>%
+    summarise(average_listings = mean(active_listings)) %>% 
+    arrange(desc(average_listings)) %>%
+    # mutate(rank = 1:40)
+    top_n(25) %>% pull(country)
+
+# Save combined dataset
+write_csv(all_data, "data/combined_countries.csv")
 ```
 
 
 ```{r}
-p <- ggplot(all_data[all_data$world_region=="Americas",], aes(x = month, y = country_factor, fill = occ_norm)) +
+
+# Drop unnecessary columns and convert to wide format
+europe_wide <- all_data %>%
+    filter(country %in% europe_top_25) %>% 
+    select(month, country, occ_norm) %>% 
+    pivot_wider(names_from = month, values_from = occ_norm) 
+
+# Compute average per month  
+europe_avg <- europe_wide %>%
+    summarise(across(Jan:Dec, ~ mean(.x, na.rm = TRUE))) %>%
+    mutate(country = "Europe")
+    
+# Append the new row to the existing dataframe
+europe_wide <- bind_rows(europe_wide, europe_avg) %>%
+    relocate(country)  # move 'country' to the first column
+
+# Compute combined Jul and Aug occupancy score per country
+country_rank <- europe_wide %>% 
+    rowwise() %>% 
+    summarise(country = country,
+              jul_aug_sum = sum(c(Dec))) %>% # originally a sum of Jul and Aug
+    arrange(jul_aug_sum)
+
+# Convert data frame back to long format for use in ggplot
+europe_long <- europe_wide %>% 
+    pivot_longer(cols = Jan:Dec, names_to = "month", values_to = "occ_norm") %>% 
+    mutate(month = factor(month, levels = month.abb),
+           country = factor(country, levels = country_rank$country),
+           group = case_when(
+               country == "Europe" ~ "Europe average",
+               .default = ""
+           ))
+```
+
+
+```{r}
+library(heatmaply)
+
+p <- ggplot(europe_long, aes(x = month, y = country, fill = occ_norm)) +
   geom_tile() +
-  facet_grid(world_subregion ~ ., scales = "free_y", space = "free_y") +
-  scale_fill_viridis_c(name = "Normalized\n(0–1)", limits = c(0, 1), oob = scales::squish) +
+  facet_grid(group ~ ., scales = "free_y", space = "free_y") +
+  #scale_fill_viridis_c(name = "Normalized\n(0–1)", limits = c(0, 1)) +
+  scale_fill_gradientn(
+    colors = heatmaply::cool_warm(500),
+    limits = c(0,1)) +  
+  #coord_fixed() +
   labs(
     x = NULL, y = NULL,
     title = "Seasonality Heatmap by World Region",
     subtitle = "Normalized monthly STR metric by country (Jan–Dec 2024)",
     caption = "Source: AirDNA (country CSVs), UN Tourism mapping"
   ) +
-  theme_minimal(base_family = "Inter") +
+  theme_minimal() +
   theme(
-    panel.grid = element_blank(),
+    #panel.grid = element_blank(),
     strip.text.y = element_text(face = "bold", angle = 0),
     axis.text.x = element_text(angle = 0, hjust = 0.5),
-    axis.text.y = element_text(size = 7)
+    #axis.text.y = element_text(size = 7)
   )
 
 # Display plot
 p
 
 # Save thumbnail for homepage listing
-if (!dir.exists("visuals/2025-11-04-str-peak-season-world-regions/plots")) dir.create("visuals/2025-11-04-str-peak-season-world-regions/plots", recursive = TRUE)
-
-ggsave("visuals/2025-11-04-str-peak-season-world-regions/plots/thumb.png", p, width = 10, height = 15, dpi = 300)
+# if (!dir.exists("visuals/2025-11-04-str-peak-season-world-regions/plots")) dir.create("visuals/2025-11-04-str-peak-season-world-regions/plots", recursive = TRUE)
+# 
+# ggsave("visuals/2025-11-04-str-peak-season-world-regions/plots/thumb.png", p, width = 10, height = 15, dpi = 300)
 ```
