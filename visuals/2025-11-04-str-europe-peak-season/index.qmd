@@ -1,17 +1,15 @@
 ---
 title: "Short-term rental market peak season by world region"
-date: "2025-11-04"
+date: "2025-11-12"
 categories: [STR, Europe, occupancy]
 image: plots/thumb.svg
-description: "Peaks of monthly available listings and occupancy in world regions based on AirDNA data"
+description: "Peaks occupancy in Europe's top short-term rental markets in 2024 based on AirDNA data"
 format: html
 execute:
   dir: project
   echo: false
   output: false
 ---
-
-## Text explaining chart
 
 ```{r echo=FALSE, output=FALSE}
 #| cache: false
@@ -205,41 +203,178 @@ europe_long <- europe_long %>%
   
 ```
 
-```{r country-flags}
+
+```{r}
+library(magick)
 library(rsvg)
+library(dplyr)
+library(purrr)
+library(glue)
+
+# --- Configuration ---
+dest_folder <- paste0(project_path, "/data/country_flags")
+
+if (!dir.exists(dest_folder)) {
+  dir.create(dest_folder)
+  message(paste0("'", dest_folder, "'", " was created"))
+}
 
 country_flags <- tibble(ISO2 = unique(europe_long$ISO2),
-                        flag_url = paste0("https://hatscripts.github.io/circle-flags/flags/",
-                                              tolower(unique(europe_long$ISO2)),
-                                              ".svg")) %>% 
-                left_join(unwto_map %>% select(country, ISO2), by = "ISO2") %>% 
-                mutate(country = factor(country, levels = new_levels))
-
-# Create new folder for flags (inside 'data')
-if (!dir.exists(paste0(project_path, "/data/country_flags")))
-dir.create(paste0(project_path, "/data/country_flags"), recursive = TRUE)
+                        flag_url = paste0("https://flagicons.lipis.dev/flags/4x3/",
+                                          tolower(unique(europe_long$ISO2)),
+                                          ".svg")) %>% 
+                                              left_join(unwto_map %>%
+                                                 select(country, ISO2), by = "ISO2") %>% 
+                                                   mutate(country = factor(country, levels = new_levels))
 
 country_flags <- country_flags %>%
-                    mutate(local_svg_file = paste0(project_path, "/data/country_flags/", tolower(ISO2), ".svg"),
-                           png_file = paste0(project_path, "/data/country_flags/", tolower(ISO2), ".png"))
+                    mutate(png_file = paste0(file.path(dest_folder, tolower(ISO2)), ".png"))
 
-# Iteratively download images from https://hatscripts.github.io/circle-flags/gallery.html
-# Flags are in SVG
-purrr::walk2(
-  .x = country_flags$flag_url, # The URLs to download (source)
-  .y = country_flags$local_svg_file, # The file path to save to (destination)
-  .f = download.file,
-  quiet = TRUE,
-  mode = "wb" # Use "wb" (write binary) for images to prevent corruption
-)
+# Check if the folder exists OR contains files (e.g., more than 5 PNGs)
+if (!dir.exists(dest_folder) || length(list.files(dest_folder, pattern = "\\.png$")) == 0) {
+    message("Flag folder not found or incomplete. Starting download and conversion...")
 
-# Convert flags from SVG to PNG for plotting with ggplot
-purrr::walk2(
-  .x = country_flags$local_svg_file,
-  .y = country_flags$png_file,
-  .f = rsvg_png
-)
 
+    flag_arguments <- country_flags %>%
+      transmute(
+        # 1) URL of the SVG flag (4x3 aspect ratio)
+        url = flag_url,
+    
+        # 2) Two-letter lowercase country code (ISO2)
+        iso2_code = tolower(ISO2),
+    
+        # 3) Local output path for the circular PNG
+        dest_path = file.path(dest_folder, paste0(tolower(ISO2), ".png"))
+      )
+
+
+    ################
+    # Circular flags
+    ################
+  
+    # # Build a circular mask as SVG (white circle on black), render with rsvg
+    # .make_circle_mask <- function(d_px) {
+    #   svg <- glue(
+    #     "<svg xmlns='http://www.w3.org/2000/svg' width='{d_px}' height='{d_px}' viewBox='0 0 {d_px} {d_px}'>
+    #        <rect x='0' y='0' width='{d_px}' height='{d_px}' fill='black'/>
+    #        <circle cx='{d_px/2}' cy='{d_px/2}' r='{d_px/2}' fill='white'/>
+    #      </svg>"
+    #   )
+    #   raw_png <- rsvg_png(charToRaw(svg), width = d_px, height = d_px)
+    #   image_read(raw_png)
+    # }
+    # 
+    # # Render 4:3 SVG flag -> square -> apply circular mask -> save PNG with alpha
+    # circular_crop_and_save <- function(url, iso2_code, dest_path, px = 1400) {
+    #   # 1) Render the 4:3 flag crisply
+    #   raw_png <- rsvg_png(url, width = px, height = round(px * 3/4))
+    #   img <- image_read(raw_png)
+    # 
+    #   # 2) Centered square crop (uses full height for 4:3)
+    #   info <- image_info(img)
+    #   d <- min(info$width, info$height)
+    #   x_off <- floor((info$width  - d) / 2)
+    #   y_off <- floor((info$height - d) / 2)
+    #   square <- image_crop(img, sprintf("%dx%d+%d+%d", d, d, x_off, y_off))
+    # 
+    #   # 3) Build the mask (white=keep, black=transparent)
+    #   mask <- .make_circle_mask(d)
+    # 
+    #   # 4) Apply mask → true circle with transparent corners
+    #   # Prefer CopyOpacity; if your magick build is quirky, try DstIn.
+    #   circ <- image_composite(square, mask, operator = "CopyOpacity")
+    #   # circ <- image_composite(square, mask, operator = "DstIn")  # <- fallback
+    # 
+    #   # 5) Save PNG (RGBA)
+    #   image_write(circ, path = dest_path, format = "png")
+    # }
+    # 
+    # purrr::pwalk(flag_arguments, circular_crop_and_save)
+  
+    ######################################################
+    # Circular flags + change white color to desired color
+    ######################################################
+  
+    # ---------- Helpers ----------
+    # 1) Make a circular (white) mask as SVG and rasterize it
+    .make_circle_mask <- function(d_px) {
+      svg <- glue(
+        "<svg xmlns='http://www.w3.org/2000/svg' width='{d_px}' height='{d_px}' viewBox='0 0 {d_px} {d_px}'>
+           <rect width='100%' height='100%' fill='black'/>
+           <circle cx='{d_px/2}' cy='{d_px/2}' r='{d_px/2}' fill='white'/>
+         </svg>"
+      )
+      image_read(rsvg_png(charToRaw(svg), width = d_px, height = d_px))
+    }
+  
+    # 2) Replace exact white fills (and optionally strokes) in raw SVG text
+    recolor_svg_white <- function(svg_text, new_hex = "#EEEEEE", replace_stroke = FALSE) {
+      col <- toupper(new_hex)
+      if (!grepl("^#", col)) col <- paste0("#", col)
+  
+      # Build patterns: attribute forms (fill="white"), (stroke="#fff") and style forms (fill:#fff;)
+      parts <- c("fill", if (replace_stroke) "stroke" else NULL)
+      attr_pat <- sprintf("(?i)\\b(%s)\\s*=\\s*\"\\s*(?:#fff(?:fff)?|white)\\s*\"", paste(parts, collapse="|"))
+      attr_rep <- sprintf("\\1=\"%s\"", col)
+  
+      style_pat <- sprintf("(?i)\\b(%s)\\s*:\\s*(?:#fff(?:fff)?|white)\\b", paste(parts, collapse="|"))
+      style_rep <- sprintf("\\1:%s", col)
+  
+      # Apply both replacements
+      out <- gsub(attr_pat, attr_rep, svg_text, perl = TRUE)
+      out <- gsub(style_pat, style_rep, out, perl = TRUE)
+      out
+    }
+  
+    # ---------- Main ----------
+    # Render 4:3 SVG flag -> (optional) recolor exact whites in SVG -> square crop -> circular mask -> PNG
+    circular_crop_and_save <- function(
+      url, iso2_code, dest_path,
+      px = 1400,
+      white_hex = NULL,        # e.g. "#EEEEEE" to recolor exact whites in the SVG
+      replace_stroke = FALSE   # set TRUE if you also want white strokes recolored
+    ) {
+      # 1) Load SVG text from URL
+      svg_text <- paste(readLines(url, warn = FALSE), collapse = "\n")
+  
+      # 2) Optionally recolor exact white tokens in the SVG DOM
+      if (!is.null(white_hex)) {
+        svg_text <- recolor_svg_white(svg_text, new_hex = white_hex, replace_stroke = replace_stroke)
+      }
+  
+      # 3) Rasterize the (possibly modified) SVG at 4:3
+      raw_png <- rsvg_png(charToRaw(svg_text), width = px, height = round(px * 3/4))
+      img <- image_read(raw_png)
+  
+      # 4) Centered square crop (uses full height for 4:3)
+      info <- image_info(img)
+      d <- min(info$width, info$height)
+      x_off <- floor((info$width  - d) / 2)
+      y_off <- floor((info$height - d) / 2)
+      square <- image_crop(img, sprintf("%dx%d+%d+%d", d, d, x_off, y_off))
+  
+      # 5) Apply circular alpha
+      mask <- .make_circle_mask(d)
+      circ <- image_composite(square, mask, operator = "CopyOpacity")
+  
+      # 6) Save PNG with transparency
+      image_write(circ, path = dest_path, format = "png")
+    }
+  
+  
+    # # 1) Keep original colors, just circle-crop
+    # purrr::pwalk(flag_arguments, ~ circular_crop_and_save(..1, ..2, ..3, px = 1600))
+  
+    # 2) Circle-crop AND recolor white fills to light gray (keeps strokes white)
+    purrr::pwalk(flag_arguments, ~ circular_crop_and_save(..1, ..2, ..3,
+                                                         px = 1600,
+                                                         white_hex = "#EEEEEE",
+                                                         replace_stroke = FALSE))
+} else {
+    message("Flags already downloaded. Skipping process.")
+}
+
+# Add coordinates for flags
 country_flags <- country_flags %>% 
                   mutate(x_pos = -0.21,
                          y_pos = as.numeric(country),
@@ -247,21 +382,86 @@ country_flags <- country_flags %>%
                                            country == "Europe" ~ "Europe",
                                            .default = "Other"
                                           ),
-                        y_pos = if_else(country == "Europe",
-                                        1,           
-                                        y_pos        
-                                       )
+                         y_pos = if_else(country == "Europe",
+                                         1,           
+                                         y_pos        
+                                        )
                         )
+```
+
+
+```{r country-flags}
+# library(rsvg)
+# 
+# country_flags <- tibble(ISO2 = unique(europe_long$ISO2),
+#                         flag_url = paste0("https://hatscripts.github.io/circle-flags/flags/",
+#                                               tolower(unique(europe_long$ISO2)),
+#                                               ".svg")) %>% 
+#                 left_join(unwto_map %>% select(country, ISO2), by = "ISO2") %>% 
+#                 mutate(country = factor(country, levels = new_levels))
+# 
+# dest_folder <- paste0(project_path, "/data/country_flags/")
+# 
+# # Create new folder for flags (inside 'data')
+# if (!dir.exists(dest_folder))
+# dir.create(dest_folder, recursive = TRUE)
+# 
+# country_flags <- country_flags %>%
+#                     mutate(local_svg_file = paste0(dest_folder, tolower(ISO2), ".svg"),
+#                            png_file = paste0(dest_folder, tolower(ISO2), ".png"))
+# 
+# # Check if the folder exists OR contains files (e.g., more than 5 PNGs)
+# if (!dir.exists(dest_folder) || length(list.files(dest_folder, pattern = "\\.png$")) == 0) {
+# 
+#     message("Flag folder not found or incomplete. Starting download and conversion...")
+# 
+#     # Iteratively download images from https://hatscripts.github.io/circle-flags/gallery.html
+#     # Flags are in SVG
+#     purrr::walk2(
+#       .x = country_flags$flag_url, # The URLs to download (source)
+#       .y = country_flags$local_svg_file, # The file path to save to (destination)
+#       .f = download.file,
+#       quiet = TRUE,
+#       mode = "wb" # Use "wb" (write binary) for images to prevent corruption
+#     )
+#     
+#     # Convert flags from SVG to PNG for plotting with ggplot
+#     purrr::walk2(
+#       .x = country_flags$local_svg_file,
+#       .y = country_flags$png_file,
+#       .f = rsvg_png
+#     )
+#     
+#   } else {
+#     message("Flags already downloaded. Skipping process.")
+# }
+# 
+# # Add coordinates for flags
+# country_flags <- country_flags %>% 
+#                   mutate(x_pos = -0.21,
+#                          y_pos = as.numeric(country),
+#                          group = case_when(
+#                                            country == "Europe" ~ "Europe",
+#                                            .default = "Other"
+#                                           ),
+#                         y_pos = if_else(country == "Europe",
+#                                         1,           
+#                                         y_pos        
+#                                        )
+#                         )
 
 ```
 
 ```{r}
+# <!-- #| eval: true -->
+# <!-- #| cache: true -->
 library(showtext)
 font_choice <- "Momo Trust Sans"
 
 font_add_google(font_choice, db_cache = FALSE)
 showtext_auto()
 ```
+
 
 
 ```{r}
@@ -290,8 +490,8 @@ col_max <- tail(plasma(256), 1)   # yellow end of the scale
 #   "<br/>top markets"  # use <br/> with element_markdown
 # )
 
-title_html <- paste0("July and August are ", "peak months in Europe's top",
-                     "\n", "top short-term rental markets independent of latitude")
+title_html <- paste0("July and August are peak months in both Northern",
+                     "\n", "and Southern short-term rental markets")
 
 # 1. Define the number of months (12)
 months_factor_levels <- levels(europe_long$month)
@@ -338,7 +538,6 @@ rect_bottom_data <- data.frame(
 # Combine them into a single data frame
 rect_data_combined <- bind_rows(rect_top_data, rect_bottom_data)
 
-
 base_size <- 12
 
 p <- ggplot(europe_long, aes(x = month, y = country, fill = occ_norm)) +
@@ -376,7 +575,7 @@ p <- ggplot(europe_long, aes(x = month, y = country, fill = occ_norm)) +
         # Layer 1: Flag for the "Europe" facet
         geom_image(
           data = country_flags %>% filter(country == "Europe"), # Only contains 'Europe' row
-          aes(x = x_pos, y = y_pos, image = flag_url),
+          aes(x = x_pos, y = y_pos, image = png_file),
           size = 0.38,
           asp = 1,
           inherit.aes = FALSE
@@ -385,7 +584,7 @@ p <- ggplot(europe_long, aes(x = month, y = country, fill = occ_norm)) +
         # Layer 2: Flags for the "Other" facet
         geom_image(
           data = country_flags %>% filter(!country == "Europe"), # Contains all other country rows
-          aes(x = x_pos, y = y_pos, image = flag_url),
+          aes(x = x_pos, y = y_pos, image = png_file),
           size = 0.03,
           asp = 1,
           inherit.aes = FALSE
@@ -421,90 +620,4 @@ plot_path <- paste0(project_path, "/plots", "/thumb.svg")
 ggsave(plot_path, p, width = 6.7, height = 8.2)
 ```
 
-
-
-
-
-
-
-
-```{r temp}
-ggplot(europe_long, aes(x = month, y = country, fill = occ_norm)) +
-        geom_tile() +
-        facet_grid(group ~ ., scales = "free_y", space = "free_y") +
-        # scale_fill_gradient(low = "#deebf7", high = "#192951") +
-        scale_fill_viridis_c(option = "plasma", direction = 1, name = "Normalized\nOccupancy (0–1)",) +
-        # scale_fill_gradientn(colors = heatmaply::cool_warm(500), limits = c(0,1)) +  # cool-warm scale
-        #coord_fixed() +
-        labs(
-          x = NULL, y = NULL,
-          title = title_html,
-          subtitle = "Normalized monthly occupancy by country (Jan–Dec 2024)",
-          caption = "Data source: AirDNA (2025)"
-        ) +
-        annotate(
-          "rect",
-          xmin = which(levels(europe_long$month) == "Jul") - 0.5,
-          xmax = which(levels(europe_long$month) == "Aug") + 0.5,
-          ymin = -Inf, ymax = Inf,
-          color = "black",
-          fill = NA,
-          linewidth = 0.65
-        ) +
-        scale_x_discrete(expand = expansion(mult = c(0.14, 0.05))) +
-                         
-        geom_text(data = top_labels, aes(x = month, y = Inf, label = label),
-          inherit.aes = FALSE, vjust = -0.9, size = 7, family = font_choice,
-          colour = "grey30") +
-        # Layer 1: Flag for the "Europe" facet
-        geom_image(
-          data = country_flags %>% filter(country == "Europe"), # Only contains 'Europe' row
-          aes(x = x_pos, y = y_pos, image = flag_url),
-          size = 0.65,
-          asp = 1,
-          inherit.aes = FALSE
-        ) +
-      
-        # Layer 2: Flags for the "Other" facet
-        geom_image(
-          data = country_flags %>% filter(!country == "Europe"), # Contains all other country rows
-          aes(x = x_pos, y = y_pos, image = flag_url),
-          size = 0.03,
-          asp = 1,
-          inherit.aes = FALSE
-        ) +
-        # geom_image(data = country_flags,
-        #            aes(x = x_pos,
-        #                y = y_pos,
-        #                image = png_file),
-        #            size = 0.06,
-        #            inherit.aes = FALSE) +
-  
-        theme_minimal(base_family = font_choice, base_size = 32) +
-        theme(
-          panel.grid = element_blank(),
-          # strip.text.y = element_text(face = "bold", angle = 0),
-          strip.text = element_blank(),      # hides the panel text labels
-          strip.background = element_blank(), # removes the background panel
-          axis.text.x = element_text(angle = 0, hjust = 0.5),
-          axis.text.y = element_text(hjust = 1, margin = margin(r = )),
-          plot.title.position = "plot",  # ensures alignment relative to full plot
-          plot.title = element_text(hjust = 0, face = "bold", margin = margin(b = 0),
-                                    lineheight = 0.33, size = 52), # left-align title
-          plot.subtitle = element_text(hjust = 0, margin = margin(t = 3, b = 15),
-                                       size = 37), # left-align subtitle
-          plot.caption.position = "plot",
-          plot.caption = element_text(hjust = 0, colour = "grey50"),
-          legend.title = element_text(lineheight = 0.4),
-          legend.margin = margin(l = -5, unit = "pt")
-        )
-```
-
-
-
-![Figure caption](plots/thumb.png){width=100%}
-```{r}
-#| output: true
-# print(p)
-```
-
+![](plots/thumb.svg){width=100%}
