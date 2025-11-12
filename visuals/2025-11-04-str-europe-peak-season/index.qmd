@@ -431,7 +431,7 @@ title_html <- paste0("July and August are peak months in both Northern",
 subtitle_html <- paste0("Normalized monthly occupancy by country (Jan–Dec 2024)")
 
 annotation_text_data <- data.frame(
-  x_pos = 14, 
+  x_pos = 13.85, 
   y_pos = 22, 
   group = "Other",
   label = paste0("January is the month", "\n",
@@ -442,7 +442,7 @@ annotation_text_data <- data.frame(
 )
 
 annotation_text_data_peak <- data.frame(
-  x_pos = 14, 
+  x_pos = 13.85, 
   y_pos = 1, 
   group = "Europe",
   label = paste0("Peak months"),
@@ -575,7 +575,7 @@ p <- ggplot(europe_long, aes(x = month, y = country, fill = occ_norm)) +
           asp = 1,
           inherit.aes = FALSE
         ) +
-        geom_curve(data = tibble(group = "Other", x = 13.75, y = 22, xend = 1.62, yend = 19),
+        geom_curve(data = tibble(group = "Other", x = 13.65, y = 22, xend = 1.62, yend = 19),
             aes(x = x, y = y, xend = xend, yend = yend),
           arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
           color = "grey10",
@@ -585,7 +585,7 @@ p <- ggplot(europe_long, aes(x = month, y = country, fill = occ_norm)) +
           curvature = -0.25,
           inherit.aes = FALSE
         ) +
-        geom_curve(data = tibble(group = "Other", x = 13.75, y = 22, xend = 11.62, yend = 19),
+        geom_curve(data = tibble(group = "Other", x = 13.65, y = 22, xend = 11.62, yend = 19),
           aes(x = x, y = y, xend = xend, yend = yend),
           arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
           color = "grey10",
@@ -595,7 +595,7 @@ p <- ggplot(europe_long, aes(x = month, y = country, fill = occ_norm)) +
           curvature = -0.3,
           inherit.aes = FALSE
         ) +
-        geom_curve(data = tibble(group = "Europe", x = 13.75, y = 1, xend = 8.62, yend = 0.43),
+        geom_curve(data = tibble(group = "Europe", x = 13.65, y = 1, xend = 8.62, yend = 0.43),
           aes(x = x, y = y, xend = xend, yend = yend),
           arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
           color = "grey10",
@@ -623,14 +623,14 @@ p <- ggplot(europe_long, aes(x = month, y = country, fill = occ_norm)) +
             fontface = "bold",
             inherit.aes = FALSE
           ) +
-        coord_cartesian(clip = "off") +
+        coord_cartesian(clip = "off", xlim = c(1, 12.5)) +
         theme_minimal(base_family = font_choice, base_size = 12) +
         theme(
           panel.grid = element_blank(),
           panel.spacing.y = unit(10, "pt"),
           # strip.text.y = element_text(face = "bold", angle = 0),
           strip.text = element_blank(),      # hides the panel text labels
-          # strip.background = element_blank(), # removes the background panel
+          strip.background = element_blank(), # removes the background panel
           axis.text.x = element_text(angle = 0, hjust = 0.5),
           axis.text.y = element_text(hjust = 1, margin = margin(r = 1.8)),
           plot.title.position = "plot",  # ensures alignment relative to full plot
@@ -641,7 +641,8 @@ p <- ggplot(europe_long, aes(x = month, y = country, fill = occ_norm)) +
           plot.caption.position = "plot",
           plot.caption = element_text(hjust = 0, vjust = -2.8, colour = "grey50"),
           legend.title = element_text(lineheight = 1, margin = margin(b = 20, unit = "pt")),
-          legend.margin = margin(l = 4)
+          legend.margin = margin(l = 0),
+          plot.margin = margin(t = 5.5, r = 21, b = 5.5, l = 5.5, unit = "pt")
         )
 
 # Save thumbnail for homepage listing
@@ -651,7 +652,7 @@ dir.create(paste0(project_path, "/plots"), recursive = TRUE)
 
 plot_path <- paste0(project_path, "/plots", "/thumb.svg")
 
-ggsave(plot_path, p, width = 6.7, height = 8.2)
+ggsave(plot_path, p, width = 6.85, height = 8.2)
 ```
 
 ![](plots/thumb.svg){width=100%}
