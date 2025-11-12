@@ -11,7 +11,7 @@
     "href": "index.html",
     "title": "The Data Decoded",
     "section": "",
-    "text": "Welcome to The Data Decoded — a living gallery of data stories and charts shared on X (Twitter). Each visualization includes its R code, chart, and a short description.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nShort-term rental market peak season by world region\n\n\n\nSTR\n\nEurope\n\noccupancy\n\n\n\nPeaks occupancy in Europe’s top short-term rental markets in 2024 based on AirDNA data\n\n\n\nNov 4, 2025\n\n\n\n\n\n\n\n\n\n\n\n\n\nAirbnb Demand in the UK (2018–2024)\n\n\n\ntourism\n\nairbnb\n\nuk\n\n\n\nTrend in guest nights based on AirDNA data.\n\n\n\nJan 10, 2025\n\n\n\n\n\n\nNo matching items"
+    "text": "Welcome to The Data Decoded — a living gallery of data stories and charts shared on X (Twitter). Each visualization includes its R code, chart, and a short description.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nShort-term rental market peak season in Europe\n\n\n\nSTR\n\nEurope\n\noccupancy\n\n\n\nPeak occupancy in Europe’s top 25 largest short-term rental markets in 2024 based on AirDNA data\n\n\n\nNov 12, 2025\n\n\n\n\n\n\n\n\n\n\n\n\n\nAirbnb Demand in the UK (2018–2024)\n\n\n\ntourism\n\nairbnb\n\nuk\n\n\n\nTrend in guest nights based on AirDNA data.\n\n\n\nJan 10, 2025\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "visuals/2025-11-04-str-europe-peak-season/index.html",

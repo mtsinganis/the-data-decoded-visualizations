@@ -1,9 +1,9 @@
 ---
-title: "Short-term rental market peak season by world region"
+title: "Short-term rental market peak season in Europe"
 date: "2025-11-12"
 categories: [STR, Europe, occupancy]
 image: plots/thumb.svg
-description: "Peaks occupancy in Europe's top short-term rental markets in 2024 based on AirDNA data"
+description: "Peak occupancy in Europe's top 25 largest short-term rental markets in 2024 based on AirDNA data"
 format: html
 execute:
   dir: project
@@ -390,71 +390,7 @@ country_flags <- country_flags %>%
 ```
 
 
-```{r country-flags}
-# library(rsvg)
-# 
-# country_flags <- tibble(ISO2 = unique(europe_long$ISO2),
-#                         flag_url = paste0("https://hatscripts.github.io/circle-flags/flags/",
-#                                               tolower(unique(europe_long$ISO2)),
-#                                               ".svg")) %>% 
-#                 left_join(unwto_map %>% select(country, ISO2), by = "ISO2") %>% 
-#                 mutate(country = factor(country, levels = new_levels))
-# 
-# dest_folder <- paste0(project_path, "/data/country_flags/")
-# 
-# # Create new folder for flags (inside 'data')
-# if (!dir.exists(dest_folder))
-# dir.create(dest_folder, recursive = TRUE)
-# 
-# country_flags <- country_flags %>%
-#                     mutate(local_svg_file = paste0(dest_folder, tolower(ISO2), ".svg"),
-#                            png_file = paste0(dest_folder, tolower(ISO2), ".png"))
-# 
-# # Check if the folder exists OR contains files (e.g., more than 5 PNGs)
-# if (!dir.exists(dest_folder) || length(list.files(dest_folder, pattern = "\\.png$")) == 0) {
-# 
-#     message("Flag folder not found or incomplete. Starting download and conversion...")
-# 
-#     # Iteratively download images from https://hatscripts.github.io/circle-flags/gallery.html
-#     # Flags are in SVG
-#     purrr::walk2(
-#       .x = country_flags$flag_url, # The URLs to download (source)
-#       .y = country_flags$local_svg_file, # The file path to save to (destination)
-#       .f = download.file,
-#       quiet = TRUE,
-#       mode = "wb" # Use "wb" (write binary) for images to prevent corruption
-#     )
-#     
-#     # Convert flags from SVG to PNG for plotting with ggplot
-#     purrr::walk2(
-#       .x = country_flags$local_svg_file,
-#       .y = country_flags$png_file,
-#       .f = rsvg_png
-#     )
-#     
-#   } else {
-#     message("Flags already downloaded. Skipping process.")
-# }
-# 
-# # Add coordinates for flags
-# country_flags <- country_flags %>% 
-#                   mutate(x_pos = -0.21,
-#                          y_pos = as.numeric(country),
-#                          group = case_when(
-#                                            country == "Europe" ~ "Europe",
-#                                            .default = "Other"
-#                                           ),
-#                         y_pos = if_else(country == "Europe",
-#                                         1,           
-#                                         y_pos        
-#                                        )
-#                         )
-
-```
-
 ```{r}
-# <!-- #| eval: true -->
-# <!-- #| cache: true -->
 library(showtext)
 font_choice <- "Momo Trust Sans"
 
@@ -465,7 +401,6 @@ showtext_auto()
 
 
 ```{r}
-
 # library(heatmaply)
 library(ggtext)
 library(viridisLite)
@@ -491,7 +426,29 @@ col_max <- tail(plasma(256), 1)   # yellow end of the scale
 # )
 
 title_html <- paste0("July and August are peak months in both Northern",
-                     "\n", "and Southern short-term rental markets")
+                     "\n", "and Southern European short-term rental markets")
+
+subtitle_html <- paste0("Normalized monthly occupancy by country (Jan–Dec 2024)")
+
+annotation_text_data <- data.frame(
+  x_pos = 14, 
+  y_pos = 22, 
+  group = "Other",
+  label = paste0("January is the month", "\n",
+                                "with the lowest occupancy,", "\n",
+                                "followed by November"),
+  color = "grey30",
+  font_size = 3.5
+)
+
+annotation_text_data_peak <- data.frame(
+  x_pos = 14, 
+  y_pos = 1, 
+  group = "Europe",
+  label = paste0("Peak months"),
+  color = "grey30",
+  font_size = 3.5
+)
 
 # 1. Define the number of months (12)
 months_factor_levels <- levels(europe_long$month)
@@ -513,30 +470,39 @@ dummy_data_y_expansion <- tibble(
   dummy_y_pos = DUMMY_Y_POSITION 
 )
 
-# Get the month positions for Jul/Aug
-jul_pos <- which(levels(europe_long$month) == "Jul") - 0.5
-aug_pos <- which(levels(europe_long$month) == "Aug") + 0.5
-
-# 1. Data for the TOP Facet ("Europe") - Fixed Height
-rect_top_data <- data.frame(
+rectangle <- function(start_month, end_month = NA){
+  
+  if(missing(end_month)) end_month <- start_month
+  
+  start <- which(levels(europe_long$month) == start_month) - 0.5
+  end <- which(levels(europe_long$month) == end_month) + 0.5
+  
+  # 1. Data for the TOP Facet ("Europe") - Fixed Height
+  rect_top_data <- data.frame(
   group = "Europe",
-  xmin = jul_pos,
-  xmax = aug_pos,
+  xmin = start,
+  xmax = end,
   ymin = 0.5,  # Covers the 'Europe' row (which is at y=1)
   ymax = 1.5   # Stops exactly at the top of the 'Europe' tile
 )
-
-# 2. Data for the BOTTOM Facet ("Other") - Full Height
-rect_bottom_data <- data.frame(
+  
+  # 2. Data for the BOTTOM Facet ("Other") - Full Height
+  rect_bottom_data <- data.frame(
   group = "Other",
-  xmin = jul_pos,
-  xmax = aug_pos,
+  xmin = start,
+  xmax = end,
   ymin = 0.5, # Goes to the bottom boundary of the facet
   ymax = nrow(country_flags) - 0.5   # Goes to the top boundary of the facet
 )
+  
+  # Combine them into a single data frame
+  return(bind_rows(rect_top_data, rect_bottom_data))
+  
+}
 
-# Combine them into a single data frame
-rect_data_combined <- bind_rows(rect_top_data, rect_bottom_data)
+rect_months_Jul_Aug <- rectangle(start_month = "Jul", end_month = "Aug")
+rect_months_Jan <- rectangle("Jan")
+rect_months_Nov <- rectangle("Nov")
 
 base_size <- 12
 
@@ -552,16 +518,36 @@ p <- ggplot(europe_long, aes(x = month, y = country, fill = occ_norm)) +
         labs(
           x = NULL, y = NULL,
           title = title_html,
-          subtitle = "Normalized monthly occupancy by country (Jan–Dec 2024)",
+          subtitle = subtitle_html,
           caption = "Data source: AirDNA (2025)"
         ) +
 
         geom_rect(
-          data = rect_data_combined,
+          data = rect_months_Jul_Aug,
           aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),
           color = "black",
           fill = NA,
           linewidth = 0.65,
+          inherit.aes = FALSE # Essential when using external data
+        ) +
+  
+          geom_rect(
+          data = rect_months_Jan,
+          aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),
+          color = "black",
+          fill = NA,
+          linewidth = 0.65,
+          # linetype = 2,
+          inherit.aes = FALSE # Essential when using external data
+        ) +
+  
+            geom_rect(
+          data = rect_months_Nov,
+          aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),
+          color = "black",
+          fill = NA,
+          linewidth = 0.65,
+          # linetype = 2,
           inherit.aes = FALSE # Essential when using external data
         ) +
   
@@ -576,7 +562,7 @@ p <- ggplot(europe_long, aes(x = month, y = country, fill = occ_norm)) +
         geom_image(
           data = country_flags %>% filter(country == "Europe"), # Only contains 'Europe' row
           aes(x = x_pos, y = y_pos, image = png_file),
-          size = 0.38,
+          size = 0.36,
           asp = 1,
           inherit.aes = FALSE
         ) +
@@ -589,7 +575,55 @@ p <- ggplot(europe_long, aes(x = month, y = country, fill = occ_norm)) +
           asp = 1,
           inherit.aes = FALSE
         ) +
-
+        geom_curve(data = tibble(group = "Other", x = 13.75, y = 22, xend = 1.62, yend = 19),
+            aes(x = x, y = y, xend = xend, yend = yend),
+          arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+          color = "grey10",
+          # size = 0.4,
+          angle = 82,
+          linewidth = 0.5,
+          curvature = -0.25,
+          inherit.aes = FALSE
+        ) +
+        geom_curve(data = tibble(group = "Other", x = 13.75, y = 22, xend = 11.62, yend = 19),
+          aes(x = x, y = y, xend = xend, yend = yend),
+          arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+          color = "grey10",
+          # size = 0.4,
+          angle = 40,
+          linewidth = 0.5,
+          curvature = -0.3,
+          inherit.aes = FALSE
+        ) +
+        geom_curve(data = tibble(group = "Europe", x = 13.75, y = 1, xend = 8.62, yend = 0.43),
+          aes(x = x, y = y, xend = xend, yend = yend),
+          arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+          color = "grey10",
+          # size = 0.4,
+          angle = 90,
+          linewidth = 0.5,
+          curvature = -0.275,
+          inherit.aes = FALSE
+        ) +
+        geom_text(
+            data = annotation_text_data,
+            aes(x = x_pos, y = y_pos, label = label),
+            color = annotation_text_data$color,
+            size = annotation_text_data$font_size,
+            hjust = 0, # Left-align the text at the x_pos
+            fontface = "plain",
+            inherit.aes = FALSE
+          ) +
+          geom_text(
+            data = annotation_text_data_peak,
+            aes(x = x_pos, y = y_pos, label = label),
+            color = annotation_text_data$color,
+            size = annotation_text_data$font_size,
+            hjust = 0, # Left-align the text at the x_pos
+            fontface = "bold",
+            inherit.aes = FALSE
+          ) +
+        coord_cartesian(clip = "off") +
         theme_minimal(base_family = font_choice, base_size = 12) +
         theme(
           panel.grid = element_blank(),
@@ -603,9 +637,9 @@ p <- ggplot(europe_long, aes(x = month, y = country, fill = occ_norm)) +
           plot.title = element_text(hjust = 0, face = "bold", margin = margin(b = 5),
                                     lineheight = 1, size = rel(1.6)), # left-align title
           plot.subtitle = element_text(hjust = 0, margin = margin(t = 3, b = 16),
-                                       size = rel(1.2)), # left-align subtitle
+                                       size = rel(1)), # left-align subtitle
           plot.caption.position = "plot",
-          plot.caption = element_text(hjust = 0, vjust = -3, colour = "grey50"),
+          plot.caption = element_text(hjust = 0, vjust = -2.8, colour = "grey50"),
           legend.title = element_text(lineheight = 1, margin = margin(b = 20, unit = "pt")),
           legend.margin = margin(l = 4)
         )
