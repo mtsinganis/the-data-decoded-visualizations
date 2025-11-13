@@ -392,10 +392,12 @@ country_flags <- country_flags %>%
 
 ```{r}
 library(showtext)
+
 font_choice <- "Momo Trust Sans"
 
 font_add_google(font_choice, db_cache = FALSE)
 showtext_auto()
+
 ```
 
 
@@ -421,7 +423,7 @@ col_max <- tail(plasma(256), 1)   # yellow end of the scale
 # title_html <- glue(
 #   "July and August are ",
 #   "<span style='background-color:{col_max}; padding:2px 4px; display: inline-block;'>",
-#   "peak months</spanb> in all of Europe’s",
+#   "peak months</span> in all of Europe’s",
 #   "<br/>top markets"  # use <br/> with element_markdown
 # )
 
@@ -656,3 +658,250 @@ ggsave(plot_path, p, width = 6.85, height = 8.2)
 ```
 
 ![](plots/thumb.svg){width=100%}
+```{r}
+europe_long <- europe_long %>%
+                mutate(line_color = case_when(
+                                              group == "Europe" ~ "#00009900",
+                                              country %in% c("Sweden", "Norway", "Switzerland", "Austria") ~ "#4c6a9c",
+                                              country %in% c("Greece", "Cyprus", "Spain", "Italy") ~ "#c15065",
+                                              .default = "grey90"
+                                             ),
+                      line_width = case_when(
+                                             line_color != "grey90" ~ 0.8, # <- Use != instead of !...==
+                                             .default = 0.4
+                                            ),
+                      line_type = case_when(
+                                              country == "Europe" ~ 2,
+                                              .default = 1
+                      )
+                )
+
+countries_on_top <- c("Europe", "Switzerland", "Greece", "Sweden", "Norway", "Switzerland", "Austria",
+                      "Cyprus", "Spain", "Italy")
+
+europe_long <- europe_long %>%
+                mutate(is_on_top = ifelse(country %in% countries_on_top, 1, 0)) %>% 
+                  arrange(is_on_top, country, month)
+
+new_country_levels <- unique(europe_long$country)
+
+europe_long <- europe_long %>% mutate(country = factor(country, levels = new_country_levels))
+
+# occ_by_country <- europe_long %>% filter(month == "Dec") %>% select(country, occ_norm, ISO2)
+# 
+# if(!has_name(country_flags, "occ_norm")){
+#   country_flags <- country_flags %>%
+#                   left_join(occ_by_country %>% select(ISO2, occ_norm), by = c("ISO2"))
+# }
+# 
+# country_flags <- country_flags %>% mutate(x_pos = 12.35, y_pos = occ_norm)
+
+# Define the colors and labels for the legend
+legend_data <- tibble(
+  label = rep(c("Northern markets", "Southern markets"), each = 2), # Repeat each label twice
+    color = rep(c("#4c6a9c", "#c15065"), each = 2),
+  x_start = rep(c(1, 2), times = 2), # Create two distinct dummy x-coordinates
+  y_start = rep(c(1, 1), times = 2)  # Use the same dummy y-coordinate
+)
+
+annotation_1 <- data.frame(
+  x_pos = 3.85, 
+  y_pos = 1.12, 
+  label = paste0("<b style='color: #4c6a9c;'>Northern markets</b> exhibit peak occupancy", "<br>",
+                 "three times a year, aligning with the February", "<br>",
+                 "ski season, the summer break, and December holidays."),
+  color = "grey30",
+  font_size = 3.5
+)
+
+annotation_2 <- data.frame(
+  x_pos = 6.62, 
+  y_pos = 0.102, 
+  label = paste0("<b style='color: #c15065;'>Southern markets</b> primarily rely on summer", "<br>",
+                 "tourism, enjoying a prolonged high-occupancy", "<br>", "period from June through September,",
+                 "<br>", "maintaining medium-strong occupancy levels", "<br>",
+                 "during the shoulder seasons of Spring and early Autumn."),
+  color = "grey30",
+  font_size = 3.5
+)
+
+annotation_markers <- tibble(
+  x_coord = c(2, 7, 12, 8),
+  # Y coordinate is set slightly below the top of the chart (y=1)
+  y_coord = c(0.995, 1.05, 0.93, 1.05), 
+  
+  # Rich Text Labels with HTML/CSS Formatting
+  # Using Times New Roman as a common Serif fallback
+  label_text = c(
+    "<b style='font-family:\"Noto Serif\";'>I</b>",
+    "<b style='font-family:\"Noto Serif\";'>II</b>",
+    "<b style='font-family:\"Noto Serif\";'>III</b>",
+    "<b style='font-family:\"Noto Serif\";'>I</b>"
+  ),
+  
+  # Text Color
+  text_color = c("#4c6a9c", "#4c6a9c", "#4c6a9c", "#c15065"),
+  
+  # ggtext Aesthetics (kept constant for all points)
+  hjust_val = rep(0.5, 4), # Center horizontally
+  vjust_val = rep(0.55, 4) # Adjust slightly down for visual centering
+)
+
+plot_note_data <- tibble(
+    x_pos = 0.45,
+    y_pos = -0.19, # -0.19
+    note_text = "<span style='font-family:\"Momo Trust Sans\";'><b>Note</b>: Northern markets include Sweden, Norway, Switzerland, Austria. Southern markets inlcude Italy, Spain, Greece, Cyprus.<span>"
+)
+
+```
+
+
+```{r}
+library(showtext)
+
+font_choice <- "Momo Trust Sans"
+
+font_choice_labels <- "Noto Serif"
+
+third_font <- "Montserrat"
+
+# adding fonts one-by-one, since combining seems not to work despite no error
+font_add_google(font_choice) #db_cache = FALSE
+font_add_google(font_choice_labels)
+font_add_google(third_font)
+
+showtext_auto()
+
+# # font check
+# print(font_families())
+```
+
+```{r}
+library(ggtext)
+
+p <- ggplot(europe_long, aes(x = month, y = occ_norm)) +
+        geom_line(aes(group = country, color = line_color, linewidth = line_width)) +
+        # Layer for legend
+        geom_line(
+            data = legend_data, 
+            # Only map 'color' to the aesthetic
+            aes(x = x_start, y = y_start, color = color), 
+            linewidth = 0, 
+            alpha = 0,     
+            inherit.aes = FALSE,
+            key_glyph = "path"
+          ) +
+        scale_color_identity(
+            name = NULL, 
+            guide = "legend",
+            labels = legend_data$label[c(TRUE, FALSE)], # Select only one label per pair
+            breaks = legend_data$color[c(TRUE, FALSE)]  # Select only one color per pair
+          ) +
+        guides(linetype = "none") +
+        # scale_color_identity() +
+        scale_linewidth_identity() +
+        scale_linetype_identity() +
+        coord_cartesian(xlim = c(1.5, 11.5), ylim = c(0, 1.12), clip = "off") +
+        theme_minimal(base_family = font_choice, base_size = 14) +
+        labs(
+             x = NULL, y = NULL,
+             title = paste0("Divergent seasonal peaks: occupancy patterns in <b style='color: #4c6a9c;'>Northern</b>",
+                            "<br>", 
+                            "and <b style='color: #c15065;'>Southern</b> European short-term rental markets"),
+             subtitle = paste0("Normalized monthly occupancy by country (Jan–Dec 2024)"),
+             caption = paste0("<b>Data source</b>: AirDNA (2025)")
+             ) +
+        geom_richtext(
+            data = annotation_1,
+            aes(x = x_pos, y = y_pos, label = label),
+            color = annotation_1$color,
+            size = annotation_1$font_size,
+            hjust = 0.5, # Center-align the text at the x_pos
+            fontface = "plain",
+            lineheight = 0.85,
+            inherit.aes = FALSE,
+            fill = NA, 
+            label.color = NA,
+            label.padding = unit(0.25, "lines"), # Reduce padding around text
+          ) +
+          geom_richtext(
+            data = annotation_2,
+            aes(x = x_pos, y = y_pos, label = label),
+            color = annotation_2$color,
+            size = annotation_2$font_size,
+            hjust = 0.5, # Center-align the text at the x_pos
+            fontface = "plain",
+            lineheight = 0.85,
+            inherit.aes = FALSE,
+            fill = NA, 
+            label.color = NA,
+            label.padding = unit(0.25, "lines"), # Reduce padding around text
+          ) +
+        # Marker Annotations (I, II, III, Red I)
+        geom_richtext(
+          data = annotation_markers,
+          aes(
+            x = x_coord,
+            y = y_coord,
+            label = label_text,
+            color = text_color,
+            label.color = text_color, 
+            hjust = hjust_val,
+            vjust = vjust_val
+          ),
+          # Set the remaining ggtext parameters outside of aes()
+          size = 5,
+          fill = NA, # No background fill
+          label.color = NA, # No border
+          label.padding = unit(c(0.2, 0.2, 0.2, 0.2), "lines"), # Symmetrical padding
+          inherit.aes = FALSE, # Crucial: prevents inheriting the line aesthetics
+          show.legend = FALSE
+        ) +
+        geom_richtext(
+            data = plot_note_data,
+            aes(x = x_pos, y = y_pos, label = note_text),
+            # size = 3.5,
+            color = "grey50", 
+            hjust = 0,
+            vjust = 1,
+            fill = NA, 
+            label.color = NA,
+            label.padding = unit(0, "lines"),
+            inherit.aes = FALSE,
+            show.legend = FALSE
+        ) +
+        scale_y_continuous(
+          # Set breaks every 0.25 from 0 to 1
+          breaks = seq(0, 1, by = 0.2), 
+      
+          # # OPTIONAL: Define the display format for the labels (e.g., percentages)
+          # labels = scales::percent, 
+        ) +
+        theme(panel.grid.major.x = element_blank(),
+              panel.grid.minor.y = element_blank(),
+              panel.grid.major.y = element_line(linetype = 2),
+              plot.title.position = "plot",
+              strip.background = element_blank(),
+              legend.position = c(0.78, 1.04),
+              legend.justification = c(0, 1),
+              # legend.margin = margin(t = 0, r = 0, b = -10, l = 0, unit = "pt"),
+              axis.title.x = element_blank(),
+              axis.title.y = element_blank(),
+              plot.title = element_markdown(hjust = 0, face = "bold", margin = margin(b = 5),
+                                          lineheight = 1, size = rel(1.6)), # left-align title
+              plot.subtitle = element_markdown(hjust = 0, margin = margin(t = 3, b = 25),
+                                             size = rel(1)), # left-align subtitle
+              plot.caption.position = "plot",
+              plot.caption = element_markdown(hjust = 0, vjust = 0, colour = "grey50",
+                                              margin = margin(t = 35)),
+              plot.margin = margin(t = 4.5, r = 21, b = 55, l = 5.5, unit = "pt")
+              )
+
+#p
+plot_path <- paste0(project_path, "/plots", "/line_chart.svg")
+
+ggsave(plot_path, p, width = 9.3, height = 7.2)
+  
+```
+
+![](plots/line_chart.svg){width=100%}
