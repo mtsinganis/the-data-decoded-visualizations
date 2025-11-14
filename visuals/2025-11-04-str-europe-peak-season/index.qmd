@@ -747,7 +747,7 @@ p <- ggplot(europe_long, aes(x = month, y = country, fill = occ_norm)) +
           plot.caption = element_text(hjust = 0, vjust = -2.7, colour = "grey50"),
           legend.title = element_text(lineheight = 1, margin = margin(b = 20, unit = "pt")),
           legend.margin = margin(l = 0),
-          plot.margin = margin(t = 5.5, r = 21, b = 5.5, l = 5.5, unit = "pt")
+          plot.margin = margin(t = 5.5, r = 34, b = 5.5, l = 5.5, unit = "pt")
         )
 
 # Save thumbnail for homepage listing
@@ -757,7 +757,7 @@ dir.create(paste0(project_path, "/plots"), recursive = TRUE)
 
 plot_path <- paste0(project_path, "/plots", "/thumb.svg")
 
-ggsave(plot_path, p, width = 6.85, height = 8.2)
+ggsave(plot_path, p, width = 7, height = 8.2)
 ```
 
 ![](plots/thumb.svg){width=100%}
@@ -982,7 +982,7 @@ p <- ggplot(europe_long, aes(x = month, y = occ_norm)) +
               panel.grid.major.y = element_line(linetype = 2),
               plot.title.position = "plot",
               strip.background = element_blank(),
-              legend.position = c(0.79, 1.04),
+              legend.position = c(0.79, 1.035),
               legend.justification = c(0, 1),
               # legend.margin = margin(t = 0, r = 0, b = -10, l = 0, unit = "pt"),
               axis.title.x = element_blank(),
@@ -994,7 +994,7 @@ p <- ggplot(europe_long, aes(x = month, y = occ_norm)) +
               plot.caption.position = "plot",
               plot.caption = element_markdown(hjust = 0, vjust = 0, colour = "grey50",
                                               margin = margin(t = 35)),
-              plot.margin = margin(t = 4.5, r = 21, b = 55, l = 5.5, unit = "pt")
+              plot.margin = margin(t = 4.5, r = 21, b = 20, l = 5.5, unit = "pt")
               )
 
 #p
@@ -1044,6 +1044,13 @@ legend_data <- tibble(
   y_start = rep(c(1, 1), times = 2)  # Use the same dummy y-coordinate
 )
 
+plot_note_data <- tibble(
+    x_pos = -0.122,
+    y_pos = -0.118, # -0.19
+    note_text = paste0("<b>How to read the chart</b>: Each point on the curve shows the share of the year that a market sustains at least that",
+    "<br>", "level of normalized occupancy. For example, the red circle indicates that <b style='color:#c15065;'>Southern</b> markets remain above 50% of", "<br>", "maximum occupancy for approximately 40% of the year.")
+)
+
 # pct_above <- pct_above %>%
 #                 mutate(line_color = case_when(
 #                                               country %in% c("Finland", "Norway", "Switzerland", "Austria") ~ "#4c6a9c",
@@ -1064,6 +1071,8 @@ legend_data <- tibble(
 library(scales)
 
 p <- ggplot(data = pct_above, aes(x = threshold, y = pct_of_year)) +
+       annotate("rect", xmin = 0.43, xmax = 0.96, ymin = 0.07, ymax = 0.59, fill = alpha("#ebebeb", 0.35), color = alpha("grey50", 1)) +
+        annotate("rect", xmin = 0.017, xmax = 0.41, ymin = 0.52, ymax = 0.935, fill = alpha("#ebebeb", 0.35), color = alpha("grey50", 1)) +
         geom_line(aes(group = region, color = line_color, linewidth = line_width)) +
         guides(linetype = "none") +
         scale_linewidth_identity() +
@@ -1094,8 +1103,128 @@ p <- ggplot(data = pct_above, aes(x = threshold, y = pct_of_year)) +
             labels = legend_data$label[c(TRUE, FALSE)], # Select only one label per pair
             breaks = legend_data$color[c(TRUE, FALSE)]  # Select only one color per pair
           ) +
+        geom_richtext(
+          data = data.frame(x = 0.606, y = 0.57),
+          aes(x = x, y = y,
+              label = paste0("At high occupancy thresholds,", "<br>",
+              "the <b style='color:#4c6a9c;'>Northern</b> curve stays above", "<br>",
+              "the <b style='color:#c15065;'>Southern</b> curve, indicating", "<br>",
+              "more months with strong demand.")),
+          fill = NA, label.color = NA,
+          label.padding = unit(c(0,0,0,0), "pt"),
+          size = 4,
+          hjust = 0, vjust = 1,
+          lineheight = 1.1
+        ) +
+        geom_richtext(
+          data = data.frame(x = 0.029, y = 0.65),
+          aes(x = x, y = y,
+              label = paste0("At low occupancy", "<br>", "thresholds, the ", 
+                             "<b style='color:#4c6a9c;'>Northern</b><br> curve stays below the", "<br>",
+              "<b style='color:#c15065;'>Southern</b> curve, indicating", "<br>", "fewer months with weak demand.")),
+          fill = NA, label.color = NA,
+          label.padding = unit(c(0,0,0,0), "pt"),
+          size = 4,
+          hjust = 0, vjust = 1,
+          lineheight = 1.1
+        ) +
+        geom_curve(data = tibble(x = 0.285, y = 0.64583, xend = 0.285, yend = 0.768),
+          aes(x = x, y = y, xend = xend, yend = yend),
+          arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+          color = "#4c6a9c",
+          linewidth = 0.8,
+          curvature = 0,
+          inherit.aes = FALSE
+        ) +
+        geom_curve(data = tibble(x = 0.67, y = 0.375, xend = 0.67, yend = 0.276),
+          aes(x = x, y = y, xend = xend, yend = yend),
+          arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+          color = "#4c6a9c",
+          linewidth = 0.8,
+          curvature = 0,
+          inherit.aes = FALSE
+        ) +
+        geom_curve(data = tibble(x = 0.21, y = 0.7292, xend = 0.21, yend = 0.81),
+          aes(x = x, y = y, xend = xend, yend = yend),
+          arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+          color = "#4c6a9c",
+          linewidth = 0.8,
+          curvature = 0,
+          inherit.aes = FALSE
+        ) +
+        geom_curve(data = tibble(x = 0.81, y = 0.2083, xend = 0.81, yend = 0.13),
+          aes(x = x, y = y, xend = xend, yend = yend),
+          arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+          color = "#4c6a9c",
+          linewidth = 0.8,
+          curvature = 0,
+          inherit.aes = FALSE
+        ) +
+        # x-axis arrow
+        geom_curve(data = tibble(x = 0.15, y = 0.03, xend = 0.35, yend = 0.03),
+          aes(x = x, y = y, xend = xend, yend = yend),
+          arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+          color = "grey30",
+          linewidth = 0.8,
+          curvature = 0,
+          inherit.aes = FALSE
+        ) +
+        geom_curve(data = tibble(x = 0.03, y = 0.15, xend = 0.03, yend = 0.35),
+          aes(x = x, y = y, xend = xend, yend = yend),
+          arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+          color = "grey30",
+          linewidth = 0.8,
+          curvature = 0,
+          inherit.aes = FALSE
+        ) +
+        annotate(
+          "richtext", label = paste0("Higher", "<br>", "normalized", "<br>", "occupancy"),
+          x = 0.25, y = 0.09,
+          hjust = 0.5,
+          color = "grey30",
+          fill = NA, label.color = NA
+        ) +
+        annotate(
+          "richtext", label = paste0("Higher", "<br>", "share of", "<br>", "the year"),
+          x = 0.099, y = 0.25,
+          color = "grey30",
+          fill = NA, label.color = NA
+        ) +
+        annotate(
+          "segment",
+          x = 0.502, xend = 0.502,
+          y = -0.05, yend = 0.398,
+          color = "#c15065",
+          linewidth = 0.8,
+          linetype = "85"
+        ) +
+        annotate(
+          "segment",
+          x = -0.05, xend = 0.502,
+          y = 0.398, yend = 0.398,
+          color = "#c15065",
+          linewidth = 0.8,
+          linetype = "85"
+        ) +
+        annotate(
+          "point",
+          x = 0.501, y = 0.398, # coordinates of the point
+          size = 3.2,
+          color = "#c15065"
+        ) +
+        geom_richtext(data = plot_note_data,
+            aes(x = x_pos, y = y_pos, label = note_text),            # size = 3.5,
+            color = "grey50", 
+            hjust = 0,
+            vjust = 1,
+            size = 4.1,
+            fill = NA, 
+            label.color = NA,
+            label.padding = unit(0, "lines"),
+            inherit.aes = FALSE,
+            show.legend = FALSE
+        ) +
         guides(linetype = "none") +
-        # annotate("rect", xmin = 0, xmax = 1, ymin = 0, ymax = 1, fill = NA, color = alpha("black", 0.5)) +
         theme(panel.grid.major.x = element_line(linetype = 2),
               panel.grid.minor.x = element_blank(),
               panel.grid.major.y = element_line(linetype = 2),
@@ -1109,8 +1238,8 @@ p <- ggplot(data = pct_above, aes(x = threshold, y = pct_of_year)) +
                                              size = rel(1)), # left-align subtitle
               plot.caption.position = "plot",
               plot.caption = element_markdown(hjust = 0, vjust = 0, colour = "grey50",
-                                              margin = margin(t = 27)),
-              legend.position = c(0.95, 0.955),
+                                              margin = margin(t = 67)),
+              legend.position = c(0.947, 0.955),
               legend.justification = c(1, 1),
               plot.margin = margin(t = 4.5, r = 21, b = 13.6, l = 5.5, unit = "pt"))
 
@@ -1118,9 +1247,10 @@ p
 
 plot_path <- paste0(project_path, "/plots", "/share_of_year_at_occupancy.svg")
 
-ggsave(plot_path, p, width = 8.6, height = 10.44238)
+ggsave(plot_path, p, width = 8.6, height = 10.99586)
 ```
 
+![](plots/share_of_year_at_occupancy.svg){width=100%}
 
 ```{r calculate-height-when-asp-1}
 #| eval: false
