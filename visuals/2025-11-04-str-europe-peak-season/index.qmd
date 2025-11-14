@@ -1,15 +1,118 @@
 ---
-title: "Short-term rental market peak season in Europe"
-date: "2025-11-12"
-categories: [STR, Europe, occupancy]
+title: "Why Europe travels together: the drivers behind the July–August peak across the continent's short-term rental markets"
+date: "2025-11-13"
+categories: [STR, Europe, occupancy, AirDNA]
 image: plots/thumb.svg
-description: "Peak occupancy in Europe's top 25 largest short-term rental markets in 2024 based on AirDNA data"
+description: "An analysis of occupancy data from Europe's top 25 largest short-term rental markets in 2024"
 format: html
 execute:
   dir: project
   echo: false
   output: false
 ---
+
+## Introduction
+
+Despite huge differences in climate, latitude, and traveler motivation, Europe’s short-term rental markets behave as if they run on the same clock. From the sun-baked Mediterranean to the cool Nordics, occupancy levels surge in the exact same six-week window every year: July and August. This is not a weather story—it’s the result of Europe’s synchronized school calendars, summer workplace shutdowns, airline capacity cycles, and a continent-wide cultural preference for the “big summer holiday.” In this article, we look at the factors that drive this pattern and we analyse short-term rental data to quantify 
+shows a structural pattern: Europe travels together.
+
+## Europe’s summer clock: the seven factors that align travel demand
+
+### 1. Europe has a structurally synchronized holiday calendar
+
+Across the continent, school holidays and collective holiday periods concentrate in late June to early September, with the peak in July-August.
+This alignment drives demand because:
+
+* Families-one of the largest segments of STR users-are restricted to summer breaks.
+
+* Many workplaces still follow traditional summer shutdown or reduced-operations periods.
+
+* Italians, French, and Spanish workers take long annual holidays in August (e.g., Italy's Ferragosto, France's les vacances d'été), creating spillover demand both domestically and abroad.
+
+This continental synchronization effectively compresses demand into a two-month window, regardless of climate differences among markets.
+
+### 2. Aviation and transport capacity peak in summer
+
+Airlines and rail operators shift massive capacity into the July-August period:
+
+* More routes and higher frequency of flights
+
+* Seasonal connections to secondary leisure airports (Greek islands, Spanish coast, Nordics, Alps)
+
+* Lower perceived travel risk (weather delays, cancellations)
+
+This expanded capacity lowers effective travel friction and allows markets across Europe to feel the same demand pulse, even if their climates differ.
+
+### 3. Europe-wide cultural preference for summer travel
+
+Surveying travel patterns across the EU shows summer as the "default" vacation season. Key reasons:
+
+* Warmer temperatures (even in northern Europe) unlock beaches, lakes, outdoor dining, and cultural festivals.
+
+* Seasonal attractions (coastal towns, islands, national parks) fully activate only in summer.
+
+* Shared European tradition of "the big summer holiday," shaping expectations around ideal travel timing.
+
+This cultural norm harmonizes seasonality across markets.
+
+### 4. In hotter southern markets, July-August remains peak due to international-not domestic-demand
+
+Southern Europe becomes extremely hot in mid-summer, which leads domestic travelers to:
+
+* Travel earlier in June or later in September
+
+* Favor mountains and cooler regions
+
+* Book shorter trips
+
+But international arrivals (especially from northern Europe, the US, Canada, and Latin America) overwhelm these domestic shifts. Long-haul travelers:
+
+* Are tied to summer school schedules and fixed vacation periods
+
+* Prefer guarantee of sun (even very hot sun)
+
+* Spend more per stay on coastal or island destinations
+
+Thus, international travel volume compensates for heat-avoidance behavior among locals.
+
+### 5. Long daylight hours push travel demand northward
+
+Northern Europe has a major seasonal advantage:
+the longest and brightest days of the year occur in June-August, making these months uniquely appealing for:
+
+* Outdoor recreation
+
+* City tourism
+
+* Festival and events season
+
+* Nature-based trips (Nordic fjords, Scottish Highlands, German and Swiss lakes)
+
+Even though the climate is milder than the Mediterranean, consumer demand responds much more strongly to daylight than to absolute temperature, which explains the high occupancy in northern markets.
+
+### 6. July-August is the period of highest international tourist arrivals to Europe
+
+UNWTO and Eurostat data consistently show that:
+
+* International arrivals to Europe spike sharply in Q3.
+
+* For many countries, July and August represent 30-40% of annual tourism inflows.
+
+Since the STR market is highly dependent on international visitors in major cities and leisure destinations, occupancy peaks align across the continent.
+
+### 7. Supply-side patterns amplify the demand concentration
+
+STR supply also increases in summer:
+
+* Rural homeowners open second homes for tourism only in July-August.
+
+* Seasonal hosts in coastal and alpine regions list properties during the profitable summer period.
+
+* Hotels run close to full capacity, pushing overflow demand into STRs.
+
+This synchronized supply expansion meets the synchronized demand shock-further reinforcing the July-August peak.
+
+## What do the STR 
 
 ```{r echo=FALSE, output=FALSE}
 #| cache: false
@@ -641,7 +744,7 @@ p <- ggplot(europe_long, aes(x = month, y = country, fill = occ_norm)) +
           plot.subtitle = element_text(hjust = 0, margin = margin(t = 3, b = 16),
                                        size = rel(1)), # left-align subtitle
           plot.caption.position = "plot",
-          plot.caption = element_text(hjust = 0, vjust = -2.8, colour = "grey50"),
+          plot.caption = element_text(hjust = 0, vjust = -2.7, colour = "grey50"),
           legend.title = element_text(lineheight = 1, margin = margin(b = 20, unit = "pt")),
           legend.margin = margin(l = 0),
           plot.margin = margin(t = 5.5, r = 21, b = 5.5, l = 5.5, unit = "pt")
@@ -872,17 +975,14 @@ p <- ggplot(europe_long, aes(x = month, y = occ_norm)) +
         ) +
         scale_y_continuous(
           # Set breaks every 0.25 from 0 to 1
-          breaks = seq(0, 1, by = 0.2), 
-      
-          # # OPTIONAL: Define the display format for the labels (e.g., percentages)
-          # labels = scales::percent, 
+          breaks = seq(0, 1, by = 0.2)
         ) +
         theme(panel.grid.major.x = element_blank(),
               panel.grid.minor.y = element_blank(),
               panel.grid.major.y = element_line(linetype = 2),
               plot.title.position = "plot",
               strip.background = element_blank(),
-              legend.position = c(0.78, 1.04),
+              legend.position = c(0.79, 1.04),
               legend.justification = c(0, 1),
               # legend.margin = margin(t = 0, r = 0, b = -10, l = 0, unit = "pt"),
               axis.title.x = element_blank(),
@@ -905,3 +1005,162 @@ ggsave(plot_path, p, width = 9.3, height = 7.2)
 ```
 
 ![](plots/line_chart.svg){width=100%}
+
+
+
+```{r}
+library(dplyr)
+library(purrr)
+
+breaks <- seq(0, 1, 0.005)
+
+pct_above <- europe_long %>% 
+  mutate(region = case_when(
+    country %in% c("Finland", "Norway", "Switzerland", "Austria") ~ "Northern",
+    country %in% c("Greece", "Cyprus", "Spain", "Italy") ~ "Southern",
+    .default = "Other"
+  )) %>% 
+  filter(region %in% c("Northern", "Southern")) %>% 
+  group_by(region) %>% 
+  reframe(
+    threshold = breaks,
+    pct_of_year = map_dbl(threshold, ~ mean(occ_norm >= .x, na.rm = TRUE))
+  )
+
+pct_above <- pct_above %>% 
+                mutate(line_color = case_when(
+                  region == "Northern" ~ "#4c6a9c",
+                  region == "Southern" ~ "#c15065",
+                ),
+                       line_width = case_when(
+                                              line_color != "grey90" ~ 0.8,
+                                             .default = 0.4
+                                            ))
+
+legend_data <- tibble(
+  label = rep(c("Northern markets", "Southern markets"), each = 2), # Repeat each label twice
+    color = rep(c("#4c6a9c", "#c15065"), each = 2),
+  x_start = rep(c(1, 2), times = 2), # Create two distinct dummy x-coordinates
+  y_start = rep(c(1, 1), times = 2)  # Use the same dummy y-coordinate
+)
+
+# pct_above <- pct_above %>%
+#                 mutate(line_color = case_when(
+#                                               country %in% c("Finland", "Norway", "Switzerland", "Austria") ~ "#4c6a9c",
+#                                               country %in% c("Greece", "Cyprus", "Spain", "Italy") ~ "#c15065",
+#                                               .default = alpha("grey90", 0.3)
+#                                              ),
+#                        line_width = case_when(
+#                                              line_color != "grey90" ~ 0.8,
+#                                              .default = 0.4
+#                                             ))
+
+# # Quick validation
+# pct_above %>% group_by(country) %>% distinct(line_color, line_widt) %>% print(n = 26)
+
+```
+
+```{r}
+library(scales)
+
+p <- ggplot(data = pct_above, aes(x = threshold, y = pct_of_year)) +
+        geom_line(aes(group = region, color = line_color, linewidth = line_width)) +
+        guides(linetype = "none") +
+        scale_linewidth_identity() +
+        coord_cartesian(xlim = c(0, 1), ylim = c(0, 1), clip = "off", ratio = 1) +
+        scale_x_continuous(breaks = seq(0, 1, by = 0.1)) +
+        scale_y_continuous(breaks = seq(0, 1, by = 0.1), labels = label_percent(scale = 100, accuracy = 1)) +
+        theme_minimal(base_family = font_choice, base_size = 14) +
+        labs(
+             x = NULL, y = NULL,
+             title = paste0("<b style='color: #4c6a9c;'>Northern</b> European short-term rental markets maintain",
+             "<br>", "higher relative occupancy over a larger share of the", "<br>", "year compared to <b style='color: #c15065;'>Southern</b> markets"),
+             subtitle = paste0("Share of the year that markets maintain at least X% of their peak-season",
+                               "<br>", " occupancy (normalized to each market's annual maximum)."),
+             caption = paste0("<b>Data source</b>: AirDNA (2025)")
+             ) +
+        geom_line(
+            data = legend_data, 
+            # Only map 'color' to the aesthetic
+            aes(x = x_start, y = y_start, color = color), 
+            linewidth = 0, 
+            alpha = 0,
+            inherit.aes = FALSE,
+            key_glyph = "path"
+          ) +
+        scale_color_identity(
+            name = NULL, 
+            guide = guide_legend(label.theme = element_text(size = 12)),
+            labels = legend_data$label[c(TRUE, FALSE)], # Select only one label per pair
+            breaks = legend_data$color[c(TRUE, FALSE)]  # Select only one color per pair
+          ) +
+        guides(linetype = "none") +
+        # annotate("rect", xmin = 0, xmax = 1, ymin = 0, ymax = 1, fill = NA, color = alpha("black", 0.5)) +
+        theme(panel.grid.major.x = element_line(linetype = 2),
+              panel.grid.minor.x = element_blank(),
+              panel.grid.major.y = element_line(linetype = 2),
+              panel.grid.minor.y = element_blank(),
+              axis.title.x = element_blank(),
+              axis.title.y = element_blank(),
+              plot.title.position = "plot",
+              plot.title = element_markdown(hjust = 0, face = "bold", margin = margin(b = 5),
+                                          lineheight = 1, size = rel(1.6)), # left-align title
+              plot.subtitle = element_markdown(hjust = 0, margin = margin(t = 3, b = 20),
+                                             size = rel(1)), # left-align subtitle
+              plot.caption.position = "plot",
+              plot.caption = element_markdown(hjust = 0, vjust = 0, colour = "grey50",
+                                              margin = margin(t = 27)),
+              legend.position = c(0.95, 0.955),
+              legend.justification = c(1, 1),
+              plot.margin = margin(t = 4.5, r = 21, b = 13.6, l = 5.5, unit = "pt"))
+
+p
+
+plot_path <- paste0(project_path, "/plots", "/share_of_year_at_occupancy.svg")
+
+ggsave(plot_path, p, width = 8.6, height = 10.44238)
+```
+
+
+```{r calculate-height-when-asp-1}
+#| eval: false
+library(grid)
+
+square_height_for_width <- function(p, width_in = 8.6) {
+  tmp <- tempfile(fileext = ".pdf")
+  grDevices::pdf(tmp, width = width_in, height = width_in)
+  g <- ggplotGrob(p)
+  grDevices::dev.off()
+
+  panel_layout <- g$layout[g$layout$name == "panel", ]
+  panel_cols   <- panel_layout$l:panel_layout$r
+  panel_rows   <- panel_layout$t:panel_layout$b
+
+  left_extra <- convertWidth(
+    sum(g$widths[1:(panel_cols[1] - 1)]), "in", valueOnly = TRUE
+  )
+  right_extra <- convertWidth(
+    sum(g$widths[(panel_cols[length(panel_cols)] + 1):length(g$widths)]),
+    "in", valueOnly = TRUE
+  )
+  top_extra <- convertHeight(
+    sum(g$heights[1:(panel_rows[1] - 1)]), "in", valueOnly = TRUE
+  )
+  bottom_extra <- convertHeight(
+    sum(g$heights[(panel_rows[length(panel_rows)] + 1):length(g$heights)]),
+    "in", valueOnly = TRUE
+  )
+
+  panel_width_in <- width_in - left_extra - right_extra
+  panel_height_in <- panel_width_in  # ratio = 1
+
+  height_in <- top_extra + panel_height_in + bottom_extra
+  height_in
+}
+
+w <- 8.6
+h <- square_height_for_width(p, width_in = w)
+
+
+```
+
