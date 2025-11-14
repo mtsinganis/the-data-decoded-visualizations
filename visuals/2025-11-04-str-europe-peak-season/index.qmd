@@ -13,7 +13,7 @@ execute:
 
 ## Introduction
 
-Despite huge differences in climate, latitude, and traveler motivation, Europe’s short-term rental markets behave as if they run on the same clock. From the sun-baked Mediterranean to the cool Nordics, occupancy levels surge in the exact same six-week window every year: July and August. This is not a weather story—it’s the result of Europe’s synchronized school calendars, summer workplace shutdowns, airline capacity cycles, and a continent-wide cultural preference for the “big summer holiday.” In this article, we look at the factors that drive this pattern and we analyse short-term rental data to quantify 
+Despite huge differences in climate, latitude, and traveler motivation, Europe’s short-term rental markets (STRs) behave as if they run on the same clock. From the sun-baked Mediterranean to the cool Nordics, occupancy levels surge in the exact same six-week window every year: July and August. This is not a weather story—it’s the result of Europe’s synchronized school calendars, summer workplace shutdowns, airline capacity cycles, and a continent-wide cultural preference for the “big summer holiday.” In this article, we look at the factors that drive this pattern and we analyse short-term rental data to quantify 
 shows a structural pattern: Europe travels together.
 
 ## Europe’s summer clock: the seven factors that align travel demand
@@ -112,7 +112,7 @@ STR supply also increases in summer:
 
 This synchronized supply expansion meets the synchronized demand shock-further reinforcing the July-August peak.
 
-## What do the STR 
+## What do the STR industry data reveal?
 
 ```{r echo=FALSE, output=FALSE}
 #| cache: false
