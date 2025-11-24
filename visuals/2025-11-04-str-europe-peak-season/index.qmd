@@ -1,6 +1,6 @@
 ---
 title: "Why Europe travels together: the drivers behind the July–August peak across the continent's short-term rental markets"
-date: "2025-11-13"
+date: "2025-11-26"
 categories: [STR, Europe, occupancy, AirDNA]
 image: plots/thumb.svg
 description: "An analysis of occupancy data from Europe's top 25 largest short-term rental markets in 2024"
@@ -236,10 +236,6 @@ all_data <- all_data %>%
   group_by(country) %>%
   mutate(occ_norm = (occupancy - min(occupancy, na.rm = TRUE)) /
                     (max(occupancy, na.rm = TRUE) - min(occupancy, na.rm = TRUE))) %>%
-  # mutate(occ_norm_index = occupancy / max(occupancy, na.rm = TRUE)) %>% # Index-to-peak normalization (relative to annual max)
-  # mutate(occ_z = (occupancy - mean(occupancy, na.rm = TRUE)) /
-  #                sd(occupancy, na.rm = TRUE)) %>% # Z-score standardization
-  # mutate(occ_share = occupancy / sum(occupancy, na.rm = TRUE)) %>% # Share of yearly total
   ungroup()
 
 # Top 25 European countries (>10k average listings in 2024)
@@ -309,7 +305,7 @@ europe_long <- europe_long %>%
 ```
 
 
-```{r}
+```{r flags}
 library(magick)
 library(rsvg)
 library(dplyr)
