@@ -9,4 +9,4 @@ listing:
   fields: [image, title, date, categories, description]
 ---
 
-Welcome to **The Data Decoded** — a living gallery of data stories and charts shared on [X (Twitter)](https://x.com/TheDataDecoder). The data sets, R code and charts can be found in the channel's [GitHub page](https://github.com/mtsinganis/the-data-decoded-visualizations)
+Welcome to **The Data Decoded** — a living gallery of data stories and charts shared on [X (Twitter)](https://x.com/TheDataDecoder). The data sets, R code and charts can be found in the channel's [GitHub page](https://github.com/mtsinganis/the-data-decoded-visualizations).

@@ -1,6 +1,6 @@
 ---
 title: "Airbnb Demand in the UK (2018–2024)"
-date: "2025-01-10"
+date: "2025-12-06"
 categories: [tourism, airbnb, uk]
 image: plots/thumb.png       # thumbnail for listings
 description: "Trend in guest nights based on AirDNA data."

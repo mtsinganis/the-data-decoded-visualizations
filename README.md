@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/your-username/The-Data-Decoded/main/plots/banner.png" width="800" alt="The Data Decoded">
+  <img src="https://github.com/mtsinganis/the-data-decoded-visualizations/blob/main/Pteranodon_logo.png" width="200" alt="The Data Decoded">
 </p>
 
 <h3 align="center">Turning data into insight — one chart at a time</h3>
