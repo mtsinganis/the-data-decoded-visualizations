@@ -18,9 +18,8 @@ project_path <- file.path("visuals", "2025-12-us-somalia-corruption-index")
 ```
 
 
-```{r import-data}
+```{r import-data, cache=true}
 # Load necessary libraries
-# install.packages(c("httr", "readxl")) # Uncomment and run if you don't have them
 library(httr)
 library(readxl)
 library(dplyr)
@@ -28,63 +27,73 @@ library(dplyr)
 # --- Configuration ---
 download_url <- "https://images.transparencycdn.org/images/CPI2024_Results-and-trends.zip"
 zip_filename <- "CPI2024_Results-and-trends.zip"
-extract_dir <- file.path(project_path, "data") # Name of the folder to extract contents into
+# Where the data should be extracted and saved
+extract_dir <- file.path(project_path, "data") 
+excel_file_in_zip_pattern <- "CPI2024_Results and trends.xlsx"
 
-# --- 1. Download the ZIP file ---
+# Define the full path to the final, imported Excel file
+final_excel_path <- file.path(extract_dir, excel_file_in_zip_pattern)
 
-message("1. Downloading the ZIP file...")
+# --- CONDITIONAL CHECK: Only proceed if the final data file is MISSING ---
+if (!file.exists(final_excel_path)) {
+  
+  message("--- Starting Data Download and Import ---")
 
-# Use GET() from httr to handle the download safely
-response <- GET(download_url, 
-                write_disk(path = zip_filename, overwrite = TRUE))
+  # --- 1. Download the ZIP file ---
+  message("1. Downloading the ZIP file...")
+  
+  response <- GET(download_url, 
+                  write_disk(path = zip_filename, overwrite = TRUE))
 
-# Check download success
-if (http_status(response)$category == "Success") {
-  message("   ✅ Download complete.")
+  if (http_status(response)$category == "Success") {
+    message("    ✅ Download complete.")
+  } else {
+    stop(paste("    ❌ Download failed with status:", http_status(response)$reason))
+  }
+
+  # --- 2. Extract the ZIP file ---
+  message("2. Extracting the ZIP file...")
+
+  if (!dir.exists(extract_dir)) {
+    dir.create(extract_dir)
+  }
+
+  unzip_status <- unzip(zip_filename, 
+                        exdir = extract_dir,
+                        overwrite = TRUE)
+
+  if (length(unzip_status) > 0) {
+    message(paste("    ✅ Extracted", length(unzip_status), "files to:", extract_dir))
+  } else {
+    stop("    ❌ Extraction failed. Check if the ZIP file is valid.")
+  }
+  
+  # Clean up the downloaded ZIP file
+  file.remove(zip_filename)
+  
 } else {
-  stop(paste("   ❌ Download failed with status:", http_status(response)$reason))
+  # This message will display if the file is found and we skip the download/extract steps
+  message(paste("--- Skipping download: Data file found at", final_excel_path, "---"))
 }
 
-# --- 2. Extract the ZIP file ---
+# --- 3. Import the Excel Data (Always Run) ---
+# We always import the data to make sure the 'cpi_data' object is available 
+# in the R session, regardless of whether it was downloaded/extracted this time.
 
-message("2. Extracting the ZIP file...")
-
-# Create the extraction directory if it doesn't exist
-if (!dir.exists(extract_dir)) {
-  dir.create(extract_dir)
-}
-
-# Use unzip() from base R's 'utils' package
-unzip_status <- unzip(zip_filename, 
-                      exdir = extract_dir,
-                      overwrite = TRUE)
-
-if (length(unzip_status) > 0) {
-  message(paste("   ✅ Extracted", length(unzip_status), "files to:", extract_dir))
-} else {
-  stop("   ❌ Extraction failed. Check if the ZIP file is valid.")
-}
-
-# --- 3. Import the Excel Data ---
-
-excel_filename <- list.files(extract_dir) # The file inside the zip
+# Find the exact Excel filename matching the pattern inside the directory
+excel_filename <- list.files(extract_dir, pattern = excel_file_in_zip_pattern, full.names = FALSE)[1]
+excel_path <- file.path(extract_dir, excel_filename)
 
 message(paste("3. Importing data from:", excel_filename))
 
-# Construct the full path to the Excel file
-excel_path <- file.path(extract_dir, excel_filename)
-
-# Read the 'CPI Scores' sheet, which contains the main historical data
-# The data typically starts after a few header rows (e.g., row 4 or 5)
 cpi_data <- read_excel(
   path = excel_path, 
   sheet = "CPI Historical", 
-  skip = 2,           # Skip the first 2 rows of headers/notes
-  col_names = TRUE    # Use the third row as column names
+  skip = 2,           
+  col_names = TRUE    
 )
 
-message("   ✅ Data successfully imported into 'cpi_data'.")
-
+message("    ✅ Data successfully imported into 'cpi_data'.")
 ```
 
 
