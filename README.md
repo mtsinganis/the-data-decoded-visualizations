@@ -6,7 +6,7 @@
 
 <p align="center">
   <a href="https://x.com/TheDataDecoder">X (Twitter)</a> •
-  <a href="https://yourusername.github.io/The-Data-Decoded">Website</a>
+  <a href="https://mtsinganis.github.io/the-data-decoded-visualizations/">Website</a>
 </p>
 
 ---

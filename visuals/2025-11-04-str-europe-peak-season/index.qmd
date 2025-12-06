@@ -1,7 +1,7 @@
 ---
 title: "Why Europe travels together: the drivers behind the July–August peak across the continent's short-term rental markets"
 date: "2025-11-26"
-categories: [STR, Europe, occupancy, AirDNA]
+categories: [STR, Europe, occupancy, AirDNA, Tourism]
 image: plots/thumb.svg
 description: "An analysis of occupancy data from Europe's top 25 largest short-term rental markets in 2024"
 format: html
