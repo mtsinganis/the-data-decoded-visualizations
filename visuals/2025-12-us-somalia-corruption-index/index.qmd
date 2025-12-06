@@ -1,0 +1,136 @@
+---
+title: "Corruption Perceptions Index of US and Somalia (2012–2024)"
+date: "2025-12-07"
+categories: [corruption, usa, somalia]
+image: plots/thumb.png       # thumbnail for listings
+description: "Perceived levels of public sector corruption based on Transparency International data."
+format: html
+execute:
+  dir: project
+---
+
+# Text explaining chart
+
+```{r project-path}
+
+project_path <- file.path("visuals", "2025-12-us-somalia-corruption-index")
+
+```
+
+
+```{r import-data}
+# Load necessary libraries
+# install.packages(c("httr", "readxl")) # Uncomment and run if you don't have them
+library(httr)
+library(readxl)
+library(dplyr)
+
+# --- Configuration ---
+download_url <- "https://images.transparencycdn.org/images/CPI2024_Results-and-trends.zip"
+zip_filename <- "CPI2024_Results-and-trends.zip"
+extract_dir <- file.path(project_path, "data") # Name of the folder to extract contents into
+
+# --- 1. Download the ZIP file ---
+
+message("1. Downloading the ZIP file...")
+
+# Use GET() from httr to handle the download safely
+response <- GET(download_url, 
+                write_disk(path = zip_filename, overwrite = TRUE))
+
+# Check download success
+if (http_status(response)$category == "Success") {
+  message("   ✅ Download complete.")
+} else {
+  stop(paste("   ❌ Download failed with status:", http_status(response)$reason))
+}
+
+# --- 2. Extract the ZIP file ---
+
+message("2. Extracting the ZIP file...")
+
+# Create the extraction directory if it doesn't exist
+if (!dir.exists(extract_dir)) {
+  dir.create(extract_dir)
+}
+
+# Use unzip() from base R's 'utils' package
+unzip_status <- unzip(zip_filename, 
+                      exdir = extract_dir,
+                      overwrite = TRUE)
+
+if (length(unzip_status) > 0) {
+  message(paste("   ✅ Extracted", length(unzip_status), "files to:", extract_dir))
+} else {
+  stop("   ❌ Extraction failed. Check if the ZIP file is valid.")
+}
+
+# --- 3. Import the Excel Data ---
+
+excel_filename <- list.files(extract_dir) # The file inside the zip
+
+message(paste("3. Importing data from:", excel_filename))
+
+# Construct the full path to the Excel file
+excel_path <- file.path(extract_dir, excel_filename)
+
+# Read the 'CPI Scores' sheet, which contains the main historical data
+# The data typically starts after a few header rows (e.g., row 4 or 5)
+cpi_data <- read_excel(
+  path = excel_path, 
+  sheet = "CPI Historical", 
+  skip = 2,           # Skip the first 2 rows of headers/notes
+  col_names = TRUE    # Use the third row as column names
+)
+
+message("   ✅ Data successfully imported into 'cpi_data'.")
+
+```
+
+
+
+```{r echo=FALSE, output=FALSE}
+# Load required packages
+library(tidyverse)
+library(rprojroot)
+
+# Source custom ggplot theme
+message("Current working directory: ", getwd())
+#source("R/theme_data_decoded.R")
+
+# Apply theme globally
+#theme_set(theme_data_decoded())
+folder_name <- "2025-01-airbnb-demand"
+
+data_path <- file.path("visuals", folder_name, "data", "/")
+
+# Read dataset
+airbnb <- read_csv(paste0(data_path, "airbnb_demand_uk_2018_2024.csv"))
+
+# Create plot
+p <- ggplot(airbnb, aes(x = year, y = demand, group = 1)) +
+  geom_line(linewidth = 1.2, color = "#192951") +
+  geom_point(size = 2.5, color = "#192951") +
+  scale_y_continuous(labels = scales::comma) +
+  labs(
+    title = "Airbnb Guest Nights in the UK (2018–2024)",
+    subtitle = "Based on AirDNA data covering guest nights across Airbnb listings",
+    x = "Year",
+    y = "Guest Nights",
+    caption = "Source: AirDNA"
+  ) +
+  annotate("text", x = 2021, y = 40000000, label = "A NEW TEST")
+  # +
+  # theme_data_decoded()
+```
+
+```{r echo=FALSE}
+# Show plot in the page
+p
+```
+
+```{r echo=FALSE, output=FALSE}
+# Save thumbnail for homepage card (explicit path)
+if (!dir.exists("plots")) dir.create("plots", recursive = TRUE)
+ggsave("plots/thumb.png", p, width = 8, height = 5, dpi = 120)
+```
