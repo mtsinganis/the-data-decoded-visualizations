@@ -1,9 +1,9 @@
 ---
 title: "A comparison of the relative fragility and institutional resilience of the U.S. and Somalia."
-date: "2025-12-07"
+date: "2025-12-08"
 categories: [fragility, governance, usa, somalia]
-image: plots/thumb.png
-description: "Fragile States Index ranking of US and Somalia (2013–2023)"
+image: plots/thumb.svg
+description: "Fragile States Index ranking of U.S. and Somalia (2013–2023)"
 format: html
 execute:
   dir: project
@@ -70,6 +70,11 @@ fsi_raw <- map2_dfr(
 
 # Quick sanity check:
 glimpse(fsi_raw)
+
+# Save combined dataset
+if(!file.exists(paste0(project_path, "/data/fsi_index.csv"))){
+  write_csv(fsi_raw, paste0(project_path, "/data/fsi_index.csv"))
+}
 
 ```
 
