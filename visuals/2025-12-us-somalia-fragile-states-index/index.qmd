@@ -196,8 +196,7 @@ p <- ggplot(fsi_plot_data, aes(x = year, y = rank, color = line_color, group = c
             subtitle = paste0("Fragile States Index (FSI) ranking based on social, economic, political, and security indicators",
             "<br>", "(2013–2023). Rank 1 = most fragile."),
             caption = paste0("<b>Data source</b>: Fund for Peace (2024)", "<br>",
-                             "<b>Note</b>: Lower rankings indicate higher fragility. The FSI assesses structural pressures and institutional vulnerabilities through", "<br>", "a composite of 12 fragility indicators. Rankings are taken from the annual FSI country assessment (2013–2023). All",
-                             "<br>", "179 countries are shown; only Somalia and the U.S. are highlighted.",
+                             "<b>Note</b>: Lower rankings indicate higher fragility. The FSI assesses structural pressures and institutional vulnerabilities through", "<br>", "a composite of 12 fragility indicators. Rankings are taken from the annual FSI country assessment (2013–2023). All 179 FSI", "<br>", "countries are shown; only Somalia and the U.S. are highlighted.",
                              "<br>", "<b>Graphic</b>: The Data Decoded / @TheDataDecoded")
           ) +
           geom_richtext(data = endpoint_data,
