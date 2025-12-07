@@ -1,9 +1,9 @@
 ---
-title: "Corruption Perceptions Index of US and Somalia (2012–2024)"
+title: "Perceived levels of public sector corruption in the U.S. and Somalia Corruption Perceptions Index of US and Somalia"
 date: "2025-12-07"
-categories: [corruption, usa, somalia]
+categories: [corruption, `Transparency International`, usa, somalia]
 image: plots/thumb.svg
-description: "Perceived levels of public sector corruption based on Transparency International data"
+description: "Corruption Perceptions Index (CPI) in the U.S. and Somalia (2012–2024)"
 format: html
 execute:
   dir: project
@@ -11,7 +11,7 @@ execute:
   output: false
 ---
 
-# Text explaining chart
+## Text explaining chart
 
 ```{r project-path}
 
