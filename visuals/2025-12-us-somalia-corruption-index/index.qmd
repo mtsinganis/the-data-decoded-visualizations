@@ -1,7 +1,7 @@
 ---
 title: "Perceived levels of public sector corruption in the U.S. and Somalia Corruption Perceptions Index of US and Somalia"
 date: "2025-12-07"
-categories: [corruption, `Transparency International`, usa, somalia]
+categories: [corruption, "Transparency International", usa, somalia]
 image: plots/thumb.svg
 description: "Corruption Perceptions Index (CPI) in the U.S. and Somalia (2012–2024)"
 format: html

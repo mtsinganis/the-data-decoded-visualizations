@@ -11,34 +11,273 @@ execute:
   output: false
 ---
 
-## Text explaining chart
 
-```{r echo=FALSE, output=FALSE}
-# Load required packages
-library(tidyverse)
-# library(rprojroot)  # optional, if needed for root detection
+```{r project-path}
 
-# Source custom ggplot theme if applicable
-# source("R/theme_data_decoded.R")
-# theme_set(theme_data_decoded())
+project_path <- file.path("visuals", "2025-12-us-somalia-fragile-states-index")
 
-# Read dataset (adjust path and filename)
-# data <- read_csv("visuals/2025-12-us-somalia-fragile-states-index/data/your_dataset.csv")
-
-# Create plot (edit this example)
-# p <- ggplot(data, aes(x, y)) +
-#   geom_line(linewidth = 1.2, color = "#192951") +
-#   geom_point(size = 2.5, color = "#192951")
-
-# Display plot
-# p
-
-# Save thumbnail for homepage listing
+```
 
 
+```{r get-xlsx-links}
+library(rvest)
+library(dplyr)
+library(stringr)
+library(purrr)
+library(readxl)
+library(janitor)
 
-if (!dir.exists("visuals/2025-12-us-somalia-fragile-states-index/plots")) dir.create("visuals/2025-12-us-somalia-fragile-states-index/plots", recursive = TRUE)
+excel_page <- "https://fragilestatesindex.org/excel/"
 
-ggsave("visuals/2025-12-us-somalia-fragile-states-index/plots/thumb.png", p, width = 8, height = 5, dpi = 220)
+links_raw <- read_html(excel_page) |>
+  html_elements("a")
+
+fsi_links <- tibble(
+  text = html_text2(links_raw),
+  href = html_attr(links_raw, "href")
+) |>
+  # keep only entries that look like years and point to Excel files
+  mutate(year = readr::parse_integer(text),
+         href = str_squish(href)) |> # removes leading/trailing + internal double spaces
+  filter(!is.na(year),
+         year >= 2013, year <= 2023,
+         str_detect(href, "\\.xlsx$"))
+
+```
 
 
+```{r import-data, eval=TRUE}
+library(purrr)
+
+fsi_raw <- map2_dfr(
+  fsi_links$href,
+  fsi_links$year,
+  ~ {
+    # 1. create a temporary file
+    tf <- tempfile(fileext = ".xlsx")
+    
+    # 2. download the Excel file from the URL
+    download.file(.x, destfile = tf, mode = "wb", quiet = TRUE)
+    # if you run into SSL issues, you can try:
+    # download.file(.x, destfile = tf, mode = "wb", quiet = TRUE, method = "libcurl")
+    
+    # 3. read from the *local* temp file
+    read_excel(tf) |>
+      clean_names() |>
+      mutate(year = .y)
+  }
+)
+
+# Quick sanity check:
+glimpse(fsi_raw)
+
+```
+
+
+```{r use-original-rank}
+library(readr)
+fsi_rank <- fsi_raw %>% mutate(rank = parse_number(rank)) %>% 
+    select(country, year, rank, total)
+```
+
+
+```{r calculate-rank, eval = FALSE}
+
+# I calculate the rank by year directly from the FSI score, even though the 'rank' column already exists (e.g. 1st)
+
+fsi_rank <- fsi_raw |>
+  group_by(year) |>
+  mutate(rank = min_rank(desc(total))) |>
+  ungroup() |>
+  # filter(country %in% c("Somalia", "United States")) |>
+  select(country, year, rank, total)
+```
+
+
+```{r chart-element-prep}
+
+# --- set your custom colours here ---
+col_somalia <- "#418FDE"   # <--- replace with your Somalia colour
+col_us      <- "#BF0A30"   # <--- replace with your US colour
+col_other   <- "grey80" # alpha("#c3c3c3", alpha = 0.25)
+
+fsi_plot_data <- fsi_rank %>%
+  mutate(
+    line_color = case_when(
+      country == "Somalia" ~ col_somalia,
+      country %in% c("United States", "United States of America") ~ col_us,
+      TRUE ~ col_other
+    )
+  )
+
+# Ensure that the selected regions appear on top of other lines
+fsi_plot_data <- fsi_plot_data %>% mutate(is_on_top = case_when(
+                          country %in% c("United States", "Somalia") ~ 2,
+                          .default = 1
+                        )) %>% arrange(is_on_top, country, year)
+
+country_order <- unique(fsi_plot_data$country)
+
+fsi_plot_data <- fsi_plot_data %>% mutate(country = factor(country, levels = country_order))
+
+
+# Filter the data to include ONLY the USA and Somalia at the last year (2024)
+endpoint_data <- fsi_plot_data %>%
+  filter(country %in% c("United States", "Somalia"),
+         year == max(year))
+# %>% 
+#   mutate(label_x = year + 0.05)
+
+
+```
+
+```{r}
+library(showtext)
+
+font_choice <- "Momo Trust Sans"
+
+font_choice_labels <- "Noto Serif"
+
+font_add_google(font_choice, db_cache = FALSE)
+
+showtext_auto()
+```
+
+
+```{r}
+library(ggplot2)
+library(scales)
+library(devtools)
+library(ggtext)
+library(grid)   # for unit()
+
+# devtools::install_github("davidsjoberg/ggbump")
+library(ggbump)
+
+
+p <- ggplot(fsi_plot_data, aes(x = year, y = rank, color = line_color, group = country)) +
+          geom_bump(
+            aes(linewidth = country %in% c("Somalia","United States"),
+                alpha     = country %in% c("Somalia","United States")),
+                smooth = 10
+          ) +
+          geom_point(data = fsi_plot_data %>% filter(country %in% c("Somalia","United States")),
+                     aes(x = year, y = rank, color = line_color, group = country)) +
+          scale_y_reverse(breaks = c(1, seq(10, 180, 10))) +
+          scale_x_continuous(breaks = seq(2013, 2023, by = 1), expand = c(0.01, 0.05)) +
+          coord_cartesian(clip = "off") +
+          scale_color_identity() +
+          scale_linewidth_manual(values = c(`FALSE` = 0.4, `TRUE` = 1), guide = "none") +
+          scale_alpha_manual(values = c(`FALSE` = 0.4, `TRUE` = 1), guide = "none") +
+          theme_minimal(base_family = font_choice, base_size = 14) +
+          theme(panel.grid.major.x = element_line(),
+                panel.grid.minor.x = element_blank(),
+                panel.grid.major.y = element_blank(),
+                panel.grid.minor.y = element_blank(),
+                axis.title.x = element_blank(),
+                axis.title.y = element_blank(),
+                plot.title.position = "plot",
+                plot.title = element_markdown(hjust = 0, face = "bold", margin = margin(b = 5),
+                                              lineheight = 1, size = rel(1.6)), # left-align title
+                plot.subtitle = element_markdown(hjust = 0, margin = margin(t = 3, b = 20),
+                                                     size = rel(1), lineheight = 1.2), # left-align subtitle
+                plot.caption.position = "plot",
+                plot.caption = element_markdown(hjust = 0, vjust = 0, colour = "grey50",
+                                                      margin = margin(t = 20), lineheight = 1.25),
+                plot.margin = margin(t = 18.5, r = 75, b = 13.6, l = 18.5, unit = "pt")) +
+          labs(
+            title    = paste0("<b style='color: #418FDE;'>Somalia</b> has remained among the world’s most fragile states,",
+                     "<br>", "while fragility in the <b style='color: #BF0A30;'>United States</b> has intensified over the", "<br>", "past decade"),
+            subtitle = paste0("Fragile States Index (FSI) ranking based on social, economic, political, and security indicators",
+            "<br>", "(2013–2023). Rank 1 = most fragile."),
+            caption = paste0("<b>Data source</b>: Fund for Peace (2024)", "<br>",
+                             "<b>Note</b>: Lower rankings indicate higher fragility. The FSI assesses structural pressures and institutional vulnerabilities through", "<br>", "a composite of 12 fragility indicators. Rankings are taken from the annual FSI country assessment (2013–2023).", "<br>", "<b>Graphic</b>: The Data Decoded / @TheDataDecoded")
+          ) +
+          geom_richtext(data = endpoint_data,
+            aes(
+                x = year + 0.15,      # shift slightly to the right
+                y = rank,
+                label = c(paste0("Somalia<br>(#",
+                                 endpoint_data %>% filter(country == "Somalia") %>% pull(rank), "/179)"),
+                          paste0("U.S.<br>(#",
+                                 endpoint_data %>% filter(country == "United States") %>% pull(rank), "/179)")),
+                color = line_color
+          ),
+          hjust = 0,
+          size = 4.2,
+          family = font_choice,
+          fontface = "bold",
+          show.legend = FALSE,
+          fill = NA,
+          label.color = NA
+        ) +
+    geom_segment(
+    data = tibble(
+      x    = 2023.25,
+      xend = 2023.25,
+      y    = 110,   # start lower on the plot
+      yend = 70     # end higher  -> arrow points UP (more fragile)
+    ),
+    aes(x = x, xend = xend, y = y, yend = yend),
+    inherit.aes = FALSE,
+    arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+    colour  = "grey20",
+    linewidth = 0.5
+  ) +
+  # geom_segment(
+  #   data = tibble(
+  #     x    = 2023.25,
+  #     xend = 2023.25,
+  #     y    = 60,    # start higher
+  #     yend = 120    # end lower -> arrow points DOWN (less fragile)
+  #   ),
+  #   aes(x = x, xend = xend, y = y, yend = yend),
+  #   inherit.aes = FALSE,
+  #   arrow   = arrow(length = unit(5, "pt"), angle = 23, type = "closed"),
+  #   colour  = "grey10",
+  #   linewidth = 0.4
+  # ) +
+  # labels next to the arrow tips
+  geom_richtext(
+    data = tibble(
+      x     = 2023.35,
+      y     = (120+60)/2,
+      label = "Increased<br>fragility"
+    ),
+    aes(x = x, y = y, label = label),
+    inherit.aes = FALSE,
+    hjust  = 0,
+    family = font_choice,
+    size   = 4.2,
+    colour = "grey30",
+    fill = NA,
+    label.colour = NA
+  )
+
+```
+
+
+```{r}
+svg_path <- file.path(project_path, "plots", "thumb.svg")
+
+svg_w <- 9.8
+svg_h <- 9.1
+
+png_w <- 2000
+png_h <- round(png_w * svg_h / svg_w)  # keep same aspect ratio
+
+ggsave(svg_path, p, width = svg_w, height = svg_h)
+
+library(rsvg)
+
+png_path <- file.path(project_path, "plots", "us_somalia_fragile_states_index.png")
+
+rsvg_png(
+  svg  = svg_path,
+  file = png_path,
+  width  = png_w,
+  height = png_h
+)
+```
+
+![](plots/thumb.svg){width=100%}
