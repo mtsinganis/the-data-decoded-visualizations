@@ -2,11 +2,13 @@
 title: "Corruption Perceptions Index of US and Somalia (2012–2024)"
 date: "2025-12-07"
 categories: [corruption, usa, somalia]
-image: plots/thumb.png       # thumbnail for listings
-description: "Perceived levels of public sector corruption based on Transparency International data."
+image: plots/thumb.svg
+description: "Perceived levels of public sector corruption based on Transparency International data"
 format: html
 execute:
   dir: project
+  echo: false
+  output: false
 ---
 
 # Text explaining chart
@@ -18,7 +20,7 @@ project_path <- file.path("visuals", "2025-12-us-somalia-corruption-index")
 ```
 
 
-```{r import-data, cache=true}
+```{r import-data, cache=TRUE, echo=FALSE, output=FALSE}
 # Load necessary libraries
 library(httr)
 library(readxl)
@@ -94,52 +96,202 @@ cpi_data <- read_excel(
 )
 
 message("    ✅ Data successfully imported into 'cpi_data'.")
+
+rm(list = ls()[!ls() %in% c("cpi_data", "project_path")])
 ```
 
 
+```{r data-cleaning}
+# Load all tidyverse packages
+library(tidyverse)
+library(janitor)
+library(stringr)
+
+# Clean names
+cpi_data <- cpi_data %>% clean_names()
+
+# Convert categorical variables to factors
+cpi_data <- cpi_data %>% mutate(across(
+  .cols = c(country_territory, iso3, region),
+  .fns = factor
+))
+
+# Calculate global average
+# 1. Calculate the yearly global average and prepare the new rows
+global_avg_rows <- cpi_data %>%
+  # Group by year to ensure the mean is calculated for each individual year
+  group_by(year) %>%
+  summarise(
+    # Name the resulting score column 'cpi_score' to match the original data
+    cpi_score = mean(cpi_score, na.rm = TRUE), 
+    .groups = 'drop'
+  ) %>%
+  
+  # 2. Add placeholder columns for line differentiation and plotting
+  mutate(
+    country_territory = "Global Average",
+    country_territory = factor(country_territory),
+    # Define plotting aesthetics for the average line
+    line_color = "grey30", 
+    line_width = 1.2 
+  )
+
+# 3. Combine the original data and the new global average rows
+cpi_data <- bind_rows(cpi_data, global_avg_rows)
+
+# # Check the last few rows to see the new Global Average entries
+# tail(cpi_data)
+
+# Set colors
+somalia_color <- "#418FDE"
+usa_color <- "#BF0A30"
+global_avg_col <- "grey55"
+# denmark_col <- "#789968"
+other_countries_col <- alpha("#c3c3c3", alpha = 0.25)
+
+# Add line_color and line_width specifications to differentiate US and Somalia
+cpi_data <- cpi_data %>%
+                mutate(line_color = case_when(
+                                       country_territory == "United States of America" ~ usa_color,
+                                       country_territory == "Somalia" ~ somalia_color,
+                                       country_territory == "Global Average" ~ global_avg_col,
+                                       # country_territory == "Denmark" ~ denmark_col,
+                                       .default = other_countries_col
+                                             ),
+                       line_width = case_when(
+                                       country_territory == "United States of America" ~ 1,
+                                       country_territory == "Somalia" ~ 1,
+                                       country_territory == "Global Average" ~ 1,
+                                       # country_territory == "Denmark" ~ 1,
+                                       .default = 0.4
+                                             )
+                                 )
+
+# Ensure that the selected regions appear on top of other lines
+cpi_data <- cpi_data %>% mutate(is_on_top = case_when(
+  country_territory %in% c("United States of America", "Somalia", "Global Average"
+                           # , "Denmark"
+                           ) ~ 2,
+  .default = 1
+)) %>% arrange(is_on_top, country_territory, year)
+
+country_order <- unique(cpi_data$country_territory)
+
+cpi_data <- cpi_data %>% mutate(country_territory = factor(country_territory, levels = country_order))
+
+# Filter the data to include ONLY the USA and Somalia at the last year (2024)
+endpoint_data <- cpi_data %>%
+  filter(country_territory %in% c("United States of America", "Somalia", "Global Average"
+                                  # , "Denmark"
+                                  ),
+         year == max(year)) %>% 
+  mutate(label_x = year + 0.14)
+
+highlight_points <- cpi_data %>%
+  filter(country_territory %in% c("United States of America", "Somalia", "Global Average"
+                                  # , "Denmark"
+                                  ))
+  
+  
+```
+
+```{r}
+library(showtext)
+
+font_choice <- "Momo Trust Sans"
+
+font_choice_labels <- "Noto Serif"
+
+font_add_google(font_choice, db_cache = FALSE)
+
+showtext_auto()
+
+```
+
 
 ```{r echo=FALSE, output=FALSE}
-# Load required packages
-library(tidyverse)
-library(rprojroot)
-
-# Source custom ggplot theme
-message("Current working directory: ", getwd())
+library(ggtext)
 #source("R/theme_data_decoded.R")
-
 # Apply theme globally
 #theme_set(theme_data_decoded())
-folder_name <- "2025-01-airbnb-demand"
 
-data_path <- file.path("visuals", folder_name, "data", "/")
+p <- ggplot(cpi_data, aes(x = year, y = cpi_score, group = country_territory)) +
+      geom_line(aes(color = line_color, linewidth = line_width)) +
+      geom_point(data = highlight_points, aes(x = year, y = cpi_score, color = line_color),
+           size = 2, stroke = 0.5) +
+      scale_linewidth_identity() +
+      scale_color_identity() +
+      scale_x_continuous(breaks = seq(2012, 2024, by = 1), expand = c(0.02, 0)) +
+      scale_y_continuous(breaks = seq(0, 100, by = 10), limits = c(0, 100),
+                         expand = expansion(mult = c(0.02, 0))) +
+      coord_cartesian(clip = "off") +
+      labs(x = NULL, y = NULL,
+           title = paste0("<b style='color: #418FDE;'>Somalia</b> has remained at the bottom of global corruption",
+             "<br>", "rankings, while the <b style='color: #BF0A30;'>United States</b> has steadily lost ground",
+             "<br>", "over the past decade"),
+           subtitle = paste0("Corruption Perceptions Index (CPI) based on expert and business assessments of ",
+                             "public-sector", "<br>", "corruption (2012-2024). Scores range from 0 = highly corrupt to 100 = very clean."),
+           caption = paste0("<b>Data source</b>: Transparency International (2025)", "<br>",
+                            "<b>Note</b>: Analysis covers 2012–2024 to ensure methodological consistency, as CPI scores shifted from a 0–10 to a 0–100", "<br>", "scale starting in 2012. All 180 CPI countries are shown; only Somalia, the U.S., and the global average are highlighted.", "<br>",
+                            "<b>Graphic</b>: The Data Decoded / @TheDataDecoded")
+           ) +
+      # Annotation Layer: Use the filtered data frame
+      geom_richtext(data = endpoint_data, aes(label = c(
+        # "Denmark",
+        paste0("Somalia<br>(#", endpoint_data %>% filter(country_territory == "Somalia") %>% pull(rank), "/180)"),
+        paste0("U.S.<br>(#", endpoint_data %>% filter(country_territory == "United States of America") %>% pull(rank), "/180)"),
+        "Global<br>Average"),
+                                              x = label_x, y = cpi_score, color = line_color),
+                    fill = NA,
+                    label.color = NA,
+                    hjust = 0,         # Shift text slightly to the left of the point
+                    size = 5,          # Adjust text size for visibility
+                    #color = "grey50",     # Set text color
+                    fontface = "bold",    # Make the labels stand out
+                    show.legend = FALSE
+      ) +
+      theme_minimal(base_family = font_choice, base_size = 14) +
+      theme(panel.grid.major.x = element_blank(),
+              panel.grid.minor.x = element_blank(),
+              panel.grid.major.y = element_line(linetype = 2),
+              panel.grid.minor.y = element_blank(),
+              axis.title.x = element_blank(),
+              axis.title.y = element_blank(),
+              plot.title.position = "plot",
+              plot.title = element_markdown(hjust = 0, face = "bold", margin = margin(b = 5),
+                                          lineheight = 1, size = rel(1.6)), # left-align title
+              plot.subtitle = element_markdown(hjust = 0, margin = margin(t = 3, b = 20),
+                                             size = rel(1), lineheight = 1.2), # left-align subtitle
+              plot.caption.position = "plot",
+              plot.caption = element_markdown(hjust = 0, vjust = 0, colour = "grey50",
+                                              margin = margin(t = 20), lineheight = 1.25),
+              # legend.position = c(0.947, 0.99),
+              # legend.direction = "horizontal",
+              # legend.justification = c(1, 1),
+              plot.margin = margin(t = 18.5, r = 75, b = 13.6, l = 18.5, unit = "pt"))
 
-# Read dataset
-airbnb <- read_csv(paste0(data_path, "airbnb_demand_uk_2018_2024.csv"))
+svg_path <- file.path(project_path, "plots", "thumb.svg")
 
-# Create plot
-p <- ggplot(airbnb, aes(x = year, y = demand, group = 1)) +
-  geom_line(linewidth = 1.2, color = "#192951") +
-  geom_point(size = 2.5, color = "#192951") +
-  scale_y_continuous(labels = scales::comma) +
-  labs(
-    title = "Airbnb Guest Nights in the UK (2018–2024)",
-    subtitle = "Based on AirDNA data covering guest nights across Airbnb listings",
-    x = "Year",
-    y = "Guest Nights",
-    caption = "Source: AirDNA"
-  ) +
-  annotate("text", x = 2021, y = 40000000, label = "A NEW TEST")
-  # +
-  # theme_data_decoded()
+svg_w <- 9.4
+svg_h <- 9.1
+
+png_w <- 2000
+png_h <- round(png_w * svg_h / svg_w)  # keep same aspect ratio
+
+ggsave(svg_path, p, width = svg_w, height = svg_h)
+
+library(rsvg)
+
+png_path <- file.path(project_path, "plots", "us_somalia_corruption_index.png")
+
+rsvg_png(
+  svg  = svg_path,
+  file = png_path,
+  width  = png_w,
+  height = png_h
+)
+
 ```
 
-```{r echo=FALSE}
-# Show plot in the page
-p
-```
 
-```{r echo=FALSE, output=FALSE}
-# Save thumbnail for homepage card (explicit path)
-if (!dir.exists("plots")) dir.create("plots", recursive = TRUE)
-ggsave("plots/thumb.png", p, width = 8, height = 5, dpi = 120)
-```
+![](plots/thumb.svg){width=100%}

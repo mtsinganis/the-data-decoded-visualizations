@@ -11,7 +11,7 @@
     "href": "index.html",
     "title": "The Data Decoded",
     "section": "",
-    "text": "Welcome to The Data Decoded — a living gallery of data stories and charts shared on X (Twitter). The data sets, R code and charts can be found in the channel’s GitHub page.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAirbnb Demand in the UK (2018–2024)\n\n\n\ntourism\n\nairbnb\n\nuk\n\n\n\nTrend in guest nights based on AirDNA data.\n\n\n\nDec 6, 2025\n\n\n\n\n\n\n\n\n\n\n\n\n\nWhy Europe travels together: the drivers behind the July–August peak across the continent’s short-term rental markets\n\n\n\nSTR\n\nEurope\n\noccupancy\n\nAirDNA\n\nTourism\n\n\n\nAn analysis of occupancy data from Europe’s top 25 largest short-term rental markets in 2024\n\n\n\nNov 26, 2025\n\n\n\n\n\n\nNo matching items"
+    "text": "Welcome to The Data Decoded — a living gallery of data stories and charts shared on X (Twitter). The data sets, R code and charts can be found in the channel’s GitHub page.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCorruption Perceptions Index of US and Somalia (2012–2024)\n\n\n\ncorruption\n\nusa\n\nsomalia\n\n\n\nPerceived levels of public sector corruption based on Transparency International data\n\n\n\nDec 7, 2025\n\n\n\n\n\n\n\n\n\n\n\n\n\nWhy Europe travels together: the drivers behind the July–August peak across the continent’s short-term rental markets\n\n\n\nSTR\n\nEurope\n\noccupancy\n\nAirDNA\n\nTourism\n\n\n\nAn analysis of occupancy data from Europe’s top 25 largest short-term rental markets in 2024\n\n\n\nNov 26, 2025\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "visuals/2025-11-04-str-europe-peak-season/index.html",
@@ -103,5 +103,12 @@
     "title": "Why Europe travels together: the drivers behind the July–August peak across the continent’s short-term rental markets",
     "section": "What do the STR industry data reveal?",
     "text": "What do the STR industry data reveal?"
+  },
+  {
+    "objectID": "visuals/2025-12-us-somalia-corruption-index/index.html",
+    "href": "visuals/2025-12-us-somalia-corruption-index/index.html",
+    "title": "Corruption Perceptions Index of US and Somalia (2012–2024)",
+    "section": "",
+    "text": "Text explaining chart"
   }
 ]
