@@ -29,6 +29,8 @@ description: \"\"
 format: html
 execute:
   dir: project
+  echo: false
+  output: false
 ---
 
 # Text explaining chart
