@@ -72,6 +72,7 @@ fsi_raw <- map2_dfr(
 glimpse(fsi_raw)
 
 # Save combined dataset
+library(readr)
 if(!file.exists(paste0(project_path, "/data/fsi_index.csv"))){
   write_csv(fsi_raw, paste0(project_path, "/data/fsi_index.csv"))
 }
@@ -80,7 +81,6 @@ if(!file.exists(paste0(project_path, "/data/fsi_index.csv"))){
 
 
 ```{r use-original-rank}
-library(readr)
 fsi_rank <- fsi_raw %>% mutate(rank = parse_number(rank)) %>% 
     select(country, year, rank, total)
 ```
