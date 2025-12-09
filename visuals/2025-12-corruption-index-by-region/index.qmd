@@ -305,13 +305,13 @@ p <- ggplot(cpi_data_region %>% filter(region != "global_average"),
                          expand = expansion(mult = c(0.02, 0))) +
       coord_cartesian(clip = "off", xlim = c(2012, 2024)) +
       labs(x = NULL, y = NULL,
-           title = paste0("<span style='color: #E72F52;'>Western Europe</span> consistently ranks as the least corrupt region,",
-             "<br>", "while <b style='color: #7DC462;'>Sub-Saharan Africa</b> remains the most affected, with",
-             "<br>", "minimal change across all regions since 2012"),
+           title = paste0("<span style='color: #E72F52;'>Western Europe</span> consistently ranks as the least corrupt world",
+             "<br>", "region, while <b style='color: #7DC462;'>Sub-Saharan Africa</b> remains the most affected,",
+             "<br>", "with minimal change across all regions since 2012"),
            subtitle = paste0("Corruption Perceptions Index (CPI) based on expert and business assessments of ",
                              "public-sector", "<br>", "corruption (2012-2024). Scores range from 0 = highly corrupt to 100 = very clean."),
            caption = paste0("<b>Data source</b>: Transparency International (2024)", "<br>",
-                            "<b>Note</b>: Analysis covers 2012–2024 to ensure methodological consistency, as CPI scores shifted from a 0–10 to a 0–100", "<br>", "scale starting in 2012. All 180 CPI countries are shown; only Somalia, the U.S., and the global average are highlighted.", "<br>",
+                            "<b>Note</b>: Analysis covers 2012–2024 to ensure methodological consistency, as CPI scores shifted from a 0–10 to a 0–100 scale", "<br>", "starting in 2012. World region assignments follow the regional groupings illustrated in the inset map above.", "<br>",
                             "<b>Graphic</b>: The Data Decoded / @TheDataDecoded")
            ) +
       # Annotation Layer: Use the filtered data frame
@@ -364,7 +364,35 @@ p <- ggplot(cpi_data_region %>% filter(region != "global_average"),
                     hjust  = 0.5,
                     family = font_choice,
                     size   = 4.2,
-                    colour = "grey30",
+                    colour = "grey20",
+                    fill = NA,
+                    label.colour = NA
+                  ) +
+          geom_segment(
+                    data = tibble(
+                      x    = 2024 + 0.8,
+                      xend = 2024 + 0.8,
+                      y    = 14,   # start lower on the plot
+                      yend = 0     # end higher  -> arrow points UP (more fragile)
+                    ),
+                    aes(x = x, xend = xend, y = y, yend = yend),
+                    inherit.aes = FALSE,
+                    arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+                    colour  = "grey20",
+                    linewidth = 0.5
+                  ) +
+        geom_richtext(
+                    data = tibble(
+                      x     = 2025.4,
+                      y     = (14+0)/2,
+                      label = "More<br>corrupt"
+                    ),
+                    aes(x = x, y = y, label = label),
+                    inherit.aes = FALSE,
+                    hjust  = 0.5,
+                    family = font_choice,
+                    size   = 4.2,
+                    colour = "grey20",
                     fill = NA,
                     label.colour = NA
                   ) +
@@ -379,7 +407,8 @@ p <- ggplot(cpi_data_region %>% filter(region != "global_average"),
               plot.title = element_markdown(hjust = 0, face = "bold", margin = margin(b = 5),
                                           lineheight = 1, size = rel(1.6)), # left-align title
               plot.subtitle = element_markdown(hjust = 0, margin = margin(t = 3, b = 20),
-                                             size = rel(1), lineheight = 1.2), # left-align subtitle
+                                             size = rel(1), lineheight = 1.2,
+                                             color = "#181818"), # left-align subtitle
               plot.caption.position = "plot",
               plot.caption = element_markdown(hjust = 0, vjust = 0, colour = "grey50",
                                               margin = margin(t = 20), lineheight = 1.25),
@@ -389,7 +418,7 @@ p <- ggplot(cpi_data_region %>% filter(region != "global_average"),
               plot.margin = margin(t = 18.5, r = 116, b = 13.6, l = 18.5, unit = "pt")) +
       inset_element(
                 map_inset,
-                left   = 0.25,   # center the inset horizontally
+                left   = 0.23,   # center the inset horizontally
                 right  = 0.75,
                 bottom = 0.72,   # move it toward the top
                 top    = 0.98,
