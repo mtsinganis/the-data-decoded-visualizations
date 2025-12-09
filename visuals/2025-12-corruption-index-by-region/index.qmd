@@ -1,9 +1,9 @@
 ---
 title: "Perceived levels of public sector corruption by world region"
 date: "2025-12-09"
-categories: []
-image: plots/thumb.png
-description: ""
+categories: [corruption, "Transparency International", "World Regions"]
+image: plots/thumb.svg
+description: "Corruption Perceptions Index (CPI) in the period 2012-2024"
 format: html
 execute:
   dir: project
@@ -11,34 +11,424 @@ execute:
   output: false
 ---
 
-# Text explaining chart
+```{r project-path}
+
+project_path <- file.path("visuals", "2025-12-corruption-index-by-region")
+
+```
+
+
+```{r import-data, cache=TRUE, echo=FALSE, output=FALSE}
+# Load necessary libraries
+library(httr)
+library(readxl)
+library(dplyr)
+
+# --- Configuration ---
+download_url <- "https://images.transparencycdn.org/images/CPI2024_Results-and-trends.zip"
+zip_filename <- "CPI2024_Results-and-trends.zip"
+# Where the data should be extracted and saved
+extract_dir <- file.path(project_path, "data") 
+excel_file_in_zip_pattern <- "CPI2024_Results and trends.xlsx"
+
+# Define the full path to the final, imported Excel file
+final_excel_path <- file.path(extract_dir, excel_file_in_zip_pattern)
+
+# --- CONDITIONAL CHECK: Only proceed if the final data file is MISSING ---
+if (!file.exists(final_excel_path)) {
+  
+  message("--- Starting Data Download and Import ---")
+
+  # --- 1. Download the ZIP file ---
+  message("1. Downloading the ZIP file...")
+  
+  response <- GET(download_url, 
+                  write_disk(path = zip_filename, overwrite = TRUE))
+
+  if (http_status(response)$category == "Success") {
+    message("    ✅ Download complete.")
+  } else {
+    stop(paste("    ❌ Download failed with status:", http_status(response)$reason))
+  }
+
+  # --- 2. Extract the ZIP file ---
+  message("2. Extracting the ZIP file...")
+
+  if (!dir.exists(extract_dir)) {
+    dir.create(extract_dir)
+  }
+
+  unzip_status <- unzip(zip_filename, 
+                        exdir = extract_dir,
+                        overwrite = TRUE)
+
+  if (length(unzip_status) > 0) {
+    message(paste("    ✅ Extracted", length(unzip_status), "files to:", extract_dir))
+  } else {
+    stop("    ❌ Extraction failed. Check if the ZIP file is valid.")
+  }
+  
+  # Clean up the downloaded ZIP file
+  file.remove(zip_filename)
+  
+} else {
+  # This message will display if the file is found and we skip the download/extract steps
+  message(paste("--- Skipping download: Data file found at", final_excel_path, "---"))
+}
+
+# --- 3. Import the Excel Data (Always Run) ---
+# We always import the data to make sure the 'cpi_data' object is available 
+# in the R session, regardless of whether it was downloaded/extracted this time.
+
+# Find the exact Excel filename matching the pattern inside the directory
+excel_filename <- list.files(extract_dir, pattern = excel_file_in_zip_pattern, full.names = FALSE)[1]
+excel_path <- file.path(extract_dir, excel_filename)
+
+message(paste("3. Importing data from:", excel_filename))
+
+cpi_data <- read_excel(
+  path = excel_path, 
+  sheet = "CPI Historical", 
+  skip = 2,           
+  col_names = TRUE    
+)
+
+message("    ✅ Data successfully imported into 'cpi_data'.")
+
+rm(list = ls()[!ls() %in% c("cpi_data", "project_path")])
+```
+
+
+```{r data-cleaning}
+# Load all tidyverse packages
+library(tidyverse)
+library(janitor)
+library(stringr)
+
+# Clean names
+cpi_data <- cpi_data %>% clean_names()
+
+# Convert categorical variables to factors
+cpi_data <- cpi_data %>% mutate(across(
+  .cols = c(country_territory, iso3, region),
+  .fns = factor
+)) %>% select(country_territory:rank)
+
+# Calculate global average
+# 1. Calculate the yearly global average and prepare the new rows
+global_average_rows <- cpi_data %>%
+  # Group by year to ensure the mean is calculated for each individual year
+  group_by(year) %>%
+  summarise(
+    # Name the resulting score column 'cpi_score' to match the original data
+    cpi_score = mean(cpi_score, na.rm = TRUE), 
+    .groups = 'drop'
+  ) %>%
+  
+  # 2. Add placeholder columns for line differentiation and plotting
+  mutate(
+    region = "global_average",
+    region = factor(region)
+  )
+
+# 3. Combine the original data and the new global average rows
+cpi_data <- bind_rows(cpi_data, global_average_rows)
+
+# # Check the last few rows to see the new Global Average entries
+# tail(cpi_data)
+
+# Calculate the average CPI_score by region
+cpi_data_region <- cpi_data %>% group_by(year, region) %>% summarise(cpi_score = mean(cpi_score))
+
+# Set colors
+ame_color <- "#D44627"
+ap_color <- "#0D95D0"
+eca_color <- "#774FA0"
+mena_color <- "#EFB743"
+ssa_color <- "#7DC462"
+weeu_color <- "#E72F52"
+global_average_col <- "grey55"
+
+# Add line_color and line_width specifications to differentiate US and Somalia
+cpi_data_region <- cpi_data_region %>%
+                mutate(line_color = case_when(
+                                       region == "AME" ~ ame_color,
+                                       region == "AP" ~ ap_color,
+                                       region == "ECA" ~ eca_color,
+                                       region == "MENA" ~ mena_color,
+                                       region == "SSA" ~ ssa_color,
+                                       region == "WE/EU" ~ weeu_color,
+                                       region == "global_average" ~ global_average_col,
+                                            )
+                                 )
+
+# Filter the data to include ONLY the USA and Somalia at the last year (2024)
+year_shift <- 0.41 #0.14
+
+endpoint_data <- cpi_data_region %>% 
+                    filter(year == "2024") %>% 
+                    mutate(region_name = case_when(
+                        region == "AME" ~ "Americas",
+                        region == "AP" ~ "Asia Pacific",
+                        region == "ECA" ~ "Eastern Europe &<br>Central Asia",
+                        region == "MENA" ~ "Middle East &<br>North Africa",
+                        region == "SSA" ~ "Sub-Saharan<br>Africa",
+                        region == "WE/EU" ~ "Western Europe &<br>European Union",
+                        region == "global_average" ~ "Global<br>Average"
+                          ),
+                        label_x = year + year_shift
+                        ,
+                        cpi_score_y = cpi_score)
+
+updates <- tibble(
+  region    = c("SSA", "ECA", "AME", "AP"),
+  cpi_score_y = c(22, 30.2, 46.2, 52)
+)
+
+endpoint_data <- dplyr::rows_update(endpoint_data, updates, by = "region")
+
+endpoint_data <- endpoint_data %>% 
+                    mutate(x_start = year,
+                           x_end = year + year_shift,
+                           y_start = cpi_score,
+                           y_end = cpi_score_y)
+
+
+  
+```
+
+```{r inset-map}
+region_cols <- c(
+  "AME" = "#D44627",  # Americas  (EF RUST)
+  "AP"  = "#0D95D0",  # Asia Pacific (EF AQUA)
+  "ECA" = "#774FA0",  # Eastern Europe & Central Asia (EF IRIS)
+  "MENA" = "#EFB743", # Middle East & North Africa (EF GOLD)
+  "SSA"  = "#7DC462", # Sub-Saharan Africa (EF LEAF)
+  "WE/EU"= "#E72F52"  # Western Europe & EU (EF ROSE)
+)
+
+# Build a country → region lookup from cpi_data
+region_lookup <- cpi_data %>%
+  distinct(iso3, region)
+
+# Get a world map and join the regions
+library(sf)
+library(rnaturalearth)
+
+world <- rnaturalearth::ne_countries(
+  scale = "small",
+  returnclass = "sf"
+) %>%
+  mutate(iso3 = iso_a3) %>%        # just create a new iso3 column
+  left_join(region_lookup, by = "iso3")
+
+# See which countries are missing a region (diagnostic)
+world_na <- world %>%
+  filter(is.na(region)) %>%
+  select(name_long, iso3)
+
+world_na # FRA missing ISO3 code
+
+# Force-assign France’s region
+fra_region <- region_lookup %>%
+  filter(iso3 == "FRA") %>%
+  pull(region) %>%
+  unique()
+
+world <- world %>%
+  mutate(
+    region = if_else(
+      adm0_a3 == "FRA",
+      fra_region,
+      region
+    )
+  )
+
+# Winkel Tripel projection (used by many atlases)
+world_wintri <- st_transform(world, crs = "+proj=wintri")
+
+# Robinson (classic “world map” look)
+world_robin <- st_transform(world, crs = "+proj=robin")
+
+# Create the choropleth inset map
+library(ggplot2)
+
+map_inset <- ggplot(world_robin %>% filter(!is.na(region))) +
+  geom_sf(aes(fill = region), color = "white", linewidth = 0.1) +
+  scale_fill_manual(
+    values = region_cols,
+    limits = names(region_cols),
+    guide  = "none"
+  ) +
+  coord_sf(expand = FALSE) +
+  theme_void() +
+  theme(
+    panel.background = element_rect(fill = "transparent", color = NA),
+    plot.background  = element_rect(fill = "transparent", color = NA),
+    plot.margin      = margin(0, 0, 0, 0)
+  )
+
+
+```
+
+
+```{r}
+library(showtext)
+
+font_choice <- "Momo Trust Sans"
+
+font_choice_labels <- "Noto Serif"
+
+font_add_google(font_choice, db_cache = FALSE)
+
+showtext_auto()
+
+```
+
 
 ```{r echo=FALSE, output=FALSE}
-# Load required packages
-library(tidyverse)
-# library(rprojroot)  # optional, if needed for root detection
+library(ggtext)
+library(patchwork)
+# library(cowplot)
+#source("R/theme_data_decoded.R")
+# Apply theme globally
+#theme_set(theme_data_decoded())
 
-# Source custom ggplot theme if applicable
-# source("R/theme_data_decoded.R")
-# theme_set(theme_data_decoded())
+p <- ggplot(cpi_data_region %>% filter(region != "global_average"),
+            aes(x = year, y = cpi_score, group = region)) +
+      geom_line(aes(color = line_color, linewidth = 1)) +
+      geom_point(aes(color = line_color), size = 2, stroke = 0.5) +
+      scale_linewidth_identity() +
+      scale_color_identity() +
+      scale_x_continuous(breaks = seq(2012, 2024, by = 1), expand = c(0.02, 0.02)) +
+      scale_y_continuous(breaks = seq(0, 100, by = 10), limits = c(0, 100),
+                         expand = expansion(mult = c(0.02, 0))) +
+      coord_cartesian(clip = "off", xlim = c(2012, 2024)) +
+      labs(x = NULL, y = NULL,
+           title = paste0("<span style='color: #E72F52;'>Western Europe</span> consistently ranks as the least corrupt region,",
+             "<br>", "while <b style='color: #7DC462;'>Sub-Saharan Africa</b> remains the most affected, with",
+             "<br>", "minimal change across all regions since 2012"),
+           subtitle = paste0("Corruption Perceptions Index (CPI) based on expert and business assessments of ",
+                             "public-sector", "<br>", "corruption (2012-2024). Scores range from 0 = highly corrupt to 100 = very clean."),
+           caption = paste0("<b>Data source</b>: Transparency International (2024)", "<br>",
+                            "<b>Note</b>: Analysis covers 2012–2024 to ensure methodological consistency, as CPI scores shifted from a 0–10 to a 0–100", "<br>", "scale starting in 2012. All 180 CPI countries are shown; only Somalia, the U.S., and the global average are highlighted.", "<br>",
+                            "<b>Graphic</b>: The Data Decoded / @TheDataDecoded")
+           ) +
+      # Annotation Layer: Use the filtered data frame
+      geom_richtext(data = endpoint_data %>% filter(region != "global_average"),
+                    aes(label = region_name,
+                                              x = label_x,
+                                              y = cpi_score_y,
+                                              color = line_color, lineheight = 0),
+                    fill = NA,
+                    label.color = NA,
+                    hjust = 0,         # Shift text slightly to the left of the point
+                    size = 4.2,          # Adjust text size for visibility
+                    #color = "grey50",     # Set text color
+                    fontface = "bold",    # Make the labels stand out
+                    show.legend = FALSE
+      ) +
+      geom_segment(data = endpoint_data %>% filter(region != "global_average"),
+                   aes(
+                        x    = x_start,
+                        xend = x_end,
+                        y    = y_start,
+                        yend = y_end,
+                        color = line_color        # ensures matching colour
+                  ),
+                  linewidth = 0.5,
+                  lineend = "round",
+                  linetype = 3
+                ) +
+      geom_segment(
+                    data = tibble(
+                      x    = 2024 + 0.8,
+                      xend = 2024 + 0.8,
+                      y    = 78,   # start lower on the plot
+                      yend = 92     # end higher  -> arrow points UP (more fragile)
+                    ),
+                    aes(x = x, xend = xend, y = y, yend = yend),
+                    inherit.aes = FALSE,
+                    arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+                    colour  = "grey20",
+                    linewidth = 0.5
+                  ) +
+        geom_richtext(
+                    data = tibble(
+                      x     = 2025.4,
+                      y     = (92+78)/2,
+                      label = "Less<br>corrupt"
+                    ),
+                    aes(x = x, y = y, label = label),
+                    inherit.aes = FALSE,
+                    hjust  = 0.5,
+                    family = font_choice,
+                    size   = 4.2,
+                    colour = "grey30",
+                    fill = NA,
+                    label.colour = NA
+                  ) +
+      theme_minimal(base_family = font_choice, base_size = 14) +
+      theme(panel.grid.major.x = element_blank(),
+              panel.grid.minor.x = element_blank(),
+              panel.grid.major.y = element_line(linetype = 2),
+              panel.grid.minor.y = element_blank(),
+              axis.title.x = element_blank(),
+              axis.title.y = element_blank(),
+              plot.title.position = "plot",
+              plot.title = element_markdown(hjust = 0, face = "bold", margin = margin(b = 5),
+                                          lineheight = 1, size = rel(1.6)), # left-align title
+              plot.subtitle = element_markdown(hjust = 0, margin = margin(t = 3, b = 20),
+                                             size = rel(1), lineheight = 1.2), # left-align subtitle
+              plot.caption.position = "plot",
+              plot.caption = element_markdown(hjust = 0, vjust = 0, colour = "grey50",
+                                              margin = margin(t = 20), lineheight = 1.25),
+              # legend.position = c(0.947, 0.99),
+              # legend.direction = "horizontal",
+              # legend.justification = c(1, 1),
+              plot.margin = margin(t = 18.5, r = 116, b = 13.6, l = 18.5, unit = "pt")) +
+      inset_element(
+                map_inset,
+                left   = 0.25,   # center the inset horizontally
+                right  = 0.75,
+                bottom = 0.72,   # move it toward the top
+                top    = 0.98,
+                align_to = "panel"
+        ) #  with patchwork
 
-# Read dataset (adjust path and filename)
-# data <- read_csv("visuals/2025-12-corruption-index-by-region/data/your_dataset.csv")
+# ggdraw(p) +
+#     draw_plot(
+#             map_inset,
+#             x = 0.2,   # 0–1 from left
+#             y = 0.50,   # 0–1 from bottom
+#             width  = 0.30,
+#             height = 0.30,
+#             hjust = 0,
+#             vjust = 0
+#           )
 
-# Create plot (edit this example)
-# p <- ggplot(data, aes(x, y)) +
-#   geom_line(linewidth = 1.2, color = "#192951") +
-#   geom_point(size = 2.5, color = "#192951")
+svg_path <- file.path(project_path, "plots", "thumb.svg")
 
-# Display plot
-# p
+svg_w <- 9.969444
+svg_h <- 9.1
 
-# Save thumbnail for homepage listing
+png_w <- 2000
+png_h <- round(png_w * svg_h / svg_w)  # keep same aspect ratio
+
+ggsave(svg_path, p, width = svg_w, height = svg_h)
+
+library(rsvg)
+
+png_path <- file.path(project_path, "plots", "corruption_index_by_region.png")
+
+rsvg_png(
+  svg  = svg_path,
+  file = png_path,
+  width  = png_w,
+  height = png_h
+)
+
+```
 
 
-
-if (!dir.exists("visuals/2025-12-corruption-index-by-region/plots")) dir.create("visuals/2025-12-corruption-index-by-region/plots", recursive = TRUE)
-
-ggsave("visuals/2025-12-corruption-index-by-region/plots/thumb.png", p, width = 8, height = 5, dpi = 220)
-
-
+![](plots/thumb.svg){width=100%}
