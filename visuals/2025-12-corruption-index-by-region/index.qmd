@@ -1,0 +1,44 @@
+---
+title: "Perceived levels of public sector corruption by world region"
+date: "2025-12-09"
+categories: []
+image: plots/thumb.png
+description: ""
+format: html
+execute:
+  dir: project
+  echo: false
+  output: false
+---
+
+# Text explaining chart
+
+```{r echo=FALSE, output=FALSE}
+# Load required packages
+library(tidyverse)
+# library(rprojroot)  # optional, if needed for root detection
+
+# Source custom ggplot theme if applicable
+# source("R/theme_data_decoded.R")
+# theme_set(theme_data_decoded())
+
+# Read dataset (adjust path and filename)
+# data <- read_csv("visuals/2025-12-corruption-index-by-region/data/your_dataset.csv")
+
+# Create plot (edit this example)
+# p <- ggplot(data, aes(x, y)) +
+#   geom_line(linewidth = 1.2, color = "#192951") +
+#   geom_point(size = 2.5, color = "#192951")
+
+# Display plot
+# p
+
+# Save thumbnail for homepage listing
+
+
+
+if (!dir.exists("visuals/2025-12-corruption-index-by-region/plots")) dir.create("visuals/2025-12-corruption-index-by-region/plots", recursive = TRUE)
+
+ggsave("visuals/2025-12-corruption-index-by-region/plots/thumb.png", p, width = 8, height = 5, dpi = 220)
+
+
