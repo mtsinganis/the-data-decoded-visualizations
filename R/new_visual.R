@@ -24,7 +24,7 @@ new_visual <- function(slug, title, date = Sys.Date()) {
 title: \"%s\"
 date: \"%s\"
 categories: []
-image: plots/thumb.png
+image: plots/thumb.svg
 description: \"\"
 format: html
 execute:
