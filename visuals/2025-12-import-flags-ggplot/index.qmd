@@ -3,7 +3,7 @@ title: "How to add rectangular or round country flags to ggplots"
 date: "2025-12-15"
 categories: []
 image: plots/thumb.svg
-description: ""
+description: "4x3, 1x1, and circular flags"
 format: html
 execute:
   dir: project
@@ -11,34 +11,177 @@ execute:
   output: false
 ---
 
-# Text explaining chart
 
-```{r echo=FALSE, output=FALSE}
-# Load required packages
+```{r get_country_flags}
+#| echo: false
+#| output: false
+
+# Load pacakages
 library(tidyverse)
-# library(rprojroot)  # optional, if needed for root detection
+library(gapminder)
+library(magick)
+library(purrr)
+library(rsvg)
+library(glue)
 
-# Source custom ggplot theme if applicable
-# source("R/theme_data_decoded.R")
-# theme_set(theme_data_decoded())
+project_path <- file.path("visuals", "2025-12-import-flags-ggplot")
 
-# Read dataset (adjust path and filename)
-# data <- read_csv("visuals/2025-12-import-flags-ggplot/data/your_dataset.csv")
+# .data <- gapminder %>% filter(year == 2007, continent == "Europe")
 
-# Create plot (edit this example)
-# p <- ggplot(data, aes(x, y)) +
-#   geom_line(linewidth = 1.2, color = "#192951") +
-#   geom_point(size = 2.5, color = "#192951")
+get_country_flags <- function(.data, # data frame
+                              country_col, # column containing countries
+                              shape, # desired flag shape
+                              white.background = TRUE, # Preserve white color? If not, specify new color
+                              dest_folder = paste0(project_path, "/data/country_flags") # where flags should be saved
+                              ){
+    
+    if (!dir.exists(dest_folder)) {
+        dir.create(dest_folder)
+        message(paste0("'", dest_folder, "'", " was created"))
+    }
+    
+    # shape
+    if (shape %in% c("1x1", "round")) {
+        flag_format <- "1x1"
+    } else {
+        flag_format <- "4x3"
+    }
+    
+    # Data frame
+    df <- .data
+    
+    # Get list of countries
+    country_list <- df %>% distinct(.data[[country_col]]) %>% pull()
+    
+    # Guess the code/name of a vector.
+    field_guess <- guess_field(country_list)
+    best_guess <- field_guess[1,"code"]
 
-# Display plot
-# p
+    print(best_guess) # print top match
+    
+    # If the guess is any type of "name" (cow.name, country.name.en, etc.),
+    # we force the origin to be 'country.name'. 
+    # This enables the package's powerful Regex/Fuzzy matching.
+    # If we leave it as 'cow.name', it attempts strict exact matching and fails on typos.
+    if (grepl("name", best_guess, ignore.case = TRUE)) {
+        valid_origin <- "country.name"
+        message("Detected a name format. Switching origin to 'country.name' for better matching.")
+    } else {
+        valid_origin <- best_guess
+    }
 
-# Save thumbnail for homepage listing
+    # Add ISO2 column to data frame if it does not already exist
+    if (!grepl("iso2", best_guess, ignore.case = TRUE)) {
+        df <- df %>% mutate(ISO2 = countrycode(.data[[country_col]],
+                                           origin = valid_origin,
+                                           destination = "iso2c"))
+    }
+    
+    # Create data frame of country flags to be downloaded and generate URL path
+    country_flags <- tibble(ISO2 = unique(df$ISO2),
+                            flag_url = paste0("https://flagicons.lipis.dev/flags/",
+                                              flag_format, "/",
+                                              tolower(ISO2),
+                                              ".svg"),
+                            png_file_path = paste0(file.path(dest_folder, tolower(ISO2)),
+                                                   ".png") # add PNG destination
+    )
 
+    # ---------- Main ----------
+    # Render 4:3 SVG flag -> (optional) recolor exact whites in SVG -> square crop -> circular mask -> PNG
+    circular_crop_and_save <- function(
+      iso2_code, url, dest_path,
+      px = 1400,
+      white_hex = white.background,        # e.g. "#EEEEEE" to recolor exact whites in the SVG
+      replace_stroke = FALSE   # set TRUE if you also want white strokes recolored
+    ) {
+      # 1) Load SVG text from URL
+      svg_text <- paste(readLines(url, warn = FALSE), collapse = "\n")
+  
+      # 2) Optionally recolor exact white tokens in the SVG DOM
+      if (!isTRUE(white_hex)) {
+        # Replace exact white fills (and optionally strokes) in raw SVG text
+        recolor_svg_white <- function(svg_text, new_hex = white.background, replace_stroke = FALSE) {
+          col <- toupper(new_hex)
+          if (!grepl("^#", col)) col <- paste0("#", col)
+      
+          # Build patterns: attribute forms (fill="white"), (stroke="#fff") and style forms (fill:#fff;)
+          parts <- c("fill", if (replace_stroke) "stroke" else NULL)
+          attr_pat <- sprintf("(?i)\\b(%s)\\s*=\\s*\"\\s*(?:#fff(?:fff)?|white)\\s*\"",
+                              paste(parts, collapse="|"))
+          attr_rep <- sprintf("\\1=\"%s\"", col)
+      
+          style_pat <- sprintf("(?i)\\b(%s)\\s*:\\s*(?:#fff(?:fff)?|white)\\b", paste(parts, collapse="|"))
+          style_rep <- sprintf("\\1:%s", col)
+      
+          # Apply both replacements
+          out <- gsub(attr_pat, attr_rep, svg_text, perl = TRUE)
+          out <- gsub(style_pat, style_rep, out, perl = TRUE)
+          out
+        }
+        svg_text <- recolor_svg_white(svg_text, new_hex = white_hex, replace_stroke = replace_stroke)
+      }
+  
+      # 3) Rasterize the (possibly modified) SVG at 4:3
+      raw_png <- rsvg_png(charToRaw(svg_text), width = px, height = round(px * 3/4))
+      img <- image_read(raw_png)
+  
+      # 4) Centered square crop (uses full height for 4:3)
+      if (shape == "round") {
+          # 1) Make a circular (white) mask as SVG and rasterize it
+          .make_circle_mask <- function(d_px) {
+              svg <- glue(
+              "<svg xmlns='http://www.w3.org/2000/svg' width='{d_px}' height='{d_px}' viewBox='0 0 {d_px} {d_px}'>
+               <rect width='100%' height='100%' fill='black'/>
+               <circle cx='{d_px/2}' cy='{d_px/2}' r='{d_px/2}' fill='white'/>
+              </svg>"
+              )
+              image_read(rsvg_png(charToRaw(svg), width = d_px, height = d_px))
+          }
+          info <- image_info(img)
+          d <- min(info$width, info$height)
+          x_off <- floor((info$width  - d) / 2)
+          y_off <- floor((info$height - d) / 2)
+          square <- image_crop(img, sprintf("%dx%d+%d+%d", d, d, x_off, y_off))
+          mask <- .make_circle_mask(d)
+          circ <- image_composite(square, mask, operator = "CopyOpacity")
+          image_write(circ, path = dest_path, format = "png")
+      } else if (shape == "1x1"){
+          info <- image_info(img)
+          d <- min(info$width, info$height)
+          x_off <- floor((info$width  - d) / 2)
+          y_off <- floor((info$height - d) / 2)
+          square <- image_crop(img, sprintf("%dx%d+%d+%d", d, d, x_off, y_off))
+          image_write(square, path = dest_path, format = "png")
+      } else if (shape == "4x3") {
+          image_write(img, path = dest_path, format = "png")
+      }
+    }
 
+    # Circle-crop AND recolor white fills to light gray (keeps strokes white)
+    purrr::pwalk(country_flags, function(ISO2, flag_url, png_file_path) {
+  
+      circular_crop_and_save(
+        iso2_code = ISO2, 
+        url = flag_url, 
+        dest_path = png_file_path, 
+        px = 1600,
+        white_hex = white.background, 
+        replace_stroke = FALSE
+      )
+      
+    })
+    
+}
 
-if (!dir.exists("visuals/2025-12-import-flags-ggplot/plots")) dir.create("visuals/2025-12-import-flags-ggplot/plots", recursive = TRUE)
+my_data <- gapminder %>% filter(year == 2007, continent == "Europe")
 
-ggsave("visuals/2025-12-import-flags-ggplot/plots/thumb.png", p, width = 8, height = 5, dpi = 220)
+```
 
+```{r download-flags}
+get_country_flags(.data = my_data,
+                  country_col = "country",
+                  shape = "round",
+                  white.background = TRUE)
+```
 
