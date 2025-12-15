@@ -120,7 +120,7 @@ This synchronized supply expansion meets the synchronized demand shock-further r
 # Load required packages
 library(tidyverse)
 
-project_path <- file.path("visuals", "2025-11-04-str-europe-peak-season")
+project_path <- file.path("visuals", "2025-11-str-europe-peak-season")
 
 # List all CSV files
 files <- list.files(paste0(project_path, "/data"), pattern = "\\.csv$", full.names = TRUE)
