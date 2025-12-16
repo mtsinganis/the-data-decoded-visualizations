@@ -64,7 +64,7 @@ The function goes through the following steps:
 Below I present an example anyone can follow to download the country flags of interest.
 
 ```{r load-packages}
-# Load pacakages
+# Load packages
 library(tidyverse)
 library(gapminder)
 library(magick)
@@ -72,17 +72,27 @@ library(purrr)
 library(rsvg)
 library(glue)
 library(countrycode)
+library(janitor)
+library(httr)
+library(readxl)
+library(dplyr)
+library(giscoR)
+library(sf)
+library(showtext)
+library(ggtext)
+library(patchwork)
+library(ggimage)
 ```
 
 ```{r project-path}
-
+# Set project path
 project_path <- file.path("visuals", "2025-12-import-flags-ggplot")
 
 ```
 
 
 ```{r get_country_flags}
-
+# Definition of 'get_country_flags' function
 get_country_flags <- function(.data, # data frame
                               country_col, # column containing countries
                               shape, # desired flag shape
@@ -91,25 +101,31 @@ get_country_flags <- function(.data, # data frame
                               override.stop = FALSE
                               ){
     
+    # Update path based on flag shape. Flags of different shapes are stored in different folders
+    dest_folder <- file.path(dest_folder, shape)
+    
+    # Create 'dest_folder' if it does not exist yet
     if (!dir.exists(dest_folder)) {
-        dir.create(dest_folder)
+        dir.create(dest_folder, recursive = TRUE, showWarnings = FALSE)
         message(paste0("'", dest_folder, "'", " was created"))
+    } else {
+      message(paste("Folder", dest_folder, "already exists"))
     }
     
-    # shape
+    # Check whether flags need to be cropped to square (1x1 or round flags)
     if (shape %in% c("1x1", "round")) {
         flag_format <- "1x1"
     } else {
         flag_format <- "4x3"
     }
     
-    # Data frame
+    # Store data frame as 'df'
     df <- .data
     
-    # Get list of countries
+    # Get list of distint countries
     country_list <- df %>% distinct(.data[[country_col]]) %>% pull()
     
-    # Guess the code/name of a vector.
+    # Guess the code/name of a vector
     field_guess <- guess_field(country_list)
     best_guess <- field_guess[1,"code"]
 
@@ -126,7 +142,7 @@ get_country_flags <- function(.data, # data frame
         valid_origin <- best_guess
     }
 
-    # Add ISO2 column to data frame if it does not already exist
+    # Add ISO2 and ISO3 column to data frame if it does not already exist
     if (!grepl("iso2", best_guess, ignore.case = TRUE)) {
         df <- df %>% mutate(ISO2 = countrycode(.data[[country_col]],
                                            origin = valid_origin,
@@ -136,7 +152,7 @@ get_country_flags <- function(.data, # data frame
                                            destination = "iso3c"))
     }
     
-    # Create data frame of country flags to be downloaded and generate URL path
+    # Create data frame of country flags to be downloaded, generate URL path and file path
     country_flags <- tibble(ISO2 = unique(df$ISO2),
                             ISO3 = unique(df$ISO3),
                             country_territory = unique(df$country_territory),
@@ -148,14 +164,14 @@ get_country_flags <- function(.data, # data frame
                                                    ".png") # add PNG destination
     )
     
-    # Check if flags have already been downloaded and processed
+    # Check if flags have already been downloaded and processed. If yes, step is skipped
     missing_flags <- country_flags %>% filter(!file.exists(png_file_path)) %>% pull(png_file_path)
     
     if (length(missing_flags) == 0 & override.stop == FALSE){
         message("Flags are already availabe. Use 'override.stop == TRUE' if you want to download anyway")
         return(country_flags)
     } else {
-            # ---------- Main ----------
+    # ---------- Main processing function ----------
     # Render 4:3 SVG flag -> (optional) recolor exact whites in SVG -> square crop -> circular mask -> PNG
     circular_crop_and_save <- function(
       iso2_code, url, dest_path,
@@ -166,7 +182,7 @@ get_country_flags <- function(.data, # data frame
       # 1) Load SVG text from URL
       svg_text <- paste(readLines(url, warn = FALSE), collapse = "\n")
   
-      # 2) Optionally recolor exact white tokens in the SVG DOM
+      # 2) Optionally recolor exact white tokens in the SVG
       if (!isTRUE(white_hex)) {
         # Replace exact white fills (and optionally strokes) in raw SVG text
         recolor_svg_white <- function(svg_text, new_hex = white.background, replace_stroke = FALSE) {
@@ -187,6 +203,7 @@ get_country_flags <- function(.data, # data frame
           out <- gsub(style_pat, style_rep, out, perl = TRUE)
           out
         }
+        # Apply recolor function to replace white color
         svg_text <- recolor_svg_white(svg_text, new_hex = white_hex, replace_stroke = replace_stroke)
       }
   
@@ -196,6 +213,7 @@ get_country_flags <- function(.data, # data frame
   
       # 4) Centered square crop (uses full height for 4:3)
       if (!shape %in% c("4x3", "1x1", "round")) { stop("Unknown 'shape' specified. Choose between '4x3', '1x1' or 'round'") }
+      
       if (shape == "round") {
           # 1) Make a circular (white) mask as SVG and rasterize it
           .make_circle_mask <- function(d_px) {
@@ -215,6 +233,7 @@ get_country_flags <- function(.data, # data frame
           mask <- .make_circle_mask(d)
           circ <- image_composite(square, mask, operator = "CopyOpacity")
           image_write(circ, path = dest_path, format = "png")
+          
       } else if (shape == "1x1"){
           info <- image_info(img)
           d <- min(info$width, info$height)
@@ -222,13 +241,14 @@ get_country_flags <- function(.data, # data frame
           y_off <- floor((info$height - d) / 2)
           square <- image_crop(img, sprintf("%dx%d+%d+%d", d, d, x_off, y_off))
           image_write(square, path = dest_path, format = "png")
+          
       } else if (shape == "4x3") {
           image_write(img, path = dest_path, format = "png")
       }
     }
 
-    # Circle-crop AND recolor white fills to light gray (keeps strokes white)
-    purrr::pwalk(country_flags, function(ISO2, flag_url, png_file_path) {
+    # Iterate through images to download them and apply function
+    purrr::pwalk(country_flags, function(ISO2, flag_url, png_file_path, ...) {
   
       circular_crop_and_save(
         iso2_code = ISO2, 
@@ -241,6 +261,7 @@ get_country_flags <- function(.data, # data frame
       
     })
     
+    # Return 'country_flags' which will be used in the ggplot
     return(country_flags)
     
     }
@@ -249,14 +270,10 @@ get_country_flags <- function(.data, # data frame
 
 
 ```{r import-data}
-# Load necessary libraries
-library(httr)
-library(readxl)
-library(dplyr)
-
 # --- Configuration ---
 download_url <- "https://images.transparencycdn.org/images/CPI2024_Results-and-trends.zip"
 zip_filename <- "CPI2024_Results-and-trends.zip"
+
 # Where the data should be extracted and saved
 extract_dir <- file.path(project_path, "data") 
 excel_file_in_zip_pattern <- "CPI2024_Results and trends.xlsx"
@@ -303,7 +320,7 @@ if (!file.exists(final_excel_path)) {
   
 } else {
   # This message will display if the file is found and we skip the download/extract steps
-  message(paste("--- Skipping download: Data file found at", final_excel_path, "---"))
+  message(paste("--- 🔔 Skipping download: Data file found at", final_excel_path, "---"))
 }
 
 # --- 3. Import the Excel Data (Always Run) ---
@@ -330,9 +347,6 @@ rm(list = ls()[!ls() %in% c("cpi_data", "project_path", "get_country_flags")])
 
 
 ```{r data-cleaning}
-#| output: false
-library(janitor)
-
 # Clean names
 cpi_data <- cpi_data %>% clean_names()
 
@@ -342,10 +356,11 @@ cpi_data <- cpi_data %>% mutate(across(
   .fns = factor
 ))
 
+# Set main colors
 big_four_col <- "#4a6798"
 other_col <- "grey80"
 
-# filter for 'WE/EU' region and year = 2024
+# filter for 'WE/EU' region and year = 2024 and create color and country groupings
 cpi_data_europe_2024 <- cpi_data %>% filter(region == "WE/EU", year == 2024) %>%
     mutate(country_territory = fct_reorder(country_territory, cpi_score),
            country_territory = fct_drop(country_territory),
@@ -358,24 +373,24 @@ cpi_data_europe_2024 <- cpi_data %>% filter(region == "WE/EU", year == 2024) %>%
                .default = "other"
            ))
 
+# Calculate regional average CPI score
 cpi_data_europe_2024_average <- cpi_data_europe_2024 %>% summarise(mean_cpi = mean(cpi_score)) %>% pull()
 
 ```
 
 
 ```{r europe-map-boundaries}
-library(giscoR)
-library(sf)
-
-# Get the data
+# Get the countries boundaries
 europe_sf <- gisco_get_countries(resolution = "3", region = "Europe")
 
 # "Target" countries
 target_countries <- c("France", "United Kingdom", "Italy", "Germany")
 
+# Other WE/EU countries
 we_eu_countries <- cpi_data_europe_2024 %>%
                         filter(!country_territory %in% c("France", "United Kingdom", "Italy", "Germany")) %>%                              pull(country_territory)
 
+# Create country groupings
 europe_sf <- europe_sf %>%
   mutate(
     # Clean up giscoR names if needed or match by ISO code (CNTR_ID)
@@ -407,6 +422,7 @@ get_bbox <- function(){
 
 bb <- get_bbox()
 
+# Create inset map
 map_inset <- ggplot(europe_laea) +
               geom_sf(aes(fill = status), color = "white", size = 0.2) +
               
@@ -432,34 +448,57 @@ map_inset <- ggplot(europe_laea) +
 ```
 
 
-```{r download-flags}
-country_flags <- get_country_flags(.data = cpi_data_europe_2024,
+```{r download-flags-round-grey}
+# Run function to download flags of desired shape and white color replacement
+
+#############
+# ---1. 'Round' flags, white color replaced by light grey
+country_flags_round <- get_country_flags(.data = cpi_data_europe_2024,
                                   country_col = "iso3",
                                   shape = "round",
                                   white.background = "#EEEEEE")
 
-country_flags <- country_flags %>% mutate(x_pos = -2.5, y_pos = as.numeric(country_territory))
+# Add coordinates for flag mapping in ggplot
+country_flags_round <- country_flags_round %>% mutate(x_pos = -2.5, y_pos = as.numeric(country_territory))
+
+
+#############
+# ---2. '1x1' flags, white color replaced by light grey
+country_flags_square <- get_country_flags(.data = cpi_data_europe_2024,
+                                  country_col = "iso3",
+                                  shape = "1x1",
+                                  white.background = "#EEEEEE")
+
+# Add coordinates for flag mapping in ggplot
+country_flags_square <- country_flags_square %>% mutate(x_pos = -2.5, y_pos = as.numeric(country_territory))
+
+
+#############
+# ---3. '4x3' flags, white color unchanged
+country_flags_rect <- get_country_flags(.data = cpi_data_europe_2024,
+                                  country_col = "iso3",
+                                  shape = "4x3",
+                                  white.background = TRUE)
+
+# Add coordinates for flag mapping in ggplot
+country_flags_rect <- country_flags_rect %>% mutate(x_pos = -2.5, y_pos = as.numeric(country_territory))
+
 ```
 
 
-
 ```{r}
-library(showtext)
-
+# Choose default font
 font_choice <- "Momo Trust Sans"
 
+# Load Google Fonts into 'sysfonts'
 font_add_google(font_choice, db_cache = FALSE)
 
+# Automatically use 'showtext' for new graphics devices
 showtext_auto()
-
 ```
 
 
 ```{r bar-chart}
-library(ggtext)
-library(patchwork)
-library(ggimage)
-
 p <- ggplot(data = cpi_data_europe_2024, aes(x = cpi_score, y = country_territory)) +
     geom_vline(xintercept = cpi_data_europe_2024_average, color = "#BF0A30") +
     geom_segment(aes(x = 0, y = country_territory, xend = cpi_score, yend = country_territory,
@@ -508,9 +547,12 @@ p <- ggplot(data = cpi_data_europe_2024, aes(x = cpi_score, y = country_territor
                   colour = "#BF0A30",
                   fill = NA,
                   label.colour = NA
-             ) +
-    geom_image(
-          data = country_flags, # Only contains 'Europe' row
+             )
+```
+
+```{r export-visualization-round}
+p + geom_image(
+          data = country_flags_round, # Only contains 'Europe' row
           aes(x = x_pos, y = y_pos, image = png_file_path),
           size = 0.026,
           asp = 1,
@@ -525,10 +567,6 @@ p <- ggplot(data = cpi_data_europe_2024, aes(x = cpi_score, y = country_territor
                 align_to = "panel"
         )
 
-```
-
-```{r export-visualization}
-
 svg_path <- file.path(project_path, "plots", "thumb.svg")
 
 svg_w <- 9.3
@@ -541,7 +579,7 @@ ggsave(svg_path, p, width = svg_w, height = svg_h)
 
 library(rsvg)
 
-png_path <- file.path(project_path, "plots", "corruption_index_big_four.png")
+png_path <- file.path(project_path, "plots", "corruption_index_big_four_round.png")
 
 rsvg_png(
   svg  = svg_path,
@@ -553,3 +591,87 @@ rsvg_png(
 ```
 
 ![](plots/thumb.svg){width=100%}
+
+```{r export-visualization-square}
+p + geom_image(
+          data = country_flags_square, # Only contains 'Europe' row
+          aes(x = x_pos, y = y_pos, image = png_file_path),
+          size = 0.026,
+          asp = 1,
+          inherit.aes = FALSE
+        ) +
+    inset_element(
+                map_inset,
+                left   = 0.645,   # center the inset horizontally
+                right  = 1,
+                bottom = 0.05,   # move it toward the top
+                top    = 0.55,
+                align_to = "panel"
+        )
+
+svg_path <- file.path(project_path, "plots", "corruption_index_big_four_square.svg")
+
+svg_w <- 9.3
+svg_h <- 10.4
+
+png_w <- 2000
+png_h <- round(png_w * svg_h / svg_w)  # keep same aspect ratio
+
+ggsave(svg_path, p, width = svg_w, height = svg_h)
+
+library(rsvg)
+
+png_path <- file.path(project_path, "plots", "corruption_index_big_four_square.png")
+
+rsvg_png(
+  svg  = svg_path,
+  file = png_path,
+  width  = png_w,
+  height = png_h
+)
+
+```
+
+![](plots/corruption_index_big_four_square.svg){width=100%}
+
+```{r export-visualization-rect}
+p + geom_image(
+          data = country_flags_rect, # Only contains 'Europe' row
+          aes(x = x_pos, y = y_pos, image = png_file_path),
+          size = 0.026,
+          asp = 1,
+          inherit.aes = FALSE
+        ) +
+    inset_element(
+                map_inset,
+                left   = 0.645,   # center the inset horizontally
+                right  = 1,
+                bottom = 0.05,   # move it toward the top
+                top    = 0.55,
+                align_to = "panel"
+        )
+
+svg_path <- file.path(project_path, "plots", "corruption_index_big_four_rect.svg")
+
+svg_w <- 9.3
+svg_h <- 10.4
+
+png_w <- 2000
+png_h <- round(png_w * svg_h / svg_w)  # keep same aspect ratio
+
+ggsave(svg_path, p, width = svg_w, height = svg_h)
+
+library(rsvg)
+
+png_path <- file.path(project_path, "plots", "corruption_index_big_four_rect.png")
+
+rsvg_png(
+  svg  = svg_path,
+  file = png_path,
+  width  = png_w,
+  height = png_h
+)
+
+```
+
+![](plots/corruption_index_big_four_rect.svg){width=100%}
