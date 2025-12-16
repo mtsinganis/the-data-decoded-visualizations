@@ -1,9 +1,9 @@
 ---
 title: "How to add rectangular, square or round country flags to ggplots"
-date: "2025-12-15"
-categories: [R, ggplot, flags, DataViz]
+date: "2025-12-16"
+categories: [R, ggplot, flags, DataViz, "Corruption Index"]
 image: plots/thumb.svg
-description: "An example using the Corruption Perception Index for European countries in 2024"
+description: "An example comparing the Corruption Perception Index Europe's Big Four (France, Germany, UK and Italy) in 2024"
 format: html
 execute:
   dir: project
@@ -40,12 +40,13 @@ Since I often find myself wanting to include flags in charts, I have written a f
 ## `get_country_flags`: A custom function for downloading country flags
 
 `get_country_flags` has the following arguments:
-* .data: data frame containing a column with country names in any format (full names, iso3, etc.)
-* country_col: data frame column containing the country names
-* shape: desired flag shape (options include `4x3`, `1x1` and `round`)
-* white.background: should white flag color be replaced by a darker color for contrast? Defaults to TRUE (white color)
-* dest_folder: folder where country flags should be saved
-* override.stop: whether to override checks of existing flags
+
+* `.data`: data frame containing a column with country names in any format (full names, iso3, etc.)
+* `country_col`: data frame column containing the country names
+* `shape`: desired flag shape (options include `4x3`, `1x1` and `round`)
+* `white.background`: should white flag color be replaced by a darker color for contrast? Defaults to TRUE (white color)
+* `dest_folder`: folder where country flags should be saved
+* `override.stop`: whether to override checks of existing flags
 
 The country flags are downloaded from an excellent [gallery](https://flagicons.lipis.dev/) by [Panayiotis Lipiridis](https://github.com/lipis), which contains flags in both a 4x3 (rectangular) and a 1x1 (square) format. The URL paths to each flag use the ISO2 country codes. For example, the 4x3 flag for Greece is given by the URL [https://flagicons.lipis.dev/flags/4x3/gr.svg](https://flagicons.lipis.dev/flags/4x3/gr.svg). All flags are available in SVG format. Since it is not possible to add SVG images directly on ggplot charts, my function converts them into PNG format. Once the flags are added to the chart it is possible to save the entire chart in SVG format, taking advantage of the properties of that format.
 
@@ -61,7 +62,9 @@ The function goes through the following steps:
     + `png_file_path`: path for new png flag generated from the SVG flags in the gallery
 * Defines and uses `circular_crop_and_save`, another function which actually downloads the images from the gallery. First, the function checks which flag shape is desired and whether the white flag color should be changed to a different color. It then downloads either the 4x3 or 1x1 flags. If `shape = round`, it download the 1x1 flags and crops them into a circular shape. `circular_crop_and_save` is iterated through the `country_flags` list. 
 
-Below I present an example anyone can follow to download the country flags of interest.
+## Reproducible example
+
+Below I present an example of how to download country flags and add them to a ggplot chart. There is bonus inset map as well.
 
 ```{r load-packages}
 # Load packages
@@ -550,8 +553,10 @@ p <- ggplot(data = cpi_data_europe_2024, aes(x = cpi_score, y = country_territor
              )
 ```
 
+### Round flags with white background switched to light grey
+
 ```{r export-visualization-round}
-p + geom_image(
+p_round <- p + geom_image(
           data = country_flags_round, # Only contains 'Europe' row
           aes(x = x_pos, y = y_pos, image = png_file_path),
           size = 0.026,
@@ -575,7 +580,7 @@ svg_h <- 10.4
 png_w <- 2000
 png_h <- round(png_w * svg_h / svg_w)  # keep same aspect ratio
 
-ggsave(svg_path, p, width = svg_w, height = svg_h)
+ggsave(svg_path, p_round, width = svg_w, height = svg_h)
 
 library(rsvg)
 
@@ -592,8 +597,10 @@ rsvg_png(
 
 ![](plots/thumb.svg){width=100%}
 
+### Square flags with white background switched to light grey
+
 ```{r export-visualization-square}
-p + geom_image(
+p_square <- p + geom_image(
           data = country_flags_square, # Only contains 'Europe' row
           aes(x = x_pos, y = y_pos, image = png_file_path),
           size = 0.026,
@@ -617,7 +624,7 @@ svg_h <- 10.4
 png_w <- 2000
 png_h <- round(png_w * svg_h / svg_w)  # keep same aspect ratio
 
-ggsave(svg_path, p, width = svg_w, height = svg_h)
+ggsave(svg_path, p_square, width = svg_w, height = svg_h)
 
 library(rsvg)
 
@@ -634,8 +641,10 @@ rsvg_png(
 
 ![](plots/corruption_index_big_four_square.svg){width=100%}
 
+### Rectangular flags with white background preserved
+
 ```{r export-visualization-rect}
-p + geom_image(
+p_rect <- p + geom_image(
           data = country_flags_rect, # Only contains 'Europe' row
           aes(x = x_pos, y = y_pos, image = png_file_path),
           size = 0.026,
@@ -659,7 +668,7 @@ svg_h <- 10.4
 png_w <- 2000
 png_h <- round(png_w * svg_h / svg_w)  # keep same aspect ratio
 
-ggsave(svg_path, p, width = svg_w, height = svg_h)
+ggsave(svg_path, p_rect, width = svg_w, height = svg_h)
 
 library(rsvg)
 
