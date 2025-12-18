@@ -1,0 +1,228 @@
+---
+title: "Which European countries spend most on their military?"
+date: "2025-12-19"
+categories: [Europe, "Military expenditure"]
+image: plots/thumb.svg
+description: "A ranking of Europe's top military spenders"
+format: html
+execute:
+  dir: project
+  echo: false
+  output: false
+---
+
+# Text explaining chart
+
+```{r project-path}
+# Set project path
+project_path <- file.path("visuals", "2025-12-europe-military-expenditure")
+
+```
+
+
+```{r echo=FALSE, output=FALSE}
+# Load packages
+
+library(readxl)
+library(dplyr)
+library(tidyr)
+library(janitor)
+library(stringr)
+library(countrycode)
+library(ggplot2)
+library(forcats)
+library(ggbump)
+library(ggtext)
+
+# URL path to data frame
+sipri_url <- "https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2024_2.xlsx"
+
+dest <- file.path(tempdir(), "SIPRI-Milex-data-1949-2024.xlsx")
+download.file(sipri_url, destfile = dest, mode = "wb")
+
+# Inspect sheet names (SIPRI provides multiple metrics / tables as separate sheets)
+sheets <- excel_sheets(dest)
+
+# Pick the sheet whose name suggests "current USD"
+sheet_current_usd <- sheets[str_detect(tolower(sheets), "current")][1]
+```
+
+```{r}
+# ---- 1) READ + RESHAPE (matches my sheet layout) ----
+milex_raw <- read_excel(
+  dest,
+  sheet = "Current US$",
+  skip  = 5,                    # makes row 6 the header
+  na    = c("...", "..", "xxx") # SIPRI missing / not-applicable markers seen in the note
+) |>
+  clean_names() %>% select(-notes)
+
+start_year <- 2000
+end_year   <- 2024
+top_n      <- 20 + 1 # to include Portugal which starts at 16 and ends at 21
+
+# Europe definition controls
+include_russia <- TRUE
+
+# List of actual countries (not aggregations)
+valid_countries <- countrycode::codelist$country.name.en |> unique()
+
+# Keep only actual countries (drop region/subregion aggregation rows)
+milex_countries <- milex_raw |>
+  filter(country %in% valid_countries)
+
+# Identify year columns robustly (handles 2001 or x2001)
+year_cols <- names(milex_countries)[str_detect(names(milex_countries), "^x?\\d{4}$")]
+
+milex_long <- milex_countries |>
+  pivot_longer(
+    cols      = all_of(year_cols),
+    names_to  = "year",
+    values_to = "milex_current_usd_millions"
+  ) |>
+  mutate(
+    year = as.integer(str_remove(year, "^x")),
+    milex_current_usd_millions = suppressWarnings(as.numeric(milex_current_usd_millions))
+  ) |>
+  filter(year >= start_year, year <= end_year)
+
+# ---- 2) FILTER TO EUROPE (UN M49 Europe, with explicit overrides) ----
+europe_countries <- countrycode::codelist |>
+  filter(continent == "Europe") |>
+  mutate(country = country.name.en, .keep = "none") |>
+  distinct()
+
+milex_europe <- milex_long |>
+  semi_join(europe_countries, by = "country") |>
+  filter(!is.na(milex_current_usd_millions)) |> # only Montenegro has NAs for 2000-2004
+  filter(
+    (include_russia | country != "Russia")
+  )
+
+# ---- 3) WITHIN-EUROPE RANKS BY YEAR (1 = highest spending) ----
+milex_ranked <- milex_europe |>
+  group_by(year) |>
+  mutate(rank_europe = min_rank(desc(milex_current_usd_millions))) |>
+  ungroup()
+
+# # ---- 4A) DATASET OPTION A: "Top N each year" (entry/exit allowed) ----
+# milex_top_each_year <- milex_ranked |>
+#   group_by(year) |>
+#   filter(rank_europe <= top_n) |>
+#   ungroup()
+
+# ---- 4B) DATASET OPTION B: "Top N in 2024 traced back" (fixed set, cleaner) ----
+leaders_2024 <- milex_ranked |>
+  filter(year == end_year) |>
+  arrange(rank_europe) |>
+  slice_head(n = top_n) |>
+  pull(country)
+
+milex_fixed_set <- milex_ranked |>
+  filter(country %in% leaders_2024) %>% 
+  mutate(country = fct_reorder(country, rank_europe, .fun = min))
+
+country_highlight <- c("Russia","Germany", "Poland", "Ukraine")
+
+milex_fixed_set <- milex_fixed_set %>% 
+      mutate(line_color = case_when(
+                  country %in% country_highlight ~ "#4a6798",
+                  .default = "grey80"),
+             line_width = case_when(
+                   country %in% country_highlight ~ 1,
+                   .default = 0.7
+                 ),
+             line_alpha = case_when(
+                   country %in% country_highlight ~ 1,
+                   .default = 1
+                 ),
+             highlight = country %in% country_highlight
+      ) %>% mutate(country = fct_reorder(country, highlight)) %>% 
+      select(-highlight)
+
+source("R/get_country_flags.R")
+
+country_flags_round <- get_country_flags(.data = milex_fixed_set,
+                                  country_col = "country",
+                                  shape = "round",
+                                  white.background = "#EEEEEE")
+
+country_order <- milex_fixed_set %>% filter(year == 2024) %>%
+                      arrange(rank_europe) %>% pull(country) %>% as.character()
+
+country_flags_round <- country_flags_round %>% 
+                          mutate(country_territory = fct_relevel(country_territory,
+                                                                 country_order)) %>% 
+                          arrange(as.integer(country_territory)) %>% 
+                          mutate(x_pos = 2025, y_pos = 1:top_n)
+
+```
+
+```{r}
+library(showtext)
+# Choose default font
+font_choice <- "Momo Trust Sans"
+
+# Load Google Fonts into 'sysfonts'
+font_add_google(font_choice, db_cache = FALSE)
+
+# Automatically use 'showtext' for new graphics devices
+showtext_auto()
+```
+
+
+```{r}
+# ---- 5) PLOTTING HELPERS ----
+
+library(ggimage)
+
+pB <- ggplot(milex_fixed_set, aes(x = year, y = rank_europe, group = country, color = line_color)) +
+        geom_bump(aes(linewidth = line_width, alpha = line_alpha), smooth = 8) +
+        scale_color_identity() +
+        scale_linewidth_identity(guide = "none") +
+        scale_alpha_identity(guide = "none") +
+        geom_point(data = milex_fixed_set 
+                   # %>% filter(country %in% country_highlight)
+                   ,
+                   aes(x = year, y = rank_europe),
+                   size = 1.6) +
+        scale_y_reverse(breaks = 1:top_n) +
+        coord_cartesian(ylim = c(1,20-0.5)) +
+        scale_x_continuous(breaks = seq(start_year, end_year, by = 2)) +
+        labs(
+          title = paste0("European Military Spending Rankings (", start_year, "–", end_year, ")"),
+          subtitle = paste0(
+            "Rank within Europe by military expenditure (current US$, SIPRI). ",
+            "XXX", " Top ", top_n, "."
+          ),
+          x = NULL,
+          y = "Rank (1 = highest)"
+        ) +
+        theme_minimal(base_family = font_choice, base_size = 14) +
+        theme(panel.grid.major.x = element_line(linetype = 2),
+              panel.grid.major.y = element_blank(),
+              panel.grid.minor = element_blank(),
+              legend.position = "none",
+              axis.title.x = element_blank(),
+              axis.title.y = element_blank(),
+              plot.title.position = "plot",
+              plot.title = element_markdown(hjust = 0, face = "bold", margin = margin(b = 5),
+                                            lineheight = 1, size = rel(1.6)), # left-align title
+              plot.subtitle = element_markdown(hjust = 0, margin = margin(t = 3, b = 20),
+                                                   size = rel(1), lineheight = 1.2), # left-align subtitle
+              plot.caption.position = "plot",
+              plot.caption = element_markdown(hjust = 0, vjust = 0, colour = "grey50",
+                                                    margin = margin(t = 20), lineheight = 1.25),
+              plot.margin = margin(t = 18.5, r = 75, b = 13.6, l = 18.5, unit = "pt")) +
+        geom_image(
+          data = country_flags_round, # Only contains 'Europe' row
+          aes(x = x_pos, y = y_pos, image = png_file_path),
+          size = 0.026,
+          asp = 1,
+          inherit.aes = FALSE
+        )
+
+pB
+
+```
+
