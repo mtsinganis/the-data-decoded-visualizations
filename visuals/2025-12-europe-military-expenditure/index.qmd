@@ -1,17 +1,15 @@
 ---
 title: "Which European countries spend most on their military?"
 date: "2025-12-19"
-categories: [Europe, "Military expenditure"]
+categories: [Europe, Ukraine, Russia, "Military expenditure"]
 image: plots/thumb.svg
-description: "A ranking of Europe's top military spenders"
+description: "A ranking of Europe's top military spenders in absolute terms and as share of their GDP (2000-2024, SIPRI)"
 format: html
 execute:
   dir: project
   echo: false
   output: false
 ---
-
-# Text explaining chart
 
 ```{r project-path}
 # Set project path
