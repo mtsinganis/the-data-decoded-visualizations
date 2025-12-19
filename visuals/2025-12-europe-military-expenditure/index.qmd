@@ -33,6 +33,7 @@ library(ggplot2)
 library(forcats)
 library(ggbump)
 library(ggtext)
+library(ragg)
 
 # URL path to data frame
 sipri_url <- "https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2024_2.xlsx"
@@ -119,26 +120,29 @@ leaders_2024 <- milex_ranked |>
   pull(country)
 
 milex_fixed_set <- milex_ranked |>
-  filter(country %in% leaders_2024) %>% 
-  mutate(country = fct_reorder(country, rank_europe, .fun = min))
+  filter(country %in% leaders_2024)
+  # mutate(country = fct_reorder(country, rank_europe, .fun = min))
 
-country_highlight <- c("Russia","Germany", "Poland", "Ukraine")
+country_colors <- c(
+  Russia   = "#AF2138",
+  Poland   = "#599046",
+  Ukraine  = "#036D9C",
+  Romania  = "#DC9d39"
+)
 
 milex_fixed_set <- milex_fixed_set %>% 
-      mutate(line_color = case_when(
-                  country %in% country_highlight ~ "#4a6798",
-                  .default = "grey80"),
-             line_width = case_when(
-                   country %in% country_highlight ~ 1,
-                   .default = 0.7
-                 ),
-             line_alpha = case_when(
-                   country %in% country_highlight ~ 1,
-                   .default = 1
-                 ),
-             highlight = country %in% country_highlight
-      ) %>% mutate(country = fct_reorder(country, highlight)) %>% 
-      select(-highlight)
+  mutate(
+    line_color = coalesce(
+      country_colors[as.character(country)],
+      "grey92"
+    ),
+    line_width = if_else(!is.na(country_colors[as.character(country)]), 1.15, 0.7),
+    line_alpha = 1,
+    highlight = country %in% names(country_colors)
+  )
+
+df_bg <- milex_fixed_set %>% filter(!highlight)
+df_fg <- milex_fixed_set %>% filter(highlight)
 
 source("R/get_country_flags.R")
 
@@ -171,32 +175,30 @@ showtext_auto()
 ```
 
 
-```{r}
+```{r plot-chart-current-usd}
 # ---- 5) PLOTTING HELPERS ----
 
 library(ggimage)
 
-pB <- ggplot(milex_fixed_set, aes(x = year, y = rank_europe, group = country, color = line_color)) +
-        geom_bump(aes(linewidth = line_width, alpha = line_alpha), smooth = 8) +
+p1 <- ggplot(milex_fixed_set, aes(x = year, y = rank_europe, group = country, color = line_color)) +
+        geom_bump(data = df_bg, aes(linewidth = line_width, alpha = line_alpha), smooth = 8) +
+        geom_bump(data = df_fg, aes(linewidth = line_width, alpha = line_alpha), smooth = 8) +
         scale_color_identity() +
         scale_linewidth_identity(guide = "none") +
         scale_alpha_identity(guide = "none") +
-        geom_point(data = milex_fixed_set 
-                   # %>% filter(country %in% country_highlight)
-                   ,
-                   aes(x = year, y = rank_europe),
-                   size = 1.6) +
         scale_y_reverse(breaks = 1:top_n) +
-        coord_cartesian(ylim = c(1,20-0.5)) +
-        scale_x_continuous(breaks = seq(start_year, end_year, by = 2)) +
+        coord_cartesian(xlim = c(2000, 2027), ylim = c(1,20-0.5)) +
+        scale_x_continuous(breaks = seq(start_year, end_year, by = 2), expand = expansion(add = c(0.5, 1))) +
         labs(
-          title = paste0("European Military Spending Rankings (", start_year, "–", end_year, ")"),
+          title = paste0("<span style='color: #AF2138;'>Russia</span> and <span style='color: #036D9C;'>Ukraine</span> have redrawn Europe’s military spending", "<br>",
+                         "rankings, with <span style='color: #599046;'>Poland</span> and <span style='color: #DC9d39;'>Romania</span> rising fast in response to", "<br>",
+                         "a changing security environment in the eastern frontier"),
           subtitle = paste0(
-            "Rank within Europe by military expenditure (current US$, SIPRI). ",
-            "XXX", " Top ", top_n, "."
-          ),
-          x = NULL,
-          y = "Rank (1 = highest)"
+            "Rank within Europe by military expenditure (current US$, SIPRI)"),
+          caption = paste0("<b>Data source</b>: SIPRI Military Expenditure Database 2025 (current US$)",
+                           "<br>",
+                           "<b>Notes</b>: European rankings by year; rankings are relative, so changes in one country’s position necessarily affect others.", "<br>",
+                           "<b>Graphic</b>: The Data Decoded / @TheDataDecoded")
         ) +
         theme_minimal(base_family = font_choice, base_size = 14) +
         theme(panel.grid.major.x = element_line(linetype = 2),
@@ -205,6 +207,7 @@ pB <- ggplot(milex_fixed_set, aes(x = year, y = rank_europe, group = country, co
               legend.position = "none",
               axis.title.x = element_blank(),
               axis.title.y = element_blank(),
+              # axis.text.y = element_text(margin = margin(r = 0.7)),
               plot.title.position = "plot",
               plot.title = element_markdown(hjust = 0, face = "bold", margin = margin(b = 5),
                                             lineheight = 1, size = rel(1.6)), # left-align title
@@ -213,16 +216,293 @@ pB <- ggplot(milex_fixed_set, aes(x = year, y = rank_europe, group = country, co
               plot.caption.position = "plot",
               plot.caption = element_markdown(hjust = 0, vjust = 0, colour = "grey50",
                                                     margin = margin(t = 20), lineheight = 1.25),
-              plot.margin = margin(t = 18.5, r = 75, b = 13.6, l = 18.5, unit = "pt")) +
+              plot.margin = margin(t = 18.5, r = 4.5, b = 13.6, l = 18.5, unit = "pt")) +
         geom_image(
           data = country_flags_round, # Only contains 'Europe' row
           aes(x = x_pos, y = y_pos, image = png_file_path),
           size = 0.026,
           asp = 1,
           inherit.aes = FALSE
-        )
-
-pB
+        ) +
+        geom_richtext(data = milex_fixed_set %>%
+                        filter(country %in% names(country_colors), year == 2024),
+                      aes(x = 2025.5, y = rank_europe, label = country, color = line_color),
+                      inherit.aes = FALSE,
+                      hjust  = 0,
+                      family = font_choice,
+                      fontface = "bold",
+                      size   = 4,
+                      fill = NA,
+                      label.colour = NA
+                      )
 
 ```
 
+
+```{r export-visualization-usd}
+svg_path <- file.path(project_path, "plots", "thumb.svg")
+
+svg_w <- 9.7
+svg_h <- 9.3
+
+png_w <- 2000
+png_h <- round(png_w * svg_h / svg_w)  # keep same aspect ratio
+
+ggsave(svg_path, p1, width = svg_w, height = svg_h)
+
+library(rsvg)
+
+png_path <- file.path(project_path, "plots", "eastern-europe-military-spending.png")
+
+rsvg_png(
+  svg  = svg_path,
+  file = png_path,
+  width  = png_w,
+  height = png_h
+)
+
+```
+
+![](plots/thumb.svg){width=100%}
+
+```{r share-of-gdp}
+
+sheet_name <- "Share of GDP"
+
+# ---- 1) READ + RESHAPE (matches my sheet layout) ----
+gdp_raw <- read_excel(
+  dest,
+  sheet = sheet_name,
+  skip  = 5,                    # makes row 6 the header
+  na    = c("...", "..", "xxx") # SIPRI missing / not-applicable markers seen in the note
+) |>
+  clean_names() %>% select(-notes)
+
+# Expect: country + possibly an extra column (often contains "%" markers) + year columns
+names(gdp_raw)
+
+# ---- Keep only real countries (drops "Africa", "North Africa", etc.) ----
+valid_countries <- countrycode::codelist$country.name.en |> unique()
+
+gdp_countries <- gdp_raw |>
+  filter(country %in% valid_countries)
+
+# ---- Identify year columns robustly (handles "2000" or "x2000") ----
+year_cols <- names(gdp_countries)[str_detect(names(gdp_countries), "^x?\\d{4}$")]
+
+# ---- Reshape to long ----
+milex_gdp_long <- gdp_countries |>
+  pivot_longer(
+    cols      = all_of(year_cols),
+    names_to  = "year",
+    values_to = "milex_share_gdp"
+  ) |>
+  mutate(
+    year = as.integer(str_remove(year, "^x")),
+    milex_share_gdp = suppressWarnings(as.numeric(milex_share_gdp))*100
+  ) |>
+  filter(year >= start_year, year <= end_year, !is.na(milex_share_gdp))
+
+# ---- Europe definition: UN M49 Europe, with explicit overrides ----
+europe_countries <- countrycode::codelist |>
+  filter(continent == "Europe") |>
+  transmute(country = country.name.en) |>
+  distinct()
+
+milex_gdp_europe <- milex_gdp_long |>
+  semi_join(europe_countries, by = "country") |>
+  filter(
+    (include_russia | country != "Russia")
+  )
+
+# ---- Rank within Europe by year (1 = highest share of GDP) ----
+milex_gdp_ranked <- milex_gdp_europe |>
+  group_by(year) |>
+  mutate(rank_europe = min_rank(desc(milex_share_gdp))) |>
+  ungroup()
+
+leaders_2024_gdp <- milex_gdp_ranked |>
+  filter(year == end_year) |>
+  arrange(rank_europe) |>
+  slice_head(n = top_n) |>
+  pull(country)
+
+milex_gdp_fixed_set <- milex_gdp_ranked |>
+  filter(country %in% leaders_2024_gdp, year == 2024)
+
+# Set main colors
+highlight_col <- "#4a6798"
+other_col <- "grey80"
+
+selected_countries <- c("Ukraine", "Poland", "Estonia", "Latvia", "Lithuania", "Finland", "Romania")
+
+milex_gdp_fixed_set <- milex_gdp_fixed_set |>
+  mutate(
+    country_color = case_when(
+      country %in% selected_countries ~ highlight_col,
+      .default = other_col
+    ),
+    country = fct_reorder(country, milex_share_gdp, .desc = FALSE),
+    label_pct = sprintf("%.2f%%", milex_share_gdp),
+    highlight = country %in% selected_countries
+  )
+```
+
+```{r country-flags-gdp}
+
+source("R/get_country_flags.R")
+
+# rename previous flag folder 
+file.rename(
+  from = file.path(project_path, "data/country_flags/round"),
+  to   = file.path(project_path, "data/country_flags/round_usd")
+)
+
+country_flags_round <- get_country_flags(.data = milex_gdp_fixed_set,
+                                  country_col = "country",
+                                  shape = "round",
+                                  white.background = "#EEEEEE")
+
+country_order <- milex_gdp_fixed_set %>% filter(year == 2024) %>%
+                      arrange(milex_share_gdp ) %>% pull(country) %>% as.character()
+
+country_flags_round <- country_flags_round %>% 
+                          mutate(country_territory = fct_relevel(country_territory,
+                                                                 country_order)) %>% 
+                          arrange(as.integer(country_territory)) %>% 
+                          mutate(x_pos = -1.2, y_pos = 1:top_n)
+
+```
+
+
+
+```{r plot-chart-share-of-gdp}
+
+p2 <- ggplot(milex_gdp_fixed_set, aes(x = milex_share_gdp, y = country)) +
+        geom_col(aes(fill = country_color), width = 0.7) +
+        geom_hline(yintercept = 14.5, color = "#BF0A30", linetype = 2) +
+        scale_fill_identity() +
+        scale_x_continuous(breaks = seq(0, 35, by = 5)
+                           , expand = expansion(mult = c(0.05, 0))
+                           ) +
+        coord_cartesian(xlim = c(0, 37.9), clip = "off") +
+        labs(
+          title = paste0("Europe’s <span style='color: #4a6798;'>Eastern Frontier</span> bears the highest military burden,",
+                         "<br>", "led by Ukraine and NATO members closest to Russia"),
+          subtitle = paste0("Share of GDP spent on military expenditure in 2024 (current US$, SIPRI). European countries ranked",
+          "<br>", "by defence burden."),
+          caption = paste0("<b>Data source</b>: SIPRI Military Expenditure Database 2025 (current US$)",
+                           "<br>",
+                           "<b>Notes</b>: Defence spending as a share of GDP in 2024; countries ranked by military burden rather than absolute spending levels.", "<br>",
+                           "<b>Graphic</b>: The Data Decoded / @TheDataDecoded")) +
+        theme_minimal(base_family = font_choice, base_size = 14) +
+        theme(panel.grid.major.x = element_blank(),
+          panel.grid.major.y = element_blank(),
+          panel.grid.minor = element_blank(),
+          legend.position = "none",
+          axis.title.x = element_blank(),
+          axis.title.y = element_blank(),
+          axis.text.x = element_blank(),
+          plot.title.position = "plot",
+          plot.title = element_markdown(hjust = 0, face = "bold", margin = margin(b = 5),
+                                        lineheight = 1, size = rel(1.6)), # left-align title
+          plot.subtitle = element_markdown(hjust = 0, margin = margin(t = 3, b = 20),
+                                               size = rel(1), lineheight = 1.2), # left-align subtitle
+          plot.caption.position = "plot",
+          plot.caption = element_markdown(hjust = 0, vjust = 0, colour = "grey50",
+                                                margin = margin(t = 20), lineheight = 1.25),
+          plot.margin = margin(t = 18.5, r = 15.1, b = 13.6, l = 18.5, unit = "pt")) +
+        geom_richtext(
+          aes(label = label_pct, fontface = if_else(highlight, "bold", "plain"),
+              colour = country_color),
+          nudge_x = 0.45,
+          hjust = 0,
+          size = 3.6,
+          color = "grey30",
+          family = font_choice,
+          fill = NA,
+          label.colour = NA
+        ) +
+        geom_image(
+                data = country_flags_round, # Only contains 'Europe' row
+                aes(x = x_pos, y = y_pos, image = png_file_path),
+                size = 0.026,
+                asp = 1,
+                inherit.aes = FALSE
+              ) +
+        geom_richtext(data = tibble(x = c(31.8, 31.8), y = c(15, 14), label = c("&gt; 3.00% of GDP",
+                                                                            "&lt; 3.00% of GDP")),
+                      aes(x = x, y = y, label = label),
+                      hjust  = 0,
+                      family = font_choice,
+                      size   = 3.6,
+                      colour = "#BF0A30",
+                      fill = NA,
+                      label.colour = NA
+                      ) +
+        geom_richtext(data = tibble(x = 22, y = 12,
+                                    label = paste0("<b>Greece</b> is the outlier among >3% spenders:", "<br>",
+                                                   "driven less by Russia proximity than", "<br>",
+                                                   "by Greece–Turkey security dynamics.")),
+                      aes(x = x, y = y, label = label),
+                      hjust  = 0.5,
+                      family = font_choice,
+                      size   = 4,
+                      colour = "grey10",
+                      fill = NA,
+                      label.colour = NA
+                      ) +
+        geom_richtext(data = tibble(x = 22, y = 17.5,
+                                    label = paste0("Apart from Finland and Romania, all NATO members", "<br>",
+                                                   "close to Russia exceeded 3% of GDP spent on defense", "<br>",
+                                                   "in 2024. Ukraine stands apart due to the ongoing war,", "<br>",
+                                                   "having allocated <b>1/3 of its GDP</b> to its military.")),
+                      aes(x = x, y = y, label = label),
+                      hjust  = 0.5,
+                      family = font_choice,
+                      size   = 4,
+                      colour = "#4a6798",
+                      fill = NA,
+                      label.colour = NA
+                      ) +
+        geom_curve(data = tibble(x = 15, y = 13, xend = 6.7, yend = 16),
+                      aes(x = x, y = y, xend = xend, yend = yend
+                      ),
+                      curvature = 0.25,
+                      colour = "grey10",
+                      angle = 82,
+                      linewidth = 0.6,
+                      arrow = arrow(length = unit(6, "pt"), angle = 23, type = "closed"),
+                      inherit.aes = FALSE
+                    )
+
+
+```
+
+
+
+```{r export-visualization-gdp}
+svg_path <- file.path(project_path, "plots", "eastern-europe-military-burden.svg")
+
+svg_w <- 9.9
+svg_h <- 9.3
+
+png_w <- 2000
+png_h <- round(png_w * svg_h / svg_w)  # keep same aspect ratio
+
+ggsave(svg_path, p2, width = svg_w, height = svg_h)
+
+library(rsvg)
+
+png_path <- file.path(project_path, "plots", "eastern-europe-military-burden.png")
+
+rsvg_png(
+  svg  = svg_path,
+  file = png_path,
+  width  = png_w,
+  height = png_h
+)
+
+```
+
+![](plots/eastern-europe-military-burden.svg){width=100%}
