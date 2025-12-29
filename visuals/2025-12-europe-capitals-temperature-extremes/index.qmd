@@ -1,0 +1,276 @@
+---
+title: "Europe’s 2025 Thermal Extremes: From Sub-Zero Frost to Mediterranean Heat"
+date: "2025-12-29"
+categories: [Europe, Temperature, MeteoStat]
+image: plots/thumb.svg
+description: "A look at the minimum and maximum temperatures recorded"
+format: html
+execute:
+  dir: project
+  echo: false
+  output: false
+---
+
+```{r project-path}
+# Set project path
+project_path <- file.path("visuals", "2025-12-europe-capitals-temperature-extremes")
+
+```
+
+```{r install-okeanos}
+# remotes::install_github("wegar-2/okeanos.meteostat")
+library(okeanos.meteostat)
+```
+
+```{r capital-cities}
+library(maps)
+library(dplyr)
+
+# 1. Load the built-in world cities database
+data(world.cities)
+
+# 2. Define a list of European countries
+# (You can expand this list as needed)
+capitals <- data.frame(city = c("Amsterdam", "Andorra la Vella", "Athens", "Belgrade", "Berlin", "Bern", 
+                                "Bratislava", "Brussels", "Bucharest", "Budapest", "Chisinau", "Copenhagen", 
+                                "Dublin", "Helsinki", "Kiev", "Lisbon", "Ljubljana", "London", "Luxembourg|Luxemburg", 
+                                "Madrid", "Minsk", "Monaco", "Moscow", "Nicosia", "Oslo", "Paris", "Podgorica", 
+                                "Prague", "Reykjavik", "Riga", "Rome", "San Marino", "Sarajevo", "Skopje", 
+                                "Sofia", "Stockholm", "Tallinn", "Tirana", "Vaduz", "Valletta", "Vienna", 
+                                "Vilnius", "Warsaw", "Zagreb"))
+
+search_pattern <- paste(capitals$city, collapse = "|")
+
+# 3. Filter for capitals of these countries
+# 'capital' column is 1 for capital cities
+capitals_coord <- world.cities %>%
+    # Use grepl to find names containing any of your target strings
+    filter(grepl(search_pattern, name)) %>%
+    select(city = name, lat, long, capital) %>% 
+    # Ensure Podgorica is marked as a capital if it wasn't already
+    mutate(capital = if_else(grepl("Podgorica", city), 1, capital)) %>% 
+    # Keep only the capital entries to avoid duplicates like the extra Berlins
+    filter(capital == 1) %>%
+    distinct(city, .keep_all = TRUE) %>%
+    select(-capital) %>% as_tibble()
+```
+
+```{r download-function}
+library(dplyr)
+library(purrr)
+
+# Function to find the top N closest stations instead of just one
+find_top_stations <- function(city_lat, city_lon, n = 8) {
+    as.data.frame(dtStationsDict) %>%
+        mutate(dist = sqrt((station_latitude - city_lat)^2 + (station_longitude - city_lon)^2)) %>%
+        arrange(dist) %>%
+        slice(1:n) %>%
+        pull(meteostat_station_id)
+}
+
+library(dplyr)
+
+fetch_bulk_flexible <- function(city_name, lat, long, target_year = 2024, aggregate_monthly = TRUE) {
+    # Get the 8 closest station IDs using your existing find_top_stations function
+    potential_stations <- find_top_stations(lat, long, n = 8)
+    
+    # Create the regex pattern for the year (e.g., "^2024-")
+    year_pattern <- paste0("^", target_year, "-")
+    
+    for (sid in potential_stations) {
+        # Meteostat Direct Bulk Download URL
+        url <- paste0("https://bulk.meteostat.net/v2/daily/", sid, ".csv.gz")
+        temp <- tempfile()
+        
+        # Try to download - Bypasses RapidAPI quota
+        status <- try(download.file(url, temp, quiet = TRUE, mode = "wb"), silent = TRUE)
+        
+        if (!inherits(status, "try-error")) {
+            # Standard Meteostat daily columns
+            cols <- c("date", "tavg", "tmin", "tmax", "prcp", "snow", 
+                      "wdir", "wspd", "wpgt", "pres", "tsun")
+            
+            raw_data <- read.csv(gzfile(temp), header = FALSE, col.names = cols, stringsAsFactors = FALSE)
+            
+            # Filter for the selected year
+            filtered_data <- raw_data %>% filter(grepl(year_pattern, date))
+            
+            if (nrow(filtered_data) > 0) {
+                message(paste("Success for", city_name, "using station", sid, "for year", target_year))
+                
+                # Add metadata columns
+                processed_data <- filtered_data %>%
+                    mutate(
+                        city = city_name,
+                        station_id = sid,
+                        month = format(as.Date(date), "%m")
+                    )
+                
+                # Conditional Aggregation
+                if (aggregate_monthly) {
+                    return(processed_data %>%
+                               group_by(city, month) %>%
+                               summarise(
+                                   tavg   = mean(tavg, na.rm = TRUE),
+                                   tmin   = mean(tmin, na.rm = TRUE),
+                                   tmax   = mean(tmax, na.rm = TRUE),
+                                   prcp = sum(prcp, na.rm = TRUE),
+                                   wspd = mean(wspd, na.rm = TRUE),
+                                   pres   = mean(pres, na.rm = TRUE),
+                                   tsun   = sum(tsun, na.rm = TRUE),
+                                   .groups = 'drop'
+                               ) %>% mutate(date = month))
+                } else {
+                    # Return daily data
+                    return(processed_data)
+                }
+            }
+        }
+        message(paste("   Station", sid, "had no", target_year, "data for", city_name, ". Trying next..."))
+    }
+    
+    message(paste("!!! All stations failed for", city_name, "in", target_year))
+    return(NULL) 
+}
+```
+
+```{r download-data}
+# Apply to your capitals list
+europe_2025_weather <- purrr::map(1:nrow(capitals_coord), ~{
+    fetch_bulk_flexible(capitals_coord$city[.x],
+                        capitals_coord$lat[.x],
+                        capitals_coord$long[.x],
+                        target_year = 2025,
+                        aggregate_monthly = FALSE)
+}) %>% list_rbind() %>% as_tibble()
+
+europe_2025_weather <- europe_2025_weather %>% 
+                            mutate(city = case_match(city,
+                                "Monaco-Ville" ~ "Monaco",
+                                .default = city
+                            ))
+
+```
+
+```{r calculate-extremes}
+library(lubridate)
+
+# Select the variable to visualize (e.g., Average Temperature 'tavg')
+selected_variable <- "tmax"
+
+capital_min_max <- europe_2025_weather %>%
+                            mutate(year = year(as.Date(date))) %>% 
+                            group_by(city) %>%
+                            summarise(year_max = max(.data[[selected_variable]], na.rm = TRUE),
+                                      year_min = min(.data[[selected_variable]], na.rm = TRUE),
+                                      range = year_max- year_min) %>% 
+                            arrange(year_max)
+```
+
+```{r choose-font}
+library(showtext)
+# Choose default font
+font_choice <- "Momo Trust Sans"
+
+# Load Google Fonts into 'sysfonts'
+font_add_google(font_choice, db_cache = FALSE)
+
+# Automatically use 'showtext' for new graphics devices
+showtext_auto()
+```
+
+```{r plot-chart}
+library(ggplot2)
+library(viridis)
+library(ggtext)
+
+# 1. Reorder cities by their maximum temperature for a cleaner visual flow
+plot_data <- capital_min_max %>%
+    mutate(city = reorder(city, year_max))
+
+# 2. Create the Range Plot
+p <- ggplot(plot_data, aes(y = city)) +
+        geom_vline(xintercept = 0, linetype = 2, color = "grey10") + 
+        # Create the connecting line (the "bar" of the range)
+        geom_linerange(aes(xmin = year_min, xmax = year_max), 
+                       color = "grey70", linewidth = 1) +
+        # Add the Minimum temperature dots
+        geom_point(aes(x = year_min), color = "#4a6798", size = 3) +
+        # Add the Maximum temperature dots
+        geom_point(aes(x = year_max), color = "#ad3407", size = 3) +
+        # Add labels to the points for clarity
+        geom_text(aes(x = year_min -1.3, label = sprintf("%.1f", year_min)), 
+                  hjust = 1, size = 3.5, color = "#4a6798") +
+        geom_text(aes(x = year_max, label = sprintf("%.1f", year_max)), 
+                  hjust = -0.5, size = 3.5, color = "#ad3407") +
+        geom_richtext(data = tibble(x = 0,
+                                    y = nrow(plot_data),
+                                    label = "T = 0°C"),
+                      aes(x = x, y = y, label = label),
+                      inherit.aes = FALSE,
+                      hjust  = 0.5,
+                      vjust = -0.25,
+                      family = font_choice,
+                      size   = 4,
+                      colour = "grey10",
+                      fill = NA,
+                      label.colour = NA
+        ) +
+        scale_x_continuous(breaks = seq(-10, 50, 5)) +
+        labs(
+            title = paste0("Thermal extremes in Europe’s capitals in 2025: From sub-", "<br>",
+                           "zero frost to Mediterranean heat"),
+            subtitle = "<span style='color: #4a6798;'>Minimum</span> and <span style='color: #ad3407;'>maximum</span> daily temperatures recorded in 2025 (in °C)",
+            caption = paste0("<b>Data source</b>: Meteostat (2025)", "<br>",
+                           "<b>Notes</b>: Records for Europe's 44 capital cities through Dec 29th. ", "<br>",
+                           "<b>Graphic</b>: The Data Decoded / @TheDataDecoded")
+        ) +
+        coord_cartesian(xlim = c(-11, 47), clip = "off") +
+        theme_minimal(base_family = font_choice, base_size = 14) +
+        theme(panel.grid.major.x = element_blank(),
+              panel.grid.major.y = element_line(colour = "grey90", linetype = 3),
+              panel.grid.minor = element_blank(),
+              legend.position = "none",
+              axis.title.x = element_blank(),
+              axis.title.y = element_blank(),
+              axis.text.x = element_blank(),
+              plot.title.position = "plot",
+              plot.title = element_markdown(hjust = 0, face = "bold", margin = margin(b = 5),
+                                            lineheight = 1, size = rel(1.6)), # left-align title
+              plot.subtitle = element_markdown(hjust = 0, margin = margin(t = 3, b = 25),
+                                               size = rel(1), lineheight = 1.2), # left-align subtitle
+              plot.caption.position = "plot",
+              plot.caption = element_markdown(hjust = 0, vjust = 0, colour = "grey50",
+                                              margin = margin(t = 20), lineheight = 1.25),
+              plot.margin = margin(t = 18.5, r = 4.5, b = 13.6, l = 18.5, unit = "pt"))
+
+
+```
+
+
+```{r export-visualization}
+svg_path <- file.path(project_path, "plots", "thumb.svg")
+
+svg_w <- 9.3
+svg_h <- 9.5
+
+png_w <- 2000
+png_h <- round(png_w * svg_h / svg_w)  # keep same aspect ratio
+
+ggsave(svg_path, p, width = svg_w, height = svg_h)
+
+library(rsvg)
+
+png_path <- file.path(project_path, "plots", "europe-capitals-temperature-extremes.png")
+
+rsvg_png(
+  svg  = svg_path,
+  file = png_path,
+  width  = png_w,
+  height = png_h
+)
+
+```
+
+![](plots/thumb.svg){width=100%}
+
