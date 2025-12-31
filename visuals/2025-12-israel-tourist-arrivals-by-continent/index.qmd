@@ -1,0 +1,240 @@
+---
+title: "How have tourist arrivals in Israel changed because of the Gaza War?"
+date: "2025-12-31"
+categories: []
+image: plots/thumb.svg
+description: "Tourist arrivals by world region (2022-2025)"
+format: html
+execute:
+  dir: project
+  echo: false
+  output: false
+---
+
+```{r project-path}
+# Set project path
+project_path <- file.path("visuals", "2025-12-israel-tourist-arrivals-by-continent")
+```
+
+```{r data-preparation}
+library(readxl)
+library(dplyr)
+library(stringr)
+library(tidyr)
+library(lubridate)
+library(janitor)
+
+# 1) Path to your manually downloaded file
+path <- file.path(project_path, "data", "israel_tourist_arrivals.xlsx")
+
+# 2) Read the sheet that contains the data table
+# In your file, the data are on the first sheet ("גיליון1") and the real header starts after metadata rows.
+raw <- read_excel(path, sheet = "גיליון1", skip = 20)
+
+# 3) Clean column names:
+# Keep only the first line (e.g., "Asia,total") and remove extra whitespace
+raw_clean <- raw %>%
+  rename_with(~ str_squish(str_replace(.x, "\\n.*$", "")))
+
+# 4) Keep only the world-region totals you care about
+# (Adjust names here if CBS changes spacing/punctuation in future exports.)
+region_cols <- c(
+  "Asia",
+  "Africa",
+  "Europe",
+  "NorthAmerica",
+  "Central America",
+  "South America",
+  "Oceania"
+)
+
+dat_wide <- raw_clean %>%
+  select(
+    Period,
+    matches(paste(region_cols, collapse = "|")) & !matches("Other\\s*") & !matches("SouthAfrica")
+  ) %>% clean_names() %>% 
+    rename_with(~ str_remove(.x, "_total_original_data$"))
+
+region_cols_new <- colnames(dat_wide)[-1]
+
+dat_long <- dat_wide %>% 
+  # 5) Parse Period like "2023-9" into a proper month date
+  separate(period, into = c("year", "month"), sep = "-", remove = FALSE) %>%
+  mutate(
+    year = as.integer(year),
+    month = as.integer(month),
+    date = as.Date(sprintf("%04d-%02d-01", year, month))
+  ) %>%
+  select(date, all_of(region_cols_new)) %>%
+  pivot_longer(
+    cols = all_of(region_cols_new),
+    names_to = "region",
+    values_to = "arrivals_thousands"
+  ) %>%
+  mutate(
+    arrivals_thousands = as.numeric(arrivals_thousands),
+    region = str_replace_all(region, "\\s+", " ") %>% str_trim()
+  )
+
+# 6) Index on September 2023 (Sep 2023 = 100), by region
+base_date <- as.Date("2023-09-01")
+
+dat_indexed <- dat_long %>%
+  group_by(region) %>%
+  mutate(
+    base_sep2023 = arrivals_thousands[date == base_date][1],
+    index_sep2023 = (arrivals_thousands / base_sep2023) * 100
+  ) %>%
+  ungroup()
+
+# dat_indexed is now ready for plotting:
+# columns: date, region, arrivals_thousands, base_sep2023, index_sep2023
+dat_indexed
+
+```
+
+```{r choose-font}
+library(showtext)
+# Choose default font
+font_choice <- "Momo Trust Sans"
+
+# Load Google Fonts into 'sysfonts'
+font_add_google(font_choice, db_cache = FALSE)
+
+# Automatically use 'showtext' for new graphics devices
+showtext_auto()
+```
+
+
+```{r indexed-chart}
+library(ggplot2)
+library(scales)
+library(ggtext)
+
+# ggplot(dat_indexed, aes(x = date, y = region, fill = index_sep2023)) +
+#   geom_tile(width = 31, height = 0.9) +
+#   scale_x_date(
+#     date_breaks = "3 months",
+#     date_labels = "%b %Y",
+#     expand = c(0, 0)
+#   ) +
+#   # scale_fill_viridis_c(
+#   #   name = "Index\n(Sep 2023 = 100)",
+#   #   labels = number_format(accuracy = 1)
+#   # ) +
+#   # scale_fill_distiller(
+#   #     name = "Index\n(Sep 2023 = 100)",
+#   #     palette = "RdBu",
+#   #     direction = -1   # blue = low, red = high
+#   #   ) +
+#     scale_fill_gradient2(
+#       low = "#2166ac",
+#       mid = "white",
+#       high = "#b2182b",
+#       midpoint = 100,
+#       limits = c(20, 160),
+#       oob = scales::squish
+#     ) +
+#   labs(
+#     x = NULL,
+#     y = NULL,
+#     title = "Tourist Arrivals to Israel by Region",
+#     subtitle = "Indexed to September 2023 = 100"
+#   ) +
+#   theme_minimal(base_size = 12) +
+#   theme(
+#     axis.text.x = element_text(angle = 45, hjust = 1),
+#     panel.grid = element_blank()
+#   )
+
+    ggplot(dat_indexed, aes(x = date, y = arrivals_thousands, color = region)) +
+      geom_line(linewidth = 1.1, na.rm = TRUE) +
+      geom_vline(xintercept = base_date + 30, linetype = "dashed", color = "grey50") +
+      scale_y_continuous(
+        breaks = c(0, 25, 50, 75, 100, 125, 150, 175, 200),
+        labels = label_number(scale = 1, suffix = "k"),
+        expand = expansion(mult = c(0.05, 0.1))
+      ) +
+      scale_x_date(
+          date_breaks = "3 months",
+          labels = function(x) paste0(format(x, "%b"), "\n", format(x, "%y")),
+          guide  = ggh4x::guide_axis_nested(delim = "\n"),
+          expand = expansion(mult = c(0.045, 0.05))
+        ) +
+      labs(
+        title = "Tourist Arrivals to Israel by Region",
+        subtitle = "Indexed to September 2023 = 100",
+        x = NULL,
+        y = "Index (Sep 2023 = 100)",
+        color = "Region",
+        caption = "Source: Israel Central Bureau of Statistics (CBS)"
+      ) +
+      theme_minimal(base_family = font_choice, base_size = 14) +
+      theme(
+        legend.position = "bottom",
+        legend.title = element_text(face = "bold"),
+        panel.grid.minor = element_blank(),
+        panel.grid.major.y = element_line(linetype = 2),
+        panel.grid.major.x = element_blank(),
+        axis.title = element_blank(),
+        plot.title.position = "plot",
+        plot.title = element_markdown(hjust = 0, face = "bold", margin = margin(b = 5),
+                                                lineheight = 1, size = rel(1.6)),
+                  plot.subtitle = element_markdown(hjust = 0, margin = margin(t = 3, b = 25),
+                                                   size = rel(1), lineheight = 1.2),
+                  plot.caption.position = "plot",
+                  plot.caption = element_markdown(hjust = 0, vjust = 0, colour = "grey50",
+                                                  margin = margin(t = 20), lineheight = 1.25),
+                  plot.margin = margin(t = 18.5, r = 14.5, b = 13.6, l = 18.5, unit = "pt")
+      ) +
+        annotate("text", x = as.Date("2024-03-01"), y = 185,
+                 label = paste0("Beginning of\nGaza war"),
+                 size = 4)
+
+```
+
+
+
+
+
+
+
+```{r indexed-chart}
+library(ggplot2)
+library(scales)
+library(ggh4x)
+
+ggplot(dat_indexed, aes(x = date, y = index_sep2023, color = region)) +
+  geom_line(linewidth = 1.1, na.rm = TRUE) +
+  geom_hline(yintercept = 100, linetype = "dashed", color = "grey50") +
+  scale_y_continuous(
+    labels = percent_format(scale = 1),
+    expand = expansion(mult = c(0.05, 0.1))
+  ) +
+  # scale_x_date(
+  #   date_breaks = "3 months",
+  #   date_labels = "%b %Y",
+  #   expand = expansion(mult = c(0.01, 0.01))
+  # ) +
+    scale_x_date(
+      date_breaks = "3 months",
+      labels = function(x) paste0(format(x, "%b"), "-", format(x, "%y")),
+      guide  = ggh4x::guide_axis_nested(delim = "-")
+    ) +
+  labs(
+    title = "Tourist Arrivals to Israel by Region",
+    subtitle = "Indexed to September 2023 = 100",
+    x = NULL,
+    y = "Index (Sep 2023 = 100)",
+    color = "Region",
+    caption = "Source: Israel Central Bureau of Statistics (CBS)"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    legend.position = "bottom",
+    legend.title = element_text(face = "bold"),
+    panel.grid.minor = element_blank()
+  )
+
+```
+
