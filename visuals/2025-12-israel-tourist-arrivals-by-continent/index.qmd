@@ -1,6 +1,6 @@
 ---
 title: "How have tourist arrivals in Israel changed since the outbreak of the Gaza War?"
-date: "2025-12-31"
+date: "2026-01-01"
 categories: [Israel, Tourism, "Gaza War"]
 image: plots/thumb.svg
 description: "Tourist arrivals by world region (2022-2025)"
