@@ -1,7 +1,7 @@
 ---
-title: "How have tourist arrivals in Israel changed because of the Gaza War?"
+title: "How have tourist arrivals in Israel changed since the outbreak of the Gaza War?"
 date: "2025-12-31"
-categories: []
+categories: [Israel, Tourism, "Gaza War"]
 image: plots/thumb.svg
 description: "Tourist arrivals by world region (2022-2025)"
 format: html
@@ -80,18 +80,46 @@ dat_long <- dat_wide %>%
 base_date <- as.Date("2023-09-01")
 
 dat_indexed <- dat_long %>%
-  group_by(region) %>%
   mutate(
-    base_sep2023 = arrivals_thousands[date == base_date][1],
-    index_sep2023 = (arrivals_thousands / base_sep2023) * 100
+    region = case_when(
+      region %in% c("south_america", "central_america") ~ "latin_america",
+      TRUE ~ region
+    )) %>%
+  group_by(date, region) %>%
+  summarise(
+    arrivals_thousands = sum(arrivals_thousands, na.rm = TRUE),
+    .groups = "drop"
   ) %>%
-  ungroup()
+    group_by(region) %>% 
+    mutate(base_sep2023 = arrivals_thousands[date == base_date][1],
+    index_sep2023 = (arrivals_thousands / base_sep2023) * 100)
 
 # dat_indexed is now ready for plotting:
 # columns: date, region, arrivals_thousands, base_sep2023, index_sep2023
 dat_indexed
+```
+
+```{r color-palette}
+continent_colors <- c(
+  africa          = "#E69F00",
+  asia            = "#56B4E9",
+  europe          = "#009E73",
+  latin_america   = "#CC79A7",
+  north_america   = "#0072B2",
+  oceania         = "#D55E00"
+)
+
+legend_labels <- c(
+  africa        = "<b style='color:#E69F00'>Africa</b>",
+  asia          = "<b style='color:#56B4E9'>Asia</b>",
+  europe        = "<b style='color:#009E73'>Europe</b>",
+  latin_america = "<b style='color:#CC79A7'>Latin America</b>",
+  north_america = "<b style='color:#0072B2'>North America</b>",
+  oceania       = "<b style='color:#D55E00'>Oceania</b>"
+)
 
 ```
+
 
 ```{r choose-font}
 library(showtext)
@@ -111,130 +139,350 @@ library(ggplot2)
 library(scales)
 library(ggtext)
 
-# ggplot(dat_indexed, aes(x = date, y = region, fill = index_sep2023)) +
-#   geom_tile(width = 31, height = 0.9) +
-#   scale_x_date(
-#     date_breaks = "3 months",
-#     date_labels = "%b %Y",
-#     expand = c(0, 0)
-#   ) +
-#   # scale_fill_viridis_c(
-#   #   name = "Index\n(Sep 2023 = 100)",
-#   #   labels = number_format(accuracy = 1)
-#   # ) +
-#   # scale_fill_distiller(
-#   #     name = "Index\n(Sep 2023 = 100)",
-#   #     palette = "RdBu",
-#   #     direction = -1   # blue = low, red = high
-#   #   ) +
-#     scale_fill_gradient2(
-#       low = "#2166ac",
-#       mid = "white",
-#       high = "#b2182b",
-#       midpoint = 100,
-#       limits = c(20, 160),
-#       oob = scales::squish
-#     ) +
-#   labs(
-#     x = NULL,
-#     y = NULL,
-#     title = "Tourist Arrivals to Israel by Region",
-#     subtitle = "Indexed to September 2023 = 100"
-#   ) +
-#   theme_minimal(base_size = 12) +
-#   theme(
-#     axis.text.x = element_text(angle = 45, hjust = 1),
-#     panel.grid = element_blank()
-#   )
+p1 <- ggplot(dat_indexed, aes(x = date, y = arrivals_thousands, color = region)) +
+          annotate("rect", xmin = as.Date("2023-10-01"), xmax = as.Date("2025-11-01"),
+                   ymin = -10, ymax = 210,
+                   fill = alpha("#fa8e8e", 0.16)) +
+          geom_line(linewidth = 1, na.rm = TRUE) +
+          geom_vline(xintercept = base_date + 30, linetype = "dashed", color = "grey40") +
+          geom_vline(xintercept = as.Date("2022-03-01"), linetype = "dashed", color = "grey40") +
+          scale_y_continuous(
+            breaks = c(0, 25, 50, 75, 100, 125, 150, 175, 200),
+            labels = label_number(scale = 1, suffix = "k"),
+            expand = expansion(mult = c(0.05, 0.1))
+          ) +
+          scale_x_date(
+              date_breaks = "3 months",
+              labels = function(x) paste0(format(x, "%b"), "\n", format(x, "'%y")),
+              guide  = ggh4x::guide_axis_nested(delim = "\n"),
+              expand = expansion(mult = c(0.045, 0.05))
+            ) +
+          scale_color_manual(values = continent_colors,
+                             breaks = names(continent_colors),
+                             labels = legend_labels) +
+          coord_cartesian(ylim = c(0, 190)) +
+          labs(
+            title = paste0("Israel’s inbound tourism collapsed sharply after the outbreak",
+                           "<br>",
+                           "of the <span style='color: #c71e1d;'>Gaza war</span> on October 7th, 2023, and it remains far below", "<br>",
+                           "pre-war levels through the end of 2025"),
+            subtitle = "Monthly international tourist arrivals to Israel, by region",
+            color = "Region",
+            caption = paste0("<b>Data source</b>: Israel Central Bureau of Statistics (CBS)", "<br>",
+                             "<b>Note</b>: Early 2022 values are suppressed due to COVID-era border restrictions and phased reopening of international travel.", "<br>",
+                             "Data reflect administrative border entries as defined by the Israel Central Bureau of Statistics.",
+                             "<br>",
+                             "<b>Graphic</b>: The Data Decoded / @TheDataDecoded")
+          ) +
+          theme_minimal(base_family = font_choice, base_size = 14) +
+          theme(
+            legend.position = c(0.825, 0.825),
+            legend.title = element_text(face = "bold", margin = margin(b = 4), size = 14),
+            legend.key.height = unit(16, "pt"),
+            legend.direction = "vertical",
+            legend.text = element_markdown(),
+            panel.grid.minor = element_blank(),
+            panel.grid.major.y = element_line(linetype = 2),
+            panel.grid.major.x = element_blank(),
+            axis.title = element_blank(),
+            plot.title.position = "plot",
+            plot.title = element_markdown(hjust = 0, face = "bold", margin = margin(b = 5),
+                                                    lineheight = 1, size = rel(1.6)),
+                      plot.subtitle = element_markdown(hjust = 0, margin = margin(t = 3, b = 20),
+                                                       size = rel(1), lineheight = 1.2),
+                      plot.caption.position = "plot",
+                      plot.caption = element_markdown(hjust = 0, vjust = 0, colour = "grey50",
+                                                      margin = margin(t = 20), lineheight = 1.25),
+                      plot.margin = margin(t = 18.5, r = 14.5, b = 13.6, l = 18.5, unit = "pt")
+          ) +
+            geom_richtext(data = tibble(x = as.Date("2023-10-15"),
+                                        y = 187.5,
+                                        label = paste0("Beginning of<br>Gaza war on<br><b>October 7th, 2023</b>")),
+                          aes(x = x, y = y, label = label),
+                          fill = NA,
+                        label.color = NA,
+                        hjust = 0,         
+                        size = 4,          # Adjust text size for visibility
+                        color = "grey20",     # Set text color
+                        show.legend = FALSE,
+                        family = font_choice,
+                        inherit.aes = FALSE) +
+            geom_richtext(data = tibble(x = as.Date("2022-03-15"),
+                                        y = 187.5,
+                                        label = paste0("Effective border<br>reopening after<br><b>COVID-19</b>")),
+                          aes(x = x, y = y, label = label),
+                          fill = NA,
+                        label.color = NA,
+                        hjust = 0,         
+                        size = 4,          # Adjust text size for visibility
+                        color = "grey20",     # Set text color
+                        show.legend = FALSE,
+                        family = font_choice,
+                        inherit.aes = FALSE) +
+            geom_richtext(data = tibble(x = as.Date("2024-11-25"),
+                                        y = 87.5,
+                                        label = paste0("Temporary<br>holiday-driven spike<br>(<b>Easter / Passover</b>)")),
+                          aes(x = x, y = y, label = label),
+                          fill = NA,
+                        label.color = NA,
+                        hjust = 1,         # Shift text slightly to the left of the point
+                        size = 4,          # Adjust text size for visibility
+                        color = "grey20",     # Set text color
+                        show.legend = FALSE,
+                        family = font_choice,
+                        inherit.aes = FALSE) +
+            geom_curve(data = tibble(x = as.Date("2022-06-15"), y = 175,
+                                     xend = as.Date("2022-03-15"), yend = 162.5),
+                aes(x = x, y = y, xend = xend, yend = yend),
+              arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+              color = "grey20",
+              # size = 0.4,
+              angle = 102,
+              linewidth = 0.5,
+              curvature = -0.35,
+              inherit.aes = FALSE
+            ) +
+            geom_curve(data = tibble(x = as.Date("2024-01-15"), y = 175,
+                                     xend = as.Date("2023-10-15"), yend = 162.5),
+                aes(x = x, y = y, xend = xend, yend = yend),
+              arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+              color = "grey20",
+              # size = 0.4,
+              angle = 102,
+              linewidth = 0.5,
+              curvature = -0.35,
+              inherit.aes = FALSE
+            ) +
+            geom_curve(data = tibble(x = as.Date("2024-12-01"), y = 87.5,
+                                     xend = as.Date("2025-03-25"), yend = 87.5),
+                aes(x = x, y = y, xend = xend, yend = yend),
+              arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+              color = "grey20",
+              # size = 0.4,
+              angle = 102,
+              linewidth = 0.5,
+              curvature = -0.35,
+              inherit.aes = FALSE
+            )
 
-    ggplot(dat_indexed, aes(x = date, y = arrivals_thousands, color = region)) +
-      geom_line(linewidth = 1.1, na.rm = TRUE) +
-      geom_vline(xintercept = base_date + 30, linetype = "dashed", color = "grey50") +
-      scale_y_continuous(
-        breaks = c(0, 25, 50, 75, 100, 125, 150, 175, 200),
-        labels = label_number(scale = 1, suffix = "k"),
-        expand = expansion(mult = c(0.05, 0.1))
-      ) +
-      scale_x_date(
-          date_breaks = "3 months",
-          labels = function(x) paste0(format(x, "%b"), "\n", format(x, "%y")),
-          guide  = ggh4x::guide_axis_nested(delim = "\n"),
-          expand = expansion(mult = c(0.045, 0.05))
-        ) +
-      labs(
-        title = "Tourist Arrivals to Israel by Region",
-        subtitle = "Indexed to September 2023 = 100",
-        x = NULL,
-        y = "Index (Sep 2023 = 100)",
-        color = "Region",
-        caption = "Source: Israel Central Bureau of Statistics (CBS)"
-      ) +
-      theme_minimal(base_family = font_choice, base_size = 14) +
-      theme(
-        legend.position = "bottom",
-        legend.title = element_text(face = "bold"),
-        panel.grid.minor = element_blank(),
-        panel.grid.major.y = element_line(linetype = 2),
-        panel.grid.major.x = element_blank(),
-        axis.title = element_blank(),
-        plot.title.position = "plot",
-        plot.title = element_markdown(hjust = 0, face = "bold", margin = margin(b = 5),
-                                                lineheight = 1, size = rel(1.6)),
-                  plot.subtitle = element_markdown(hjust = 0, margin = margin(t = 3, b = 25),
-                                                   size = rel(1), lineheight = 1.2),
-                  plot.caption.position = "plot",
-                  plot.caption = element_markdown(hjust = 0, vjust = 0, colour = "grey50",
-                                                  margin = margin(t = 20), lineheight = 1.25),
-                  plot.margin = margin(t = 18.5, r = 14.5, b = 13.6, l = 18.5, unit = "pt")
-      ) +
-        annotate("text", x = as.Date("2024-03-01"), y = 185,
-                 label = paste0("Beginning of\nGaza war"),
-                 size = 4)
+```
+
+```{r}
+
+average_last_month <- dat_indexed %>% filter(date == as.Date("2025-11-01")) %>% pull(index_sep2023) %>% mean()
+
+p2 <- ggplot(dat_indexed, aes(x = date, y = index_sep2023, color = region)) +
+          annotate("rect", xmin = as.Date("2023-10-01"), xmax = as.Date("2025-11-01"),
+                   ymin = -10, ymax = 200, fill = alpha("#fa8e8e", 0.16)) +
+          annotate("rect", xmin = as.Date("2025-10-15"), xmax = as.Date("2025-11-15"),
+                   ymin = 18, ymax = 50, fill = NA, color = "grey20", linewidth = 0.5) +
+          geom_line(linewidth = 1, na.rm = TRUE) +
+          geom_vline(xintercept = base_date + 30, linetype = "dashed", color = "grey40") +
+          geom_vline(xintercept = as.Date("2022-03-01"), linetype = "dashed", color = "grey40") +
+          geom_hline(yintercept = 100, linetype = "solid", color = "grey40") +
+          scale_y_continuous(
+            breaks = c(0, 25, 50, 75, 100, 125, 150, 175),
+            labels = scales::number_format(accuracy = 1),
+            expand = expansion(mult = c(0.05, 0.1))
+          ) +
+          scale_x_date(
+              date_breaks = "3 months",
+              labels = function(x) paste0(format(x, "%b"), "\n", format(x, "'%y")),
+              guide  = ggh4x::guide_axis_nested(delim = "\n"),
+              expand = expansion(mult = c(0.045, 0.04))
+            ) +
+          scale_color_manual(values = continent_colors,
+                             breaks = names(continent_colors),
+                             labels = legend_labels) +
+          coord_cartesian(ylim = c(0, 166)) +
+          labs(
+            title = paste0("Tourist arrivals to Israel fell to ~25% of September 2023",
+            "<br>", "levels across regions in October, with no region recovering", "<br>",
+            "to even half of pre-war levels by the end of 2025"),
+            subtitle = "Tourist arrivals by region, indexed to September 2023 = 100",
+            color = "Region",
+            caption = paste0("<b>Data source</b>: Israel Central Bureau of Statistics (CBS)", "<br>",
+                             "<b>Note</b>: Early 2022 values are suppressed due to COVID-era border restrictions and phased reopening of international travel.", "<br>",
+                             "Data reflect administrative border entries as defined by the Israel Central Bureau of Statistics.",
+                             "<br>",
+                             "<b>Graphic</b>: The Data Decoded / @TheDataDecoded")
+          ) +
+          theme_minimal(base_family = font_choice, base_size = 14) +
+          theme(
+            legend.position = c(0.825, 0.825),
+            legend.title = element_text(face = "bold", margin = margin(b = 4)),
+            legend.key.height = unit(16, "pt"),
+            legend.direction = "vertical",
+            legend.text = element_markdown(),
+            panel.grid.minor = element_blank(),
+            panel.grid.major.y = element_line(linetype = 2),
+            panel.grid.major.x = element_blank(),
+            axis.title = element_blank(),
+            plot.title.position = "plot",
+            plot.title = element_markdown(hjust = 0, face = "bold", margin = margin(b = 5),
+                                                    lineheight = 1, size = rel(1.6)),
+            plot.subtitle = element_markdown(hjust = 0, margin = margin(t = 3, b = 20),
+                                                       size = rel(1), lineheight = 1.2),
+            plot.caption.position = "plot",
+            plot.caption = element_markdown(hjust = 0, vjust = 0, colour = "grey50",
+                                                      margin = margin(t = 20), lineheight = 1.25),
+            plot.margin = margin(t = 18.5, r = 14.5, b = 13.6, l = 18.5, unit = "pt")
+          ) +
+            geom_richtext(data = tibble(x = as.Date("2023-10-15"),
+                                        y = 162.5,
+                                        label = paste0("Beginning of<br>Gaza war on<br><b>October 7th, 2023</b>")),
+                        aes(x = x, y = y, label = label),
+                        fill = NA,
+                        label.color = NA,
+                        hjust = 0,         # Shift text slightly to the left of the point
+                        size = 4,          # Adjust text size for visibility
+                        color = "grey20",     # Set text color
+                        show.legend = FALSE,
+                        family = font_choice,
+                        inherit.aes = FALSE) +
+            geom_richtext(data = tibble(x = as.Date("2022-03-15"),
+                                        y = 162.5,
+                                        label = paste0("Effective border<br>reopening after<br><b>COVID-19</b>")),
+                          aes(x = x, y = y, label = label),
+                          fill = NA,
+                        label.color = NA,
+                        hjust = 0,         # Shift text slightly to the left of the point
+                        size = 4,          # Adjust text size for visibility
+                        color = "grey20",     # Set text color
+                        show.legend = FALSE,
+                        family = font_choice,
+                        inherit.aes = FALSE) +
+            geom_richtext(data = tibble(x = as.Date("2023-09-01"),
+                                        y = 10,
+                                        label = paste0("Drop to <b>~25%</b> of<br>September value")),
+                          aes(x = x, y = y, label = label),
+                          fill = NA,
+                        label.color = NA,
+                        hjust = 1,         
+                        size = 4,          # Adjust text size for visibility
+                        color = "grey20",     # Set text color
+                        show.legend = FALSE,
+                        family = font_choice,
+                        inherit.aes = FALSE) +
+            geom_richtext(data = tibble(x = as.Date("2025-09-01"),
+                                        y = 87.5,
+                                        label = paste0("Below half of<br>pre-war level")),
+                          aes(x = x, y = y, label = label),
+                          fill = NA,
+                        label.color = NA,
+                        hjust = 1,         
+                        size = 4,          # Adjust text size for visibility
+                        color = "grey20",     # Set text color
+                        show.legend = FALSE,
+                        family = font_choice,
+                        inherit.aes = FALSE) +
+            geom_curve(data = tibble(x = as.Date("2022-06-15"), y = 150,
+                                     xend = as.Date("2022-03-15"), yend = 137.5),
+                aes(x = x, y = y, xend = xend, yend = yend),
+              arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+              color = "grey20",
+              # size = 0.4,
+              angle = 102,
+              linewidth = 0.5,
+              curvature = -0.35,
+              inherit.aes = FALSE
+            ) +
+            geom_curve(data = tibble(x = as.Date("2024-01-15"), y = 150,
+                                     xend = as.Date("2023-10-15"), yend = 137.5),
+                aes(x = x, y = y, xend = xend, yend = yend),
+              arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+              color = "grey20",
+              # size = 0.4,
+              angle = 102,
+              linewidth = 0.5,
+              curvature = -0.35,
+              inherit.aes = FALSE
+            ) +
+            geom_curve(data = tibble(x = as.Date("2023-05-01"), y = 19,
+                                     xend = as.Date("2023-08-25"), yend = 25),
+                aes(x = x, y = y, xend = xend, yend = yend),
+              arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+              color = "grey20",
+              # size = 0.4,
+              angle = 102,
+              linewidth = 0.5,
+              curvature = -0.35,
+              inherit.aes = FALSE
+            ) +
+            geom_point(
+              data = tibble(
+                date = as.Date("2023-10-01"),
+                index_sep2023 = 25
+              ),
+              aes(x = date, y = index_sep2023),
+              inherit.aes = FALSE,
+              shape = 1,        # hollow circle
+              size = 7.5,
+              stroke = 1,
+              color = "grey30"
+            ) +
+            geom_curve(data = tibble(x = as.Date("2025-09-01"), y = 82,
+                                     xend = as.Date("2025-11-01"), yend = 52),
+                aes(x = x, y = y, xend = xend, yend = yend),
+              arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+              color = "grey20",
+              # size = 0.4,
+              angle = 102,
+              linewidth = 0.5,
+              curvature = -0.35,
+              inherit.aes = FALSE
+            )
 
 ```
 
 
+```{r export-visualization-p1}
+svg_path <- file.path(project_path, "plots", "thumb.svg")
 
+svg_w <- 9.8
+svg_h <- 9.7
 
+png_w <- 2000
+png_h <- round(png_w * svg_h / svg_w)  # keep same aspect ratio
 
+ggsave(svg_path, p1, width = svg_w, height = svg_h)
 
+library(rsvg)
 
-```{r indexed-chart}
-library(ggplot2)
-library(scales)
-library(ggh4x)
+png_path <- file.path(project_path, "plots", "israel-tourist-arrivals-by-continent.png")
 
-ggplot(dat_indexed, aes(x = date, y = index_sep2023, color = region)) +
-  geom_line(linewidth = 1.1, na.rm = TRUE) +
-  geom_hline(yintercept = 100, linetype = "dashed", color = "grey50") +
-  scale_y_continuous(
-    labels = percent_format(scale = 1),
-    expand = expansion(mult = c(0.05, 0.1))
-  ) +
-  # scale_x_date(
-  #   date_breaks = "3 months",
-  #   date_labels = "%b %Y",
-  #   expand = expansion(mult = c(0.01, 0.01))
-  # ) +
-    scale_x_date(
-      date_breaks = "3 months",
-      labels = function(x) paste0(format(x, "%b"), "-", format(x, "%y")),
-      guide  = ggh4x::guide_axis_nested(delim = "-")
-    ) +
-  labs(
-    title = "Tourist Arrivals to Israel by Region",
-    subtitle = "Indexed to September 2023 = 100",
-    x = NULL,
-    y = "Index (Sep 2023 = 100)",
-    color = "Region",
-    caption = "Source: Israel Central Bureau of Statistics (CBS)"
-  ) +
-  theme_minimal(base_size = 12) +
-  theme(
-    legend.position = "bottom",
-    legend.title = element_text(face = "bold"),
-    panel.grid.minor = element_blank()
-  )
+rsvg_png(
+  svg  = svg_path,
+  file = png_path,
+  width  = png_w,
+  height = png_h
+)
 
 ```
 
+![](plots/thumb.svg){width=100%}
+
+```{r export-visualization-p2}
+svg_path <- file.path(project_path, "plots", "israel-tourist-arrivals-by-continent-indexed.svg")
+
+svg_w <- 9.8
+svg_h <- 9.7
+
+png_w <- 2000
+png_h <- round(png_w * svg_h / svg_w)  # keep same aspect ratio
+
+ggsave(svg_path, p2, width = svg_w, height = svg_h)
+
+library(rsvg)
+
+png_path <- file.path(project_path, "plots", "israel-tourist-arrivals-by-continent-indexed.png")
+
+rsvg_png(
+  svg  = svg_path,
+  file = png_path,
+  width  = png_w,
+  height = png_h
+)
+```
+
+![](plots/israel-tourist-arrivals-by-continent-indexed.svg){width=100%}
