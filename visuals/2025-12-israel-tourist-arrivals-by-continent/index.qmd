@@ -1,6 +1,6 @@
 ---
 title: "How have tourist arrivals in Israel changed since the outbreak of the Gaza War?"
-date: "2026-01-01"
+date: "2026-01-07"
 categories: [Israel, Tourism, "Gaza War"]
 image: plots/thumb.svg
 description: "Tourist arrivals by world region (2022-2025)"
@@ -140,7 +140,7 @@ library(scales)
 library(ggtext)
 
 p1 <- ggplot(dat_indexed, aes(x = date, y = arrivals_thousands, color = region)) +
-          annotate("rect", xmin = as.Date("2023-10-01"), xmax = as.Date("2025-11-01"),
+          annotate("rect", xmin = as.Date("2023-10-01"), xmax = as.Date("2025-12-01"),
                    ymin = -10, ymax = 210,
                    fill = alpha("#fa8e8e", 0.16)) +
           geom_line(linewidth = 1, na.rm = TRUE) +
@@ -164,8 +164,8 @@ p1 <- ggplot(dat_indexed, aes(x = date, y = arrivals_thousands, color = region))
           labs(
             title = paste0("Israel’s inbound tourism collapsed sharply after the outbreak",
                            "<br>",
-                           "of the <span style='color: #c71e1d;'>Gaza war</span> on October 7th, 2023, and it remains far below", "<br>",
-                           "pre-war levels through the end of 2025"),
+                           "of the <span style='color: #c71e1d;'>Gaza war</span> on October 7th, 2023, and it remains far", "<br>",
+                           "below pre-war levels through the end of 2025"),
             subtitle = "Monthly international tourist arrivals to Israel, by region",
             color = "Region",
             caption = paste0("<b>Data source</b>: Israel Central Bureau of Statistics (CBS)", "<br>",
@@ -269,13 +269,13 @@ p1 <- ggplot(dat_indexed, aes(x = date, y = arrivals_thousands, color = region))
 
 ```{r}
 
-average_last_month <- dat_indexed %>% filter(date == as.Date("2025-11-01")) %>% pull(index_sep2023) %>% mean()
+average_last_month <- dat_indexed %>% filter(date == as.Date("2025-12-01")) %>% pull(index_sep2023) %>% mean()
 
 p2 <- ggplot(dat_indexed, aes(x = date, y = index_sep2023, color = region)) +
-          annotate("rect", xmin = as.Date("2023-10-01"), xmax = as.Date("2025-11-01"),
+          annotate("rect", xmin = as.Date("2023-10-01"), xmax = as.Date("2025-12-01"),
                    ymin = -10, ymax = 200, fill = alpha("#fa8e8e", 0.16)) +
-          annotate("rect", xmin = as.Date("2025-10-15"), xmax = as.Date("2025-11-15"),
-                   ymin = 18, ymax = 50, fill = NA, color = "grey20", linewidth = 0.5) +
+          annotate("rect", xmin = as.Date("2025-11-15"), xmax = as.Date("2025-12-15"),
+                   ymin = 31, ymax = 50, fill = NA, color = "grey20", linewidth = 0.5) +
           geom_line(linewidth = 1, na.rm = TRUE) +
           geom_vline(xintercept = base_date + 30, linetype = "dashed", color = "grey40") +
           geom_vline(xintercept = as.Date("2022-03-01"), linetype = "dashed", color = "grey40") +
@@ -296,9 +296,9 @@ p2 <- ggplot(dat_indexed, aes(x = date, y = index_sep2023, color = region)) +
                              labels = legend_labels) +
           coord_cartesian(ylim = c(0, 166)) +
           labs(
-            title = paste0("Tourist arrivals to Israel fell to ~25% of September 2023",
-            "<br>", "levels across regions in October, with no region recovering", "<br>",
-            "to even half of pre-war levels by the end of 2025"),
+            title = paste0("Tourist arrivals to Israel fell to ~25% of pre-war levels",
+            "<br>", "across all source regions in October 2023, with only <span style='color: #0072B2;'>North</span>", "<br>",
+            "<span style='color: #0072B2;'>America</span> recovering to about half by the end of 2025"),
             subtitle = "Tourist arrivals by region, indexed to September 2023 = 100",
             color = "Region",
             caption = paste0("<b>Data source</b>: Israel Central Bureau of Statistics (CBS)", "<br>",
@@ -364,9 +364,21 @@ p2 <- ggplot(dat_indexed, aes(x = date, y = index_sep2023, color = region)) +
                         show.legend = FALSE,
                         family = font_choice,
                         inherit.aes = FALSE) +
-            geom_richtext(data = tibble(x = as.Date("2025-09-01"),
+            geom_richtext(data = tibble(x = as.Date("2025-11-01"),
                                         y = 87.5,
-                                        label = paste0("Below half of<br>pre-war level")),
+                                        label = paste0("Below 50% of<br>pre-war level")),
+                          aes(x = x, y = y, label = label),
+                          fill = NA,
+                        label.color = NA,
+                        hjust = 1,         
+                        size = 4,          # Adjust text size for visibility
+                        color = "grey20",     # Set text color
+                        show.legend = FALSE,
+                        family = font_choice,
+                        inherit.aes = FALSE) +
+            geom_richtext(data = tibble(x = as.Date("2025-01-01"),
+                                        y = 75,
+                                        label = paste0("<span style='color: #0072B2;'>North America<br>recovers to 58%<br>in December 2025</span>")),
                           aes(x = x, y = y, label = label),
                           fill = NA,
                         label.color = NA,
@@ -421,15 +433,40 @@ p2 <- ggplot(dat_indexed, aes(x = date, y = index_sep2023, color = region)) +
               stroke = 1,
               color = "grey30"
             ) +
-            geom_curve(data = tibble(x = as.Date("2025-09-01"), y = 82,
-                                     xend = as.Date("2025-11-01"), yend = 52),
+            geom_point(
+              data = tibble(
+                date = as.Date("2025-12-01"),
+                index_sep2023 = dat_indexed %>% filter(date == as.Date("2025-12-01"),
+                                                       region == "north_america") %>%
+                  pull(index_sep2023)
+              ),
+              aes(x = date, y = index_sep2023),
+              inherit.aes = FALSE,
+              shape = 1,        # hollow circle
+              size = 3.5,
+              stroke = 1,
+              color = "#0072B2"
+            ) +
+            geom_curve(data = tibble(x = as.Date("2025-11-01"), y = 87.5,
+                                     xend = as.Date("2025-12-15"), yend = 52),
                 aes(x = x, y = y, xend = xend, yend = yend),
               arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
               color = "grey20",
               # size = 0.4,
               angle = 102,
               linewidth = 0.5,
-              curvature = -0.35,
+              curvature = -0.7,
+              inherit.aes = FALSE
+            ) +
+            geom_curve(data = tibble(x = as.Date("2025-01-01"), y = 75,
+                                     xend = as.Date("2025-11-10"), yend = 60),
+                aes(x = x, y = y, xend = xend, yend = yend),
+              arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+              color = "#0072B2",
+              # size = 0.4,
+              angle = 102,
+              linewidth = 0.5,
+              curvature = -0.2,
               inherit.aes = FALSE
             )
 
