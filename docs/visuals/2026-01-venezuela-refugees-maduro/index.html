@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2026-01-11">
+<meta name="description" content="An analysis of UNHCR data (2013-2025)">
 
-<title>The Data Decoded</title>
+<title>The massive Venezuelan exodus during Maduro’s rule – The Data Decoded</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,26 +25,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-ffa9a6279353761231ec249df0a7fdd3.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-ffa9a6279353761231ec249df0a7fdd3.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -70,67 +70,9 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-image','listing-title','listing-date','listing-categories','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -140,9 +82,9 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
     </a>
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">The Data Decoded</span>
     </a>
   </div>
@@ -153,7 +95,7 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
 </ul>
@@ -173,14 +115,30 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">The Data Decoded</h1>
-</div>
+<h1 class="title">The massive Venezuelan exodus during Maduro’s rule</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Venezuela</div>
+    <div class="quarto-category">Refugees</div>
+    <div class="quarto-category">Maduro</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    An analysis of UNHCR data (2013-2025)
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">January 11, 2026</p>
+    </div>
+  </div>
   
     
   </div>
@@ -190,300 +148,11 @@ window.Quarto = {
 </header>
 
 
-<p>Welcome to <strong>The Data Decoded</strong> — a living gallery of data stories and charts shared on <a href="https://x.com/TheDataDecoded">X (Twitter)</a>. The data sets, R code and charts can be found in the channel’s <a href="https://github.com/mtsinganis/the-data-decoded-visualizations">GitHub page</a>.</p>
+<p><img src="plots/thumb.svg" class="img-fluid" style="width:100.0%"></p>
 
 
 
-
-<div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
-<div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-categories="VmVuZXp1ZWxhJTJDUmVmdWdlZXMlMkNNYWR1cm8=" data-listing-date-sort="1768086000000" data-listing-file-modified-sort="1768018389510" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="32" data-listing-word-count-sort="6384">
-<a href="./visuals/2026-01-venezuela-refugees-maduro/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./visuals/2026-01-venezuela-refugees-maduro/plots/thumb.svg" class="thumbnail-image card-img" style="height: 220px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-The massive Venezuelan exodus during Maduro’s rule
-</h5>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('VmVuZXp1ZWxh'); return false;">Venezuela</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('UmVmdWdlZXM='); return false;">Refugees</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('TWFkdXJv'); return false;">Maduro</div>
-
-</div>
-<div class="card-text listing-description delink">
-<p>An analysis of UNHCR data (2013-2025)</p>
-</div>
-<div class="card-attribution card-text-small end">
-<div class="listing-date">
-Jan 11, 2026
-</div>
-</div>
-</div>
-</div></a>
-</div>
-<div class="g-col-1" data-index="1" data-categories="SXNyYWVsJTJDVG91cmlzbSUyQ0dhemElMjBXYXI=" data-listing-date-sort="1767740400000" data-listing-file-modified-sort="1767797071476" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="43" data-listing-word-count-sort="8454">
-<a href="./visuals/2025-12-israel-tourist-arrivals-by-continent/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./visuals/2025-12-israel-tourist-arrivals-by-continent/plots/thumb.svg" class="thumbnail-image card-img" style="height: 220px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-How have tourist arrivals in Israel changed since the outbreak of the Gaza War?
-</h5>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('SXNyYWVs'); return false;">Israel</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('VG91cmlzbQ=='); return false;">Tourism</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('R2F6YSUyMFdhcg=='); return false;">Gaza War</div>
-
-</div>
-<div class="card-text listing-description delink">
-<p>Tourist arrivals by world region (2022-2025)</p>
-</div>
-<div class="card-attribution card-text-small end">
-<div class="listing-date">
-Jan 7, 2026
-</div>
-</div>
-</div>
-</div></a>
-</div>
-<div class="g-col-1" data-index="2" data-categories="RXVyb3BlJTJDVGVtcGVyYXR1cmUlMkNNZXRlb1N0YXQ=" data-listing-date-sort="1766962800000" data-listing-file-modified-sort="1767046975226" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="18" data-listing-word-count-sort="3413">
-<a href="./visuals/2025-12-europe-capitals-temperature-extremes/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./visuals/2025-12-europe-capitals-temperature-extremes/plots/thumb.svg" class="thumbnail-image card-img" style="height: 220px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Europe’s 2025 Thermal Extremes: From Sub-Zero Frost to Mediterranean Heat
-</h5>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('RXVyb3Bl'); return false;">Europe</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('VGVtcGVyYXR1cmU='); return false;">Temperature</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('TWV0ZW9TdGF0'); return false;">MeteoStat</div>
-
-</div>
-<div class="card-text listing-description delink">
-<p>A look at the minimum and maximum temperatures recorded</p>
-</div>
-<div class="card-attribution card-text-small end">
-<div class="listing-date">
-Dec 29, 2025
-</div>
-</div>
-</div>
-</div></a>
-</div>
-<div class="g-col-1" data-index="3" data-categories="RXVyb3BlJTJDVWtyYWluZSUyQ1J1c3NpYSUyQ01pbGl0YXJ5JTIwZXhwZW5kaXR1cmU=" data-listing-date-sort="1766098800000" data-listing-file-modified-sort="1766165983672" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="26" data-listing-word-count-sort="5167">
-<a href="./visuals/2025-12-europe-military-expenditure/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./visuals/2025-12-europe-military-expenditure/plots/thumb.svg" class="thumbnail-image card-img" style="height: 220px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Which European countries spend most on their military?
-</h5>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('RXVyb3Bl'); return false;">Europe</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('VWtyYWluZQ=='); return false;">Ukraine</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('UnVzc2lh'); return false;">Russia</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('TWlsaXRhcnklMjBleHBlbmRpdHVyZQ=='); return false;">Military expenditure</div>
-
-</div>
-<div class="card-text listing-description delink">
-<p>A ranking of Europe’s top military spenders in absolute terms and as share of their GDP (2000-2024, SIPRI)</p>
-</div>
-<div class="card-attribution card-text-small end">
-<div class="listing-date">
-Dec 19, 2025
-</div>
-</div>
-</div>
-</div></a>
-</div>
-<div class="g-col-1" data-index="4" data-categories="UiUyQ2dncGxvdCUyQ2ZsYWdzJTJDRGF0YVZpeiUyQ0NvcnJ1cHRpb24lMjBJbmRleA==" data-listing-date-sort="1765839600000" data-listing-file-modified-sort="1765901013606" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="34" data-listing-word-count-sort="6746">
-<a href="./visuals/2025-12-import-flags-ggplot/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./visuals/2025-12-import-flags-ggplot/plots/thumb.svg" class="thumbnail-image card-img" style="height: 220px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-How to add rectangular, square or round country flags to ggplots
-</h5>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Z2dwbG90'); return false;">ggplot</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('ZmxhZ3M='); return false;">flags</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('RGF0YVZpeg=='); return false;">DataViz</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Q29ycnVwdGlvbiUyMEluZGV4'); return false;">Corruption Index</div>
-
-</div>
-<div class="card-text listing-description delink">
-<p>An example comparing the Corruption Perception Index Europe’s Big Four (France, Germany, UK and Italy) in 2024</p>
-</div>
-<div class="card-attribution card-text-small end">
-<div class="listing-date">
-Dec 16, 2025
-</div>
-</div>
-</div>
-</div></a>
-</div>
-<div class="g-col-1" data-index="5" data-categories="Y29ycnVwdGlvbiUyQ1RyYW5zcGFyZW5jeSUyMEludGVybmF0aW9uYWwlMkNXb3JsZCUyMFJlZ2lvbnM=" data-listing-date-sort="1765234800000" data-listing-file-modified-sort="1765287953607" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="26" data-listing-word-count-sort="5125">
-<a href="./visuals/2025-12-corruption-index-by-region/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./visuals/2025-12-corruption-index-by-region/plots/thumb.svg" class="thumbnail-image card-img" style="height: 220px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Perceived levels of public sector corruption by world region
-</h5>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Y29ycnVwdGlvbg=='); return false;">corruption</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('VHJhbnNwYXJlbmN5JTIwSW50ZXJuYXRpb25hbA=='); return false;">Transparency International</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('V29ybGQlMjBSZWdpb25z'); return false;">World Regions</div>
-
-</div>
-<div class="card-text listing-description delink">
-<p>Corruption Perceptions Index (CPI) in the period 2012-2024</p>
-</div>
-<div class="card-attribution card-text-small end">
-<div class="listing-date">
-Dec 9, 2025
-</div>
-</div>
-</div>
-</div></a>
-</div>
-<div class="g-col-1" data-index="6" data-categories="ZnJhZ2lsaXR5JTJDZ292ZXJuYW5jZSUyQ3VzYSUyQ3NvbWFsaWE=" data-listing-date-sort="1765148400000" data-listing-file-modified-sort="1765150363243" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="12" data-listing-word-count-sort="2250">
-<a href="./visuals/2025-12-us-somalia-fragile-states-index/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./visuals/2025-12-us-somalia-fragile-states-index/plots/thumb.svg" class="thumbnail-image card-img" style="height: 220px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-A comparison of the relative fragility and institutional resilience of the U.S. and Somalia.
-</h5>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('ZnJhZ2lsaXR5'); return false;">fragility</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Z292ZXJuYW5jZQ=='); return false;">governance</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('dXNh'); return false;">usa</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('c29tYWxpYQ=='); return false;">somalia</div>
-
-</div>
-<div class="card-text listing-description delink">
-<p>Fragile States Index ranking of U.S. and Somalia (2013–2023)</p>
-</div>
-<div class="card-attribution card-text-small end">
-<div class="listing-date">
-Dec 8, 2025
-</div>
-</div>
-</div>
-</div></a>
-</div>
-<div class="g-col-1" data-index="7" data-categories="Y29ycnVwdGlvbiUyQ1RyYW5zcGFyZW5jeSUyMEludGVybmF0aW9uYWwlMkN1c2ElMkNzb21hbGlh" data-listing-date-sort="1765062000000" data-listing-file-modified-sort="1765239148158" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="15" data-listing-word-count-sort="2828">
-<a href="./visuals/2025-12-us-somalia-corruption-index/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./visuals/2025-12-us-somalia-corruption-index/plots/thumb.svg" class="thumbnail-image card-img" style="height: 220px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Perceived levels of public sector corruption in the U.S. and Somalia
-</h5>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Y29ycnVwdGlvbg=='); return false;">corruption</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('VHJhbnNwYXJlbmN5JTIwSW50ZXJuYXRpb25hbA=='); return false;">Transparency International</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('dXNh'); return false;">usa</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('c29tYWxpYQ=='); return false;">somalia</div>
-
-</div>
-<div class="card-text listing-description delink">
-<p>Corruption Perceptions Index (CPI) in the U.S. and Somalia (2012–2024)</p>
-</div>
-<div class="card-attribution card-text-small end">
-<div class="listing-date">
-Dec 7, 2025
-</div>
-</div>
-</div>
-</div></a>
-</div>
-<div class="g-col-1" data-index="8" data-categories="U1RSJTJDRXVyb3BlJTJDb2NjdXBhbmN5JTJDQWlyRE5BJTJDVG91cmlzbQ==" data-listing-date-sort="1764111600000" data-listing-file-modified-sort="1765809658570" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="85" data-listing-word-count-sort="16914">
-<a href="./visuals/2025-11-str-europe-peak-season/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./visuals/2025-11-str-europe-peak-season/plots/thumb.svg" class="thumbnail-image card-img" style="height: 220px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Why Europe travels together: the drivers behind the July–August peak across the continent’s short-term rental markets
-</h5>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('U1RS'); return false;">STR</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('RXVyb3Bl'); return false;">Europe</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('b2NjdXBhbmN5'); return false;">occupancy</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('QWlyRE5B'); return false;">AirDNA</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('VG91cmlzbQ=='); return false;">Tourism</div>
-
-</div>
-<div class="card-text listing-description delink">
-<p>An analysis of occupancy data from Europe’s top 25 largest short-term rental markets in 2024</p>
-</div>
-<div class="card-attribution card-text-small end">
-<div class="listing-date">
-Nov 26, 2025
-</div>
-</div>
-</div>
-</div></a>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

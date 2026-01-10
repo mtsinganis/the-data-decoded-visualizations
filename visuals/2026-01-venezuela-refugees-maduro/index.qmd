@@ -1,0 +1,395 @@
+---
+title: "The massive Venezuelan exodus during Maduro's rule"
+date: "2026-01-11"
+categories: [Venezuela, Refugees, Maduro]
+image: plots/thumb.svg
+description: "An analysis of UNHCR data (2013-2025)"
+format: html
+execute:
+  dir: project
+  echo: false
+  output: false
+---
+
+```{r project-path}
+# Set project path
+project_path <- file.path("visuals", "2026-01-venezuela-refugees-maduro")
+```
+
+```{r data-import}
+library(refugees)
+library(dplyr)
+library(tidyr)
+
+# Fetch Venezuelan displaced populations abroad (coo = country of origin = Venezuela)
+# Population types: REF (refugees), ASY (asylum-seekers), OIP (other in need of intl protection)
+# Years: 1951 to 2025 (latest available)
+# coa = country of asylum; use NULL for all countries
+
+venezuela_data <- refugees::population %>% 
+    filter(coo == "VEN") %>% # ISO code for Venezuela (Bolivarian Republic of)
+    select(-c(coo_name, coo_iso, coa, coa_iso, returned_refugees, idps, returned_idps,
+              stateless, ooc, hst)) %>% 
+    mutate(total_pop = refugees + asylum_seekers + replace_na(oip, 0))
+
+venezuela_ranked <- venezuela_data %>%
+    group_by(year) %>%
+    arrange(desc(total_pop)) %>%                  # Sort descending within each year
+    mutate(year_total = sum(total_pop, na.rm = TRUE),
+           percentage = total_pop / year_total * 100,
+           coa_name = case_when(
+               coa_name == "United States of America" ~ "U.S.",
+               coa_name == "Dominican Rep." ~ "Dom. Rep.",
+               .default = coa_name)) %>% 
+    arrange(desc(total_pop)) %>%
+    mutate(rank = row_number()) %>%   # Assign rank: 1 = highest total_pop
+    # filter(rank <= 10) %>% 
+    ungroup()
+```
+
+
+```{r data-preparation}
+library(scales)
+
+# ── 1. Prepare data ───────────────────────────────────────────────────────────
+
+MAX_VISIBLE <- 10
+
+top_10_2025 <- venezuela_ranked %>% filter(year == 2025, rank <= MAX_VISIBLE) %>% pull(coa_name)
+
+venezuela_line <- venezuela_ranked %>%
+    filter(year >= 2013) %>%   # Maduro election
+    group_by(coa_name) %>%
+    # Keep top 10 countries and group rest as 'Other'
+    mutate(country_group = case_when(
+        coa_name %in% top_10_2025 ~ coa_name,
+        .default = "Other"
+    )) %>% 
+    ungroup() %>%
+    group_by(country_group, year) %>%
+    summarise(total_pop_group = mean(total_pop)) %>% 
+    ungroup()
+
+# Get the latest year for end-labels
+latest_year <- max(venezuela_line$year)
+
+# Set line colors
+line_color <- c(
+    "Colombia" = "#c9a500",  # bright green
+    "Peru"     = "#C0392B",  # red
+    "Brazil"   = "#27AE60",  # blue
+    "Chile"    = "#2980B9",  # yellow
+    "U.S." = "#A93226",
+    "Ecuador"  = "#16A085",
+    "Spain"    = "#E67E22",
+    "Argentina" = "#3498DB",
+    "Mexico"   = "#186A3B",
+    "Dom. Rep." = "#8E44AD",
+    "Other"    = "grey60"   # gray for rest
+)
+
+year_shift <- 0.64
+
+library(stringr)
+
+# Data frane for end line labels
+endpoint_data <- venezuela_line %>% 
+    filter(year == latest_year) %>% 
+    mutate(
+    label_x = latest_year,
+    label_y = case_when(
+        country_group == "Brazil" ~ total_pop_group + 90000,
+        country_group == "U.S." ~ total_pop_group - 80000,
+        country_group == "Spain" ~ total_pop_group + 20000,
+        country_group == "Argentina" ~ total_pop_group + 30000,
+        country_group == "Dom. Rep." ~ total_pop_group - 80000,
+        country_group == "Other" ~ total_pop_group - 70000,
+        .default = total_pop_group
+    ),
+    labels = paste0(country_group, " (",
+                    label_number(
+                        scale = 1e-3,          # divide by 1000
+                        suffix = "", 
+                        big.mark = ",",
+                        accuracy = 1           # whole numbers
+                    )(round(total_pop_group, -3)), ")")
+    ) %>% mutate(labels = case_when(
+        country_group == "Colombia" ~  str_replace_all(labels, "^Colombia \\(", "<b>Colombia<br>("),
+        country_group == "Peru" ~  str_replace_all(labels, "^Peru", "<b>Peru"),
+        .default = labels
+    ))
+
+ # Connecting segment coordinates
+endpoint_data <- endpoint_data %>% 
+    mutate(x_start = year + 0.1,
+           x_end = year + year_shift,
+           y_start = total_pop_group,
+           y_end = label_y)
+
+colombia_peru_percentage <- venezuela_ranked %>%
+    filter(year == 2025, coa_name %in% c("Colombia", "Peru")) %>%
+    summarise(sum = percent(floor(sum(percentage))/100), accuracy = 0.1) %>% 
+    pull(sum)
+
+# Calculate statistics for annotations
+yearly_total <- venezuela_line %>%
+  group_by(year) %>%
+  summarise(total_pop_group = sum(total_pop_group, na.rm = TRUE)) %>%
+  ungroup() %>%
+  arrange(year) %>% 
+  mutate(
+    prev_year_total = lag(total_pop_group, 1),                  # previous year's value
+    yoy_growth       = total_pop_group - prev_year_total,       # absolute change
+    yoy_growth_pct   = (yoy_growth / prev_year_total) * 100     # percentage change
+  ) %>%
+  mutate(
+    yoy_growth_pct = round(yoy_growth_pct, 1),                  # optional: 1 decimal
+    yoy_growth_pct = if_else(is.na(yoy_growth_pct), NA_real_, yoy_growth_pct),
+    perc_net = yoy_growth / max(total_pop_group) * 100
+  )
+
+outflow_18_23 <- yearly_total %>% filter(year >= 2018, year <= 2023) %>% 
+    summarise(sum = percent(floor(sum(perc_net))/100, accuracy = 1)) %>%
+    pull(sum)
+    
+
+```
+
+```{r choose-font}
+library(showtext)
+# Choose default font
+font_choice <- "Momo Trust Sans"
+
+# Load Google Fonts into 'sysfonts'
+font_add_google(font_choice, db_cache = FALSE)
+
+# Automatically use 'showtext' for new graphics devices
+showtext_auto()
+```
+
+
+```{r chart}
+library(ggplot2)
+library(ggtext)
+library(ggimage)
+library(cropcircles)
+
+maduro_img_url <- "https://upload.wikimedia.org/wikipedia/commons/0/0a/Nicol%C3%A1s_Maduro_2023_%28cropped%29.jpg"
+
+p <- ggplot(data = venezuela_line, aes(x = year, y = total_pop_group, color = country_group)) +
+        annotate("rect", xmin = 2018, xmax = 2023,
+                 ymin = 0, ymax = 3e6,
+                 fill = alpha("#fa8e8e", 0.16)) +
+        annotate("rect", xmin = 2023, xmax = 2025,
+                 ymin = 0, ymax = 3e6,
+                 fill = alpha("#0072B2", 0.05)) +
+        geom_line(linewidth = 0.85) +
+        geom_point(size = 1.15) +
+        # geom_vline(xintercept = 2018, linetype = 1, linewidth = 0.5, color = "grey40") +
+        scale_color_manual(values = line_color) +
+        scale_x_continuous(breaks = seq(2013, 2025, 1),
+                           expand = expansion(mult = c(0.015, 0))) +
+        scale_y_continuous(breaks = seq(0, 3e6, 5e5),
+                           labels = label_number(
+                               scale = 1e-3,          # divide by 1000
+                               # suffix = "K",          # add "k" at the end
+                               big.mark = ",",        # thousands separator
+                               accuracy = 1           # no decimals (or 0.1 for one decimal)
+                           ),
+                           expand = expansion(mult = c(0, 0.02))) +
+        coord_cartesian(clip = "off", xlim = c(2013, 2025)) +
+        labs(
+            title = paste0("Under Maduro's rule, collapsing oil prices and deepening crisis drove a",
+                           "<br>","massive Venezuelan exodus from 2018 onwards — ",
+                           "<span style='color: #c9a500;'>Colombia</span> and ",
+                           "<span style='color: #C0392B;'>Peru</span><br> absorbed the majority ",
+                           "of migrants"),
+            subtitle = paste0("Total number of Venezuelan citizens hosted by country, (thousands)"),
+            caption = paste0("<b>Data source</b>: UNHCR Refugee Data Finder (accessed January 2026)",
+                             "<br>",
+                             "<b>Notes</b>: Figures represent point-in-time stock and include refugees, ",
+                             "asylum-seekers, and other people in need of international<br>",
+                             "protection (excluding internally displaced persons).",
+                             "<br><b>Graphic</b>: The Data Decoded / @TheDataDecoded")
+        ) +
+        theme_minimal(base_family = font_choice, base_size = 14) +
+        theme(
+            panel.grid.minor = element_blank(),
+            panel.grid.major.x = element_blank(),
+            panel.grid.major.y = element_line(linetype = 2),
+            axis.title = element_blank(),
+            legend.position = "none",
+            plot.title.position = "plot",
+            plot.title = element_markdown(hjust = 0, face = "bold", margin = margin(b = 5),
+                                          lineheight = 1, size = rel(1.6)),
+            plot.subtitle = element_markdown(hjust = 0, margin = margin(t = 3, b = 20),
+                                             size = rel(1), lineheight = 1.2),
+            plot.caption.position = "plot",
+            plot.caption = element_markdown(hjust = 0, vjust = 0, colour = "grey50",
+                                            margin = margin(t = 20), lineheight = 1.25),
+            plot.margin = margin(t = 18.5, r = 150, b = 13.6, l = 18.5, unit = "pt")
+        ) +
+        geom_richtext(
+            data = endpoint_data,
+            aes(x = label_x, y = label_y,
+                label = labels, color = country_group),
+            hjust = 0,                # slightly to the right of the end point
+            size = 4.5,                  # adjust size as needed (4–5.5 usually good)
+            fontface = "plain",
+            # check_overlap = TRUE,        # prevents total overlap if two countries very close
+            nudge_x = 0.7,                # optional extra push right if needed
+            fill = NA, label.color = NA, family = font_choice
+        ) +
+        geom_segment(data = endpoint_data,
+                     aes(x = x_start, xend = x_end, y = y_start, yend = y_end,
+                         color = country_group),
+                     linewidth = 0.7,
+                     lineend = "round",
+                     linetype = 3
+        ) +
+        # Text annotation segments
+        geom_segment(data = tibble(x = 2013, xend = 2013, y = 100e3, yend = 700e3),
+                     aes(x = x, xend = xend, y = y, yend = yend),
+                     inherit.aes = FALSE,
+                     linewidth = 0.5,
+                     lineend = "round"
+        ) +
+        geom_segment(data = tibble(x = 2015, xend = 2015, y = 100e3, yend = 1460e3),
+                     aes(x = x, xend = xend, y = y, yend = yend),
+                     inherit.aes = FALSE,
+                     linewidth = 0.5,
+                     lineend = "round"
+        ) +
+        geom_segment(data = tibble(x = 2018, xend = 2018, y = 1290e3, yend = 2590e3),
+                     aes(x = x, xend = xend, y = y, yend = yend),
+                     inherit.aes = FALSE,
+                     linewidth = 0.5,
+                     lineend = "round"
+                     ) +
+        geom_segment(data = tibble(x = 2025, xend = 2025, y = 1750e3, yend = 2600e3),
+                     aes(x = x, xend = xend, y = y, yend = yend),
+                     inherit.aes = FALSE,
+                     linewidth = 0.5,
+                     lineend = "round"
+                     ) +
+        geom_segment(data = tibble(x = 2018.2, xend = 2019.4, y = 2940e3, yend = 2940e3),
+                     aes(x = x, xend = xend, y = y, yend = yend),
+                     inherit.aes = FALSE,
+                     linewidth = 0.5,
+                     lineend = "round", color = "#CD0000"
+                     ) +
+        geom_segment(data = tibble(x = 2021.6, xend = 2022.8, y = 2940e3, yend = 2940e3),
+                     aes(x = x, xend = xend, y = y, yend = yend),
+                     inherit.aes = FALSE,
+                     linewidth = 0.5,
+                     lineend = "round", color = "#CD0000"
+                     ) +
+        geom_segment(data = tibble(x = 2023.2, xend = 2024.8, y = 1390e3, yend = 1390e3),
+                     aes(x = x, xend = xend, y = y, yend = yend),
+                     inherit.aes = FALSE,
+                     linewidth = 0.5,
+                     lineend = "round", color = "#0072B2"
+                     ) +
+        # Text annotations
+        geom_richtext(data = tibble(x = 2013.07,
+                                    y = 700e3,
+                                    label = paste0("<b>", "MADURO<br>ELECTED",
+                                                   "</b>")),
+                      aes(x = x, y = y, label = label),
+                      fill = NA, label.color = NA, hjust = 0, vjust = 1, size = 4,
+                      color = "grey20", show.legend = FALSE, family = font_choice,
+                      inherit.aes = FALSE) +
+        geom_richtext(data = tibble(x = 2015.07,
+                                    y = 1460e3,
+                                    label = paste0("<b>OIL PRICE CRASH</b><br>",
+                                                   "• GDP collapse<br>• hyperinflation",
+                                                   "<br>• food and medicine<br>shortages")),
+                      aes(x = x, y = y, label = label),
+                      fill = NA, label.color = NA, hjust = 0, vjust = 1, size = 4,
+                      color = "grey20", show.legend = FALSE, family = font_choice,
+                      inherit.aes = FALSE) +
+        geom_richtext(data = tibble(x = 2018.07,
+                                    y = 2600e3,
+                                    label = paste0("<b>TIPPING POINT (2018)</b><br>",
+                                                   # "<b>MASS EXODUS</b><br>",
+                                                   "• hyperinflation peak<br>",
+                                                   "• U.S. sanctions on oil<br>",
+                                                   "• political repression<br>",
+                                                   "• Maduro's re-election<br>",
+                                                   "• Colombia and Peru<br>",
+                                                   "launch temporary<br>protection program")),
+                      aes(x = x, y = y, label = label),
+                      fill = NA, label.color = NA, hjust = 0, vjust = 1, size = 4,
+                      color = "grey20", show.legend = FALSE, family = font_choice,
+                      inherit.aes = FALSE) +
+        geom_richtext(data = tibble(x = 2025.07,
+                                    y = 2590e3,
+                                    label = paste0("<b>", "~7.9 MILLION<br>", "</b>",
+                                                   "Venezuelans<br>currently<br>displaced<br><br>",
+                                                   "<b>","MADURO CAPTURED<br>BY U.S. FORCES<br>",
+                                                   "</b>", "January 3rd, 2026")),
+                      aes(x = x, y = y, label = label),
+                      fill = NA, label.color = NA, hjust = 0, vjust = 1, size = 4,
+                      color = "grey20", show.legend = FALSE, family = font_choice,
+                      inherit.aes = FALSE) +
+        geom_richtext(data = tibble(x = 2020.5,
+                                    y = 2990e3,
+                                    label = paste0("<b>MASS EXODUS</b><br>",
+                                                   "~", outflow_18_23,
+                                                   " of total increase in<br>",
+                                                   "migrant stock: 2018-2023")),
+                      aes(x = x, y = y, label = label),
+                      fill = NA, label.color = NA, hjust = 0.5, vjust = 1, size = 4,
+                      color = "#CD0000", show.legend = FALSE, family = font_choice,
+                      inherit.aes = FALSE) +
+        geom_richtext(data = tibble(x = 2023.1,
+                                    y = 1140e3,
+                                    label = paste0("<b>SLOWDOWN</b><br>",
+                                                   "Fewer outflows,<br>",
+                                                   "increased returns<br>",
+                                                   "and host country<br>regularization")),
+                      aes(x = x, y = y, label = label),
+                      fill = NA, label.color = NA, hjust = 0, vjust = 0.5, size = 4,
+                      color = "#0072B2", show.legend = FALSE, family = font_choice,
+                      inherit.aes = FALSE) +
+        geom_point(data = tibble(x = 2013.65, y = 850e3),
+           aes(x = x, y = y),
+           size = 19, # Adjust size to be slightly larger than image
+           color = "black",
+           inherit.aes = FALSE) +
+        geom_image(data = tibble(x = 2013.65, y = 850e3),
+                   aes(x = x, y = y),
+                   image = crop_circle(maduro_img_url),
+                   size = 0.08,
+                   asp = 1,
+                   inherit.aes = FALSE)
+
+
+```
+
+
+```{r export-visualization-p}
+svg_path <- file.path(project_path, "plots", "thumb.svg")
+
+svg_w <- 11.8
+svg_h <- 10
+
+png_w <- 2000
+png_h <- round(png_w * svg_h / svg_w)  # keep same aspect ratio
+
+ggsave(svg_path, p, width = svg_w, height = svg_h)
+
+library(rsvg)
+
+png_path <- file.path(project_path, "plots", "venezuela-refugess-maduro.png")
+
+rsvg_png(
+  svg  = svg_path,
+  file = png_path,
+  width  = png_w,
+  height = png_h
+)
+
+```
+
+![](plots/thumb.svg){width=100%}
