@@ -260,7 +260,7 @@ p <- ggplot(data = venezuela_line, aes(x = year, y = total_pop_group, color = co
                      linewidth = 0.5,
                      lineend = "round"
         ) +
-        geom_segment(data = tibble(x = 2018, xend = 2018, y = 1290e3, yend = 2590e3),
+        geom_segment(data = tibble(x = 2018, xend = 2018, y = 1290e3, yend = 2600e3),
                      aes(x = x, xend = xend, y = y, yend = yend),
                      inherit.aes = FALSE,
                      linewidth = 0.5,
@@ -323,7 +323,7 @@ p <- ggplot(data = venezuela_line, aes(x = year, y = total_pop_group, color = co
                       color = "grey20", show.legend = FALSE, family = font_choice,
                       inherit.aes = FALSE) +
         geom_richtext(data = tibble(x = 2025.07,
-                                    y = 2590e3,
+                                    y = 2600e3,
                                     label = paste0("<b>", "~7.9 MILLION<br>", "</b>",
                                                    "Venezuelans<br>currently<br>displaced<br><br>",
                                                    "<b>","MADURO CAPTURED<br>BY U.S. FORCES<br>",
