@@ -183,6 +183,9 @@ p <- ggplot(data = venezuela_line, aes(x = year, y = total_pop_group, color = co
         annotate("rect", xmin = 2023, xmax = 2025,
                  ymin = 0, ymax = 3e6,
                  fill = alpha("#0072B2", 0.05)) +
+        annotate("rect", xmin = 2013, xmax = 2018,
+                 ymin = 0, ymax = 3e6,
+                 fill = alpha("#FFC712", 0.1)) +
         geom_line(linewidth = 0.85) +
         geom_point(size = 1.15) +
         # geom_vline(xintercept = 2018, linetype = 1, linewidth = 0.5, color = "grey40") +
@@ -199,11 +202,13 @@ p <- ggplot(data = venezuela_line, aes(x = year, y = total_pop_group, color = co
                            expand = expansion(mult = c(0, 0.02))) +
         coord_cartesian(clip = "off", xlim = c(2013, 2025)) +
         labs(
-            title = paste0("Under Maduro's rule, collapsing oil prices and deepening crisis drove a",
-                           "<br>","massive Venezuelan exodus from 2018 onwards — ",
-                           "<span style='color: #c9a500;'>Colombia</span> and ",
-                           "<span style='color: #C0392B;'>Peru</span><br> absorbed the majority ",
-                           "of migrants"),
+            title = paste0("Under Maduro's rule, ",
+                           "<span style='color: #E2A80E;'>collapsing oil prices and a deepening humanitarian </span>",
+                           "<br>",
+                           "<span style='color: #E2A80E;'>crisis</span> drove a ",
+                           "<span style='color: #CD0000;'>massive Venezuelan exodus </span>",
+                           "from 2018 onwards, easing into", "<br>",
+                           "a <span style='color: #0072B2;'>slowdown after 2023</span>"),
             subtitle = paste0("Total number of Venezuelan citizens hosted by country, (thousands)"),
             caption = paste0("<b>Data source</b>: UNHCR Refugee Data Finder (accessed January 2026)",
                              "<br>",
@@ -237,7 +242,7 @@ p <- ggplot(data = venezuela_line, aes(x = year, y = total_pop_group, color = co
             size = 4.5,                  # adjust size as needed (4–5.5 usually good)
             fontface = "plain",
             # check_overlap = TRUE,        # prevents total overlap if two countries very close
-            nudge_x = 0.7,                # optional extra push right if needed
+            nudge_x = 0.65,                # optional extra push right if needed
             fill = NA, label.color = NA, family = font_choice
         ) +
         geom_segment(data = endpoint_data,
@@ -251,43 +256,55 @@ p <- ggplot(data = venezuela_line, aes(x = year, y = total_pop_group, color = co
         geom_segment(data = tibble(x = 2013, xend = 2013, y = 100e3, yend = 700e3),
                      aes(x = x, xend = xend, y = y, yend = yend),
                      inherit.aes = FALSE,
-                     linewidth = 0.5,
+                     linewidth = 0.6,
                      lineend = "round"
         ) +
         geom_segment(data = tibble(x = 2015, xend = 2015, y = 100e3, yend = 1460e3),
                      aes(x = x, xend = xend, y = y, yend = yend),
                      inherit.aes = FALSE,
-                     linewidth = 0.5,
+                     linewidth = 0.6,
                      lineend = "round"
         ) +
         geom_segment(data = tibble(x = 2018, xend = 2018, y = 1290e3, yend = 2600e3),
                      aes(x = x, xend = xend, y = y, yend = yend),
                      inherit.aes = FALSE,
-                     linewidth = 0.5,
+                     linewidth = 0.6,
                      lineend = "round"
                      ) +
         geom_segment(data = tibble(x = 2025, xend = 2025, y = 1750e3, yend = 2600e3),
                      aes(x = x, xend = xend, y = y, yend = yend),
                      inherit.aes = FALSE,
-                     linewidth = 0.5,
+                     linewidth = 0.6,
                      lineend = "round"
                      ) +
         geom_segment(data = tibble(x = 2018.2, xend = 2019.4, y = 2940e3, yend = 2940e3),
                      aes(x = x, xend = xend, y = y, yend = yend),
                      inherit.aes = FALSE,
-                     linewidth = 0.5,
+                     linewidth = 0.6,
                      lineend = "round", color = "#CD0000"
                      ) +
         geom_segment(data = tibble(x = 2021.6, xend = 2022.8, y = 2940e3, yend = 2940e3),
                      aes(x = x, xend = xend, y = y, yend = yend),
                      inherit.aes = FALSE,
-                     linewidth = 0.5,
+                     linewidth = 0.6,
                      lineend = "round", color = "#CD0000"
+                     ) +
+        geom_segment(data = tibble(x = 2013.2, xend = 2014.2, y = 2940e3, yend = 2940e3),
+                     aes(x = x, xend = xend, y = y, yend = yend),
+                     inherit.aes = FALSE,
+                     linewidth = 0.6,
+                     lineend = "round", color = "#E2A80E"
+                     ) +
+        geom_segment(data = tibble(x = 2016.8, xend = 2017.8, y = 2940e3, yend = 2940e3),
+                     aes(x = x, xend = xend, y = y, yend = yend),
+                     inherit.aes = FALSE,
+                     linewidth = 0.6,
+                     lineend = "round", color = "#E2A80E"
                      ) +
         geom_segment(data = tibble(x = 2023.2, xend = 2024.8, y = 1390e3, yend = 1390e3),
                      aes(x = x, xend = xend, y = y, yend = yend),
                      inherit.aes = FALSE,
-                     linewidth = 0.5,
+                     linewidth = 0.6,
                      lineend = "round", color = "#0072B2"
                      ) +
         # Text annotations
@@ -352,6 +369,16 @@ p <- ggplot(data = venezuela_line, aes(x = year, y = total_pop_group, color = co
                       fill = NA, label.color = NA, hjust = 0, vjust = 0.5, size = 4,
                       color = "#0072B2", show.legend = FALSE, family = font_choice,
                       inherit.aes = FALSE) +
+        geom_richtext(data = tibble(x = 2015.5,
+                                    y = 2990e3,
+                                    label = paste0("<b>CRISIS BUILD-UP</b><br>",
+                                                   "Gradual deterioration of<br>",
+                                                   "economic and political<br>",
+                                                   "environment")),
+                      aes(x = x, y = y, label = label),
+                      fill = NA, label.color = NA, hjust = 0.5, vjust = 1, size = 4,
+                      color = "#F0B50F", show.legend = FALSE, family = font_choice,
+                      inherit.aes = FALSE) + 
         geom_point(data = tibble(x = 2013.65, y = 850e3),
            aes(x = x, y = y),
            size = 19, # Adjust size to be slightly larger than image
