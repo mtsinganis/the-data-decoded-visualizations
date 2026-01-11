@@ -67,7 +67,7 @@ venezuela_line <- venezuela_ranked %>%
     )) %>% 
     ungroup() %>%
     group_by(country_group, year) %>%
-    summarise(total_pop_group = mean(total_pop)) %>% 
+    summarise(total_pop_group = sum(total_pop)) %>% 
     ungroup()
 
 # Get the latest year for end-labels
@@ -100,10 +100,11 @@ endpoint_data <- venezuela_line %>%
     label_y = case_when(
         country_group == "Brazil" ~ total_pop_group + 90000,
         country_group == "U.S." ~ total_pop_group - 80000,
-        country_group == "Spain" ~ total_pop_group + 20000,
-        country_group == "Argentina" ~ total_pop_group + 30000,
-        country_group == "Dom. Rep." ~ total_pop_group - 80000,
-        country_group == "Other" ~ total_pop_group - 70000,
+        country_group == "Spain" ~ total_pop_group + 80000,
+        country_group == "Other" ~ total_pop_group + 0,
+        country_group == "Argentina" ~ total_pop_group - 0,
+        country_group == "Mexico" ~ total_pop_group - 35000,
+        country_group == "Dom. Rep." ~ total_pop_group - 120000,
         .default = total_pop_group
     ),
     labels = paste0(country_group, " (",
@@ -126,10 +127,6 @@ endpoint_data <- endpoint_data %>%
            y_start = total_pop_group,
            y_end = label_y)
 
-colombia_peru_percentage <- venezuela_ranked %>%
-    filter(year == 2025, coa_name %in% c("Colombia", "Peru")) %>%
-    summarise(sum = percent(floor(sum(percentage))/100), accuracy = 0.1) %>% 
-    pull(sum)
 
 # Calculate statistics for annotations
 yearly_total <- venezuela_line %>%
@@ -209,7 +206,7 @@ p <- ggplot(data = venezuela_line, aes(x = year, y = total_pop_group, color = co
                            "<span style='color: #CD0000;'>massive Venezuelan exodus </span>",
                            "from 2018 onwards, easing into", "<br>",
                            "a <span style='color: #0072B2;'>slowdown after 2023</span>"),
-            subtitle = paste0("Total number of Venezuelan citizens hosted by country, (thousands)"),
+            subtitle = paste0("Total number of migrants hosted by country, (thousands)"),
             caption = paste0("<b>Data source</b>: UNHCR Refugee Data Finder (accessed January 2026)",
                              "<br>",
                              "<b>Notes</b>: Figures represent point-in-time stock and include refugees, ",
@@ -341,7 +338,7 @@ p <- ggplot(data = venezuela_line, aes(x = year, y = total_pop_group, color = co
                       inherit.aes = FALSE) +
         geom_richtext(data = tibble(x = 2025.07,
                                     y = 2600e3,
-                                    label = paste0("<b>", "~7.9 MILLION<br>", "</b>",
+                                    label = paste0("<b>", "~7.8 MILLION<br>", "</b>",
                                                    "Venezuelans<br>currently<br>displaced<br><br>",
                                                    "<b>","MADURO CAPTURED<br>BY U.S. FORCES<br>",
                                                    "</b>", "January 3rd, 2026")),
@@ -395,7 +392,7 @@ p <- ggplot(data = venezuela_line, aes(x = year, y = total_pop_group, color = co
 ```
 
 
-```{r export-visualization-p}
+```{r export-visualization-line}
 svg_path <- file.path(project_path, "plots", "thumb.svg")
 
 svg_w <- 11.8
@@ -408,7 +405,7 @@ ggsave(svg_path, p, width = svg_w, height = svg_h)
 
 library(rsvg)
 
-png_path <- file.path(project_path, "plots", "venezuela-refugess-maduro.png")
+png_path <- file.path(project_path, "plots", "venezuela-refugees-maduro.png")
 
 rsvg_png(
   svg  = svg_path,
@@ -420,3 +417,298 @@ rsvg_png(
 ```
 
 ![](plots/thumb.svg){width=100%}
+
+```{r prepared-area-dat}
+
+venezuela_area <- venezuela_ranked %>%
+    select(-c(refugees, asylum_seekers, oip, rank)) %>% 
+    filter(year >= 2013) %>%   # Maduro election
+    group_by(coa_name) %>%
+    # Keep top 10 countries and group rest as 'Other'
+    mutate(country_group = case_when(
+        coa_name %in% top_10_2025 ~ coa_name,
+        .default = "Other"
+    )) %>% 
+    ungroup() %>%
+    group_by(country_group, year) %>%
+    summarise(percentage_year = sum(percentage)) %>% 
+    ungroup() %>% 
+    arrange() %>%
+    mutate(
+    alpha_value = if_else(country_group %in% c("Colombia", "Peru"), 1.0, 0.15)
+    )
+
+# Get 2025 country order
+order_2025 <- venezuela_area %>%
+  filter(year == 2025) %>%
+  arrange(percentage_year) %>%          # highest on top/bottom depending on your preference
+  pull(country_group)
+
+venezuela_area <- venezuela_area %>%
+  mutate(
+    country_group = factor(country_group, levels = order_2025)
+  )
+
+# Get only 2025 data and order by the desired stacking (e.g. highest on top or bottom)
+final_year_data <- venezuela_area %>%
+  filter(year == 2025) %>%
+  arrange(desc(percentage_year)) %>%  # or your preferred order
+  mutate(
+    cumsum_bottom = lag(cumsum(percentage_year), default = 0),     # bottom of each area
+    cumsum_top    = cumsum(percentage_year),                        # top of each area
+    midpoint      = (cumsum_bottom + cumsum_top) / 2                # perfect center
+  )
+
+line_color_area <- tibble(country_group = names(line_color),
+                          area_colors = line_color)
+
+# Join midpoints back to full data (so every row knows its final-year midpoint)
+venezuela_area_labeled <- venezuela_area %>%
+  filter(year == 2025) %>% 
+  left_join(
+    select(final_year_data, country_group, midpoint),
+    by = "country_group"
+  ) %>%
+  mutate(labels = paste0(country_group, " (",
+                    label_percent(
+                        scale = 1,
+                        accuracy = 0.1           # rounding
+                    )(percentage_year), ")"),
+        label_y = case_when(
+        country_group == "Argentina" ~ midpoint  + 1,
+        country_group == "Mexico" ~ midpoint  + 2.7,
+        country_group == "Dom. Rep." ~ midpoint  + 5,
+        .default = midpoint 
+    )) %>% 
+  left_join(line_color_area, by = "country_group") %>% 
+  mutate(labels = case_when(
+        country_group == "Colombia" ~  str_replace_all(labels, "^Colombia \\(", "<b>Colombia<br>("),
+        country_group == "Peru" ~  str_replace_all(labels, "^Peru", "<b>Peru"),
+        .default = labels
+    ))
+
+year_shift <- 0.64
+
+venezuela_area_labeled <- venezuela_area_labeled %>% 
+    mutate(x_start = year + 0.1,
+           x_end = year + year_shift,
+           y_start = midpoint,
+           y_end = label_y)
+
+flags <- tibble(x = c(2013.45, 2015.45, 2016.15, 2018.45, 2019.15),
+                y = c(40, 71, 71, 111, 111),
+                country = c("us", "pe", "br", "co", "pe"))
+
+line_color <- c(
+    "Colombia" = "#c9a500",  # bright green
+    "Peru"     = "#C0392B",  # red
+    "Brazil"   = "#27AE60",  # blue
+    "Chile"    = "#2980B9",  # yellow
+    "U.S." = "#A93226",
+    "Ecuador"  = "#16A085",
+    "Spain"    = "#E67E22",
+    "Argentina" = "#3498DB",
+    "Mexico"   = "#186A3B",
+    "Dom. Rep." = "#8E44AD",
+    "Other"    = "grey60"   # gray for rest
+)
+
+library(readr)
+
+colombia_peru_percentage <- venezuela_ranked %>%
+    filter(year >= 2013, coa_name %in% c("Colombia", "Peru")) %>% 
+    group_by(year) %>% 
+    summarise(sum_col_per = sum(percentage)) %>% 
+    filter(year >= 2018) %>% 
+    summarise(average_combined_percentage = mean(sum_col_per)) %>%
+    mutate(average_combined_percentage = percent(average_combined_percentage,
+                                                 scale = 1, accuracy = 1)) %>% 
+    pull(average_combined_percentage)
+
+n_total <- venezuela_data %>%
+  group_by(year) %>%
+  filter(year >= 2013) %>%
+  summarise(total = sum(total_pop)) %>% 
+  mutate(y = 122.3,
+         total = label_number(
+                        scale = 1e-3,          # divide by 1000
+                        suffix = "", 
+                        big.mark = ",",
+                        accuracy = 1           # whole numbers
+                    )(total))
+
+```
+
+
+```{r}
+# # Install 'ggflags' package
+# install.packages("ggflags", repos = c(
+#   "https://jimjam-slam.r-universe.dev",
+#   "https://cloud.r-project.org"))
+library(ggflags)
+
+q <- ggplot(venezuela_area, aes(x = year, y = percentage_year, fill = country_group)) +
+        geom_area(aes(alpha = alpha_value), position = "stack", color = "black", linewidth = 0.3) +
+        # geom_vline(xintercept = 2018, linetype = 1, linewidth = 0.6) +
+        scale_alpha_identity() +
+        scale_fill_manual(values = line_color) +
+        scale_x_continuous(breaks = seq(2013, 2025, 1),
+                           expand = expansion(mult = c(0.015, 0))) +
+        scale_y_continuous(
+          labels = percent_format(scale = 1),  # show as 0–100%
+          breaks = seq(0, 100, 20),
+          name = "Share of total hosted (%)",
+          expand = expansion(mult = c(0, 0.025))
+          ) +
+        coord_cartesian(clip = "off", xlim = c(2013, 2025)) +
+        labs(
+            title = paste0("Relative burden of Venezuelan migration: ",
+                           "<span style='color: #c9a500;'>Colombia</span>",
+                           " and ",
+                           "<span style='color: #C0392B;'>Peru</span> take the<br>",
+                           "lead from the U.S. as host countries during 2018 mass exodus"),
+            subtitle = paste0("Relative share of migrants hosted by country"),
+            caption = paste0("<b>Data source</b>: UNHCR Refugee Data Finder (accessed January 2026)",
+                             "<br>",
+                             "<b>Notes</b>: Percentages represent point-in-time migrant stock and include refugees, ",
+                             "asylum-seekers, and other people in need of international<br>",
+                             "protection (excluding internally displaced persons).",
+                             "<br><b>Graphic</b>: The Data Decoded / @TheDataDecoded")
+        ) +
+  theme_minimal(base_family = font_choice, base_size = 14) +
+        theme(
+            panel.grid.minor = element_blank(),
+            panel.grid.major.x = element_blank(),
+            panel.grid.major.y = element_blank(),
+            #element_line(linetype = 2, color = "grey80"),
+            axis.title = element_blank(),
+            axis.ticks.y = element_line(color = "grey80"),
+            axis.ticks.length = unit(-0.2, "cm"),
+            legend.position = "none",
+            plot.title.position = "plot",
+            plot.title = element_markdown(hjust = 0, face = "bold", margin = margin(b = 5),
+                                          lineheight = 1, size = rel(1.6)),
+            plot.subtitle = element_markdown(hjust = 0, margin = margin(t = 3, b = 20),
+                                             size = rel(1), lineheight = 1.2),
+            plot.caption.position = "plot",
+            plot.caption = element_markdown(hjust = 0, vjust = 0, colour = "grey50",
+                                            margin = margin(t = 20), lineheight = 1.25),
+            plot.margin = margin(t = 18.5, r = 150, b = 13.6, l = 18.5, unit = "pt")
+        ) +
+    geom_richtext(data = venezuela_area_labeled,
+        aes(
+          x = year,           # slight nudge right of 2025
+          y = label_y,             # ← uses pre-calculated center height!
+          label = labels,
+          colour = area_colors
+        ),
+        hjust = 0,                  # left-aligned
+        size = 4.5,
+        nudge_x = 0.65,
+        fontface = "plain",
+        fill = NA,
+        label.color = NA,
+        family = font_choice,
+        inherit.aes = FALSE
+      ) +
+    scale_colour_identity() +
+    geom_segment(data = venezuela_area_labeled ,
+                     aes(x = x_start, xend = x_end, y = y_start, yend = y_end,
+                         color = area_colors),
+                     linewidth = 0.7,
+                     lineend = "round",
+                     linetype = 3
+        ) +
+    geom_segment(data = tibble(x = 2013, xend = 2013, y = 4, yend = 40),
+                     aes(x = x, xend = xend, y = y, yend = yend),
+                     inherit.aes = FALSE,
+                     linewidth = 0.6,
+                     lineend = "round"
+        ) +
+    geom_segment(data = tibble(x = 2015, xend = 2015, y = 7, yend = 71),
+                     aes(x = x, xend = xend, y = y, yend = yend),
+                     inherit.aes = FALSE,
+                     linewidth = 0.6,
+                     lineend = "round"
+        ) +
+    geom_segment(data = tibble(x = 2018, xend = 2018, y = 0, yend = 118),
+                     aes(x = x, xend = xend, y = y, yend = yend),
+                     inherit.aes = FALSE,
+                     linewidth = 0.6,
+                     lineend = "round"
+        ) +
+    geom_richtext(data = tibble(x = 2013.07, y = 40,
+                                label = paste0("Upon Maduro's 2013 election,<br>",
+                                               "<b>over 80%</b> of Venezuelans<br>",
+                                               "abroad are in the United<br>States")),
+                      aes(x = x, y = y, label = label),
+                      fill = "#f0dcda", label.color = NA, hjust = 0, vjust = 1, size = 4,
+                      color = "grey20", show.legend = FALSE, family = font_choice,
+                      inherit.aes = FALSE) +
+    geom_richtext(data = tibble(x = 2015.07, y = 71,
+                                label = paste0("Conditions deteriorate<br>",
+                                               "rapidly and <b>migrants<br>",
+                                               "shift to neighboring<br>",
+                                               "countries</b>, especially<br>",
+                                               "(Peru and Brazil)")),
+                      aes(x = x, y = y, label = label),
+                      fill = NA, label.color = NA, hjust = 0, vjust = 1, size = 4,
+                      color = "grey20", show.legend = FALSE, family = font_choice,
+                      inherit.aes = FALSE) +
+    geom_richtext(data = tibble(x = 2018.07, y = 111.25,
+                                label = paste0("Once the mass exodus begins, ",
+                                               " relative shares across countries<br>",
+                                               " stabilize, as <b>Colombia and Peru</b>",
+                                               " consistently absorb ~<b>",
+                                               colombia_peru_percentage,
+                                               " of the<br>migrant stock</b>")),
+                      aes(x = x, y = y, label = label),
+                      fill = NA, label.color = NA, hjust = 0, vjust = 1, size = 4,
+                      color = "grey20", show.legend = FALSE, family = font_choice,
+                      inherit.aes = FALSE) +
+    geom_flag(data = flags, aes(x = x, y = y, country = country), 
+              size = 10, inherit.aes = FALSE,
+              position = position_nudge(0, 4)) +
+    geom_text(data = n_total,
+              aes(x = year, y = y,
+                  label = total),
+              inherit.aes = FALSE,
+              size = 4, color = "grey20") +
+    annotate("rect", xmin = 2012.8, xmax = 2025.4,
+                 ymin = 119.3, ymax = 125.3, fill = NA,  color = "grey20",
+             linewidth = 0.6) +
+    geom_text(data = tibble(x = 2013, y = 128.3, 
+                            label = "Absolute number of migrants (thousands)"),
+              aes(x = x, y = y, label = label),
+              inherit.aes = FALSE, family = font_choice,
+              size = 4, hjust = 0.02, color = "grey20")
+    
+
+```
+
+
+```{r export-visualization-area}
+svg_path <- file.path(project_path, "plots", "venezuela-refugees-maduro-area.svg")
+
+svg_w <- 11.8
+svg_h <- 10
+
+png_w <- 2000
+png_h <- round(png_w * svg_h / svg_w)  # keep same aspect ratio
+
+ggsave(svg_path, q, width = svg_w, height = svg_h)
+
+library(rsvg)
+
+png_path <- file.path(project_path, "plots", "venezuela-refugees-maduro-area.png")
+
+rsvg_png(
+  svg  = svg_path,
+  file = png_path,
+  width  = png_w,
+  height = png_h
+)
+
+```
+
+![](plots/venezuela-refugees-maduro-area.svg){width=100%}
