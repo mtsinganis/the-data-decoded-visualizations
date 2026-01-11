@@ -495,8 +495,8 @@ venezuela_area_labeled <- venezuela_area_labeled %>%
            y_start = midpoint,
            y_end = label_y)
 
-flags <- tibble(x = c(2013.45, 2015.45, 2016.15, 2018.45, 2019.15),
-                y = c(40, 71, 71, 111, 111),
+flags <- tibble(x = c(2013.45, 2015.45, 2016.15, 2022.85, 2022.85),
+                y = c(40, 71, 71, 14, 44.8),
                 country = c("us", "pe", "br", "co", "pe"))
 
 line_color <- c(
@@ -529,7 +529,7 @@ n_total <- venezuela_data %>%
   group_by(year) %>%
   filter(year >= 2013) %>%
   summarise(total = sum(total_pop)) %>% 
-  mutate(y = 122.3,
+  mutate(y = 116,
          total = label_number(
                         scale = 1e-3,          # divide by 1000
                         suffix = "", 
@@ -558,21 +558,23 @@ q <- ggplot(venezuela_area, aes(x = year, y = percentage_year, fill = country_gr
           labels = percent_format(scale = 1),  # show as 0–100%
           breaks = seq(0, 100, 20),
           name = "Share of total hosted (%)",
-          expand = expansion(mult = c(0, 0.025))
+          expand = expansion(mult = c(0, 0.01))
           ) +
         coord_cartesian(clip = "off", xlim = c(2013, 2025)) +
         labs(
             title = paste0("Relative burden of Venezuelan migration: ",
                            "<span style='color: #c9a500;'>Colombia</span>",
                            " and ",
-                           "<span style='color: #C0392B;'>Peru</span> take the<br>",
-                           "lead from the U.S. as host countries during 2018 mass exodus"),
-            subtitle = paste0("Relative share of migrants hosted by country"),
+                           "<span style='color: #C0392B;'>Peru</span> took the<br>",
+                           "lead from the U.S. as major host countries following 2018's mass exodus"),
+            subtitle = paste0("Relative share of migrants hosted by country (%)"),
             caption = paste0("<b>Data source</b>: UNHCR Refugee Data Finder (accessed January 2026)",
                              "<br>",
                              "<b>Notes</b>: Percentages represent point-in-time migrant stock and include refugees, ",
                              "asylum-seekers, and other people in need of international<br>",
-                             "protection (excluding internally displaced persons).",
+                             "protection (excluding internally displaced persons). ",
+                             "The absolute migrant stock numbers are shown at the top ",
+                             "of the chart for context.",
                              "<br><b>Graphic</b>: The Data Decoded / @TheDataDecoded")
         ) +
   theme_minimal(base_family = font_choice, base_size = 14) +
@@ -593,7 +595,7 @@ q <- ggplot(venezuela_area, aes(x = year, y = percentage_year, fill = country_gr
             plot.caption.position = "plot",
             plot.caption = element_markdown(hjust = 0, vjust = 0, colour = "grey50",
                                             margin = margin(t = 20), lineheight = 1.25),
-            plot.margin = margin(t = 18.5, r = 150, b = 13.6, l = 18.5, unit = "pt")
+            plot.margin = margin(t = 18.5, r = 165, b = 13.6, l = 18.5, unit = "pt")
         ) +
     geom_richtext(data = venezuela_area_labeled,
         aes(
@@ -619,7 +621,7 @@ q <- ggplot(venezuela_area, aes(x = year, y = percentage_year, fill = country_gr
                      lineend = "round",
                      linetype = 3
         ) +
-    geom_segment(data = tibble(x = 2013, xend = 2013, y = 4, yend = 40),
+    geom_segment(data = tibble(x = 2013, xend = 2013, y = 4, yend = 111.25),
                      aes(x = x, xend = xend, y = y, yend = yend),
                      inherit.aes = FALSE,
                      linewidth = 0.6,
@@ -631,7 +633,7 @@ q <- ggplot(venezuela_area, aes(x = year, y = percentage_year, fill = country_gr
                      linewidth = 0.6,
                      lineend = "round"
         ) +
-    geom_segment(data = tibble(x = 2018, xend = 2018, y = 0, yend = 118),
+    geom_segment(data = tibble(x = 2018, xend = 2018, y = 0, yend = 111.25),
                      aes(x = x, xend = xend, y = y, yend = yend),
                      inherit.aes = FALSE,
                      linewidth = 0.6,
@@ -648,9 +650,17 @@ q <- ggplot(venezuela_area, aes(x = year, y = percentage_year, fill = country_gr
     geom_richtext(data = tibble(x = 2015.07, y = 71,
                                 label = paste0("Conditions deteriorate<br>",
                                                "rapidly and <b>migrants<br>",
-                                               "shift to neighboring<br>",
+                                               "move to neighboring<br>",
                                                "countries</b>, especially<br>",
                                                "(Peru and Brazil)")),
+                      aes(x = x, y = y, label = label),
+                      fill = NA, label.color = NA, hjust = 0, vjust = 1, size = 4,
+                      color = "grey20", show.legend = FALSE, family = font_choice,
+                      inherit.aes = FALSE) +
+    geom_richtext(data = tibble(x = 2013.07, y = 111.25,
+                                label = paste0("Early shifts in Venezuela's migrant<br>",
+                                               "stock under Maduro's rule foreshadow<br>",
+                                               "massive post-2018 outflows")),
                       aes(x = x, y = y, label = label),
                       fill = NA, label.color = NA, hjust = 0, vjust = 1, size = 4,
                       color = "grey20", show.legend = FALSE, family = font_choice,
@@ -658,14 +668,37 @@ q <- ggplot(venezuela_area, aes(x = year, y = percentage_year, fill = country_gr
     geom_richtext(data = tibble(x = 2018.07, y = 111.25,
                                 label = paste0("Once the mass exodus begins, ",
                                                " relative shares across countries<br>",
-                                               " stabilize, as <b>Colombia and Peru</b>",
-                                               " consistently absorb ~<b>",
-                                               colombia_peru_percentage,
-                                               " of the<br>migrant stock</b>")),
+                                               " stabilize — <b>Colombia and Peru",
+                                               " absorb ~", colombia_peru_percentage,
+                                               " of the migrant<br>stock</b>",
+                                               " through the end 2025")),
                       aes(x = x, y = y, label = label),
                       fill = NA, label.color = NA, hjust = 0, vjust = 1, size = 4,
                       color = "grey20", show.legend = FALSE, family = font_choice,
                       inherit.aes = FALSE) +
+    geom_richtext(data = tibble(x = 2018.07, y = 23,
+                                label = paste0("Colombia regularizes ~2M Venezuelans<br>",
+                                               "through Special (2017) and Temporary<br>",
+                                               "(2021) Protection permits")),
+                      aes(x = x, y = y, label = label),
+                      fill = NA, label.color = NA, hjust = 0, vjust = 1, size = 4,
+                      color = "grey20", show.legend = FALSE, family = font_choice,
+                      inherit.aes = FALSE) +
+    geom_richtext(data = tibble(x = 2018.07, y = 54.2,
+                                label = paste0("Peru issues ~500K temporary permits,<br>",
+                                               "enabling legal stay and work (mostly<br>",
+                                               "in the services/construction sectors")),
+                      aes(x = x, y = y, label = label),
+                      fill = NA, label.color = NA, hjust = 0, vjust = 1, size = 4,
+                      color = "grey20", show.legend = FALSE, family = font_choice,
+                      inherit.aes = FALSE) +
+    # Flag border
+    geom_point(data = flags,
+           aes(x = x, y = y),
+           size = 12, # Adjust size to be slightly larger than image
+           color = "black",
+           inherit.aes = FALSE,
+           position = position_nudge(0, 4)) +
     geom_flag(data = flags, aes(x = x, y = y, country = country), 
               size = 10, inherit.aes = FALSE,
               position = position_nudge(0, 4)) +
@@ -673,15 +706,16 @@ q <- ggplot(venezuela_area, aes(x = year, y = percentage_year, fill = country_gr
               aes(x = year, y = y,
                   label = total),
               inherit.aes = FALSE,
-              size = 4, color = "grey20") +
+              size = 4, color = "grey30") +
     annotate("rect", xmin = 2012.8, xmax = 2025.4,
-                 ymin = 119.3, ymax = 125.3, fill = NA,  color = "grey20",
+                 ymin = 113, ymax = 119, fill = NA,  color = "grey30",
              linewidth = 0.6) +
-    geom_text(data = tibble(x = 2013, y = 128.3, 
-                            label = "Absolute number of migrants (thousands)"),
+    geom_richtext(data = tibble(x = 2025.5, y = 116, 
+                            label = "Absolute number of<br>migrants (thousands)"),
               aes(x = x, y = y, label = label),
-              inherit.aes = FALSE, family = font_choice,
-              size = 4, hjust = 0.02, color = "grey20")
+              fill = NA, label.color = NA, hjust = 0, size = 4,
+                      color = "grey30", show.legend = FALSE, family = font_choice,
+                      inherit.aes = FALSE)
     
 
 ```
