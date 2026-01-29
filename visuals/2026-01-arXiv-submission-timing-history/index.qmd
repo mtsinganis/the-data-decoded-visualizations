@@ -1,0 +1,1086 @@
+---
+title: "A global clock for science: timing patterns in arXiv submissions"
+date: "2026-01-30"
+categories: [arXiv, 'Scientific publications']
+image: plots/thumb.svg
+description: "A global clock for science: timing patterns in arXiv submissions"
+format: html
+execute:
+  dir: project
+  echo: false
+  output: false
+---
+
+```{r project-path}
+# Set project path
+project_path <- file.path("visuals", "2026-01-arXiv-submission-timing-history")
+```
+
+```{r load-packages}
+
+library(jsonlite)
+library(data.table)
+library(arrow)
+library(dplyr)
+
+```
+
+I downloaded the the complete data set of arXiv submission from [Kaggle](https://www.kaggle.com/datasets/Cornell-University/arxiv) and unzipped the file. The data is in the file 'arxiv-metadata-oai-snapshot.json'.
+
+```{r import-data}
+
+# https://www.kaggle.com/datasets/Cornell-University/arxiv/download?datasetVersionNumber=270
+
+# ---- inputs ----
+infile <- file.path(project_path, "data", "arxiv-metadata-oai-snapshot.json") # path to 5GB JSON file
+outdir <- file.path(project_path, "data", "arxiv_extract_parquet")
+
+# Check if already imported
+
+if(file.exists(infile) && sum(grepl(".parquet", list.files(outdir))) > 1) {
+    message("JSON file already parsed. Skipping step")
+} else {
+        dir.create(outdir, showWarnings = FALSE)
+    
+        # ---- tuning ----
+        pagesize <- 20000  # good starting point on 32GB+SSD; reduce to 10000 if RStudio lags
+        
+        # ---- helpers ----
+        parse_created_utc <- function(x) {
+            # Returns POSIXct(UTC) or NA
+            if (is.null(x) || is.na(x) || !nzchar(x)) return(as.POSIXct(NA, tz = "UTC"))
+            # strip trailing " GMT" to avoid %Z parsing issues on some OSes
+            as.POSIXct(sub(" GMT$", "", x), format = "%a, %d %b %Y %H:%M:%S", tz = "UTC")
+        }
+        
+        count_authors_parsed <- function(ap) {
+            if (is.null(ap)) return(NA_integer_)
+            if (is.matrix(ap) || is.data.frame(ap)) return(nrow(ap))
+            if (is.list(ap)) return(length(ap))
+            NA_integer_
+        }
+        
+        first_created_string <- function(x) {
+            # x is one record (list)
+            v <- x$versions
+            if (is.null(v)) return(NA_character_)
+            
+            # sometimes versions is a data.frame, sometimes list-of-lists
+            if (is.data.frame(v) && nrow(v) >= 1 && "created" %in% names(v)) return(v$created[1])
+            if (is.list(v) && length(v) >= 1 && !is.null(v[[1]]$created)) return(v[[1]]$created)
+            
+            NA_character_
+        }
+        
+        # ---- stream + write ----
+        con <- file(infile, open = "r")
+        on.exit(close(con), add = TRUE)
+        
+        part <- 1L
+        total <- 0L
+        
+        repeat {
+            lines <- readLines(con, n = pagesize, warn = FALSE)
+            if (length(lines) == 0) break
+            
+            # Parse each JSON line into a list; do NOT attempt to rbind full records
+            recs <- lapply(lines, function(s) fromJSON(s, simplifyVector = FALSE))
+            
+            ids  <- vapply(recs, function(x) x$id %||% NA_character_, character(1))
+            cats <- vapply(recs, function(x) x$categories %||% NA_character_, character(1))
+            n_auth <- vapply(recs, function(x) count_authors_parsed(x$authors_parsed), integer(1))
+            
+            created1_chr <- vapply(recs, first_created_string, character(1))
+            
+            # IMPORTANT: use lapply + do.call(c, ...) to preserve POSIXct class attributes
+            submitted_at_utc <- do.call(c, lapply(created1_chr, parse_created_utc))
+            
+            # Derive correct date and time (UTC)
+            submitted_date <- as.Date(submitted_at_utc)  # Date in UTC (POSIXct already UTC)
+            submitted_time <- ifelse(
+                is.na(submitted_at_utc),
+                NA_character_,
+                strftime(submitted_at_utc, "%H:%M:%S", tz = "UTC")
+            )
+            
+            out <- data.table(
+                id = ids,
+                submitted_date = submitted_date,
+                submitted_time = submitted_time,
+                categories = cats,
+                n_authors = n_auth
+            )
+            
+            # Write one parquet part per chunk (keeps memory flat)
+            write_parquet(out, file.path(outdir, sprintf("part-%05d.parquet", part)))
+            
+            total <- total + nrow(out)
+            part <- part + 1L
+            
+            rm(lines, recs, ids, cats, n_auth, created1_chr, submitted_at_utc, submitted_date, submitted_time, out)
+            gc(FALSE)
+        }
+}
+
+
+
+```
+
+
+```{r create-dataframe}
+
+ds <- open_dataset(file.path(project_path, "data", "arxiv_extract_parquet"))
+
+ds %>% head(10) %>% collect()
+
+arxiv_data <- ds %>% collect() %>% as.data.table()
+
+```
+
+
+```{r calculate-time-of-day-in-seconds}
+
+# Date manipulation
+library(lubridate)
+
+arxiv_data_plot <- arxiv_data %>%
+    mutate(
+        time_seconds = lubridate::period_to_seconds(lubridate::hms(submitted_time))
+    )
+
+```
+
+
+```{r font-selection}
+
+library(showtext)
+
+# Choose default font
+font_choice <- "Momo Trust Sans"
+
+# Load Google Fonts into 'sysfonts'
+font_add_google(font_choice, db_cache = FALSE)
+
+# Automatically use 'showtext' for new graphics devices
+showtext_auto()
+
+```
+
+
+```{r heatmap-day-time-of-day}
+
+# Load package
+library(ggplot2)
+library(ggtext)
+
+# X-axis breaks
+breaks_vec <- seq.Date(
+    from = as.Date("1991-01-01"),
+    to   = as.Date("2026-01-01"),
+    by   = "5 years"
+)
+
+# Data on first ever submission
+first_submission <- arxiv_data_plot %>%
+                        filter(submitted_date == as.Date("1991-08-14"))
+
+# UTC time of first submission
+utc_time <- with(first_submission,
+                ymd_hms(paste(submitted_date, submitted_time), tz = "UTC"))
+
+# ET time of first submission
+et_time <- with_tz(utc_time, tzone = "America/New_York")
+
+# Plot
+p <- ggplot(arxiv_data_plot %>% filter(submitted_date >= as.Date("1991-08-01")),
+           aes(submitted_date, time_seconds)) +
+        # Heatmap of 2d bin counts
+        geom_bin2d(binwidth = c(30.436875, 300)) +
+        # First submission
+        geom_point(data = first_submission,
+                   shape = 21, fill = "#ef8b1d", color = "black",
+                   stroke = 0.5, size = 3.5) +
+        # Color scale
+        scale_fill_viridis_c(trans = "log10", option = "turbo",
+                             name = "Submissions",
+                             breaks = c(1, 10, 100, 600)) +
+        # X-axis settings
+        scale_x_date(
+            breaks = breaks_vec,
+            labels = format(breaks_vec, "%Y"),
+            limits = c(as.Date("1991-01-01"), as.Date("2026-01-23")),
+            expand = expansion(mult = c(0.02, 0))
+        ) +
+        # Y-axis settings
+        scale_y_continuous(
+            breaks = seq(0, 86400, by = 3*3600),
+            labels = function(x) sprintf("%02d:00", x/3600),
+            expand = expansion(mult = c(0.02, 0.02))
+        ) +
+        # Labels
+        labs(
+            title = "Timing of arXiv e-print submissions since the platform’s inception (1991-2026)",
+            subtitle = "Each cell shows the number of submissions by calendar date and UTC time of day, aggregated into monthly × 5-minute bins",
+            caption = paste0("<b>Data source</b>: arXiv metadata provided by Cornell University, accessed via Kaggle (dataset version 270)",
+                             "<br>",
+                             "<b>Notes</b>: Colors show log-scaled submission counts.", "<br>",
+                             "<b>Graphic</b>: The Data Decoded / @TheDataDecoded")
+        ) +
+        coord_cartesian(clip = "off") +
+        theme_minimal(base_family = font_choice, base_size = 13) +
+        # Theme settings
+        theme(
+            panel.grid.minor = element_blank(),
+            panel.grid.major.x = element_blank(),
+            plot.margin = margin(t = 18.5, r = 20, b = 13.6, l = 18.5,
+                                 unit = "pt"),
+            axis.title = element_blank(),
+            plot.title.position = "plot",
+            plot.title = element_markdown(hjust = 0, face = "bold", margin = margin(b = 5),
+                                          lineheight = 1, size = rel(1.6)),
+            plot.subtitle = element_markdown(hjust = 0, margin = margin(t = 3, b = 10),
+                                             size = rel(1), lineheight = 1.2),
+            plot.caption.position = "plot",
+            plot.caption = element_markdown(hjust = 0, vjust = 0, colour = "grey50",
+                                            margin = margin(t = 20), lineheight = 1.25),
+            legend.box.margin = margin(t = 45, r = -10, b = 0, l = 0),
+            # legend.margin = margin(t = 0, r = 0, b = 0, l = 0),
+            legend.title = element_text(margin = margin(b = 10))
+        ) +
+        # Legend settings
+        guides(
+            fill = guide_colorbar(
+                barheight = unit(180, "pt"),  # vertical stretch
+                barwidth  = unit(15, "pt"),    # keep it slim
+                ticks.colour = "grey40",
+                frame.colour = NA
+            )
+        ) +
+        # Annotations
+        geom_richtext(data = tibble(x = as.Date("1991-08-01"),
+                            y = 86400 * 1.18,
+                            label = paste0("<b>", "First arXiv submission<br>",
+                                           "</b>", "August 14th, 1991<br>",
+                                           first_submission$submitted_time,
+                                           " UTC<br>(",
+                                           format(et_time, "%H:%M:%S"),
+                                           " EDT)")),
+              aes(x = x, y = y, label = label),
+              fill = NA, label.color = NA, hjust = 0, vjust = 1, size = 4,
+              color = "grey20", show.legend = FALSE, family = font_choice,
+              inherit.aes = FALSE) +
+        geom_curve(data = tibble(x = as.Date("1991-08-01"), y = 86400 * 1.067,
+                                 xend = first_submission$submitted_date -85,
+                                 yend = first_submission$time_seconds + 1300),
+                   aes(x = x, y = y, xend = xend, yend = yend),
+                   arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+                   color = "grey20",
+                   # size = 0.4,
+                   angle = 102,
+                   linewidth = 0.5,
+                   curvature = 0.4,
+                   inherit.aes = FALSE
+        ) +
+        geom_richtext(data = tibble(x = as.Date("2017-01-01"),
+                            y = 86400 * 1.18,
+                            label = paste0("<b>Submission freeze time change<br>",
+                                           "(January 2nd, 2017)",
+                                           "</b><br>", "21:00 → 19:00 UTC<br>",
+                                           "(4pm → 2pm EST)")),
+              aes(x = x, y = y, label = label),
+              fill = NA, label.color = NA, hjust = 0, vjust = 1, size = 4,
+              color = "grey20", show.legend = FALSE, family = font_choice,
+              inherit.aes = FALSE) +
+        geom_richtext(data = tibble(x = as.Date("2005-01-01"),
+                            y = 86400 * 1.18,
+                            label = paste0("<b>", "Standard time<br>",
+                                           "submission cutoff</b><br>",
+                                           "21:00 UTC<br>(4pm EST)")),
+              aes(x = x, y = y, label = label),
+              fill = NA, label.color = NA, hjust = 0, vjust = 1, size = 4,
+              color = "grey20", show.legend = FALSE, family = font_choice,
+              inherit.aes = FALSE) +
+        geom_richtext(data = tibble(x = as.Date("2005-01-01"),
+                            y = 60000,
+                            label = paste0("<b>", "Daylight time<br>",
+                                           "submission cutoff</b><br>",
+                                           "20:00 UTC<br>(4pm EDT)")),
+              aes(x = x, y = y, label = label),
+              fill = NA, label.color = NA, hjust = 0, vjust = 1, size = 4,
+              color = "grey20", show.legend = FALSE, family = font_choice,
+              inherit.aes = FALSE) +
+        geom_curve(data = tibble(x = as.Date("2008-10-01"), y = 86400 * 1.067,
+                                 xend = as.Date("2012-01-15"),
+                                 yend = 76600),
+                   aes(x = x, y = y, xend = xend, yend = yend),
+                   arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+                   color = "grey20",
+                   # size = 0.4,
+                   angle = 102,
+                   linewidth = 0.5,
+                   curvature = -0.4,
+                   inherit.aes = FALSE
+        ) +
+        geom_curve(data = tibble(x = as.Date("2010-01-01"), y = 60000,
+                                 xend = as.Date("2012-07-05"),
+                                 yend = 71300),
+                   aes(x = x, y = y, xend = xend, yend = yend),
+                   arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+                   color = "grey20",
+                   # size = 0.4,
+                   angle = 102,
+                   linewidth = 0.5,
+                   curvature = 0.4,
+                   inherit.aes = FALSE
+        ) +
+        geom_segment(data = tibble(x_start = as.Date("2017-01-01"),
+                                   x_end = as.Date("2017-01-01"),
+                                   y_start = 77900,
+                                   y_end = 62800),
+                     aes(x = x_start, xend = x_end, y = y_start, yend = y_end),
+                     linewidth = 0.5,
+                     lineend = "round",
+                     linetype = 1
+        ) +
+        geom_curve(data = tibble(x = as.Date("2021-01-01"), y = 86400 * 1.052,
+                                 xend = as.Date("2017-03-15"),
+                                 yend = 70600),
+                   aes(x = x, y = y, xend = xend, yend = yend),
+                   arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+                   color = "grey20",
+                   # size = 0.4,
+                   angle = 102,
+                   linewidth = 0.5,
+                   curvature = -0.4,
+                   inherit.aes = FALSE
+        )
+
+# # Find maximum bin value
+# # Build the plot (no rendering)
+# pb <- ggplot_build(p)
+# 
+# # Extract the bin data
+# bin_data <- pb$data[[1]]
+# 
+# # Inspect columns
+# names(bin_data)
+
+```
+
+
+```{r export-visualization-heatmap}
+
+svg_path <- file.path(project_path, "plots", "thumb.svg")
+
+svg_w <- 11.8
+svg_h <- 10
+
+png_w <- 2000
+png_h <- round(png_w * svg_h / svg_w)  # keep same aspect ratio
+
+ggsave(svg_path, p, width = svg_w, height = svg_h)
+
+library(rsvg)
+
+png_path <- file.path(project_path, "plots", "arxiv_heatmap.png")
+
+rsvg_png(
+    svg  = svg_path,
+    file = png_path,
+    width  = png_w,
+    height = png_h
+)
+
+```
+
+![](plots/thumb.svg){width=100%}
+
+```{r create-dataframe-ridgeline-time-of-day}
+
+# 1) Choose a time-of-day bin (e.g., 5 minutes = 300 seconds)
+bin_sec <- 600
+
+df_year_time_norm <- arxiv_data_plot %>%
+    filter(!is.na(submitted_date), !is.na(time_seconds), submitted_date >= as.Date("1991-08-01")) %>%
+    mutate(
+        year = year(submitted_date),
+        tod_bin = floor(time_seconds / bin_sec) * bin_sec,
+        day = as.Date(submitted_date)
+    ) %>%
+    # submissions per day × time-bin
+    count(year, day, tod_bin, name = "n") %>%
+    # mean submissions per bin within each year
+    group_by(year, tod_bin) %>%
+    summarise(mean_submissions = mean(n), .groups = "drop") %>%
+    # normalize within year (so each year integrates/sums to 1)
+    group_by(year) %>%
+    mutate(
+        mean_norm = mean_submissions / sum(mean_submissions, na.rm = TRUE)
+    ) %>%
+    ungroup() %>%
+    mutate(
+        tod_hours = tod_bin / 3600,
+        year = factor(year)
+    )
+
+df_year_time_norm_2 <- df_year_time_norm %>%
+    mutate(year_num = as.integer(as.character(year))) %>%
+    filter(year_num %in% c(1995, 2005, 2015, 2025)) %>%
+    select(-year_num)
+
+```
+
+```{r ridgeline-color}
+
+library(viridisLite)
+
+# Create plasma colours
+plasma_cols <- plasma(256)
+
+# Make it cyclic: dark → light → dark
+plasma_cyclic <- c(
+    plasma_cols[1:250],           # dark → light
+    rev(plasma_cols[1:250])       # light → dark
+)
+
+circle_pts <- data.frame(
+    tod_hours = 20.5,  # <-- your x positions
+    year      = 2.55  # <-- your y positions
+)
+
+```
+
+
+
+```{r noun-project-icons}
+
+# Load package
+library(httr)
+
+# Specify colors
+library(colorspace)
+library(magick)
+
+icon_colors <- c(
+    night = plasma_cyclic[1],
+    day   = plasma_cyclic[length(plasma_cyclic)/2 + 30]
+)
+
+# Check if icons have already been downloaded and processed
+if(dir.exists(file.path(project_path, "noun_icons")) &&
+   sum(grepl(".png", list.files(file.path(project_path, "noun_icons")))) > 1) {
+    message("Noun icons already exit in folder 'noun_icons'. Skipping API request")
+} else {
+        # NOUN PROJECT icons
+        key    <- Sys.getenv("NOUN_KEY")
+        secret <- Sys.getenv("NOUN_SECRET")
+        stopifnot(nzchar(key), nzchar(secret))
+        
+        noun_app <- oauth_app("noun_project", key = key, secret = secret)
+        noun_sig <- sign_oauth1.0(app = noun_app)
+        
+        noun_icon_detail <- function(icon_id) {
+            res <- GET(
+                paste0("https://api.thenounproject.com/v2/icon/", icon_id),
+                config = noun_sig
+            )
+            stop_for_status(res)
+            fromJSON(content(res, as = "text", encoding = "UTF-8"))
+        }
+        
+        icon_ids <- c(
+            night = 6413713,
+            day   = 5101293
+        )
+        
+        dir.create(file.path(project_path, "noun_icons"), showWarnings = FALSE)
+        
+        for (nm in names(icon_ids)) {
+            
+            # Get icon detail JSON (includes thumbnail_url)
+            res <- GET(
+                paste0("https://api.thenounproject.com/v2/icon/", icon_ids[[nm]]),
+                config = noun_sig
+            )
+            stop_for_status(res)
+            
+            dat <- fromJSON(content(res, as = "text", encoding = "UTF-8"))
+            png_url <- dat$icon$thumbnail_url
+            
+            # Download the PNG bytes
+            res_png <- GET(png_url, user_agent("R/httr"))
+            stop_for_status(res_png)
+            
+            src_path <- file.path(project_path, "noun_icons", paste0(nm, "_src.png"))
+            out_path <- file.path(project_path, "noun_icons", paste0(nm, ".png"))
+            writeBin(content(res_png, as = "raw"), src_path)
+            
+            # Recolor + save
+            img <- image_read(src_path)
+            img_col <- image_colorize(img, opacity = 100, color = icon_colors[[nm]])
+            image_write(img_col, out_path)
+        }
+}
+
+```
+
+
+```{r plot-ridgelines-time-of-day}
+
+library(ggimage)
+library(ggridges)
+
+q <- ggplot(df_year_time_norm_2, aes(x = tod_hours, y = year, height = mean_norm, fill = tod_hours)) +
+    geom_ridgeline_gradient(
+        scale = 60,
+        linewidth = 0.2
+    ) +
+    scale_x_continuous(
+        breaks = seq(0, 24, by = 3),
+        labels = function(x) sprintf("%02d:00", x),
+        expand = expansion(mult = c(0.03, 0.008))
+    ) +
+    scale_y_discrete(expand = expansion(mult = c(0.08, 0.65))) +
+    # scale_fill_viridis_c(option = "plasma") +
+    scale_fill_gradientn(
+        colours = plasma_cyclic
+        # limits = c(0, 24),
+        # breaks = seq(0, 24, by = 6),
+        # labels = function(x) sprintf("%02d:00", x)
+    ) +
+    labs(
+        title = paste0("The daily rhythm of arXiv submissions over the past three decades: From diffuse<br>",
+                       "activity to global synchronization"),
+        subtitle = paste0(
+            "Each ridge is the mean submissions per ", bin_sec / 60,
+            "-minute bin (averaged across days), normalized within year"
+        ),
+        caption = paste0("<b>Data source</b>: arXiv metadata provided by Cornell University, accessed via Kaggle (dataset version 270)",
+                         "<br>",
+                         "<b>Graphic</b>: The Data Decoded / @TheDataDecoded")
+    ) +
+    coord_cartesian(clip = "off") +
+    theme_minimal(base_family = font_choice, base_size = 13) +
+    theme(
+        panel.grid.minor = element_blank(),
+        panel.grid.major.x = element_line(linetype = 2),
+        plot.margin = margin(t = 18.5, r = 215, b = 13.6, l = 18.5,
+                             unit = "pt"),
+        axis.title = element_blank(),
+        plot.title.position = "plot",
+        plot.title = element_markdown(hjust = 0, face = "bold", margin = margin(b = 5),
+                                      lineheight = 1, size = rel(1.6)),
+        plot.subtitle = element_markdown(hjust = 0, margin = margin(t = 3, b = 10),
+                                         size = rel(1), lineheight = 1.2),
+        plot.caption.position = "plot",
+        plot.caption = element_markdown(hjust = 0, vjust = 0, colour = "grey50",
+                                        margin = margin(t = 20), lineheight = 1.25),
+        legend.box.margin = margin(t = 40, r = -10, b = 0, l = 0),
+        # legend.margin = margin(t = 0, r = 0, b = 0, l = 0),
+        legend.title = element_text(margin = margin(b = 10)),
+        legend.position = "none"
+    ) +
+    geom_richtext(data = tibble(x = 24.1,
+                                y = 1,
+                                label = paste0("<b>Early arXiv</b><br>",
+                                               "Diffuse, low-volume pattern with<br>",
+                                               "submissions spread across day.<br>",
+                                               "Mostly US-centric user base.")),
+                  aes(x = x, y = y, label = label),
+                  fill = NA, label.color = NA, hjust = 0, vjust = 0, size = 4,
+                  color = "grey20", show.legend = FALSE, family = font_choice,
+                  inherit.aes = FALSE) +
+    geom_richtext(data = tibble(x = 24.1,
+                                y = 2,
+                                label = paste0("<b>Growth phase</b><br>",
+                                               "Deadline effects begin to structure<br>",
+                                               "submission behavior and afternoon/<br>",
+                                               "morning peaks emerge.")),
+                  aes(x = x, y = y, label = label),
+                  fill = NA, label.color = NA, hjust = 0, vjust = 0, size = 4,
+                  color = "grey20", show.legend = FALSE, family = font_choice,
+                  inherit.aes = FALSE) +
+    geom_richtext(data = tibble(x = 24.1,
+                                y = 3,
+                                label = paste0("<b>Mature platform</b><br>",
+                                               "Submissions cluster sharply<br>",
+                                               "near daily cutoff and morning/<br>",
+                                               "afternoon humps strengthen.")),
+                  aes(x = x, y = y, label = label),
+                  fill = NA, label.color = NA, hjust = 0, vjust = 0, size = 4,
+                  color = "grey20", show.legend = FALSE, family = font_choice,
+                  inherit.aes = FALSE) +
+    geom_richtext(data = tibble(x = 24.1,
+                                y = 4,
+                                label = paste0("<b>Globally synchronized behavior</b><br>",
+                                               "Cutoff peaks remain pronounced,<br>",
+                                               "morning/afternoon humps intensify<br>",
+                                               "and a tertiary peak emerges,<br>",
+                                               "representing East Asia's workday<br>",
+                                               "peak.")),
+                  aes(x = x, y = y, label = label),
+                  fill = NA, label.color = NA, hjust = 0, vjust = 0, size = 4,
+                  color = "grey20", show.legend = FALSE, family = font_choice,
+                  inherit.aes = FALSE) +
+    # geom_point(
+    #     data = circle_pts,
+    #     aes(x = tod_hours, y = year),
+    #     shape = 21,
+    #     size = 22,
+    #     stroke = 1.1,
+    #     fill = NA,
+    #     colour = "grey30",
+    #     inherit.aes = FALSE
+    # ) +
+    annotate("rect", xmin = 17.3, xmax = 19.5,
+             ymin = 4.3, ymax = 5.4, fill = NA,  color = "grey30",
+             linewidth = 0.6) +
+    annotate("rect", xmin = -0.4, xmax = 0.4,
+             ymin = 1.25, ymax = 1.8, fill = NA,  color = "grey30",
+             linewidth = 0.6) +
+    annotate("rect", xmin = 19.5, xmax = 21.5,
+             ymin = 2.3, ymax = 2.8, fill = NA,  color = "grey30",
+             linewidth = 0.6) +
+    geom_richtext(data = tibble(x = 15,
+                                y = 4.66,
+                                label = paste0("<b>Afternoon<br>peak</b><br>",
+                                               "15:00 UTC")),
+                  aes(x = x, y = y, label = label),
+                  fill = NA, label.color = NA, hjust = 0.5, vjust = 0, size = 4,
+                  color = "grey20", show.legend = FALSE, family = font_choice,
+                  inherit.aes = FALSE) +
+    geom_richtext(data = tibble(x = 9,
+                                y = 4.53,
+                                label = paste0("<b>Morning<br>peak</b><br>",
+                                               "09:00 UTC")),
+                  aes(x = x, y = y, label = label),
+                  fill = NA, label.color = NA, hjust = 0.5, vjust = 0, size = 4,
+                  color = "grey20", show.legend = FALSE, family = font_choice,
+                  inherit.aes = FALSE) +
+    geom_richtext(data = tibble(x = 3,
+                                y = 4.35,
+                                label = paste0("<b>Tertiary<br>peak</b><br>",
+                                               "03:00 UTC")),
+                  aes(x = x, y = y, label = label),
+                  fill = NA, label.color = NA, hjust = 0.5, vjust = 0, size = 4,
+                  color = "grey20", show.legend = FALSE, family = font_choice,
+                  inherit.aes = FALSE) +
+    geom_richtext(data = tibble(x = 19.74,
+                                y = 5.4,
+                                label = paste0("<b>Submission<br>cutoff peaks</b><br>",
+                                               "18:00 UTC (summer)<br>",
+                                               "19:00 UTC (winter)")),
+                  aes(x = x, y = y, label = label),
+                  fill = NA, label.color = NA, hjust = 0, vjust = 1, size = 4,
+                  color = "grey20", show.legend = FALSE, family = font_choice,
+                  inherit.aes = FALSE) +
+    geom_richtext(data = tibble(x = 0.5,
+                                y = 1.82,
+                                label = paste0("<b>Legacy 8pm ET<br>",
+                                               "announcement peak</b>")),
+                  aes(x = x, y = y, label = label),
+                  fill = NA, label.color = NA, hjust = 0, vjust = 1, size = 4,
+                  color = "grey20", show.legend = FALSE, family = font_choice,
+                  inherit.aes = FALSE) +
+    geom_richtext(data = tibble(x = 19.3,
+                                y = 2.85,
+                                label = paste0("<b>Cutoff peaks<br>",
+                                               "emerge</b>")),
+                  aes(x = x, y = y, label = label),
+                  fill = NA, label.color = NA, hjust = 1, vjust = 1, size = 4,
+                  color = "grey20", show.legend = FALSE, family = font_choice,
+                  inherit.aes = FALSE) +
+    geom_image(data = tibble(x = c(1.5, 12, 22.5),
+                             y = c(5.7, 5.7, 5.7),
+                             image = paste0(project_path, "/noun_icons/",
+                                            rep_len(names(icon_colors), 3),
+                                            ".png"),
+                             size = c(0.06, 0.09, 0.06)),
+               aes(x = x, y = y, image = image, size = size),
+               inherit.aes = FALSE) +
+    scale_size_identity() +
+    geom_curve(data = tibble(x = 2.6, y = 5.7,
+                             xend = 10.5, yend = 5.7),
+               aes(x = x, y = y, xend = xend, yend = yend),
+               arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+               color = "grey20",
+               # size = 0.4,
+               angle = 102,
+               linewidth = 0.5,
+               curvature = 0,
+               inherit.aes = FALSE
+    ) +
+    geom_curve(data = tibble(x = 13.5, y = 5.7,
+                             xend = 21.4, yend = 5.7),
+               aes(x = x, y = y, xend = xend, yend = yend),
+               arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+               color = "grey20",
+               # size = 0.4,
+               angle = 102,
+               linewidth = 0.5,
+               curvature = 0,
+               inherit.aes = FALSE
+    )
+
+
+```
+
+```{r export-visualization-ridgelines-time-of-day}
+
+svg_path <- file.path(project_path, "plots", "arxiv_ridgelines_time_of_day.svg")
+
+svg_w <- 12
+svg_h <- 10
+
+png_w <- 2000
+png_h <- round(png_w * svg_h / svg_w)  # keep same aspect ratio
+
+ggsave(svg_path, q, width = svg_w, height = svg_h)
+
+library(rsvg)
+
+png_path <- file.path(project_path, "plots", "arxiv_ridgelines_time_of_day.png")
+
+rsvg_png(
+    svg  = svg_path,
+    file = png_path,
+    width  = png_w,
+    height = png_h
+)
+
+```
+
+![](plots/arxiv_ridgelines_time_of_day.svg){width=100%}
+
+
+```{r create-dataframe-ridgeline-day-of-year}
+
+# --- 1) Build year × day-of-year table (normalized within year) ---
+
+df_year_doy_norm <- arxiv_data_plot %>%
+    filter(!is.na(submitted_date),
+           submitted_date >= as.Date("1991-08-01")) %>%
+    # drop leap day so day-of-year aligns across years
+    filter(!(month(submitted_date) == 2 & day(submitted_date) == 29)) %>%
+    mutate(
+        year = year(submitted_date),
+        day  = as.Date(submitted_date),
+        doy  = yday(submitted_date)             # 1..365
+    ) %>%
+    # submissions per calendar day (this is your "bin")
+    count(year, day, doy, name = "n") %>%
+    # (optional, but keeps your structure similar)
+    group_by(year, doy) %>%
+    summarise(mean_submissions = sum(n), .groups = "drop") %>%
+    # normalize within year (shape only)
+    group_by(year) %>%
+    mutate(mean_norm = mean_submissions / sum(mean_submissions, na.rm = TRUE)) %>%
+    ungroup() %>%
+    # create a dummy date to get nice month labels while preserving daily resolution
+    mutate(
+        doy_date = as.Date("2001-01-01") + (doy - 1),
+        year = factor(year)
+    )
+
+df_year_doy_norm_2 <- df_year_doy_norm %>%
+    mutate(year_num = as.integer(as.character(year))) %>%
+    filter(year_num %in% c(1995, 2005, 2015, 2025)) %>%
+    select(-year_num)
+
+# Inset plot
+df_2025_july <- df_year_doy_norm_2 %>%
+    filter(year == "2025") %>%
+    filter(month(doy_date) == 7)
+
+```
+
+
+```{r small-inset-plot}
+
+# Build inset plot to explain vertical banding
+p_inset <- ggplot(
+    df_2025_july,
+    aes(x = doy_date, y = 1, height = mean_norm)
+) +
+    geom_ridgeline(
+        scale = 40,
+        fill = "grey70",
+        color = "grey30",
+        linewidth = 0.25
+    ) +
+    scale_x_date(
+        date_breaks = "1 week",
+        date_labels = "%d",
+        expand = c(0.1, 0.1)
+    ) +
+    scale_y_discrete(expand = c(0.01, 0.01)) +
+    coord_cartesian(clip = "off", expand = c(bottom = FALSE,
+                                             left = FALSE,
+                                             right = FALSE)) +
+    theme_void() +
+    theme(
+        plot.background = element_rect(fill = "white", color = "grey40", linewidth = 1.1),
+        # plot.background = element_rect(fill = "white", color = NA, linewidth = 0.4),
+        plot.margin = margin(8, 9, 6, 9, unit = "pt"),
+        theme(text = element_text(family = font_choice))
+    ) +
+    annotate(
+        "text",
+        x = as.Date("2001-07-06"),
+        y = 1.26,
+        label = "Weekday\npeak",
+        size = 3.5,
+        colour = "grey20",
+        lineheight = 0.8
+    ) +
+    annotate(
+        "text",
+        x = as.Date("2001-07-26"),
+        y = 1.26,
+        label = "Weekend\ntrough",
+        size = 3.5,
+        colour = "grey20",
+        lineheight = 0.8
+    ) +
+    geom_curve(data = tibble(x = as.Date("2001-07-06"), y = 1.22,
+                             xend = as.Date("2001-07-08"), yend = 1.139),
+               aes(x = x, y = y, xend = xend, yend = yend),
+               arrow = arrow(length = unit(0.35, "cm"), angle = 18, type = "closed"),
+               color = "grey20",
+               # size = 0.4,
+               angle = 102,
+               linewidth = 0.5,
+               curvature = -0.2,
+               inherit.aes = FALSE
+    ) +
+    geom_curve(data = tibble(x = as.Date("2001-07-24"), y = 1.22,
+                             xend = as.Date("2001-07-19"), yend = 1.1),
+               aes(x = x, y = y, xend = xend, yend = yend),
+               arrow = arrow(length = unit(0.35, "cm"), angle = 18, type = "closed"),
+               color = "grey20",
+               # size = 0.4,
+               angle = 102,
+               linewidth = 0.5,
+               curvature = 0.2,
+               inherit.aes = FALSE
+    )
+
+
+```
+
+
+```{r plot-ridgelines-day-of-year}
+
+r <- ggplot(df_year_doy_norm_2,
+            aes(x = doy_date, y = year, height = mean_norm,
+                fill = as.numeric(doy_date))) +
+    geom_ridgeline_gradient(
+        scale = 150,
+        linewidth = 0.2
+    ) +
+    scale_x_date(
+        date_breaks = "1 month",
+        date_labels = "%b",
+        expand = c(0.03, 0)
+    ) +
+    scale_y_discrete(expand = expansion(mult = c(0.08, 0.65))) +
+    # reuse your cyclic plasma palette (works fine for a year cycle too)
+    scale_fill_gradientn(colours = plasma_cyclic) +
+    labs(
+        title = paste0("The annual rhythm of arXiv submissions over the past three decades: increasingly<br>",
+                       "coordinated seasonal waves driven by conference and academic calendars"),
+        subtitle = "Daily submission volume across the calendar year, normalized within year",
+        caption = paste0("<b>Data source</b>: arXiv metadata provided by Cornell University, accessed via Kaggle (dataset version 270)",
+                         "<br>",
+                         "<b>Graphic</b>: The Data Decoded / @TheDataDecoded")
+    ) +
+    coord_cartesian(clip = "off") +
+    theme_minimal(base_family = font_choice, base_size = 13) +
+    theme(
+        text = element_text(family = font_choice),
+        panel.grid.minor = element_blank(),
+        panel.grid.major.x = element_line(linetype = 2),
+        plot.margin = margin(t = 18.5, r = 215, b = 13.6, l = 18.5, unit = "pt"),
+        axis.title = element_blank(),
+        plot.title.position = "plot",
+        plot.title = element_markdown(hjust = 0, face = "bold", margin = margin(b = 5),
+                                      lineheight = 1, size = rel(1.6)),
+        plot.subtitle = element_markdown(hjust = 0, margin = margin(t = 3, b = 10),
+                                         size = rel(1), lineheight = 1.2),
+        plot.caption.position = "plot",
+        plot.caption = element_markdown(hjust = 0, vjust = 0, colour = "grey50",
+                                        margin = margin(t = 20), lineheight = 1.25),
+        legend.position = "none"
+    ) +
+    geom_image(data = tibble(x = sapply(c("2001-02-01", "2001-07-01", "2001-12-01"), as.Date),
+                             y = rep(5.69, 3),
+                             image = paste0(project_path, "/noun_icons/",
+                                            rep_len(names(icon_colors), 3),
+                                            ".png"),
+                             size = c(0.06, 0.09, 0.06)),
+               aes(x = x, y = y, image = image, size = size),
+               inherit.aes = FALSE) +
+    scale_size_identity() +
+    geom_curve(data = tibble(x = as.Date("2001-02-15"), y = 5.69,
+                             xend = as.Date("2001-06-12"), yend = 5.69),
+               aes(x = x, y = y, xend = xend, yend = yend),
+               arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+               color = "grey20",
+               # size = 0.4,
+               angle = 102,
+               linewidth = 0.5,
+               curvature = 0,
+               inherit.aes = FALSE
+    ) +
+    geom_curve(data = tibble(x = as.Date("2001-07-20"), y = 5.69,
+                             xend = as.Date("2001-11-15"), yend = 5.69),
+               aes(x = x, y = y, xend = xend, yend = yend),
+               arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+               color = "grey20",
+               # size = 0.4,
+               angle = 102,
+               linewidth = 0.5,
+               curvature = 0,
+               inherit.aes = FALSE
+    ) +
+    annotate("rect", xmin = as.Date("2001-12-24"), xmax = as.Date("2002-01-07"),
+             ymin = 3.92, ymax = 4.65, fill = NA,  color = "grey30",
+             linewidth = 0.6) +
+    annotate("rect", xmin = as.Date("2000-12-25"), xmax = as.Date("2001-01-07"),
+             ymin = 3.92, ymax = 4.65, fill = NA,  color = "grey30",
+             linewidth = 0.6) +
+    annotate("rect", xmin = as.Date("2001-05-10"), xmax = as.Date("2001-06-10"),
+             ymin = 3.92, ymax = 4.71, fill = NA,  color = "grey30",
+             linewidth = 0.6) +
+    annotate("rect", xmin = as.Date("2001-09-10"), xmax = as.Date("2001-10-20"),
+             ymin = 3.92, ymax = 4.81, fill = NA,  color = "grey30",
+             linewidth = 0.6) +
+    geom_richtext(data = tibble(x = as.Date("2002-01-13"),
+                                y = 1,
+                                label = paste0("<b>Early arXiv</b><br>",
+                                               "Diffuse seasonal pattern with<br>",
+                                               "high day-to-day noise")),
+                  aes(x = x, y = y, label = label),
+                  fill = NA, label.color = NA, hjust = 0, vjust = 0, size = 4,
+                  color = "grey20", show.legend = FALSE, family = font_choice,
+                  inherit.aes = FALSE) +
+    geom_richtext(data = tibble(x = as.Date("2002-01-13"),
+                                y = 2,
+                                label = paste0("<b>Growing coordination</b><br>",
+                                               "Seasonal rhythm becomes clearer<br>",
+                                               "as conference cycles and teaching<br>",
+                                               "calendars begin to shape submissions.")),
+                  aes(x = x, y = y, label = label),
+                  fill = NA, label.color = NA, hjust = 0, vjust = 0, size = 4,
+                  color = "grey20", show.legend = FALSE, family = font_choice,
+                  inherit.aes = FALSE) +
+    geom_richtext(data = tibble(x = as.Date("2002-01-13"),
+                                y = 3,
+                                label = paste0("<b>Mature but diffuse seasonality</b><br>",
+                                               "Weekly structure is strong,<br>",
+                                               "but annual timing remains broadly/<br>",
+                                               "distributed.")),
+                  aes(x = x, y = y, label = label),
+                  fill = NA, label.color = NA, hjust = 0, vjust = 0, size = 4,
+                  color = "grey20", show.legend = FALSE, family = font_choice,
+                  inherit.aes = FALSE) +
+    geom_richtext(data = tibble(x = as.Date("2002-01-13"),
+                                y = 4,
+                                label = paste0("<b>Globally synchronized workflow</b><br>",
+                                               "Highly regular weekly and seasonal<br>",
+                                               "structure, reflecting a large,<br>",
+                                               "internationally coordinated user base.")),
+                  aes(x = x, y = y, label = label),
+                  fill = NA, label.color = NA, hjust = 0, vjust = 0, size = 4,
+                  color = "grey20", show.legend = FALSE, family = font_choice,
+                  inherit.aes = FALSE) +
+    geom_richtext(data = tibble(x = as.Date("2001-01-01"),
+                                y = 4.68,
+                                label = paste0("<b>New Year holidays</b><br>",
+                                               "- university closures<br>",
+                                               "- fewer formal deadlines")),
+                  aes(x = x, y = y, label = label),
+                  fill = NA, label.color = NA, hjust = 0, vjust = 0, size = 3.5,
+                  color = "grey20", show.legend = FALSE, family = font_choice,
+                  inherit.aes = FALSE) +
+    geom_richtext(data = tibble(x = as.Date("2001-04-15"),
+                                y = 4.75,
+                                label = paste0("<b>Early summer peak</b><br>",
+                                               "- teaching obligations ease<br>",
+                                               "- conference cycles<br>",
+                                               "- pre-summer break work finalized")),
+                  aes(x = x, y = y, label = label),
+                  fill = NA, label.color = NA, hjust = 0, vjust = 0, size = 3.5,
+                  color = "grey20", show.legend = FALSE, family = font_choice,
+                  inherit.aes = FALSE) +
+    geom_richtext(data = tibble(x = as.Date("2001-08-10"),
+                                y = 5.08,
+                                label = paste0("<b>Fall submission surge</b><br>",
+                                               "- post-summer research completion<br>",
+                                               "- fall conference/evaluation deadlines")),
+                  aes(x = x, y = y, label = label),
+                  fill = NA, label.color = NA, hjust = 0, vjust = 0, size = 3.5,
+                  color = "grey20", show.legend = FALSE, family = font_choice,
+                  inherit.aes = FALSE) +
+    geom_richtext(data = tibble(x = as.Date("2001-11-26"),
+                                y = 4.67,
+                                label = paste0("<b>Christmas holidays</b><br>",
+                                               "- university closures")),
+                  aes(x = x, y = y, label = label),
+                  fill = NA, label.color = NA, hjust = 0, vjust = 0, size = 3.5,
+                  color = "grey20", show.legend = FALSE, family = font_choice,
+                  inherit.aes = FALSE) 
+
+
+
+```
+
+
+```{r combine-plots}
+
+library(patchwork)
+
+final_plot <- r + 
+    inset_element(
+        p_inset, 
+        left   = 0.81,     # same as your x
+        bottom = 0.72,     # same as your y (patchwork uses bottom-left origin)
+        right  = 0.94, 
+        top    = 0.88, 
+        align_to = "full",   # or "plot" if you want it relative to the plot panel only
+        ignore_tag = TRUE    # optional: if you don't want auto-labels like "A", "B"
+    )
+
+```
+
+
+
+```{r export-visualization-ridgelines-day-of-year}
+
+svg_path <- file.path(project_path, "plots", "arxiv_ridgelines_month.svg")
+
+svg_w <- 12
+svg_h <- 10
+
+png_w <- 2000
+png_h <- round(png_w * svg_h / svg_w)  # keep same aspect ratio
+
+ggsave(svg_path, final_plot, width = svg_w, height = svg_h)
+
+# ggsave(svg_path, final_plot, width = svg_w, height = svg_h, device = svglite::svglite,
+       # system_fonts = list(sans = "Momo Trust Sans", serif = "Momo Trust Sans"))
+
+library(rsvg)
+
+png_path <- file.path(project_path, "plots", "arxiv_ridgelines_month.png")
+
+rsvg_png(
+    svg  = svg_path,
+    file = png_path,
+    width  = png_w,
+    height = png_h
+)
+```
+
+
+![](plots/arxiv_ridgelines_month.svg){width=100%}
