@@ -912,37 +912,6 @@ r <- ggplot(df_year_doy_norm_2,
                                         margin = margin(t = 20), lineheight = 1.25),
         legend.position = "none"
     ) +
-    geom_image(data = tibble(x = sapply(c("2001-02-01", "2001-07-01", "2001-12-01"), as.Date),
-                             y = rep(5.69, 3),
-                             image = paste0(project_path, "/noun_icons/",
-                                            rep_len(names(icon_colors), 3),
-                                            ".png"),
-                             size = c(0.06, 0.09, 0.06)),
-               aes(x = x, y = y, image = image, size = size),
-               inherit.aes = FALSE) +
-    scale_size_identity() +
-    geom_curve(data = tibble(x = as.Date("2001-02-15"), y = 5.69,
-                             xend = as.Date("2001-06-12"), yend = 5.69),
-               aes(x = x, y = y, xend = xend, yend = yend),
-               arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
-               color = "grey20",
-               # size = 0.4,
-               angle = 102,
-               linewidth = 0.5,
-               curvature = 0,
-               inherit.aes = FALSE
-    ) +
-    geom_curve(data = tibble(x = as.Date("2001-07-20"), y = 5.69,
-                             xend = as.Date("2001-11-15"), yend = 5.69),
-               aes(x = x, y = y, xend = xend, yend = yend),
-               arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
-               color = "grey20",
-               # size = 0.4,
-               angle = 102,
-               linewidth = 0.5,
-               curvature = 0,
-               inherit.aes = FALSE
-    ) +
     annotate("rect", xmin = as.Date("2001-12-24"), xmax = as.Date("2002-01-07"),
              ymin = 3.92, ymax = 4.65, fill = NA,  color = "grey30",
              linewidth = 0.6) +
@@ -1084,3 +1053,161 @@ rsvg_png(
 
 
 ![](plots/arxiv_ridgelines_month.svg){width=100%}
+
+
+```{r}
+
+# Load package
+library(scales)
+
+submissions_by_month <- arxiv_data_plot %>%
+  mutate(
+    year_month = floor_date(submitted_date, "month")   # → first day of the month (e.g. 1991-08-01)
+  ) %>%
+  count(year_month, name = "n") %>%                    # or .name = "n" if you prefer
+  filter(year_month >= as.Date("1991-08-01")) %>%
+  arrange(year_month) %>%
+  as_tibble() %>% 
+  # Manually change the value for Jan-2026 to the latest (20,864)
+  mutate(n = case_when(
+                       year_month == as.Date("2026-01-01") ~ 20864,
+                       .default = n))
+
+# submissions_by_year <- arxiv_data_plot %>%
+#     mutate(year = lubridate::year(submitted_date)) %>%
+#     count(year) %>% 
+#     filter(year >= 1991) %>% 
+#     as_tibble
+
+line <- ggplot(data = submissions_by_month,
+             aes(x = year_month, y = n, fill = year_month)) +
+          annotate("rect", xmin = as.Date("1991-08-14"), xmax = as.Date("2012-01-01"),
+                 ymin = -Inf, ymax = Inf,
+                 fill = alpha("#0072B2", 0.05)) +
+          annotate("rect", xmin = as.Date("2012-01-01"), xmax = as.Date("2023-01-01"),
+                   ymin = -Inf, ymax = Inf,
+                   fill = alpha("#FFC712", 0.1)) +
+          annotate("rect", xmin = as.Date("2023-01-01"), xmax = as.Date("2026-01-01"),
+                   ymin = -Inf, ymax = Inf,
+                   fill = alpha("#fa8e8e", 0.16)) +
+          geom_line(color = "grey20") +   # "#b31b1b"
+          geom_point(data = submissions_by_month %>% filter(year_month == as.Date("2026-01-01")),
+                     color = "grey20", size = 2) +
+          # geom_col(width = 30.436875) +
+          # geom_area() +   
+          # scale_fill_viridis_c(                    # ← this applies plasma continuously
+          #     option = "turbo",                    # "C" also works for plasma
+          #     begin = 0.05, end = 0.95,             # optional: avoid extreme dark/light ends
+          #     direction = 1,                        # default; -1 reverses
+          #     na.value = "grey80"
+          # ) +
+          # scale_x_continuous(breaks = seq(1991,2026, 5)) +
+          scale_x_date(                       # ← change to scale_x_date() for Date axis!
+            breaks = seq(as.Date("1991-01-01"), as.Date("2026-01-01"), by = "5 years"),
+            date_labels = "%Y",
+            expand = expansion(mult = c(0.02, 0))   # tiny padding left/right
+          ) +
+          scale_y_continuous(breaks = seq(0, 30000, 5000),
+                             labels = label_number(
+                                                   scale = 1e-3,
+                                                   suffix = "k",
+                                                   big.mark = ","),
+                             limits = c(0, 3e4)) +
+          labs(title = "Monthly submissions received during each month since August 1991",
+               subtitle = "N = 2,943,052 submissions",
+               caption = paste0("<b>Data source</b>: arXiv metadata provided by Cornell",
+                                "University, accessed via Kaggle (dataset version 270)",
+                               "<br>",
+                               "<b>Notes:</b> Data up to January 29th. The three timeline periods are based on Faruk Alpay's classification in the article 'The Event Horizon of Knowledge:<br>",
+                               "Why 3 Million ArXiv Papers Are a Warning Signal' published in Medium on Jan. 6th, 2026.<br>",
+                               "<b>Graphic</b>: The Data Decoded / @TheDataDecoded")) +
+          coord_cartesian(clip = "off") +
+          theme_minimal(base_family = font_choice, base_size = 13) +
+          theme(
+              text = element_text(family = font_choice),
+              panel.grid.minor = element_blank(),
+              panel.grid.major.x = element_blank(),
+              plot.margin = margin(t = 18.5, r = 115, b = 13.6, l = 18.5, unit = "pt"),
+              axis.title = element_blank(),
+              plot.title.position = "plot",
+              plot.title = element_markdown(hjust = 0, face = "bold", margin = margin(b = 5),
+                                            lineheight = 1, size = rel(1.6)),
+              plot.subtitle = element_markdown(hjust = 0, margin = margin(t = 3, b = 10),
+                                               size = rel(1), lineheight = 1.2),
+              plot.caption.position = "plot",
+              plot.caption = element_markdown(hjust = 0, vjust = 0, colour = "grey50",
+                                              margin = margin(t = 20), lineheight = 1.25),
+              legend.position = "none"
+          ) +
+          # geom_image(data = tibble(x = as.Date("2008-07-02"), y = 22500,
+          #                          image = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/ArXiv_logo_2022.svg/3840px-ArXiv_logo_2022.svg.png"),
+          #            aes(x = x, y = y, image = image),
+          #            inherit.aes = FALSE, size = 0.2) +
+          geom_richtext(data = tibble(x = as.Date("2026-08-01"),
+                                y = submissions_by_month %>% slice_tail() %>% pull(n),
+                                label = paste0("<b>Jan. 29th, 2026<br>",
+                                               "(",
+                                               format(submissions_by_month %>% slice_tail() %>% pull(n),
+                                                      big.mark = ",", scientific = FALSE),
+                                               ")")),
+                  aes(x = x, y = y, label = label),
+                  fill = NA, label.color = NA, hjust = 0, vjust = 0.5, size = 4,
+                  color = "grey20", show.legend = FALSE, family = font_choice,
+                  inherit.aes = FALSE) +
+          geom_richtext(data = tibble(x = as.Date("2001-07-02"),
+                                y = 27500,
+                                label = paste0("<b style='color: #0072B2;'>The Linear Era<br>",
+                                               "(1991-2011)")),
+                  aes(x = x, y = y, label = label),
+                  fill = NA, label.color = NA, hjust = 0.5, vjust = 0.5, size = 4,
+                  color = "grey20", show.legend = FALSE, family = font_choice,
+                  inherit.aes = FALSE) +
+          geom_richtext(data = tibble(x = as.Date("2017-07-02"),
+                                y = 27500,
+                                label = paste0("<b style='color: #E2A80E;'>The Deep Learning Inflection<br>",
+                                               "(2012-2022)")),
+                  aes(x = x, y = y, label = label),
+                  fill = NA, label.color = NA, hjust = 0.5, vjust = 0.5, size = 4,
+                  color = "grey20", show.legend = FALSE, family = font_choice,
+                  inherit.aes = FALSE) +
+          geom_richtext(data = tibble(x = as.Date("2024-07-02"),
+                                y = 2500,
+                                label = paste0("<b style='color: #CD0000;'>The Co-Pilot",
+                                               "<br>Explosion<br>",
+                                               "(2023-2026)")),
+                  aes(x = x, y = y, label = label),
+                  fill = NA, label.color = NA, hjust = 0.5, vjust = 0.5, size = 4,
+                  color = "grey20", show.legend = FALSE, family = font_choice,
+                  inherit.aes = FALSE)
+          
+```
+
+```{r export-visualization-linechart-monthly-submissions}
+
+svg_path <- file.path(project_path, "plots", "arxiv_monthly_submissions.svg")
+
+svg_w <- 11
+svg_h <- 10
+
+png_w <- 2000
+png_h <- round(png_w * svg_h / svg_w)  # keep same aspect ratio
+
+ggsave(svg_path, line, width = svg_w, height = svg_h)
+
+# ggsave(svg_path, final_plot, width = svg_w, height = svg_h, device = svglite::svglite,
+       # system_fonts = list(sans = "Momo Trust Sans", serif = "Momo Trust Sans"))
+
+library(rsvg)
+
+png_path <- file.path(project_path, "plots", "arxiv_monthly_submissions.png")
+
+rsvg_png(
+    svg  = svg_path,
+    file = png_path,
+    width  = png_w,
+    height = png_h
+)
+```
+
+
+![](plots/arxiv_monthly_submissions.svg){width=100%}
