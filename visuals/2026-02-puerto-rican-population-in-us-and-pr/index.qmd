@@ -1,0 +1,324 @@
+---
+title: "Puerto Rican Residents in the United States: Mainland Diaspora and Island Population (2024)"
+date: "2026-02-11"
+categories: []
+image: plots/thumb.svg
+description: ""
+format: html
+execute:
+  dir: project
+  echo: false
+  output: false
+---
+
+```{r project-path}
+# Set project path
+project_path <- file.path("visuals", "2026-02-puerto-rican-population-in-us-and-pr")
+```
+
+```{r load-packages}
+
+library(tidycensus)
+library(dplyr)
+library(tidyr)
+library(tigris) # for shift_geometry
+library(sf)
+library(ggtext)
+library(ggplot2)
+library(ggforce)
+library(showtext)
+library(forcats)
+library(ggflags)
+library(stringr)
+library(scales)
+
+```
+
+
+```{r}
+
+vars <- load_variables(year = 2024, dataset = "acs5", cache = TRUE)
+
+vars %>% filter(grepl("Puerto Rican", label))
+
+
+# census_api_key(Sys.getenv("CENSUS_API_KEY"), install = TRUE, overwrite = F)
+
+# First time, reload your environment so you can use the key without restarting R.
+# readRenviron("~/.Renviron")
+
+```
+
+
+```{r import-data}
+
+# Step 1: Pull both variables at county level (US + PR)
+combined_data <- get_acs(
+    geography = "county",
+    variables = c(
+        "puerto_rican_origin" = "B03001_005E",   # Mainland / diaspora
+        "total_population"    = "B01003_001E"     # PR island residents
+    ),
+    year      = 2024,
+    survey    = "acs5",
+    geometry  = TRUE,
+    output    = "wide"
+) %>%
+    rename(
+        origin_est = puerto_rican_origin,
+        total_est  = total_population
+    ) %>%
+    mutate(
+        across(c(origin_est, total_est), ~ replace_na(., 0)),
+        # Combined value: origin on mainland, total on island
+        display_value = if_else(
+            grepl("^72", GEOID),
+            total_est,
+            origin_est
+        )
+    )
+
+```
+
+
+```{r prepare-data}
+
+# Step 2: Apply shifted layout (repositions AK/HI/PR compactly)
+shifted_combined <- combined_data %>%
+    shift_geometry(position = "below", preserve_area = FALSE)   # or TRUE for more accurate relative sizes
+
+# Step 2: Identify Puerto Rican municipalities (state FIPS "02")
+pr_mask <- substr(shifted_combined$GEOID, 1, 2) == "72"
+
+# Step 3: Extract Alaska part, scale it up (e.g., ×1.5–×3), then put back
+pr_geom <- shifted_combined$geometry[pr_mask]
+pr_centroid <- st_centroid(st_union(pr_geom))  # or approximate center
+
+# Scale relative to its own centroid (adjust factor as needed: 1.5 = 50% larger)
+scale_factor_pr <- 1.5   # ← tune this: 1.0 = no change, >1 = enlarge Alaska
+pr_scaled <- (pr_geom - pr_centroid) * scale_factor_pr + pr_centroid
+
+# Replace back into the full geometry
+shifted_combined$geometry[pr_mask] <- pr_scaled
+
+# US vs. PR population
+
+total_pops <- combined_data %>%
+    as_tibble() %>% 
+    mutate(country = if_else(grepl("^72", GEOID), "PR", "US")) %>%
+    group_by(country) %>%
+    summarise(total = sum(display_value))
+
+```
+
+
+```{r font-selection}
+
+# Choose default font
+font_choice <- "Momo Trust Sans"
+
+# Load Google Fonts into 'sysfonts'
+font_add_google(font_choice, db_cache = FALSE)
+
+# Automatically use 'showtext' for new graphics devices
+showtext_auto()
+
+```
+
+
+```{r us-map}
+
+p_map <- ggplot(shifted_combined) +
+    geom_sf(data = shifted_combined %>% filter(!str_detect(GEOID, "72")),
+            aes(fill = display_value), color = "white", linewidth = 0.04) +
+    geom_sf(data = shifted_combined %>% filter(str_detect(GEOID, "72")),
+            aes(fill = display_value), color = "black", linewidth = 0.04) +
+    
+    # scale_fill_viridis_c(
+    #     option   = "turbo",              # or "magma", "inferno", etc.
+    #     trans    = scales::pseudo_log_trans(sigma = 300, base = exp(1)),                # sqrt helps with skew (few high values in FL/NY/PR metro)
+    #     name     = "Number of\nPuerto Ricans",
+    #     labels   = scales::comma,
+    #     breaks   = c(0, 1000, 10000, 50000, 200000, 350000),  # customize for clarity
+    #     limits   = c(0, NA)               # same scale, no forced max
+    # ) +
+    scale_fill_viridis_b(
+        option   = "turbo",
+        name     = "Number of\nresidents",
+        breaks   = c(0, 1000, 5000, 10000, 25000, 50000, 100000, 200000, 300000),
+        labels   = c("0", "1k", "5k", "10k", "25k", "50k", "100k", "200k", "300k"),
+        limits   = c(0, 400000),                # optional cap
+        na.value = "grey80"                      # for any missing data
+    ) +
+    coord_sf(crs = 5070, expand = c(left = FALSE, right = FALSE), clip = "off",  # Albers projection for nice US shape
+             xlim = c(st_bbox(shifted_combined)["xmin"],
+                      st_bbox(shifted_combined)["xmax"]*2.6)) +   
+    theme_void(base_family = font_choice, base_size = 13) +
+    theme(
+        plot.margin = margin(t = 18, r = 25, b = 18, l = 18, unit = "pt"),
+        legend.position = c(0.0255, 0.62),
+        legend.key.width = unit(0.6, "cm"),
+        legend.key.height = unit(1.6, "cm"),
+        legend.title = element_text(vjust = 0),
+        plot.title.position = "plot",
+        plot.title = element_markdown(hjust = 0, face = "bold", margin = margin(b = 5),
+                                      lineheight = 1, size = rel(1.6)),
+        plot.caption.position = "plot",
+        plot.caption = element_markdown(hjust = 0, vjust = 0, colour = "grey50",
+                                        margin = margin(t = 20), lineheight = 1.25),
+        plot.subtitle = element_markdown(hjust = 0, margin = margin(t = 3, b = 10),
+                                         size = rel(1), lineheight = 1.2),
+        plot.background = element_rect(fill = "white")
+    ) +
+    labs(
+        title    = "Puerto Rican Residents in the United States: Mainland Diaspora and Island Residents (2024)",
+        subtitle = paste0("Puerto Rican-origin population in U.S. counties (N = ", comma(total_pops$total[total_pops$country == "US"]),
+                          ") and total residents in Puerto Rico's 78 municipios (N = ",
+                          comma(total_pops$total[total_pops$country == "PR"]), ")"),
+        caption  = paste0("<b>Data source</b>: U.S. Census Bureau (2020–2024 ACS 5-year estimates) via tidycensus R package",
+                          "<br>",
+                          "<b>Notes</b>:<br>",
+                          "- Mainland (50 states + D.C.): People reporting Puerto Rican origin/descent (ACS table B03001_005E)<br>",
+                          "- Puerto Rico: Total resident population of each municipio (ACS table B01003_001E) — nearly all (~99%) identify as Puerto Rican<br>",
+                          "- Alaska, Hawaii, and Puerto Rico repositioned and rescaled for visibility.",
+                          "<br>",
+                          "<b>Graphic</b>: The Data Decoded / @TheDataDecoded")
+    ) +
+    geom_richtext(data = tibble(x = 0.62e6, y = 50000, label = "<b>Puerto Rico</b>"),
+                  aes(x = x, y = y, label = label),
+                  fill = NA, label.color = NA, hjust = 0.5, vjust = 0.5, size = 4.7,
+                  color = "grey20", show.legend = FALSE, family = font_choice,
+                  inherit.aes = FALSE) +
+    geom_ellipse(data = tibble(x0 = 0.62e6, y0 = 2.2e5, a = 630000, b = 330000, angle = 0*pi/180),
+        aes(x0 = x0, y0 = y0, a = a, b = b, angle = angle),
+        fill = NA, color = "black", linewidth = 0.5, inherit.aes = FALSE
+    )
+    # annotate("rect", xmin = 0.22e6, xmax = 1e6, ymin = 1e5, ymax = 4.5e5, fill = NA, color = "black")
+
+```
+
+
+```{r top20}
+
+# Get top 20 countries/municipios
+top20 <- combined_data %>%                # better to use original (non-shifted) for accurate names
+    as_tibble() %>%
+    select(NAME, GEOID, display_value) %>%
+    rename(county = NAME, puerto_ricans = display_value) %>%
+    arrange(desc(puerto_ricans)) %>%
+    slice_head(n = 20) %>%
+    mutate(
+        county = fct_reorder(county, puerto_ricans),   # sort bars descending
+        # Create the same bins as your map for matching colors
+        pop_bin = cut(
+            puerto_ricans,
+            breaks = c(-Inf, 0, 1000, 5000, 10000, 25000, 50000, 100000, 200000, 300000, Inf),
+            labels = c("0", "1k", "5k", "10k", "25k", "50k", "100k", "200k", "300k", "300k+"),
+            right = TRUE,
+            include.lowest = TRUE
+        )
+    ) %>% 
+    mutate(country = if_else(str_detect(county, "Puerto Rico"), "pr", "us"),
+           flag = if_else(str_detect(county, "Puerto Rico"),
+                          "https://upload.wikimedia.org/wikipedia/commons/9/96/Flag_of_Puerto_Rico.png",
+                          "https://upload.wikimedia.org/wikipedia/commons/d/de/Flag_of_the_United_States.png"))
+
+```
+
+```{r bar-chart}
+
+# Bar chart
+p_bar <- ggplot(top20, aes(x = puerto_ricans, y = fct_reorder(county, puerto_ricans))) +
+    geom_col(aes(fill = puerto_ricans), width = 0.7) +
+    scale_fill_viridis_b(                                 # ← same scale as map
+        option   = "turbo",
+        breaks   = c(0, 1000, 5000, 10000, 25000, 50000, 100000, 200000, 300000),
+        labels   = c("0", "1k", "5k", "10k", "25k", "50k", "100k", "200k", "300k"),
+        limits   = c(0, 400000),
+        name     = "Puerto Ricans",
+        na.value = "grey80"
+    ) +
+    scale_x_continuous(
+        breaks = seq(0, 400000, 100000),
+        labels = label_number(
+            scale = 1e-3,
+            suffix = "k",
+            big.mark = ","),
+        limits = c(0, 4e+05),
+        expand = expansion(mult = c(0.058, 0.05))
+    ) +
+    labs(
+        title = "   Top 20 Counties / Municipios",
+        # subtitle = "2023 ACS 5-year estimates (mainland origin + PR total residents)",
+        x = NULL,
+        y = NULL
+    ) +
+    theme_minimal(base_family = font_choice, base_size = 13) +
+    theme(
+        legend.position = "none",
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        axis.text.y = element_text(hjust = 0, size = 12),
+        plot.title = element_text(face = "bold"),
+        # plot.title.position = "plot",
+        plot.margin = margin(t = 10, r = 20, b = 10, l = 10)
+    ) +
+    geom_flag(aes(x = puerto_ricans + 2e4, country = country), size = 6)
+    # geom_image(aes(x = puerto_ricans + 2e4, image = flag))
+
+```
+
+
+```{r combine-plots}
+
+# 1. Convert the bar chart into a grob (graphical object)
+bar_grob <- ggplotGrob(p_bar + 
+                           theme(
+                               legend.position = "none",           # remove legend from inset
+                               plot.margin = margin(5, 5, 5, 5)    # small internal padding
+                           ))
+
+# Check map coordinates
+st_bbox(shifted_combined)
+
+# 2. Add the inset using annotation_custom
+p_map_inset <- p_map +
+    annotation_custom(
+        grob = bar_grob,
+        
+        # Position: bottom-right example (most common & clean)
+        xmin =  2400000,    # use projected coordinates (Albers CRS ≈ meters)
+        xmax =  5900000,    # right side of map
+        ymin = -920000,    # bottom of map  -220000
+        ymax =  3265782     # adjust height
+    )
+
+```
+
+
+```{r export-visualization}
+
+svg_path <- file.path(project_path, "plots", "thumb.svg")
+
+svg_w <- 19.5
+svg_h <- 10
+
+png_w <- 4500
+png_h <- round(png_w * svg_h / svg_w)  # keep same aspect ratio
+
+ggsave(svg_path, p_map_inset, width = svg_w, height = svg_h)
+
+library(rsvg)
+
+png_path <- file.path(project_path, "plots", "puerto_ricans_us.png")
+
+rsvg_png(
+    svg  = svg_path,
+    file = png_path,
+    width  = png_w,
+    height = png_h
+)
+
+```
+
+![](plots/thumb.svg){width=100%}
