@@ -636,3 +636,174 @@ rsvg_png(
 ```
 
 ![](plots/florida.svg){width=100%}
+
+
+```{r puerto-rico-map}
+#| fig-width: 12
+#| fig-height: 7.1
+
+# Filter to Northeast states (FIPS codes)
+
+puerto_rico_data <- get_acs(
+    geography   = "county",               # municipios are county equivalents
+    variables   = c("total_population" = "B01003_001E"),
+    year        = 2024,                   # latest fully available as of early 2025
+    survey      = "acs5",
+    state       = "Puerto Rico",
+    geometry    = TRUE,
+    output      = "wide"
+) %>%
+    mutate(
+        total_population = replace_na(total_population, 0)
+    )
+
+# Plot focused on Northeast
+p_puerto_rico <-  ggplot(puerto_rico_data) +
+    geom_sf(aes(fill = total_population), color = "black", linewidth = 0.1) +
+    scale_fill_viridis_b(
+        option = "turbo",
+        name   = "Number of\nresidents",
+        breaks = c(0, 1000, 5000, 10000, 25000, 50000, 100000, 200000, 300000),
+        labels = c("0", "1k", "5k", "10k", "25k", "50k", "100k", "200k", "300k"),
+        limits = c(0, 400000)
+    ) +
+    coord_sf(
+        # crs = 5070,
+        xlim = c(-68.1, -65.25),
+        ylim = c(17.6, 18.8),
+        expand = TRUE,
+        clip = "off"
+    ) +
+    labs(
+        title = "Resident population in Puerto Rico (2024)",
+        subtitle = "Number of registered residents by municipio",
+        caption = paste0("<b>Data source</b>: U.S. Census Bureau (2020–2024 ACS 5-year estimates) via tidycensus R package",
+                         "<br>",
+                         "<b>Notes</b>:",
+                         " Total resident population of each municipio (ACS table B01003_001E)<br>",
+                         "<b>Graphic</b>: The Data Decoded / @TheDataDecoded")
+    ) +
+    theme_void(base_family = font_choice, base_size = 13) +
+    theme(
+        plot.margin = margin(t = 18, r = 18, b = 18, l = 18, unit = "pt"),
+        legend.position = c(0.035, 0.5),
+        legend.key.width = unit(0.6, "cm"),
+        legend.key.height = unit(1.6, "cm"),
+        legend.title = element_text(vjust = 0),
+        plot.title.position = "plot",
+        plot.title = element_markdown(hjust = 0, face = "bold", margin = margin(b = 5),
+                                      lineheight = 1, size = rel(1.6)),
+        plot.caption.position = "plot",
+        plot.caption = element_markdown(hjust = 0, vjust = 0, colour = "grey50",
+                                        margin = margin(t = 20), lineheight = 1.25),
+        plot.subtitle = element_markdown(hjust = 0, margin = margin(t = 3, b = 10),
+                                         size = rel(1), lineheight = 1.2),
+        plot.background = element_rect(fill = "white")
+        # plot.background = element_rect(fill = "white", color = "red", linewidth = 1.9),
+        # panel.border = element_rect(color = "red", linewidth = 1.8),
+    ) +
+    geom_richtext(data = tibble(x = -66.06, y = 18.72, label = "<b>San Juan Municipio</b><br>(336,160)"),
+                  aes(x = x, y = y, label = label),
+                  fill = NA, label.color = NA, hjust = 0.5, vjust = 0, size = 4,
+                  color = "grey20", show.legend = FALSE, family = font_choice,
+                  inherit.aes = FALSE) +
+    geom_richtext(data = tibble(x = -66.5, y = 18.6, label = "<b>Bayamón Municipio</b><br>(182,469)"),
+                  aes(x = x, y = y, label = label),
+                  fill = NA, label.color = NA, hjust = 0.5, vjust = 0, size = 4,
+                  color = "grey20", show.legend = FALSE, family = font_choice,
+                  inherit.aes = FALSE) +
+    geom_richtext(data = tibble(x = -65.65, y = 18.5, label = "<b>Carolina Municipio</b><br>(152,204)"),
+                  aes(x = x, y = y, label = label),
+                  fill = NA, label.color = NA, hjust = 0.5, vjust = 0, size = 4,
+                  color = "grey20", show.legend = FALSE, family = font_choice,
+                  inherit.aes = FALSE) +
+    geom_richtext(data = tibble(x = -66.6, y = 17.8, label = "<b>Ponce Municipio</b><br>(132,760)"),
+                  aes(x = x, y = y, label = label),
+                  fill = NA, label.color = NA, hjust = 0.5, vjust = 1, size = 4,
+                  color = "grey20", show.legend = FALSE, family = font_choice,
+                  inherit.aes = FALSE) +
+    geom_richtext(data = tibble(x = -65.95, y = 17.82, label = "<b>Caguas Municipio</b><br>(125,586)"),
+                  aes(x = x, y = y, label = label),
+                  fill = NA, label.color = NA, hjust = 0.5, vjust = 1, size = 4,
+                  color = "grey20", show.legend = FALSE, family = font_choice,
+                  inherit.aes = FALSE) +
+    geom_curve(data = tibble(x = -66.06, y = 18.72, xend = -66.06, yend = 18.47),
+               aes(x = x, y = y, xend = xend, yend = yend),
+               arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+               color = "grey20",
+               # size = 0.4,
+               angle = 102,
+               linewidth = 0.5,
+               curvature = -0.25,
+               inherit.aes = FALSE
+    ) +
+    geom_curve(data = tibble(x = -66.5, y = 18.6, xend = -66.18, yend = 18.36),
+               aes(x = x, y = y, xend = xend, yend = yend),
+               arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+               color = "grey20",
+               # size = 0.4,
+               angle = 102,
+               linewidth = 0.5,
+               curvature = 0.25,
+               inherit.aes = FALSE
+    ) +
+    geom_curve(data = tibble(x = -66.6, y = 17.8, xend = -66.63, yend = 17.96),
+               aes(x = x, y = y, xend = xend, yend = yend),
+               arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+               color = "grey20",
+               # size = 0.4,
+               angle = 102,
+               linewidth = 0.5,
+               curvature = -0.25,
+               inherit.aes = FALSE
+    ) +
+    geom_curve(data = tibble(x = -65.95, y = 17.82, xend = -66.06, yend = 18.2),
+               aes(x = x, y = y, xend = xend, yend = yend),
+               arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+               color = "grey20",
+               # size = 0.4,
+               angle = 102,
+               linewidth = 0.5,
+               curvature = 0.2,
+               inherit.aes = FALSE
+    ) +
+    geom_curve(data = tibble(x = -65.65, y = 18.5, xend = -65.95, yend = 18.36),
+               aes(x = x, y = y, xend = xend, yend = yend),
+               arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+               color = "grey20",
+               # size = 0.4,
+               angle = 102,
+               linewidth = 0.5,
+               curvature = -0.25,
+               inherit.aes = FALSE
+    )
+    
+```
+
+
+```{r export-visualization-puerto-rico-map}
+
+svg_path <- file.path(project_path, "plots", "puerto_rico.svg")
+
+svg_w <- 16.3
+svg_h <- 9
+
+png_w <- 4000
+png_h <- round(png_w * svg_h / svg_w)  # keep same aspect ratio
+
+ggsave(svg_path, p_puerto_rico, width = svg_w, height = svg_h)
+
+library(rsvg)
+
+png_path <- file.path(project_path, "plots", "puerto_rico.png")
+
+rsvg_png(
+    svg  = svg_path,
+    file = png_path,
+    width  = png_w,
+    height = png_h
+)
+
+```
+
+![](plots/puerto_rico.svg){width=100%}
