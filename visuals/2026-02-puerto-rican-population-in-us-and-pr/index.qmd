@@ -1,7 +1,7 @@
 ---
 title: "Puerto Rican Residents in the United States: Mainland Diaspora and Island Population (2024)"
 date: "2026-02-11"
-categories: []
+categories: [U.S., 'Puerto Rico', 'Bad Bunny']
 image: plots/thumb.svg
 description: ""
 format: html
@@ -322,3 +322,317 @@ rsvg_png(
 ```
 
 ![](plots/thumb.svg){width=100%}
+
+```{r northeast-us-map}
+
+# Filter to Northeast states (FIPS codes)
+
+north_east_data <- get_acs(
+    geography   = "county",               # municipios are county equivalents
+    variables   = c("total_population" = "B03001_005E"),
+    year        = 2024,                   # latest fully available as of early 2025
+    survey      = "acs5",
+    geometry    = TRUE,
+    output      = "wide"
+) %>%
+    mutate(
+        total_population = replace_na(total_population, 0)
+    )
+
+
+northeast_states <- c("09", "10", "11", "23", "24", "25", "34", "36", "42", "44", "50", "33")  # CT, DE, DC, ME, MD, MA, NH, NJ, NY, PA, RI, VT
+
+northeast_data <- north_east_data %>%
+    mutate(state_fips = substr(GEOID, 1, 2)) %>%
+    filter(state_fips %in% northeast_states)
+
+# Plot focused on Northeast
+p_northeast <- ggplot(northeast_data) +
+    geom_sf(aes(fill = total_population), color = "white", linewidth = 0.1) +
+    scale_fill_viridis_b(
+        option = "turbo",
+        name   = "Number of residents",
+        breaks = c(0, 1000, 5000, 10000, 25000, 50000, 100000, 200000, 300000),
+        labels = c("0", "1k", "5k", "10k", "25k", "50k", "100k", "200k", "300k"),
+        limits = c(0, 400000)
+    ) +
+    coord_sf(
+        crs = 5070,
+        xlim = c(1200000, 2500000),
+        # ylim = c(38.5, 50.5),
+        expand = TRUE,
+        clip = "off"
+    ) +
+    labs(
+        title = "Puerto Rican Population in the Northeast U.S. (2024)",
+        subtitle = "Number of residents of Puerto Rican origin by county",
+        caption = paste0("<b>Data source</b>: U.S. Census Bureau (2020–2024 ACS 5-year estimates) via tidycensus R package",
+                         "<br>",
+                         "<b>Notes</b>:",
+                         " People reporting Puerto Rican origin/descent (ACS table B03001_005E)<br>",
+                         "<b>Graphic</b>: The Data Decoded / @TheDataDecoded")
+    ) +
+    theme_void(base_family = font_choice, base_size = 13) +
+    theme(
+        plot.margin = margin(t = 18, r = 35, b = 18, l = 18, unit = "pt"),
+        legend.position = c(0.1, 0.65),
+        legend.key.width = unit(0.6, "cm"),
+        legend.key.height = unit(1.6, "cm"),
+        legend.title = element_text(vjust = 0),
+        plot.title.position = "plot",
+        plot.title = element_markdown(hjust = 0, face = "bold", margin = margin(b = 5),
+                                      lineheight = 1, size = rel(1.6)),
+        plot.caption.position = "plot",
+        plot.caption = element_markdown(hjust = 0, vjust = 0, colour = "grey50",
+                                        margin = margin(t = 20), lineheight = 1.25),
+        plot.subtitle = element_markdown(hjust = 0, margin = margin(t = 3, b = 10),
+                                         size = rel(1), lineheight = 1.2),
+        plot.background = element_rect(fill = "white")
+        # plot.background = element_rect(fill = "white", color = "red", linewidth = 1.9),
+        # panel.border = element_rect(color = "red", linewidth = 1.8),
+    ) +
+    geom_richtext(data = tibble(x = 2.2e6, y = 2200000, label = "<b>Bronx County, New York</b><br>(229,525)"),
+                  aes(x = x, y = y, label = label),
+                  fill = NA, label.color = NA, hjust = 0, vjust = 0.5, size = 4,
+                  color = "grey20", show.legend = FALSE, family = font_choice,
+                  inherit.aes = FALSE) +
+    geom_richtext(data = tibble(x = 2.1e6, y = 2100000, label = "<b>Kings County, New York</b><br>(132,727)"),
+                  aes(x = x, y = y, label = label),
+                  fill = NA, label.color = NA, hjust = 0, vjust = 0.5, size = 4,
+                  color = "grey20", show.legend = FALSE, family = font_choice,
+                  inherit.aes = FALSE) +
+    geom_richtext(data = tibble(x = 2e6, y = 2000000, label = "<b>Philadelphia County, Pennsylvania</b><br>(126,989)"),
+                  aes(x = x, y = y, label = label),
+                  fill = NA, label.color = NA, hjust = 0, vjust = 0.5, size = 4,
+                  color = "grey20", show.legend = FALSE, family = font_choice,
+                  inherit.aes = FALSE) +
+    geom_richtext(data = tibble(x = 2.27e6, y = 2350000, label = "<b>Capitol Planning Region,<br>Connecticut</b><br>(105,913)"),
+                  aes(x = x, y = y, label = label),
+                  fill = NA, label.color = NA, hjust = 0, vjust = 0.5, size = 4,
+                  color = "grey20", show.legend = FALSE, family = font_choice,
+                  inherit.aes = FALSE) +
+    geom_richtext(data = tibble(x = 2.22e6, y = 2500000, label = "<b>Hampden County,<br>Massachusetts</b><br>(100,672)"),
+                  aes(x = x, y = y, label = label),
+                  fill = NA, label.color = NA, hjust = 0, vjust = 0.5, size = 4,
+                  color = "grey20", show.legend = FALSE, family = font_choice,
+                  inherit.aes = FALSE) +
+    geom_curve(data = tibble(x = 2.19e6, y = 2.2e6, xend = 1.845e6, yend = 2.198e6),
+               aes(x = x, y = y, xend = xend, yend = yend),
+               arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+               color = "grey20",
+               # size = 0.4,
+               angle = 102,
+               linewidth = 0.5,
+               curvature = 0.2,
+               inherit.aes = FALSE
+    ) +
+    geom_curve(data = tibble(x = 2.09e6, y = 2.1e6, xend = 1.845e6, yend = 2.169e6),
+               aes(x = x, y = y, xend = xend, yend = yend),
+               arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+               color = "grey20",
+               # size = 0.4,
+               angle = 102,
+               linewidth = 0.5,
+               curvature = -0.1,
+               inherit.aes = FALSE
+    ) +
+    geom_curve(data = tibble(x = 1.99e6, y = 2e6, xend = 1.765e6, yend = 2.08e6),
+               aes(x = x, y = y, xend = xend, yend = yend),
+               arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+               color = "grey20",
+               # size = 0.4,
+               angle = 102,
+               linewidth = 0.5,
+               curvature = -0.1,
+               inherit.aes = FALSE
+    ) +
+    geom_curve(data = tibble(x = 2.26e6, y = 2.35e6, xend = 1.928e6, yend = 2.318e6),
+               aes(x = x, y = y, xend = xend, yend = yend),
+               arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+               color = "grey20",
+               # size = 0.4,
+               angle = 102,
+               linewidth = 0.5,
+               curvature = -0.3,
+               inherit.aes = FALSE
+    ) +
+    geom_curve(data = tibble(x = 2.21e6, y = 2.5e6, xend = 1.926e6, yend = 2.37e6),
+               aes(x = x, y = y, xend = xend, yend = yend),
+               arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+               color = "grey20",
+               # size = 0.4,
+               angle = 102,
+               linewidth = 0.5,
+               curvature = 0.25,
+               inherit.aes = FALSE
+    )
+
+
+```
+
+
+```{r export-visualization-northeast-map}
+
+svg_path <- file.path(project_path, "plots", "northeast.svg")
+
+svg_w <- 10
+svg_h <- 10
+
+png_w <- 2000
+png_h <- round(png_w * svg_h / svg_w)  # keep same aspect ratio
+
+ggsave(svg_path, p_northeast, width = svg_w, height = svg_h)
+
+library(rsvg)
+
+png_path <- file.path(project_path, "plots", "northeast.png")
+
+rsvg_png(
+    svg  = svg_path,
+    file = png_path,
+    width  = png_w,
+    height = png_h
+)
+
+```
+
+![](plots/northeast.svg){width=100%}
+
+```{r florida-map}
+
+# Filter to Northeast states (FIPS codes)
+
+florida_data <- get_acs(
+    geography   = "county",               # municipios are county equivalents
+    variables   = c("total_population" = "B03001_005E"),
+    year        = 2024,                   # latest fully available as of early 2025
+    survey      = "acs5",
+    state       = "12",
+    geometry    = TRUE,
+    output      = "wide"
+) %>%
+    mutate(
+        total_population = replace_na(total_population, 0)
+    )
+
+# Plot focused on Northeast
+p_florida <- ggplot(florida_data) +
+    geom_sf(aes(fill = total_population), color = "white", linewidth = 0.1) +
+    scale_fill_viridis_b(
+        option = "turbo",
+        name   = "Number of residents",
+        breaks = c(0, 1000, 5000, 10000, 25000, 50000, 100000, 200000, 300000),
+        labels = c("0", "1k", "5k", "10k", "25k", "50k", "100k", "200k", "300k"),
+        limits = c(0, 400000)
+    ) +
+    coord_sf(
+        crs = 5070,
+        # xlim = c(1200000, 2500000),
+        # ylim = c(38.5, 50.5),
+        expand = TRUE,
+        clip = "off"
+    ) +
+    labs(
+        title = "Puerto Rican Population in Florida (2024)",
+        subtitle = "Number of residents of Puerto Rican origin by county",
+        caption = paste0("<b>Data source</b>: U.S. Census Bureau (2020–2024 ACS 5-year estimates) via tidycensus R package",
+                         "<br>",
+                         "<b>Notes</b>:",
+                         " People reporting Puerto Rican origin/descent (ACS table B03001_005E)<br>",
+                         "<b>Graphic</b>: The Data Decoded / @TheDataDecoded")
+    ) +
+    theme_void(base_family = font_choice, base_size = 13) +
+    theme(
+        plot.margin = margin(t = 18, r = 18, b = 18, l = 18, unit = "pt"),
+        legend.position = c(0.1, 0.45),
+        legend.key.width = unit(0.6, "cm"),
+        legend.key.height = unit(1.6, "cm"),
+        legend.title = element_text(vjust = 0),
+        plot.title.position = "plot",
+        plot.title = element_markdown(hjust = 0, face = "bold", margin = margin(b = 5),
+                                      lineheight = 1, size = rel(1.6)),
+        plot.caption.position = "plot",
+        plot.caption = element_markdown(hjust = 0, vjust = 0, colour = "grey50",
+                                        margin = margin(t = 20), lineheight = 1.25),
+        plot.subtitle = element_markdown(hjust = 0, margin = margin(t = 3, b = 10),
+                                         size = rel(1), lineheight = 1.2),
+        plot.background = element_rect(fill = "white")
+        # plot.background = element_rect(fill = "white", color = "red", linewidth = 1.9),
+        # panel.border = element_rect(color = "red", linewidth = 1.8),
+    ) +
+    geom_richtext(data = tibble(x = 1.19e6, y = 7e5, label = "<b>Orange County, Florida</b><br>(200,201)"),
+                  aes(x = x, y = y, label = label),
+                  fill = NA, label.color = NA, hjust = 1, vjust = 0.5, size = 4,
+                  color = "grey20", show.legend = FALSE, family = font_choice,
+                  inherit.aes = FALSE) +
+    geom_richtext(data = tibble(x = 1.19e6, y = 6e5, label = "<b>Hillsborough County, Florida</b><br>(119,589)"),
+                  aes(x = x, y = y, label = label),
+                  fill = NA, label.color = NA, hjust = 1, vjust = 0.5, size = 4,
+                  color = "grey20", show.legend = FALSE, family = font_choice,
+                  inherit.aes = FALSE) +
+    geom_richtext(data = tibble(x = 1.25e6, y = 4.8e5, label = "<b>Osceola County, Florida</b><br>(116,190)"),
+                  aes(x = x, y = y, label = label),
+                  fill = NA, label.color = NA, hjust = 1, vjust = 0.5, size = 4,
+                  color = "grey20", show.legend = FALSE, family = font_choice,
+                  inherit.aes = FALSE) +
+    geom_curve(data = tibble(x = 1.19e6, y = 7e5, xend = 1.406e6, yend = 7.3e5),
+               aes(x = x, y = y, xend = xend, yend = yend),
+               arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+               color = "grey20",
+               # size = 0.4,
+               angle = 102,
+               linewidth = 0.5,
+               curvature = -0.25,
+               inherit.aes = FALSE
+    ) +
+    geom_curve(data = tibble(x = 1.19e6, y = 6e5, xend = 1.32e6, yend = 6.5e5),
+               aes(x = x, y = y, xend = xend, yend = yend),
+               arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+               color = "grey20",
+               # size = 0.4,
+               angle = 102,
+               linewidth = 0.5,
+               curvature = -0.25,
+               inherit.aes = FALSE
+    ) +
+    geom_curve(data = tibble(x = 1.25e6, y = 4.8e5, xend = 1.453e6, yend = 6.62e5),
+               aes(x = x, y = y, xend = xend, yend = yend),
+               arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+               color = "grey20",
+               # size = 0.4,
+               angle = 102,
+               linewidth = 0.5,
+               curvature = 0.25,
+               inherit.aes = FALSE
+    )
+
+
+```
+
+
+```{r export-visualization-florida-map}
+
+svg_path <- file.path(project_path, "plots", "florida.svg")
+
+svg_w <- 10
+svg_h <- 10
+
+png_w <- 2000
+png_h <- round(png_w * svg_h / svg_w)  # keep same aspect ratio
+
+ggsave(svg_path, p_florida, width = svg_w, height = svg_h)
+
+library(rsvg)
+
+png_path <- file.path(project_path, "plots", "florida.png")
+
+rsvg_png(
+    svg  = svg_path,
+    file = png_path,
+    width  = png_w,
+    height = png_h
+)
+
+```
+
+![](plots/florida.svg){width=100%}
