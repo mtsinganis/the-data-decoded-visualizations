@@ -1,0 +1,277 @@
+---
+title: "Where in the U.S. do most foreign-born nationals live?"
+date: "2026-02-17"
+categories: [U.S., Immigration]
+image: plots/thumb.svg
+description: "Share of foreign-born nationals by U.S. county and change from 2009 to 2024"
+format: html
+execute:
+  dir: project
+  echo: false
+  output: false
+---
+
+```{r project-path}
+# Set project path
+project_path <- file.path("visuals", "2026-02-us-foreign-born-population-by-county")
+```
+
+```{r load-packages}
+
+library(tidycensus)
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+library(tigris)
+library(sf)
+library(patchwork) 
+library(ggtext)
+library(stringr)
+
+```
+
+
+```{r}
+
+# ── Fetch and prepare 2005–2009 data ─────────────────────────────────────────
+old_raw <- get_acs(
+    geography = "county",
+    variables = c(total = "B05012_001", foreign = "B05012_003"),
+    year = 2009,
+    survey = "acs5",
+    geometry = TRUE
+) %>%
+    select(GEOID, NAME, variable, estimate, geometry) %>%
+    pivot_wider(names_from = variable, values_from = estimate) %>%
+    mutate(
+        pct_foreign = (foreign / total) * 100,
+        pct_foreign = replace_na(pct_foreign, 0)   # or 0 when total = 0 or missing
+    )
+
+old_raw <- old_raw %>%
+    shift_geometry(position = "below", preserve_area = FALSE) 
+
+# ── Fetch and prepare 2020–2024 data ─────────────────────────────────────────
+recent_raw <- get_acs(
+    geography = "county",
+    variables = c(total = "B05012_001", foreign = "B05012_003"),
+    year = 2024,
+    survey = "acs5",
+    geometry = TRUE,
+) %>%
+    select(GEOID, NAME, variable, estimate, geometry) %>%
+    pivot_wider(names_from = variable, values_from = estimate) %>%
+    mutate(
+        pct_foreign = (foreign / total) * 100,
+        pct_foreign = replace_na(pct_foreign, 0)
+    )
+
+recent_raw <- recent_raw %>%
+    shift_geometry(position = "below", preserve_area = FALSE)
+
+# ── Prepare change data (using recent geometry) ──────────────────────────────
+change_data <- recent_raw %>%
+    select(GEOID, NAME, geometry, pct_foreign) %>%
+    left_join(
+        old_raw %>% st_drop_geometry() %>% select(GEOID, pct_foreign),
+        by = "GEOID", suffix = c("_recent", "_old")
+    ) %>%
+    mutate(
+        pct_foreign_old = coalesce(pct_foreign_old, 0),  # or NA_real_
+        pct_change = pct_foreign_recent - pct_foreign_old
+    ) %>%
+    st_as_sf()
+
+```
+
+
+```{r common-map-settings}
+
+# Max values or recent and old
+max_foreign <- c(max(recent_raw$pct_foreign), max(old_raw$pct_foreign))
+
+# Change range
+range_change <- change_data %>%
+                    st_drop_geometry() %>% 
+                    summarise(min = min(pct_change), max = max(pct_change))
+
+pct_limits    <- c(0, max(max_foreign))           # for old & recent maps
+change_limits <- c(floor(range_change$min),
+                   ceiling(range_change$max))         # adjust if you want more/less extreme
+
+```
+
+```{r}
+
+library(sysfonts)
+
+font_choice <- "Segoe UI"
+
+font_add(font_choice,
+         regular = "C:/Windows/Fonts/segoeui.ttf",
+         bold = "C:/Windows/Fonts/segoeuib.ttf",
+         italic = "C:/Windows/Fonts/segoeuii.ttf")
+
+```
+
+
+
+```{r theme-settings}
+
+base_theme <- theme_minimal(base_size = 14, base_family = font_choice) +
+    theme(
+        plot.margin = margin(t = 18, r = 18, b = 18, l = 18, unit = "pt"),
+        legend.position = c(0, 0.65),
+        legend.key.width = unit(0.6, "cm"),
+        legend.key.height = unit(1.5, "cm"),
+        legend.justification = c(0, 0.5),
+        legend.title = element_text(vjust = 0, face = "bold"),
+        plot.title.position = "plot",
+        plot.title = element_markdown(hjust = 0, face = "bold", margin = margin(b = 5),
+                                      lineheight = 1, size = rel(1.6)),
+        plot.caption.position = "plot",
+        plot.caption = element_markdown(hjust = 0, vjust = 0, colour = "grey50",
+                                        margin = margin(t = 20), lineheight = 1.25),
+        plot.subtitle = element_markdown(hjust = 0, margin = margin(t = 3, b = 10),
+                                         size = rel(1), lineheight = 1.2),
+        axis.text     = element_blank(),
+        axis.title    = element_blank(),
+        axis.ticks    = element_blank(),
+        panel.grid    = element_blank(),
+        # legend.title  = element_text(size = 10),
+        # legend.text   = element_text(size = 9),
+        plot.background = element_rect(fill = "white")
+        # plot.background = element_rect(fill = "white", color = "red", linewidth = 1.9),
+        # panel.border = element_rect(color = "red", linewidth = 1.2)
+    )
+
+```
+
+
+```{r map-2024}
+
+p_old <- ggplot(old_raw) +
+    geom_sf(aes(fill = pct_foreign), color = NA) +
+    scale_fill_viridis_b(
+        option = "plasma",
+        name   = "% Foreign-Born",
+        breaks = seq(0, 40, 5),
+        labels = paste0(seq(0, 40, 5), "%"),
+        limits = c(0, 400000)
+    ) +
+    # scale_fill_viridis_c(option = "plasma", name = "% Foreign-Born", 
+    #                      limits = pct_limits, na.value = "grey85", begin = 0.08) +
+    base_theme +
+    labs(title = "2005–2009", subtitle = "ACS 5-Year Estimates")
+
+p_recent <- ggplot(recent_raw) +
+    geom_sf(aes(fill = pct_foreign), color = NA) +
+    scale_fill_viridis_b(
+        option = "plasma",
+        name   = "% Foreign-Born",
+        breaks = seq(0, 40, 5),
+        labels = c(seq(0, 35, 5), ">40")
+    ) +
+    coord_sf(clip = "off", expand = TRUE) +
+    # scale_fill_viridis_c(option = "plasma", name = "% Foreign-Born", 
+    #                      limits = pct_limits, na.value = "grey85", begin = 0.08) +
+    base_theme +
+    labs(title = "Percentage of Foreign-Born Population by U.S. County (2020–2024)",
+         subtitle = "American Community Survey 5-Year Estimates. Annotations highlight counties with more than 40% foreign-born residents</span>.",
+         caption = paste0("<b>Data source</b>: U.S. Census Bureau, American Community Survey 5-year estimates (2020–2024), Table B05012. Retrieved via the tidycensus R package.",
+                          "<br>",
+                          "<b>Notes</b>: Estimates are subject to sampling variability and margins of error, particularly in low-population counties.", "<br>",
+                          "<b>Graphic</b>: The Data Decoded / @TheDataDecoded")
+    )
+
+top_share <- recent_raw %>% st_drop_geometry() %>% filter(pct_foreign > 40) %>% arrange(desc(pct_foreign))
+
+```
+
+
+```{r export-visualization-recent-foreign-born}
+
+svg_path <- file.path(project_path, "plots", "thumb.svg")
+
+svg_w <- 13.5
+svg_h <- 10
+
+png_w <- 2000
+png_h <- round(png_w * svg_h / svg_w)  # keep same aspect ratio
+
+ggsave(svg_path, p_recent, width = svg_w, height = svg_h, bg = "white")
+
+library(rsvg)
+
+png_path <- file.path(project_path, "plots", "foreign_born_2024_annotated.png")
+
+rsvg_png(
+    svg  = paste0(str_split_1(svg_path, ".svg")[1], "_annotated.svg"),
+    file = png_path,
+    width  = png_w,
+    height = png_h
+)
+
+```
+
+![](plots/thumb_annotated.svg){width=100%}
+
+```{r map-change}
+
+change_colors <- c("#1a0033",                      # very dark purple – extreme negative
+                    "#08306B", "#08519C", 
+                    "grey98",                                     # ← only one neutral bin
+                    "#DE2D26", "#A50F15",
+                    "#4a0010")
+
+p_change <- ggplot(change_data) +
+    geom_sf(aes(fill = pct_change), color = "black", linewidth = 0.04) +
+    scale_fill_stepsn(
+        colours = change_colors,
+        breaks  = c(-20, -10, -7.5, -3, -1.5, -0.5, 0.5, 1.5, 3, 7.5, 10, 20),
+        limits  = c(-30, 30),
+        name    = "Change (%)",
+        oob = scales::squish
+    ) +
+    base_theme +
+    labs(title = "Change in Foreign-Born Share by U.S. County (2024 vs. 2009)",
+         subtitle = "2020–2024 minus 2005–2009 ACS 5-year estimates. Annotations show top and bottom 3 counties by % change.",
+         caption = paste0("<b>Data source</b>: U.S. Census Bureau, American Community Survey 5-year estimates (2020–2024), Table B05012. Retrieved via the tidycensus R package.",
+                          "<br>",
+                          "<b>Notes</b>: Estimates are subject to sampling variability and margins of error, particularly in low-population counties.", "<br>",
+                          "<b>Graphic</b>: The Data Decoded / @TheDataDecoded"))
+
+# Check max +change
+change_data %>% st_drop_geometry() %>% filter(pct_change > 20) %>% arrange(desc(pct_change))
+# Check max -change
+change_data %>% st_drop_geometry() %>% filter(pct_change < -20) %>% arrange(pct_change)
+
+```
+
+
+```{r export-visualization-change-foreign-born}
+
+svg_path <- file.path(project_path, "plots", "change_foreign_born.svg")
+
+svg_w <- 13.5
+svg_h <- 10
+
+png_w <- 2000
+png_h <- round(png_w * svg_h / svg_w)  # keep same aspect ratio
+
+ggsave(svg_path, p_change, width = svg_w, height = svg_h)
+
+library(rsvg)
+
+png_path <- file.path(project_path, "plots", "change_foreign_born_annotated.png")
+
+rsvg_png(
+    svg  = paste0(str_split_1(svg_path, ".svg")[1], "_annotated.svg"),
+    file = png_path,
+    width  = png_w,
+    height = png_h
+)
+
+```
+
+![](plots/change_foreign_born_annotated.svg){width=100%}
