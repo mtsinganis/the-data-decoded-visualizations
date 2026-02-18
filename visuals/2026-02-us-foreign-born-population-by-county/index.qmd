@@ -27,6 +27,8 @@ library(sf)
 library(patchwork) 
 library(ggtext)
 library(stringr)
+library(scales)
+library(purrr)
 
 ```
 
@@ -275,3 +277,134 @@ rsvg_png(
 ```
 
 ![](plots/change_foreign_born_annotated.svg){width=100%}
+
+```{r cumulative-share}
+
+# Prepare sorted cumulative data
+cum_data <- recent_raw %>%
+  st_drop_geometry() %>% 
+  filter(!is.na(pct_foreign)) %>%
+  arrange(pct_foreign) %>%
+  mutate(
+    rank     = row_number(),
+    cum_count = rank,
+    cum_pct   = rank / n() * 100
+  )
+
+thresholds <- c(5, 10, 15)
+
+y_values <- cum_data %>%
+  filter(pct_foreign >= thresholds[1]) %>%  # start from lowest threshold
+  summarise(
+    pct_5  = first(cum_pct[pct_foreign >= 5],  default = 0),
+    pct_10 = first(cum_pct[pct_foreign >= 10], default = 0),
+    pct_15 = first(cum_pct[pct_foreign >= 15], default = 0)
+  ) %>%
+  mutate(across(everything(), ~ round(.x, 1)))
+
+zero_pct_count <- cum_data %>%
+                      filter(pct_foreign < 0.0001 | pct_foreign == 0) %>%
+                      nrow()
+
+zero_pct_count_perc <- round(zero_pct_count/nrow(cum_data)*100)
+
+# Segments
+segments <- tibble(x = rep(c(5, 10, 15), 2),
+                   y = c(rep(0, 3), as.numeric(y_values)),
+                   xend = c(5, 10, 15, rep(0, 3)),
+                   yend = rep(as.numeric(y_values), 2))
+
+text_annotations <- tibble(x = rep(2.5, 3),
+                           y = as.numeric(y_values) + 3,
+                           labels = paste0(round(y_values), "%"))
+
+points <- tibble(x = c(0, rep(c(5, 10, 15), 2), rep(0, 3)),
+                 y = c(zero_pct_count_perc, rep(0, 3), rep(as.numeric(y_values), 2)))
+
+# Plot
+p_cum <- ggplot(cum_data, aes(x = pct_foreign, y = cum_pct)) +
+  annotate("rect", xmin = 0, xmax = 15,
+                 ymin = 0, ymax = y_values$pct_15,
+                 fill = alpha("#a22623", 0.16)) +
+  annotate("rect", xmin = 0, xmax = 10,
+                 ymin = 0, ymax = y_values$pct_10,
+                 fill = alpha("#a22623", 0.16)) +
+  annotate("rect", xmin = 0, xmax = 5,
+                 ymin = 0, ymax = y_values$pct_5,
+                 fill = alpha("#a22623", 0.16)) +
+  geom_line(color = "#a22623", linewidth = 1) +
+  geom_segment(data = segments,
+               aes(x = x, y = y, xend = xend, yend = yend),
+               linewidth = 0.7, linetype = 2, color = alpha("#a22623", 0.8)) +
+  geom_point(data = points, aes(x = x, y = y),
+             fill = "#a22623", color = "black", shape = 21, stroke = 0.5, size = 2.8) +
+  scale_x_continuous(
+    breaks = seq(0, 60, by = 5),
+    labels = percent_format(scale = 1),
+    expand = expansion(mult = c(0.025, 0.025))
+  ) +
+  scale_y_continuous(
+    breaks = seq(0, 100, by = 10),
+    labels = percent_format(scale = 1),
+    expand = expansion(mult = c(0.025, 0.025))
+  ) +
+  labs(
+    title    = "<span style='color: #a22623;'>94% of U.S. counties</span> have less than 15% foreign-born population",
+    subtitle = "Cumulative Distribution: Share of U.S. Counties by Foreign-Born Population (n = 3,222 counties)",
+    x        = "% Foreign-Born in County",
+    y        = "Cumulative % of Counties (≤ X%)",
+    caption = paste0("<b>Data source</b>: U.S. Census Bureau, American Community Survey 5-year estimates (2020–2024), Table B05012. Retrieved via the tidycensus R package.",
+                          "<br>",
+                          "<b>Notes</b>: Estimates are subject to sampling variability and margins of error, particularly in low-population counties.", "<br>",
+                          "<b>Graphic</b>: The Data Decoded / @TheDataDecoded")
+  ) +
+  theme_minimal(base_size = 14, base_family = font_choice) +
+    theme(
+        panel.grid.minor = element_blank(),
+        panel.grid.major = element_line(color = "grey95"),
+        plot.margin = margin(t = 18, r = 18, b = 18, l = 18, unit = "pt"),
+        plot.title.position = "plot",
+        plot.title = element_markdown(hjust = 0, face = "bold", margin = margin(b = 5),
+                                      lineheight = 1, size = rel(1.6)),
+        plot.caption.position = "plot",
+        plot.caption = element_markdown(hjust = 0, vjust = 0, colour = "grey50",
+                                        margin = margin(t = 20), lineheight = 1.25),
+        plot.subtitle = element_markdown(hjust = 0, margin = margin(t = 3, b = 10),
+                                         size = rel(1), lineheight = 1.2),
+        axis.title.x = element_text(vjust = 0),
+        plot.background = element_rect(fill = "white")
+        # plot.background = element_rect(fill = "white", color = "red", linewidth = 1.9),
+        # panel.border = element_rect(color = "red", linewidth = 1.2)
+    ) +
+  geom_text(data = text_annotations, aes(x = x, y = y, label = labels), size = 4,
+            color = "#a22623", vjust = 1, fontface = "bold")
+
+```
+
+
+```{r export-visualization-cumulative-counties}
+
+svg_path <- file.path(project_path, "plots", "cumulative_counties.svg")
+
+svg_w <- 10.7
+svg_h <- 10
+
+png_w <- 2000
+png_h <- round(png_w * svg_h / svg_w)  # keep same aspect ratio
+
+ggsave(svg_path, p_cum, width = svg_w, height = svg_h)
+
+library(rsvg)
+
+png_path <- file.path(project_path, "plots", "cumulative_counties_annotated.png")
+
+rsvg_png(
+    svg  = paste0(str_split_1(svg_path, ".svg")[1], "_annotated.svg"),
+    file = png_path,
+    width  = png_w,
+    height = png_h
+)
+
+```
+
+![](plots/cumulative_counties_annotated.svg){width=100%}
