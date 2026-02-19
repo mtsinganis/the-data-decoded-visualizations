@@ -1,0 +1,414 @@
+---
+title: "Evolution of U.S. national pride by political affiliation over the past 25 years"
+date: "2026-02-20"
+categories: [U.S., 'National Pride', 'Gallup']
+image: plots/thumb.svg
+description: "Gallup poll (2001-2025)"
+format: html
+execute:
+  dir: project
+  echo: false
+  output: false
+---
+
+```{r project-path}
+# Set project path
+project_path <- file.path("visuals", "2026-02-us-national-pride-by-party")
+```
+
+```{r load-packages}
+
+library(readr)
+library(janitor)
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+library(ggtext)
+library(scales)
+library(forcats)
+library(ggimage)
+library(purrr)
+
+```
+
+
+```{r set-HTTPUserAgent}
+
+# Tell  Wikimedia the requests come from my project/account to avoid rate-limiting
+# my requests (HTTP 429 = Too Many Requests)
+options(HTTPUserAgent = "TheDataDecoded_R_plot (+https://x.com/TheDataDecoded)")
+
+```
+
+
+```{r import-data}
+
+csv_url <- "https://datawrapper.dwcdn.net/mdOQM/10/data.csv"
+csv_url_political <- "https://datawrapper.dwcdn.net/nd0HN/6/data.csv"
+
+# Read data
+pride_data <- read_csv(csv_url)
+pride_data_political <- read_csv(csv_url_political)
+
+```
+
+
+```{r prepare-data}
+
+# Change names and pivot longer
+pride_data <- pride_data %>% 
+    rename(year = 1) %>% 
+    clean_names() %>% 
+    pivot_longer(cols = !year, names_to = "pride", values_to = "share") %>% 
+    mutate(pride = factor(pride, levels = c("percent_extremely_very_proud",
+                                                 "percent_extremely_proud",
+                                                 "percent_very_proud")))
+
+pride_data_political <- pride_data_political %>% 
+    rename(year = 1) %>%
+    pivot_longer(cols = !year, names_to = "political_party", values_to = "share") %>% 
+    mutate(political_party = factor(political_party, levels = c("Republican",
+                                                                "Independent",
+                                                                "Democrat",
+                                                                "National Average"))) %>% 
+    arrange(desc(political_party))
+
+# Set party colors
+colors_political <- c(
+    "Republican"   =  "#d71e28",
+    "Independent"  =  "#9c27b0",
+    "Democrat"     =  "#0044c9",
+    "National Average" = "grey20")
+
+# Combine data
+combined <- pride_data %>% filter(pride == "percent_extremely_very_proud") %>% 
+    rename(political_party = pride) %>% 
+    mutate(political_party = as.factor("National Average")) %>% 
+    bind_rows(pride_data_political) %>% 
+    slice(n():1)
+
+# Export and save data set
+write_csv(x = combined, file = file.path(project_path, "data", "national_pride_by_political_affiliation.csv"))
+
+# Get pride range for each party
+rep_range <- combined %>% filter(political_party == "Republican") %>% 
+                summarise(min = min(share), max = max(share))
+
+dem_range <- combined %>% filter(political_party == "Democrat") %>% 
+    summarise(min = min(share), max = max(share))
+
+ind_range <- combined %>% filter(political_party == "Independent") %>% 
+    summarise(min = min(share), max = max(share))
+
+
+x_shift <- 5
+
+text_annotation <- tibble(x = rep(c(2026.4 + x_shift,
+                                    2028.4 + x_shift + 3,
+                                    2027.4 + x_shift + 1.5),
+                                  2),
+                          y = c(as.numeric(rep_range["max"]) - 0.5,
+                                as.numeric(dem_range["max"]) - 0.5,
+                                as.numeric(ind_range["max"]) - 0.5,
+                                as.numeric(rep_range["min"]),
+                                as.numeric(dem_range["min"]),
+                                as.numeric(ind_range["min"])),
+                          label = paste0(c(as.numeric(rep_range["max"]),
+                                           as.numeric(dem_range["max"]),
+                                           as.numeric(ind_range["max"]),
+                                           as.numeric(rep_range["min"]),
+                                           as.numeric(dem_range["min"]),
+                                           as.numeric(ind_range["min"])),
+                                         "%"),
+                          color = rep(c("#d71e28", "#0044c9", "#9c27b0"), 2),
+                          vjust = rep(c(0, 1), each = 3))
+
+
+points_2025 <- combined %>% filter(year == 2025)
+
+point_labels <- tibble(x = rep(2025.2, 3),
+                       y = c(points_2025 %>% filter(political_party == "National Average") %>% pull(share),
+                             points_2025 %>% filter(political_party == "Democrat") %>% pull(share),
+                             points_2025 %>% filter(political_party == "Independent") %>% pull(share)),
+                       label = c(paste0("Record-low<br>national average<br>",
+                                        points_2025 %>% filter(political_party == "National Average") %>% pull(share),
+                                        "%"),
+                                 paste0("Record-low<br>Democrat<br>",
+                                        points_2025 %>% filter(political_party == "Democrat") %>% pull(share),
+                                        "%"),
+                                 paste0("Record-low<br>Independent<br>",
+                                        points_2025 %>% filter(political_party == "Independent") %>% pull(share),
+                                        "%")),
+                       color = c("grey20", "#0044c9", "#9c27b0"),
+                       vjust = c(0.5, 0.5, 1))
+
+point_highlights <- tibble(x = rep(2025, 3),
+                           y = points_2025 %>% filter(!political_party  == "Republican") %>% pull(share),
+                           color = c("#0044c9", "#9c27b0", "grey20"))
+
+range_segments <- tibble(x = c(rep(2026.4 + x_shift - 1.5, 2),
+                               rep(2028.4 + x_shift + 1.5, 2),
+                               rep(2027.4 + x_shift - 0, 2)),
+                         xend = c(rep(2026.4 + x_shift, 2),
+                                  rep(2028.4 + x_shift + 3, 2),
+                                  rep(2027.4 + x_shift + 1.5, 2)),
+                         y = c(as.numeric(rep_range["min"]), as.numeric(rep_range["max"]),
+                               as.numeric(dem_range["min"]), as.numeric(dem_range["max"]),
+                               as.numeric(ind_range["min"]), as.numeric(ind_range["max"])),
+                         yend = c(as.numeric(rep_range["min"]), as.numeric(rep_range["max"]),
+                                  as.numeric(dem_range["min"]), as.numeric(dem_range["max"]),
+                                  as.numeric(ind_range["min"]), as.numeric(ind_range["max"])),
+                         color = c(rep("#d71e28", 2),
+                                   rep("#0044c9", 2),
+                                   rep("#9c27b0", 2)))
+
+party_segments <- tibble(x = c(2001, 2009, 2017, 2021, 2025),
+                         y = rep(100, 5),
+                         xend = c(2009, 2017, 2021, 2025, 2029),
+                         yend = rep(100, 5),
+                         color = c("#d71e28", "#0044c9", "#d71e28", "#0044c9", "#d71e28")
+                         )
+
+presidents <- tibble(x = c(2005, 2013, 2019, 2023, 2027),
+                     y = rep(107.85, 5),
+                     label = c("Bush (R)", "Obama (D)", "Trump I (R)", "Biden (D)", "Trump II (R)"),
+                     color = c("#d71e28", "#0044c9", "#d71e28", "#0044c9", "#d71e28"))
+
+```
+
+
+```{r set-font}
+
+library(sysfonts)
+
+font_choice <- "Segoe UI"
+
+font_add(font_choice,
+         regular = "C:/Windows/Fonts/segoeui.ttf",
+         bold = "C:/Windows/Fonts/segoeuib.ttf",
+         italic = "C:/Windows/Fonts/segoeuii.ttf")
+
+
+```
+
+```{r plot-theme}
+
+base_theme <- theme_minimal(base_size = 14, base_family = font_choice) +
+    theme(
+        plot.margin = margin(t = 18, r = 190, b = 18, l = 18, unit = "pt"),
+        legend.position = "top",
+        legend.margin = margin(l = 0, r = 0, b = 0),
+        legend.location = "plot",
+        legend.justification.top = "left",
+        legend.title = element_blank(),
+        legend.text = element_text(size = 14),
+        legend.key.width = unit(1.2, "cm"),
+        plot.title.position = "plot",
+        plot.title = element_markdown(hjust = 0, face = "bold", margin = margin(b = 5),
+                                      lineheight = 1.1, size = rel(1.6)),
+        plot.caption.position = "plot",
+        plot.caption = element_markdown(hjust = 0, vjust = 0, colour = "grey50",
+                                        margin = margin(t = 20), lineheight = 1.25),
+        plot.subtitle = element_markdown(hjust = 0, margin = margin(t = 3, b = 20),
+                                         size = rel(1), lineheight = 1.2),
+        panel.grid.minor = element_blank(),
+        panel.grid.major.x = element_blank(),
+        axis.title = element_blank()
+        # plot.background = element_rect(color = "red", linewidth = 1.5)
+        # panel.border = element_rect(color = "red", linewidth = 1.2)
+    )
+
+```
+
+
+```{r plot}
+
+p_combined <- ggplot(combined,
+                     aes(x = year, y = share, group = political_party, color = political_party)) + 
+    annotate("rect", xmin = 2001, xmax = 2009, ymin = 100, ymax = 110,
+             fill = alpha("#d71e28", 0.12)) +
+    annotate("rect", xmin = 2009, xmax = 2017, ymin = 100, ymax = 110,
+             fill = alpha("#0044c9", 0.12)) +
+    annotate("rect", xmin = 2017, xmax = 2021, ymin = 100, ymax = 110,
+             fill = alpha("#d71e28", 0.12)) +
+    annotate("rect", xmin = 2021, xmax = 2025, ymin = 100, ymax = 110,
+             fill = alpha("#0044c9", 0.12)) +
+    annotate("rect", xmin = 2025, xmax = 2029, ymin = 100, ymax = 110,
+             fill = alpha("#d71e28", 0.12)) +
+    geom_ribbon(
+        data = combined %>% 
+            filter(political_party %in% c("National Average", "Republican")) %>%
+            pivot_wider(names_from = political_party, values_from = share) %>%
+            mutate(
+                ymin = pmin(`National Average`, Republican, na.rm = TRUE),
+                ymax = pmax(`National Average`, Republican, na.rm = TRUE)
+            ),
+        aes(x = year, ymin = ymin, ymax = ymax),
+        fill = "#d71e28",               # Republican red, or a lighter version
+        alpha = 0.12,                   # subtle transparency (0.08–0.18 works well)
+        inherit.aes = FALSE,
+        show.legend = FALSE             # usually hide from legend
+    ) +
+    geom_ribbon(
+        data = combined %>% 
+            filter(political_party %in% c("National Average", "Democrat")) %>%
+            pivot_wider(names_from = political_party, values_from = share) %>%
+            mutate(
+                ymin = pmin(`National Average`, Democrat, na.rm = TRUE),
+                ymax = pmax(`National Average`, Democrat, na.rm = TRUE)
+            ),
+        aes(x = year, ymin = ymin, ymax = ymax),
+        fill = "#0044c9",               # Democrat blue, or a lighter version
+        alpha = 0.12,                   # subtle transparency (0.08–0.18 works well)
+        inherit.aes = FALSE,
+        show.legend = FALSE             # usually hide from legend
+    ) +
+    annotate("rect", xmin = 2025.6 + x_shift, xmax = 2026.4 + x_shift,
+             ymin = as.numeric(rep_range["min"]), ymax = as.numeric(rep_range["max"]),
+             fill = alpha("#d71e28", 0.2)) +
+    annotate("rect", xmin = 2027.6 + x_shift + 3, xmax = 2028.4 + x_shift + 3,
+             ymin = as.numeric(dem_range["min"]), ymax = as.numeric(dem_range["max"]),
+             fill = alpha("#0044c9", 0.2)) +
+    annotate("rect", xmin = 2026.6 + x_shift + 1.5, xmax = 2027.4 + x_shift + 1.5,
+             ymin = as.numeric(ind_range["min"]), ymax = as.numeric(ind_range["max"]),
+             fill = alpha("#9c27b0", 0.2)) +
+    geom_vline(xintercept = c(2001, 2009, 2017, 2021, 2025, 2029),
+               color = "grey80", linetype = 2) +
+    geom_line(data = . %>% filter(political_party != "National Average"),
+              aes(linetype = political_party), linewidth = 0.9) +
+    
+    # National Average last (on top)
+    geom_line(data = . %>% filter(political_party == "National Average"),
+              aes(linetype = political_party), linewidth = 1.2, color = "grey20") +
+    # Assign specific linetypes
+    scale_linetype_manual(
+        values = c(
+            "Republican"      = 1,         
+            "Democrat"        = 1,
+            "Independent"     = 1,
+            "National Average" = 1
+        )
+    ) +
+    geom_point() +
+    scale_color_manual(values = colors_political) +
+    labs(title = paste0("A record-low 58% of U.S. adults report being “extremely” (41%) or “very” (17%)",
+                        "<br>",
+                        "proud to be American in 2025. This is largely driven by sharp declines among",
+                        "<br>",
+                        "<span style='color: #0044c9;'>Democrats</span> and <span style='color: #9c27b0;'>Independents</span>, while <span style='color: #d71e28;'>Republicans</span> remain steady."),
+         subtitle = paste0("*How proud are you to be an American — extremely proud, very proud, moderately proud, only a little proud or not at all proud?*",
+                           "<br>",
+                           "[Figures represent the percentage who are extremely or very proud]"),
+         caption = paste0("<b>Data source</b>: Gallup, June 2025",
+                          "<br>",
+                          "<b>Notes</b>: Data for 2002 and 2006 reflect the average of two surveys conducted in each of those years. No data available from 2010-2012.",
+                          "<br>",
+                          "<b>Graphic</b>: The Data Decoded / @TheDataDecoded")) +
+    coord_cartesian(clip = "off", xlim = c(2001, 2029), ylim = c(0, 110)) +
+    base_theme +
+    scale_x_continuous(breaks = seq(2001, 2029, 2),
+                       expand = expansion(mult = c(0, 0))) +
+    scale_y_continuous(breaks = seq(0, 100, 10),
+                       labels = percent_format(scale = 1),
+                       # limits = c(0, 103),
+                       expand = expansion(mult = c(0.01, 0))) +
+    geom_text(data = presidents,
+              aes(x = x, y = y, label = label),
+              fontface = "bold", size = 4, color = presidents$color,
+              inherit.aes = FALSE) +
+    geom_image(data = tibble(x = c(2005, 2013, 2019, 2023, 2027), y = rep(103.25, 5),
+                             image = c("https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/US_Democratic_Party_Logo.svg/960px-US_Democratic_Party_Logo.svg.png",
+                                       "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Republican_Party_Disc_%28alternate%29.svg/960px-Republican_Party_Disc_%28alternate%29.svg.png")[c(2,1,2,1,2)]),
+               aes(x = x, y = y, image = image), size = 0.04,
+               inherit.aes = FALSE) +
+    geom_richtext(data = text_annotation,
+              aes(x = x, y = y, label = label),
+              fill = NA, label.color = NA, vjust = text_annotation$vjust,
+              hjust = 1, size = 4, fontface = "bold",
+              show.legend = FALSE, family = font_choice, inherit.aes = FALSE,
+              color = text_annotation$color) +
+    geom_richtext(data = point_labels,
+                  aes(x = x, y = y, label = label),
+                  fill = NA, label.color = NA, vjust = point_labels$vjust,
+                  hjust = 0, size = 4, fontface = "bold",
+                  show.legend = FALSE, family = font_choice, inherit.aes = FALSE,
+                  color = point_labels$color) +
+    geom_point(data = point_highlights,
+               aes(x = x, y = y), color = point_highlights$color,
+               shape = 21, fill = NA, inherit.aes = FALSE, size = 4, stroke = 0.6) +
+    # 
+    geom_segment(data = range_segments,
+                 aes(x = x, xend = xend, y = y, yend = yend),
+                 inherit.aes = FALSE, color = range_segments$color) +
+    # Black segment
+    geom_segment(data = tibble(x = range_segments$x[1], xend = range_segments$xend[3],
+                               y = 30, yend = 30),
+                 aes(x = x, xend = xend, y = y, yend = yend),
+                 inherit.aes = FALSE, color = "grey20") +
+    geom_text(data = tibble(x = 2026.6 + x_shift + 1.5, y = 28.5,
+                            label = "Pride range by\nparty affiliation\n(2001–2025)"),
+              aes(x = x, y = y, label = label),
+              inherit.aes = FALSE, fontface = "bold", size = 4, family = font_choice,
+              vjust = 1) +
+    geom_segment(data = party_segments,
+                 aes(x = x, xend = xend, y = y, yend = yend),
+                 inherit.aes = FALSE, color = party_segments$color,
+                 linewidth = 1) +
+    geom_segment(data = tibble(x = 2002, xend = 2004,
+                               y = 80, yend = 80),
+                 aes(x = x, xend = xend, y = y, yend = yend),
+                 inherit.aes = FALSE, color = "grey20") +
+    geom_richtext(data = tibble(x = 2005, y = 55,
+                            label = "Post-9/11 period of peak<br>national pride (2002-2004)"),
+              aes(x = x, y = y, label = label),
+              fontface = "bold", size = 4, hjust = 0.5, vjust = 0.5,
+              fill = NA, label.color = NA, show.legend = FALSE, family = font_choice,
+              inherit.aes = FALSE) +
+    geom_curve(data = tibble(x = 2005, y = 59, xend = 2003, yend = 79),
+               aes(x = x, y = y, xend = xend, yend = yend),
+               arrow = arrow(length = unit(0.35, "cm"), angle = 23, type = "closed"),
+               color = "grey20",
+               # size = 0.4,
+               angle = 102,
+               linewidth = 0.5,
+               curvature = -0.25,
+               inherit.aes = FALSE
+    ) +
+    guides(
+        color = guide_legend(
+            override.aes = list(
+                linewidth = 1.1,     # thicker lines in legend (was probably ~0.9–1.2 before)
+                size = 2.1            # larger points in legend (default is ~1.5–2)
+            )
+        )
+    ) 
+
+```
+
+
+```{r export-visualization}
+
+svg_path <- file.path(project_path, "plots", "thumb.svg")
+
+svg_w <- 12.3
+svg_h <- 10
+
+png_w <- 2000
+png_h <- round(png_w * svg_h / svg_w)  # keep same aspect ratio
+
+ggsave(svg_path, p_combined, width = svg_w, height = svg_h, bg = "white")
+
+library(rsvg)
+
+png_path <- file.path(project_path, "plots", "pride_by_political_affiliation.png")
+
+rsvg_png(
+    svg  = svg_path,
+    file = png_path,
+    width  = png_w,
+    height = png_h
+)
+
+```
+
+![](plots/thumb.svg){width=100%}
