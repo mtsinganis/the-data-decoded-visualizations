@@ -1,7 +1,7 @@
 ---
 title: "Denmark's high tax burden compared to other major economies"
 date: "2026-04-01"
-categories: [Denmark, `Tax revenue`]
+categories: [Denmark, "Tax revenue"]
 image: plots/thumb.svg
 description: "Tax revenue as share of GDP (1972-2025)"
 format: html
@@ -118,6 +118,18 @@ linewidth <- c(0.8, 1.7, 1.4, 2.6)
 
 ```
 
+```{r load-font}
+
+library(sysfonts)
+
+font_choice <- "Segoe UI"
+
+font_add(font_choice,
+         regular = "C:/Windows/Fonts/segoeui.ttf",
+         bold = "C:/Windows/Fonts/segoeuib.ttf",
+         italic = "C:/Windows/Fonts/segoeuii.ttf")
+
+```
 
 ```{r line-chart}
 
@@ -252,3 +264,6 @@ rsvg_png(
 )
 
 ```
+
+
+![](plots/thumb.svg){width=100%}
