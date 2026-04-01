@@ -13,7 +13,7 @@ execute:
 
 ```{r project-path}
 # Set project path
-project_path <- file.path("visuals", "2026-04-denmark-tax-revenue-burden")
+project_path <- file.path("visuals", "2026-04-denmark-tax-revenue")
 ```
 
 ```{r load-packages}
@@ -213,8 +213,8 @@ tax_revenue_chart <- ggplot(data = tax_long ,
     coord_cartesian(clip = "off", ylim = c(0, 40)) +
     # ylim(0, 40) +
     labs(
-        title = paste0("<span style='color: #c8102e;'>Denmark</span> Has the Highest Tax Burden Among Major Economies"),
-        subtitle = paste("Tax revenue as % of national GDP, 1972–2025"),
+        title = paste0("<span style='color: #c8102e;'>Denmark</span> Has the Highest Central Government Tax Revenue Share", "<br>", "Among Major Economies"),
+        subtitle = paste("Tax revenue (% of GDP), excluding most social security contributions, 1972–2025"),
         caption = paste0("<b>Data source</b>: World Bank, World Development Indicators, Tax revenue (% of GDP), indicator GC.TAX.TOTL.GD.ZS (accessed April 2026)",
                          "<br>",
                          "<b>Notes</b>: Central government tax revenue excluding most social security contributions. Data availability and completeness vary by country.",
@@ -254,7 +254,7 @@ ggsave(svg_path, tax_revenue_chart, width = svg_w, height = svg_h, bg = "white")
 
 library(rsvg)
 
-png_path <- file.path(project_path, "plots", "emissions-all-years-line-chart.png")
+png_path <- file.path(project_path, "plots", "tax-revenue-line-chart.png")
 
 rsvg_png(
     svg  = svg_path,
