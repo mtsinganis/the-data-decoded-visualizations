@@ -435,7 +435,8 @@ venezuela_area <- venezuela_ranked %>%
     ungroup() %>% 
     arrange() %>%
     mutate(
-    alpha_value = if_else(country_group %in% c("Colombia", "Peru"), 1.0, 0.15)
+    alpha_value = case_when(country_group %in% c("Colombia", "Peru") ~ 0.80,
+                            .default = 0.15)
     )
 
 # Get 2025 country order
@@ -619,7 +620,7 @@ q <- ggplot(venezuela_area, aes(x = year, y = percentage_year, fill = country_gr
                          color = area_colors),
                      linewidth = 0.7,
                      lineend = "round",
-                     linetype = 3
+                     linetype = 1
         ) +
     geom_segment(data = tibble(x = 2013, xend = 2013, y = 4, yend = 111.25),
                      aes(x = x, xend = xend, y = y, yend = yend),
@@ -644,7 +645,7 @@ q <- ggplot(venezuela_area, aes(x = year, y = percentage_year, fill = country_gr
                                                "<b>over 80%</b> of Venezuelans<br>",
                                                "abroad are in the United<br>States")),
                       aes(x = x, y = y, label = label),
-                      fill = "#f0dcda", label.color = NA, hjust = 0, vjust = 1, size = 4,
+                      fill = "#f2e0de", label.color = NA, hjust = 0, vjust = 1, size = 4,
                       color = "grey20", show.legend = FALSE, family = font_choice,
                       inherit.aes = FALSE) +
     geom_richtext(data = tibble(x = 2015.07, y = 71,
@@ -695,7 +696,7 @@ q <- ggplot(venezuela_area, aes(x = year, y = percentage_year, fill = country_gr
     # Flag border
     geom_point(data = flags,
            aes(x = x, y = y),
-           size = 12, # Adjust size to be slightly larger than image
+           size = 11.4, # Adjust size to be slightly larger than image
            color = "black",
            inherit.aes = FALSE,
            position = position_nudge(0, 4)) +
