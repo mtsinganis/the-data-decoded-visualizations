@@ -1,0 +1,290 @@
+---
+title: "The geographic distribution of Jews in England and Wales"
+date: "2026-05-03"
+categories: ["Jews", "England", "Wales"]
+image: plots/thumb.svg
+description: "2021 Census data"
+format: html
+execute:
+  dir: project
+  echo: false
+  output: false
+---
+
+```{r project-path}
+# Set project path
+project_path <- file.path("visuals", "2026-05-03-england-wales-jews-geo")
+```
+
+```{r load-packages}
+
+library(readxl)
+library(janitor)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(ggtext)
+library(scales)
+library(forcats)
+library(sf)
+
+```
+
+```{r import-data}
+
+# Define paths
+data_dir <- file.path(project_path, "data")
+
+excel_path <- file.path(data_dir, "jewish_population_by_region.xlsx")
+regions_zip <- file.path(data_dir, "Regions_December_2025_Boundaries_EN_BUC_6628912860252946105.zip")
+countries_zip <- file.path(data_dir, "Countries_December_2023_Boundaries_UK_BUC_9083552185220297502.zip")
+
+# 1. Download Excel only if it doesn't exist
+if (!file.exists(excel_path)) {
+  url <- "https://www.ons.gov.uk/visualisations/dvc2284/fig04/datadownload.xlsx"
+  message("Downloading Excel data...")
+  download.file(url, destfile = excel_path, mode = "wb")
+} else {
+  message("Excel data already exists — skipping download.")
+}
+
+# 2. Unzip regions boundaries only if needed
+regions_shp <- file.path(data_dir, "Regions_December_2025_EN_BUC.shp")  # adjust filename if needed
+
+if (!file.exists(regions_shp)) {
+  message("Unzipping Regions boundaries...")
+  unzip(regions_zip, exdir = data_dir, junkpaths = TRUE)
+} else {
+  message("Regions boundaries already extracted — skipping unzip.")
+}
+
+# 3. Unzip countries boundaries only if needed
+countries_shp <- file.path(data_dir, "Countries_December_2023_UK_BUC.shp")  # adjust if needed
+
+if (!file.exists(countries_shp)) {
+  message("Unzipping Countries boundaries...")
+  unzip(countries_zip, exdir = data_dir, junkpaths = TRUE)
+} else {
+  message("Countries boundaries already extracted — skipping unzip.")
+}
+
+# Now read the data
+data <- read_excel(excel_path, sheet = 1, skip = 5)
+
+
+# url <- "https://www.ons.gov.uk/visualisations/dvc2284/fig04/datadownload.xlsx"
+# 
+# data_path <- file.path(project_path, "data", "jewish_population_by_region.xlsx")
+# 
+# download.file(url, destfile = data_path, mode = "wb")
+# 
+# data <- read_excel(data_path, sheet = 1, skip = 5)
+# 
+# unzip(file.path(project_path, "data", "Regions_December_2025_Boundaries_EN_BUC_6628912860252946105.zip"),
+#       exdir = file.path(project_path, "data"))
+# 
+# unzip(file.path(project_path, "data", "Countries_December_2023_Boundaries_UK_BUC_9083552185220297502.zip"),
+#       exdir = file.path(project_path, "data"))
+
+england_regions <- st_read(file.path(project_path, "data", "RGN_DEC_2025_EN_BUC.shp")) %>%
+  st_transform(27700) %>%
+  rename(region_code = RGN25CD,
+         region_name = RGN25NM) %>% 
+  select(-RGN25NMW)
+
+wales <- st_read(file.path(project_path, "data", "CTRY_DEC_2023_UK_BUC.shp")) %>%
+  st_transform(27700) %>% 
+  filter(CTRY23NM == "Wales") %>% 
+  rename(region_code = CTRY23CD,
+         region_name = CTRY23NM) %>% 
+  select(-CTRY23NMW)
+
+regions_full <- bind_rows(england_regions, wales)
+
+
+
+```
+
+```{r prepare-data}
+
+data <- data %>% 
+    clean_names() %>% 
+    mutate(region_name = fct_reorder(region_name, jewish_identity_overall))
+
+# Reshape data to long format for grouping
+data_long <- data %>%
+  select(region_name, jewish_identity_overall, england_and_wales_population) %>%
+  pivot_longer(cols = c(jewish_identity_overall, england_and_wales_population),
+               names_to = "measure",
+               values_to = "percentage") %>%
+  mutate(measure = case_match(measure,
+                      "jewish_identity_overall" ~ "Jewish population share",
+                      "england_and_wales_population" ~ "Total population share",
+                      .default = measure),
+         measure = factor(measure, levels = c("Total population share", "Jewish population share"))
+    )
+
+map_data <- regions_full %>% 
+  left_join(data, by = "region_name") %>% 
+  mutate(label = case_match(
+    region_name,
+    "London" ~ "London",
+    "East of England" ~ "East\nEngland",
+    "North West" ~ "North\nWest",
+    "South East" ~ "South\nEast",
+    "Yorkshire and The Humber" ~ "Yorkshire and\nThe Humber",
+    "South West" ~ "South West",
+    "West Midlands" ~ "West\nMidlands",
+    "East Midlands" ~ "East\nMidlands",
+    "North East" ~ "North\nEast",
+    "Wales" ~ "Wales",
+    .default = region_name
+  ))
+
+```
+
+```{r set-font}
+
+library(sysfonts)
+
+font_choice <- "Segoe UI"
+
+font_add(font_choice,
+         regular = "C:/Windows/Fonts/segoeui.ttf",
+         bold = "C:/Windows/Fonts/segoeuib.ttf",
+         italic = "C:/Windows/Fonts/segoeuii.ttf")
+
+```
+
+```{r inset plot}
+
+inset_map <- ggplot(map_data) +
+  geom_sf(aes(fill = jewish_identity_overall),
+          color = "white", linewidth = 0.4) +
+  geom_sf_text(data = . %>% filter(!region_name %in% c("London", "East Midlands")),
+               aes(label = label),   # or use abbreviations if too long
+               size = 3.2, # adjust size
+               fontface = "bold",
+               color = "#035AA6",             # or "white" if dark areas
+               check_overlap = FALSE,        # prevents overlapping labels
+               lineheight = 0.8) +
+  geom_sf_text(data = . %>% filter(region_name == "London"),
+               aes(label = label),   # or use abbreviations if too long
+               size = 3.4, # adjust size
+               fontface = "bold",
+               color = "#035AA6",             # or "white" if dark areas
+               nudge_x = 65000,
+               nudge_y = -12000,
+               check_overlap = FALSE,        # prevents overlapping labels
+               lineheight = 0.8) +
+  geom_sf_text(data = . %>% filter(region_name == "East Midlands"),
+               aes(label = label),   # or use abbreviations if too long
+               size = 3.4, # adjust size
+               fontface = "bold",
+               color = "#035AA6",             # or "white" if dark areas
+               nudge_x = -5000,
+               nudge_y = 10000,
+               check_overlap = FALSE,        # prevents overlapping labels
+               lineheight = 0.8) +
+  scale_fill_gradient(low = alpha("#035AA6", 0.1), 
+                      high = "#035AA6",
+                      labels = label_percent(scale = 1, accuracy = 0.1),
+                      name = "Jewish %") +
+  theme_void(base_size = 14, base_family = font_choice) +
+  theme(legend.position = "none",
+        plot.background = element_rect(fill = "transparent", colour = NA),
+        panel.background = element_rect(fill = "transparent", colour = NA))
+
+```
+
+
+
+```{r main-plot}
+
+region_bar <- ggplot(data_long, aes(x = percentage, y = region_name, fill = measure)) +
+    geom_col(width = 0.8, position = position_dodge(width = 0.8), stat = "identity") +
+    geom_vline(xintercept = 0, color = "grey60", linetype = 1, linewidth = 0.5) +
+    scale_x_continuous(breaks = seq(0, 60, 5),
+                       labels = label_percent(scale = 1, accuracy = 1),
+                       expand = expansion(mult = c(0.02, 0.02))) +
+    scale_fill_manual(values = c("grey85", "#035AA6"),   # Jewish blue + grey
+                    name = NULL) +
+    coord_cartesian(clip = "off", xlim = c(0, 56)) +
+    theme_minimal(base_size = 14, base_family = font_choice) +
+    theme(axis.title = element_blank(),
+          legend.position = "top",
+          legend.justification = "left",
+          legend.location = "plot",
+          panel.grid.minor = element_blank(),
+          panel.grid.major.y = element_blank(),
+          panel.grid.major.x = element_blank(),
+          axis.text.x = element_blank(),
+          plot.margin = margin(r = 75, b = 18, l = 18, t = 18, unit = "pt"),
+          plot.title = element_markdown(hjust = 0, face = "bold", margin = margin(b = 5),
+                                        lineheight = 1.1, size = rel(1.6)),
+          plot.title.position = "plot",
+          plot.caption.position = "plot",
+          plot.caption = element_markdown(hjust = 0, vjust = 0, colour = "grey50",
+                                          margin = margin(t = 20), lineheight = 1.25),
+          plot.subtitle = element_markdown(hjust = 0, margin = margin(t = 3, b = 20),
+                                           size = rel(1), lineheight = 1.2)
+    ) +
+    labs(
+        title = paste0("Over half of people who identify as Jewish in England and Wales",
+                       "<br>",
+                       "live in London, with notable concentration in the East of England"),
+        subtitle = paste("Percentage of people who identified as Jewish in each region of England and Wales, Census 2021"),
+        caption = paste0("<b>Data source</b>: Census 2021 from the Office for National Statistics",
+                         "<br>",
+                         "<b>Notes</b>: A person could identify as Jewish via religion, ethnic group, or both.",
+                         "<br>",
+                         "<b>Graphic</b>: The Data Decoded / @TheDataDecoded")
+    ) +
+    # Jewish
+    geom_text(
+              aes(x = percentage + signif(range(percentage)[2], 3) * 0.01,
+                  y = region_name,
+                  label = label_percent(scale = 1, accuracy = 0.1)(percentage),
+                  color = measure, group = measure),
+              position = position_dodge(width = 0.7),
+              hjust = 0, size = 4, fontface = "bold") +
+  
+    scale_color_manual(values = c("Jewish population share" = "#035AA6", 
+                              "Total population share" = "grey50"),
+                   guide = "none") +
+
+    annotation_custom(
+            grob = ggplotGrob(inset_map),
+            xmin = 15, xmax = 57,     # adjust these to your x-scale (percentages)
+            ymin = 1,  ymax = 9       # adjust to your y-scale (region positions)
+    )
+  
+```
+
+
+```{r export-chart}
+
+svg_path <- file.path(project_path, "plots", "thumb.svg")
+
+svg_w <- 10
+svg_h <- 10
+
+png_w <- 3000
+png_h <- round(png_w * svg_h / svg_w)  # keep same aspect ratio
+
+ggsave(svg_path, region_bar, width = svg_w, height = svg_h, bg = "white")
+
+library(rsvg)
+
+png_path <- file.path(project_path, "plots", "jewish_share_by_region.png")
+
+rsvg_png(
+    svg  = svg_path,
+    file = png_path,
+    width  = png_w,
+    height = png_h
+)
+
+```
+
+![](plots/thumb.svg){width=100%}
