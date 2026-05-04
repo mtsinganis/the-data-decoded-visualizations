@@ -33,7 +33,7 @@
   </clipPath>
 </defs>
 <g clip-path='url(#cpNS4yNHw3MTQuNzZ8MC4wMHw3MjAuMDA=)'>
-<rect x='5.24' y='0.00' width='709.52' height='720.00' style='stroke-width: 0.00; stroke: none;' />
+<rect x='5.24' y='0.00' width='709.52' height='720.00' style='stroke-width: 0.00; stroke: none; fill: #FFFFFF;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw3MjAuMDA=)'>
 </g>
@@ -43,7 +43,7 @@
   </clipPath>
 </defs>
 <g clip-path='url(#cpMjMuMTd8Njg5Ljg1fDEyOC45N3w2NDMuNzc=)'>
-<rect x='23.17' y='128.97' width='666.68' height='514.80' style='stroke-width: 0.00; stroke: none;' />
+<rect x='23.17' y='128.97' width='666.68' height='514.80' style='stroke-width: 0.00; stroke: none; fill: #FFFFFF;' />
 <path d='M 183.72 448.38 L 183.12 447.87 L 183.32 447.61 L 183.72 448.38 Z' style='fill-rule: evenodd; fill: #0D0887; stroke-width: 0.18; stroke: #FFFFFF; stroke-linecap: butt;' />
 <path d='M 187.61 441.49 L 187.29 441.20 L 187.55 441.52 L 185.46 442.48 L 186.08 441.33 L 187.06 440.41 L 187.97 440.36 L 188.47 440.00 L 188.83 440.26 L 188.79 440.00 L 189.95 439.76 L 190.57 439.86 L 189.96 440.23 L 187.61 441.49 Z' style='fill-rule: evenodd; fill: #0D0887; stroke-width: 0.18; stroke: #FFFFFF; stroke-linecap: butt;' />
 <path d='M 198.16 425.38 L 199.02 425.77 L 199.24 426.20 L 198.16 425.38 Z' style='fill-rule: evenodd; fill: #0D0887; stroke-width: 0.18; stroke: #FFFFFF; stroke-linecap: butt;' />
@@ -781,17 +781,17 @@
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw3MjAuMDA=)'>
 <text x='605.52' y='438.91' style='font-size: 14.00px; font-weight: bold; font-family: "Segoe UI";' textLength='59.53px' lengthAdjust='spacingAndGlyphs'>Jewish %</text>
-<rect x='605.52' y='447.53' width='17.28' height='17.28' style='stroke-width: 0.00; stroke: none;' />
+<rect x='605.52' y='447.53' width='17.28' height='17.28' style='stroke-width: 0.00; stroke: none; fill: #FFFFFF;' />
 <rect x='605.64' y='447.65' width='17.04' height='17.04' style='stroke-width: 0.18; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #0D0887;' />
-<rect x='605.52' y='464.81' width='17.28' height='17.28' style='stroke-width: 0.00; stroke: none;' />
+<rect x='605.52' y='464.81' width='17.28' height='17.28' style='stroke-width: 0.00; stroke: none; fill: #FFFFFF;' />
 <rect x='605.64' y='464.93' width='17.04' height='17.04' style='stroke-width: 0.18; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #6A00A8;' />
-<rect x='605.52' y='482.09' width='17.28' height='17.28' style='stroke-width: 0.00; stroke: none;' />
+<rect x='605.52' y='482.09' width='17.28' height='17.28' style='stroke-width: 0.00; stroke: none; fill: #FFFFFF;' />
 <rect x='605.64' y='482.21' width='17.04' height='17.04' style='stroke-width: 0.18; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #B12A90;' />
-<rect x='605.52' y='499.37' width='17.28' height='17.28' style='stroke-width: 0.00; stroke: none;' />
+<rect x='605.52' y='499.37' width='17.28' height='17.28' style='stroke-width: 0.00; stroke: none; fill: #FFFFFF;' />
 <rect x='605.64' y='499.49' width='17.04' height='17.04' style='stroke-width: 0.18; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #E16462;' />
-<rect x='605.52' y='516.65' width='17.28' height='17.28' style='stroke-width: 0.00; stroke: none;' />
+<rect x='605.52' y='516.65' width='17.28' height='17.28' style='stroke-width: 0.00; stroke: none; fill: #FFFFFF;' />
 <rect x='605.64' y='516.77' width='17.04' height='17.04' style='stroke-width: 0.18; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #FCA636;' />
-<rect x='605.52' y='533.93' width='17.28' height='17.28' style='stroke-width: 0.00; stroke: none;' />
+<rect x='605.52' y='533.93' width='17.28' height='17.28' style='stroke-width: 0.00; stroke: none; fill: #FFFFFF;' />
 <rect x='605.64' y='534.05' width='17.04' height='17.04' style='stroke-width: 0.18; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #F0F921;' />
 <text x='629.77' y='460.09' style='font-size: 11.20px; font-family: "Segoe UI";' textLength='22.84px' lengthAdjust='spacingAndGlyphs'>&lt;5%</text>
 <text x='629.77' y='477.37' style='font-size: 11.20px; font-family: "Segoe UI";' textLength='31.72px' lengthAdjust='spacingAndGlyphs'>5-10%</text>
