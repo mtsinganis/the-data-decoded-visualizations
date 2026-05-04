@@ -1333,8 +1333,8 @@ jews_ward_map <- ggplot(london_final) +
                curvature = -0.4,
                inherit.aes = FALSE
     ) +
-  annotate("text", x = 53.95e4, y = 18.35e4, label = "Stamford\nHill West", fontface = "bold",
-           size = 4, color = "grey95", lineheight = 0.9) +
+  annotate("text", x = 53.65e4, y = 18.35e4, label = "Stamford\nHill West", fontface = "bold",
+           size = 4, color = "grey95", lineheight = 0.9, hjust = 0) +
   
   geom_curve(data = tibble(x = 51.8e4, y = 18.6e4, xend = 52.38e4, yend = 18.74e4),
                aes(x = x, y = y, xend = xend, yend = yend),
@@ -1346,7 +1346,7 @@ jews_ward_map <- ggplot(london_final) +
                curvature = 0.4,
                inherit.aes = FALSE
     ) +
-  annotate("text", x = 51.78e4, y = 18.6e4, label = "Golders\nGreen", fontface = "bold",
+  annotate("text", x = 51.75e4, y = 18.6e4, label = "Golders\nGreen", fontface = "bold",
            size = 4, color = "grey95", lineheight = 0.9, hjust = 1) +
   
   geom_curve(data = tibble(x = 53e4, y = 19.22e4, xend = 52.64e4, yend = 18.956e4),
