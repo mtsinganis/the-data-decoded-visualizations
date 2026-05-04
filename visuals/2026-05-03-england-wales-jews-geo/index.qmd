@@ -13,7 +13,7 @@ execute:
 
 ```{r project-path}
 # Set project path
-project_path <- file.path("visuals", "2026-05-england-wales-jews-geo")
+project_path <- file.path("visuals", "2026-05-03-england-wales-jews-geo")
 ```
 
 ```{r load-packages}
