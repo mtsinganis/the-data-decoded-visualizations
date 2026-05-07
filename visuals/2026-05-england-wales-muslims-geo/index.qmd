@@ -254,7 +254,7 @@ region_bar <- ggplot(muslims_region_long, aes(x = percentage, y = region_name, f
         subtitle = paste("Percentage of people who identified as Muslim and the England and Wales population share in each region",
                          "<br>",
                          "of England and Wales, Census 2021"),
-        caption = paste0("<b>Data source</b>: Census 2021 from the Office for National Statistics",
+        caption = paste0("<b>Data source</b>: Census 2021 from the Office for National Statistics. N = 3,868,133 Muslims.",
                          "<br>",
                          "<b>Notes</b>: Based on self-identified religion from Census 2021. A person is counted as Muslim if they ticked the “Muslim” box in the religion",
                          "<br>",
@@ -396,10 +396,6 @@ london_borough_lookup <- tribble(
   "E09000032",  "Wandsworth",
   "E09000033",  "Westminster"
 )
-
-# muslims_london_borough <- religions_borough %>% 
-#   clean_names() %>% 
-#   mutate(jewish_identity_overall = jewish_identity_overall * 100)
 
 religions_borough <- religions_borough %>% 
     clean_names() %>% 
@@ -563,8 +559,8 @@ muslims_borough_map <- ggplot(map_data_london) +
         legend.direction = "vertical",
         legend.justification = "center",
         legend.title = element_text(face = "bold"),
-        plot.background = element_rect(fill = "white", colour = "tomato3"),
-        panel.background = element_rect(fill = "white", colour = "tomato3"),
+        plot.background = element_rect(fill = "white"),
+        panel.background = element_rect(fill = "white"),
         plot.margin = margin(r = 25, b = 18, l = 5, t = 18, unit = "pt"),
           plot.title = element_markdown(hjust = 0, face = "bold", margin = margin(b = 5),
                                         lineheight = 1.1, size = rel(1.6)),
@@ -612,3 +608,1035 @@ rsvg_png(
 ```
 
 ![](plots/muslims_london_borough.svg){width=100%}
+
+
+```{r import-data-wards}
+
+excel_path_london_wards <- file.path(data_dir, "TS030-2021-3-filtered-2026-05-06T22_17_10Z.xlsx")
+
+london_data_wards <- read_excel(excel_path_london_wards, sheet = 1, col_names = TRUE)
+
+london_wards_zip <- file.path(data_dir,
+                              "WD_MAY_2025_UK_BGC_V2_3260134346010774945.zip")
+
+# Unzip London wards boundaries only if needed
+london_wards_shp <- file.path(data_dir, "WD_MAY_2025_UK_BGC_V2.shp") 
+
+if (!file.exists(london_wards_shp)) {
+  message("Unzipping Countries boundaries...")
+  unzip(london_wards_zip, exdir = data_dir, junkpaths = TRUE)
+} else {
+  message("Countries boundaries already extracted — skipping unzip.")
+}
+
+london_wards <- st_read(file.path(project_path, "data", "WD_MAY_2025_UK_BGC_V2.shp")) %>%
+  st_transform(27700)
+
+```
+
+
+```{r london-wards}
+
+london_data_wards <- london_data_wards %>% 
+    clean_names() %>% 
+    rename(ltla_code = electoral_wards_and_divisions_code,
+           ward = electoral_wards_and_divisions) %>% 
+  mutate(ward = case_when(
+    ward == "Bethnal Green" ~ "Bethnal Green East",
+    ward == "St Peter's (Tower Hamlets)" ~ "Bethnal Green West",
+    ward == "City of London" ~ "City of London (Local Authority)",
+    .default = ward)
+  )
+
+muslims_ward <- london_data_wards %>% 
+    filter(religion_10_categories == "Muslim") %>%
+    select(-c(religion_10_categories_code, religion_10_categories)) %>% 
+    rename(muslim_identity = observation) %>% 
+    mutate(ward = fct_reorder(ward, muslim_identity))
+
+total_ward <- london_data_wards %>% 
+    group_by(ward) %>% 
+    summarise(total_population_borough = sum(observation))
+
+muslims_ward <- muslims_ward %>% 
+    left_join(total_ward, by = "ward") %>% 
+    mutate(muslim_share = (muslim_identity / total_population_borough)*100) %>% 
+    arrange(desc(muslim_share)) %>% 
+    select(-c(total_population_borough, muslim_identity))
+
+
+# Check mismatches
+# ward_na <- london_data_wards %>%
+#     right_join(london_wards_list, by = join_by("ward" == "ward_name")) %>%
+#     mutate(pop_jewish_total = sum(pop_jewish, na.rm = T),
+#            pop_jewish_share_london = (pop_jewish / pop_jewish_total)*100) %>%
+#   filter(is.na(ltla_code)) %>%
+#   select(ward, borough_name)
+
+# london_data_wards %>% filter(str_starts(ward, "Mill Hill")) %>% print(n = Inf)
+
+london_wards_list <- tribble(
+  ~borough_name,                          ~ward_name,
+  "Barking and Dagenham",                 "Abbey (Barking and Dagenham)",
+  "Barking and Dagenham",                 "Alibon",
+  "Barking and Dagenham",                 "Barking Riverside",
+  "Barking and Dagenham",                 "Beam",
+  "Barking and Dagenham",                 "Becontree",
+  "Barking and Dagenham",                 "Chadwell Heath",
+  "Barking and Dagenham",                 "Eastbrook & Rush Green",
+  "Barking and Dagenham",                 "Eastbury",
+  "Barking and Dagenham",                 "Gascoigne",
+  "Barking and Dagenham",                 "Goresbrook",
+  "Barking and Dagenham",                 "Heath (Barking and Dagenham)",
+  "Barking and Dagenham",                 "Longbridge",
+  "Barking and Dagenham",                 "Mayesbrook",
+  "Barking and Dagenham",                 "Northbury",
+  "Barking and Dagenham",                 "Parsloes",
+  "Barking and Dagenham",                 "Thames View",
+  "Barking and Dagenham",                 "Valence",
+  "Barking and Dagenham",                 "Village (Barking and Dagenham)",
+  "Barking and Dagenham",                 "Whalebone",
+  
+  "Barnet",                               "Barnet Vale",
+  "Barnet",                               "Brunswick Park",
+  "Barnet",                               "Burnt Oak",
+  "Barnet",                               "Childs Hill",
+  "Barnet",                               "Colindale North",
+  "Barnet",                               "Colindale South",
+  "Barnet",                               "Cricklewood",
+  "Barnet",                               "East Barnet",
+  "Barnet",                               "East Finchley",
+  "Barnet",                               "Edgware (Barnet)",
+  "Barnet",                               "Edgwarebury",
+  "Barnet",                               "Finchley Church End",
+  "Barnet",                               "Friern Barnet",
+  "Barnet",                               "Garden Suburb",
+  "Barnet",                               "Golders Green",
+  "Barnet",                               "Hendon (Barnet)",
+  "Barnet",                               "High Barnet",
+  "Barnet",                               "Mill Hill (Barnet)",
+  "Barnet",                               "Totteridge & Woodside",
+  "Barnet",                               "Underhill",
+  "Barnet",                               "West Finchley",
+  "Barnet",                               "West Hendon",
+  "Barnet",                               "Whetstone",
+  "Barnet",                               "Woodhouse (Barnet)",
+  
+  "Bexley",                               "Barnehurst",
+  "Bexley",                               "Belvedere",
+  "Bexley",                               "Bexleyheath",
+  "Bexley",                               "Blackfen & Lamorbey",
+  "Bexley",                               "Blendon & Penhill",
+  "Bexley",                               "Crayford",
+  "Bexley",                               "Crook Log",
+  "Bexley",                               "East Wickham",
+  "Bexley",                               "Erith",
+  "Bexley",                               "Falconwood & Welling",
+  "Bexley",                               "Longlands",
+  "Bexley",                               "Northumberland Heath",
+  "Bexley",                               "Sidcup",
+  "Bexley",                               "Slade Green & Northend",
+  "Bexley",                               "St Mary's & St James (Bexley)",
+  "Bexley",                               "Thamesmead East",
+  "Bexley",                               "West Heath (Bexley)",
+  
+  "Brent",                                "Alperton",
+  "Brent",                                "Barnhill",
+  "Brent",                                "Brondesbury Park",
+  "Brent",                                "Cricklewood & Mapesbury",
+  "Brent",                                "Dollis Hill",
+  "Brent",                                "Harlesden & Kensal Green",
+  "Brent",                                "Kenton (Brent)",
+  "Brent",                                "Kilburn (Brent)",
+  "Brent",                                "Kingsbury (Brent)",
+  "Brent",                                "Northwick Park",
+  "Brent",                                "Preston (Brent)",
+  "Brent",                                "Queensbury (Brent)",
+  "Brent",                                "Queens Park (Brent)",
+  "Brent",                                "Roundwood",
+  "Brent",                                "Stonebridge",
+  "Brent",                                "Sudbury",
+  "Brent",                                "Tokyngton",
+  "Brent",                                "Welsh Harp",
+  "Brent",                                "Wembley Central",
+  "Brent",                                "Wembley Hill",
+  "Brent",                                "Wembley Park",
+  "Brent",                                "Willesden Green",
+  
+  "Bromley",                              "Beckenham Town & Copers Cope",
+  "Bromley",                              "Bickley & Sundridge",
+  "Bromley",                              "Biggin Hill",
+  "Bromley",                              "Bromley Common & Holwood",
+  "Bromley",                              "Bromley Town",
+  "Bromley",                              "Chelsfield",
+  "Bromley",                              "Chislehurst",
+  "Bromley",                              "Clock House",
+  "Bromley",                              "Crystal Palace & Anerley",
+  "Bromley",                              "Darwin",
+  "Bromley",                              "Farnborough & Crofton",
+  "Bromley",                              "Hayes & Coney Hall",
+  "Bromley",                              "Kelsey & Eden Park",
+  "Bromley",                              "Mottingham",
+  "Bromley",                              "Orpington",
+  "Bromley",                              "Penge & Cator",
+  "Bromley",                              "Petts Wood & Knoll",
+  "Bromley",                              "Plaistow",
+  "Bromley",                              "Shortlands & Park Langley",
+  "Bromley",                              "St Mary Cray",
+  "Bromley",                              "St Paul's Cray",
+  "Bromley",                              "West Wickham",
+  
+  "Camden",                               "Belsize",
+  "Camden",                               "Bloomsbury",
+  "Camden",                               "Camden Square",
+  "Camden",                               "Camden Town",
+  "Camden",                               "Fortune Green",
+  "Camden",                               "Frognal",
+  "Camden",                               "Gospel Oak",
+  "Camden",                               "Hampstead Town",
+  "Camden",                               "Haverstock",
+  "Camden",                               "Highgate (Camden)",
+  "Camden",                               "Holborn & Covent Garden",
+  "Camden",                               "Kentish Town North",
+  "Camden",                               "Kentish Town South",
+  "Camden",                               "Kilburn (Camden)",
+  "Camden",                               "King's Cross",
+  "Camden",                               "Primrose Hill",
+  "Camden",                               "Regent's Park (Camden)",
+  "Camden",                               "South Hampstead",
+  "Camden",                               "St Pancras & Somers Town",
+  "Camden",                               "West Hampstead",
+  
+  "City of London",                       "City of London (Local Authority)",
+  
+  "City of Westminster",                  "Abbey Road",
+  "City of Westminster",                  "Bayswater",
+  "City of Westminster",                  "Church Street",
+  "City of Westminster",                  "Harrow Road",
+  "City of Westminster",                  "Hyde Park",
+  "City of Westminster",                  "Knightsbridge & Belgravia",
+  "City of Westminster",                  "Lancaster Gate",
+  "City of Westminster",                  "Little Venice",
+  "City of Westminster",                  "Maida Vale",
+  "City of Westminster",                  "Marylebone",
+  "City of Westminster",                  "Pimlico North",
+  "City of Westminster",                  "Pimlico South",
+  "City of Westminster",                  "Queen's Park (Westminster)",
+  "City of Westminster",                  "Regent's Park (Westminster)",
+  "City of Westminster",                  "St James's (Westminster)",
+  "City of Westminster",                  "Vincent Square",
+  "City of Westminster",                  "Westbourne (Westminster)",
+  "City of Westminster",                  "West End (Westminster)",
+  
+  "Croydon",                              "Addiscombe East",
+  "Croydon",                              "Addiscombe West",
+  "Croydon",                              "Bensham Manor",
+  "Croydon",                              "Broad Green",
+  "Croydon",                              "Coulsdon Town",
+  "Croydon",                              "Crystal Palace & Upper Norwood",
+  "Croydon",                              "Fairfield (Croydon)",
+  "Croydon",                              "Kenley",
+  "Croydon",                              "New Addington North",
+  "Croydon",                              "New Addington South",
+  "Croydon",                              "Norbury Park",
+  "Croydon",                              "Norbury & Pollards Hill",
+  "Croydon",                              "Old Coulsdon",
+  "Croydon",                              "Park Hill & Whitgift",
+  "Croydon",                              "Purley Oaks & Riddlesdown",
+  "Croydon",                              "Purley & Woodcote",
+  "Croydon",                              "Sanderstead",
+  "Croydon",                              "Selhurst",
+  "Croydon",                              "Selsdon & Addington Village",
+  "Croydon",                              "Selsdon Vale & Forestdale",
+  "Croydon",                              "Shirley North",
+  "Croydon",                              "Shirley South (Croydon)",
+  "Croydon",                              "South Croydon",
+  "Croydon",                              "South Norwood",
+  "Croydon",                              "Thornton Heath",
+  "Croydon",                              "Waddon",
+  "Croydon",                              "West Thornton",
+  "Croydon",                              "Woodside (Croydon)",
+  
+  "Ealing",                               "Central Greenford",
+  "Ealing",                               "Dormers Wells",
+  "Ealing",                               "Ealing Broadway",
+  "Ealing",                               "Ealing Common",
+  "Ealing",                               "East Acton",
+  "Ealing",                               "Greenford Broadway",
+  "Ealing",                               "Hanger Hill",
+  "Ealing",                               "Hanwell Broadway",
+  "Ealing",                               "Lady Margaret",
+  "Ealing",                               "North Acton",
+  "Ealing",                               "Northfield (Ealing)",
+  "Ealing",                               "North Greenford",
+  "Ealing",                               "North Hanwell",
+  "Ealing",                               "Northolt Mandeville",
+  "Ealing",                               "Northolt West End",
+  "Ealing",                               "Norwood Green",
+  "Ealing",                               "Perivale",
+  "Ealing",                               "Pitshanger",
+  "Ealing",                               "South Acton",
+  "Ealing",                               "Southall Broadway",
+  "Ealing",                               "Southall Green",
+  "Ealing",                               "Southall West",
+  "Ealing",                               "Southfield",
+  "Ealing",                               "Walpole",
+  
+  "Enfield",                              "Arnos Grove",
+  "Enfield",                              "Bowes",
+  "Enfield",                              "Brimsdown",
+  "Enfield",                              "Bullsmoor",
+  "Enfield",                              "Bush Hill Park",
+  "Enfield",                              "Carterhatch",
+  "Enfield",                              "Cockfosters",
+  "Enfield",                              "Edmonton Green",
+  "Enfield",                              "Enfield Lock",
+  "Enfield",                              "Grange Park",
+  "Enfield",                              "Haselbury",
+  "Enfield",                              "Highfield (Enfield)",
+  "Enfield",                              "Jubilee (Enfield)",
+  "Enfield",                              "Lower Edmonton",
+  "Enfield",                              "New Southgate",
+  "Enfield",                              "Oakwood (Enfield)",
+  "Enfield",                              "Palmers Green",
+  "Enfield",                              "Ponders End",
+  "Enfield",                              "Ridgeway (Enfield)",
+  "Enfield",                              "Southbury",
+  "Enfield",                              "Southgate (Enfield)",
+  "Enfield",                              "Town (Enfield)",
+  "Enfield",                              "Upper Edmonton",
+  "Enfield",                              "Whitewebbs",
+  "Enfield",                              "Winchmore Hill",
+  
+  "Greenwich",                            "Abbey Wood",
+  "Greenwich",                            "Blackheath Westcombe",
+  "Greenwich",                            "Charlton Hornfair",
+  "Greenwich",                            "Charlton Village & Riverside",
+  "Greenwich",                            "East Greenwich",
+  "Greenwich",                            "Eltham Page",
+  "Greenwich",                            "Eltham Park & Progress",
+  "Greenwich",                            "Eltham Town & Avery Hill",
+  "Greenwich",                            "Greenwich Creekside",
+  "Greenwich",                            "Greenwich Park",
+  "Greenwich",                            "Greenwich Peninsula",
+  "Greenwich",                            "Kidbrooke Park",
+  "Greenwich",                            "Kidbrooke Village & Sutcliffe",
+  "Greenwich",                            "Middle Park & Horn Park",
+  "Greenwich",                            "Mottingham, Coldharbour & New Eltham",
+  "Greenwich",                            "Plumstead Common",
+  "Greenwich",                            "Plumstead & Glyndon",
+  "Greenwich",                            "Shooters Hill",
+  "Greenwich",                            "Thamesmead Moorings",
+  "Greenwich",                            "West Thamesmead",
+  "Greenwich",                            "Woolwich Arsenal",
+  "Greenwich",                            "Woolwich Common",
+  "Greenwich",                            "Woolwich Dockyard",
+  
+  "Hackney",                              "Brownswood",
+  "Hackney",                              "Cazenove",
+  "Hackney",                              "Clissold",
+  "Hackney",                              "Dalston",
+  "Hackney",                              "De Beauvoir",
+  "Hackney",                              "Hackney Central",
+  "Hackney",                              "Hackney Downs",
+  "Hackney",                              "Hackney Wick",
+  "Hackney",                              "Haggerston",
+  "Hackney",                              "Homerton",
+  "Hackney",                              "Hoxton East & Shoreditch",
+  "Hackney",                              "Hoxton West",
+  "Hackney",                              "King's Park",
+  "Hackney",                              "Lea Bridge (Hackney)",
+  "Hackney",                              "London Fields",
+  "Hackney",                              "Shacklewell",
+  "Hackney",                              "Springfield",
+  "Hackney",                              "Stamford Hill West",
+  "Hackney",                              "Stoke Newington",
+  "Hackney",                              "Victoria (Hackney)",
+  "Hackney",                              "Woodberry Down",
+  
+  "Hammersmith and Fulham",               "Addison",
+  "Hammersmith and Fulham",               "Avonmore",
+  "Hammersmith and Fulham",               "Brook Green",
+  "Hammersmith and Fulham",               "College Park & Old Oak",
+  "Hammersmith and Fulham",               "Coningham",
+  "Hammersmith and Fulham",               "Fulham Reach",
+  "Hammersmith and Fulham",               "Fulham Town",
+  "Hammersmith and Fulham",               "Grove",
+  "Hammersmith and Fulham",               "Hammersmith Broadway",
+  "Hammersmith and Fulham",               "Lillie",
+  "Hammersmith and Fulham",               "Munster",
+  "Hammersmith and Fulham",               "Palace & Hurlingham",
+  "Hammersmith and Fulham",               "Parsons Green & Sandford",
+  "Hammersmith and Fulham",               "Ravenscourt",
+  "Hammersmith and Fulham",               "Sands End",
+  "Hammersmith and Fulham",               "Shepherd's Bush Green",
+  "Hammersmith and Fulham",               "Walham Green",
+  "Hammersmith and Fulham",               "Wendell Park",
+  "Hammersmith and Fulham",               "West Kensington",
+  "Hammersmith and Fulham",               "White City",
+  "Hammersmith and Fulham",               "Wormholt",
+  
+  "Haringey",                             "Alexandra Park",
+  "Haringey",                             "Bounds Green",
+  "Haringey",                             "Bruce Castle",
+  "Haringey",                             "Crouch End",
+  "Haringey",                             "Fortis Green",
+  "Haringey",                             "Harringay",
+  "Haringey",                             "Hermitage & Gardens",
+  "Haringey",                             "Highgate (Haringey)",
+  "Haringey",                             "Hornsey",
+  "Haringey",                             "Muswell Hill",
+  "Haringey",                             "Noel Park",
+  "Haringey",                             "Northumberland Park",
+  "Haringey",                             "Seven Sisters",
+  "Haringey",                             "South Tottenham",
+  "Haringey",                             "St Ann's (Haringey)",
+  "Haringey",                             "Stroud Green",
+  "Haringey",                             "Tottenham Central",
+  "Haringey",                             "Tottenham Hale",
+  "Haringey",                             "West Green",
+  "Haringey",                             "White Hart Lane",
+  "Haringey",                             "Woodside (Haringey)",
+  
+  "Harrow",                               "Belmont (Harrow)",
+  "Harrow",                               "Canons",
+  "Harrow",                               "Centenary",
+  "Harrow",                               "Edgware (Harrow)",
+  "Harrow",                               "Greenhill (Harrow)",
+  "Harrow",                               "Harrow on the Hill",
+  "Harrow",                               "Harrow Weald",
+  "Harrow",                               "Hatch End",
+  "Harrow",                               "Headstone",
+  "Harrow",                               "Kenton East",
+  "Harrow",                               "Kenton West",
+  "Harrow",                               "Marlborough",
+  "Harrow",                               "North Harrow",
+  "Harrow",                               "Pinner",
+  "Harrow",                               "Pinner South",
+  "Harrow",                               "Rayners Lane",
+  "Harrow",                               "Roxbourne",
+  "Harrow",                               "Roxeth",
+  "Harrow",                               "Stanmore",
+  "Harrow",                               "Wealdstone North",
+  "Harrow",                               "Wealdstone South",
+  "Harrow",                               "West Harrow",
+  
+  "Havering",                             "Beam Park",
+  "Havering",                             "Cranham",
+  "Havering",                             "Elm Park",
+  "Havering",                             "Emerson Park",
+  "Havering",                             "Gooshays",
+  "Havering",                             "Hacton",
+  "Havering",                             "Harold Wood",
+  "Havering",                             "Havering-atte-Bower",
+  "Havering",                             "Heaton (Havering)",
+  "Havering",                             "Hylands & Harrow Lodge",
+  "Havering",                             "Marshalls & Rise Park",
+  "Havering",                             "Mawneys",
+  "Havering",                             "Rainham & Wennington",
+  "Havering",                             "Rush Green & Crowlands",
+  "Havering",                             "South Hornchurch",
+  "Havering",                             "Squirrels Heath",
+  "Havering",                             "St Alban's",
+  "Havering",                             "St Andrew's (Havering)",
+  "Havering",                             "St Edward's",
+  "Havering",                             "Upminster",
+  
+  "Hillingdon",                           "Belmore",
+  "Hillingdon",                           "Charville",
+  "Hillingdon",                           "Colham & Cowley",
+  "Hillingdon",                           "Eastcote",
+  "Hillingdon",                           "Harefield Village",
+  "Hillingdon",                           "Hayes Town",
+  "Hillingdon",                           "Heathrow Villages",
+  "Hillingdon",                           "Hillingdon East",
+  "Hillingdon",                           "Hillingdon West",
+  "Hillingdon",                           "Ickenham & South Harefield",
+  "Hillingdon",                           "Northwood (Hillingdon)",
+  "Hillingdon",                           "Northwood Hills",
+  "Hillingdon",                           "Pinkwell",
+  "Hillingdon",                           "Ruislip",
+  "Hillingdon",                           "Ruislip Manor",
+  "Hillingdon",                           "South Ruislip",
+  "Hillingdon",                           "Uxbridge",
+  "Hillingdon",                           "West Drayton",
+  "Hillingdon",                           "Wood End",
+  "Hillingdon",                           "Yeading",
+  "Hillingdon",                           "Yiewsley",
+  
+  "Hounslow",                             "Bedfont",
+  "Hounslow",                             "Brentford East",
+  "Hounslow",                             "Brentford West",
+  "Hounslow",                             "Chiswick Gunnersbury",
+  "Hounslow",                             "Chiswick Homefields",
+  "Hounslow",                             "Chiswick Riverside",
+  "Hounslow",                             "Cranford",
+  "Hounslow",                             "Feltham North",
+  "Hounslow",                             "Feltham West",
+  "Hounslow",                             "Hanworth Park",
+  "Hounslow",                             "Hanworth Village",
+  "Hounslow",                             "Heston Central",
+  "Hounslow",                             "Heston East",
+  "Hounslow",                             "Heston West",
+  "Hounslow",                             "Hounslow Central",
+  "Hounslow",                             "Hounslow East",
+  "Hounslow",                             "Hounslow Heath",
+  "Hounslow",                             "Hounslow South",
+  "Hounslow",                             "Hounslow West",
+  "Hounslow",                             "Isleworth",
+  "Hounslow",                             "Osterley & Spring Grove",
+  "Hounslow",                             "Syon & Brentford Lock",
+  
+  "Islington",                            "Arsenal",
+  "Islington",                            "Barnsbury",
+  "Islington",                            "Bunhill",
+  "Islington",                            "Caledonian",
+  "Islington",                            "Canonbury",
+  "Islington",                            "Clerkenwell",
+  "Islington",                            "Finsbury Park",
+  "Islington",                            "Highbury",
+  "Islington",                            "Hillrise",
+  "Islington",                            "Holloway",
+  "Islington",                            "Junction",
+  "Islington",                            "Laycock",
+  "Islington",                            "Mildmay",
+  "Islington",                            "St Mary's & St James' (Islington)",
+  "Islington",                            "St Peter's & Canalside",
+  "Islington",                            "Tollington",
+  "Islington",                            "Tufnell Park",
+  
+  "Kensington and Chelsea",               "Abingdon",
+  "Kensington and Chelsea",               "Brompton & Hans Town",
+  "Kensington and Chelsea",               "Campden",
+  "Kensington and Chelsea",               "Chelsea Riverside",
+  "Kensington and Chelsea",               "Colville",
+  "Kensington and Chelsea",               "Courtfield",
+  "Kensington and Chelsea",               "Dalgarno",
+  "Kensington and Chelsea",               "Earl's Court",
+  "Kensington and Chelsea",               "Golborne",
+  "Kensington and Chelsea",               "Holland",
+  "Kensington and Chelsea",               "Norland",
+  "Kensington and Chelsea",               "Notting Dale",
+  "Kensington and Chelsea",               "Pembridge",
+  "Kensington and Chelsea",               "Queen's Gate",
+  "Kensington and Chelsea",               "Redcliffe",
+  "Kensington and Chelsea",               "Royal Hospital",
+  "Kensington and Chelsea",               "Stanley (Kensington and Chelsea)",
+  "Kensington and Chelsea",               "St. Helen's (Kensington and Chelsea)",
+  
+  "Kingston upon Thames",                 "Alexandra (Kingston upon Thames)",
+  "Kingston upon Thames",                 "Berrylands",
+  "Kingston upon Thames",                 "Canbury Gardens",
+  "Kingston upon Thames",                 "Chessington South & Malden Rushett",
+  "Kingston upon Thames",                 "Coombe Hill",
+  "Kingston upon Thames",                 "Coombe Vale",
+  "Kingston upon Thames",                 "Green Lane & St James",
+  "Kingston upon Thames",                 "Hook & Chessington North",
+  "Kingston upon Thames",                 "King George's & Sunray",
+  "Kingston upon Thames",                 "Kingston Gate",
+  "Kingston upon Thames",                 "Kingston Town",
+  "Kingston upon Thames",                 "Motspur Park & Old Malden East",
+  "Kingston upon Thames",                 "New Malden Village",
+  "Kingston upon Thames",                 "Norbiton",
+  "Kingston upon Thames",                 "Old Malden",
+  "Kingston upon Thames",                 "St Mark's & Seething Wells",
+  "Kingston upon Thames",                 "Surbiton Hill",
+  "Kingston upon Thames",                 "Tolworth",
+  "Kingston upon Thames",                 "Tudor (Kingston upon Thames)",
+  
+  "Lambeth",                              "Brixton Acre Lane",
+  "Lambeth",                              "Brixton North",
+  "Lambeth",                              "Brixton Rush Common",
+  "Lambeth",                              "Brixton Windrush",
+  "Lambeth",                              "Clapham Common & Abbeville",
+  "Lambeth",                              "Clapham East",
+  "Lambeth",                              "Clapham Park",
+  "Lambeth",                              "Clapham Town",
+  "Lambeth",                              "Gipsy Hill",
+  "Lambeth",                              "Herne Hill & Loughborough Junction",
+  "Lambeth",                              "Kennington (Lambeth)",
+  "Lambeth",                              "Knight's Hill",
+  "Lambeth",                              "Myatt's Fields",
+  "Lambeth",                              "Oval",
+  "Lambeth",                              "St Martin's (Lambeth)",
+  "Lambeth",                              "Stockwell East",
+  "Lambeth",                              "Stockwell West & Larkhall",
+  "Lambeth",                              "Streatham Common & Vale",
+  "Lambeth",                              "Streatham Hill East",
+  "Lambeth",                              "Streatham Hill West & Thornton",
+  "Lambeth",                              "Streatham St Leonard's",
+  "Lambeth",                              "Streatham Wells",
+  "Lambeth",                              "Vauxhall (Lambeth)",
+  "Lambeth",                              "Waterloo & South Bank",
+  "Lambeth",                              "West Dulwich",
+  
+  "Lewisham",                             "Bellingham (Lewisham)",
+  "Lewisham",                             "Blackheath (Lewisham)",
+  "Lewisham",                             "Brockley",
+  "Lewisham",                             "Catford South",
+  "Lewisham",                             "Crofton Park",
+  "Lewisham",                             "Deptford",
+  "Lewisham",                             "Downham",
+  "Lewisham",                             "Evelyn",
+  "Lewisham",                             "Forest Hill",
+  "Lewisham",                             "Grove Park",
+  "Lewisham",                             "Hither Green",
+  "Lewisham",                             "Ladywell",
+  "Lewisham",                             "Lee Green",
+  "Lewisham",                             "Lewisham Central",
+  "Lewisham",                             "New Cross Gate",
+  "Lewisham",                             "Perry Vale",
+  "Lewisham",                             "Rushey Green",
+  "Lewisham",                             "Sydenham",
+  "Lewisham",                             "Telegraph Hill",
+  
+  "Merton",                               "Abbey (Merton)",
+  "Merton",                               "Cannon Hill",
+  "Merton",                               "Colliers Wood",
+  "Merton",                               "Cricket Green",
+  "Merton",                               "Figge's Marsh",
+  "Merton",                               "Graveney",
+  "Merton",                               "Hillside (Merton)",
+  "Merton",                               "Lavender Fields",
+  "Merton",                               "Longthornton",
+  "Merton",                               "Lower Morden",
+  "Merton",                               "Merton Park",
+  "Merton",                               "Pollards Hill",
+  "Merton",                               "Ravensbury",
+  "Merton",                               "Raynes Park",
+  "Merton",                               "St Helier",
+  "Merton",                               "Village (Merton)",
+  "Merton",                               "Wandle (Merton)",
+  "Merton",                               "West Barnes",
+  "Merton",                               "Wimbledon Park",
+  "Merton",                               "Wimbledon Town & Dundonald",
+  
+  "Newham",                               "Beckton",
+  "Newham",                               "Boleyn",
+  "Newham",                               "Canning Town North",
+  "Newham",                               "Canning Town South",
+  "Newham",                               "Custom House",
+  "Newham",                               "East Ham",
+  "Newham",                               "East Ham South",
+  "Newham",                               "Forest Gate North",
+  "Newham",                               "Forest Gate South",
+  "Newham",                               "Green Street East",
+  "Newham",                               "Green Street West",
+  "Newham",                               "Little Ilford",
+  "Newham",                               "Manor Park (Newham)",
+  "Newham",                               "Maryland",
+  "Newham",                               "Plaistow North",
+  "Newham",                               "Plaistow South",
+  "Newham",                               "Plaistow West & Canning Town East",
+  "Newham",                               "Plashet",
+  "Newham",                               "Royal Albert",
+  "Newham",                               "Royal Victoria",
+  "Newham",                               "Stratford",
+  "Newham",                               "Stratford Olympic Park",
+  "Newham",                               "Wall End",
+  "Newham",                               "West Ham",
+  
+  "Redbridge",                            "Aldborough",
+  "Redbridge",                            "Barkingside",
+  "Redbridge",                            "Bridge (Redbridge)",
+  "Redbridge",                            "Chadwell",
+  "Redbridge",                            "Churchfields",
+  "Redbridge",                            "Clayhall",
+  "Redbridge",                            "Clementswood",
+  "Redbridge",                            "Cranbrook (Redbridge)",
+  "Redbridge",                            "Fairlop",
+  "Redbridge",                            "Fullwell",
+  "Redbridge",                            "Goodmayes",
+  "Redbridge",                            "Hainault",
+  "Redbridge",                            "Ilford Town",
+  "Redbridge",                            "Loxford",
+  "Redbridge",                            "Mayfield",
+  "Redbridge",                            "Monkhams",
+  "Redbridge",                            "Newbury",
+  "Redbridge",                            "Seven Kings",
+  "Redbridge",                            "South Woodford",
+  "Redbridge",                            "Valentines",
+  "Redbridge",                            "Wanstead Park",
+  "Redbridge",                            "Wanstead Village",
+  
+  "Richmond upon Thames",                 "Barnes (Richmond upon Thames)",
+  "Richmond upon Thames",                 "East Sheen",
+  "Richmond upon Thames",                 "Fulwell & Hampton Hill",
+  "Richmond upon Thames",                 "Ham, Petersham & Richmond Riverside",
+  "Richmond upon Thames",                 "Hampton (Richmond upon Thames)",
+  "Richmond upon Thames",                 "Hampton North",
+  "Richmond upon Thames",                 "Hampton Wick & South Teddington",
+  "Richmond upon Thames",                 "Heathfield",
+  "Richmond upon Thames",                 "Kew (Richmond upon Thames)",
+  "Richmond upon Thames",                 "Mortlake & Barnes Common",
+  "Richmond upon Thames",                 "North Richmond",
+  "Richmond upon Thames",                 "South Richmond",
+  "Richmond upon Thames",                 "South Twickenham",
+  "Richmond upon Thames",                 "St Margarets & North Twickenham",
+  "Richmond upon Thames",                 "Teddington",
+  "Richmond upon Thames",                 "Twickenham Riverside",
+  "Richmond upon Thames",                 "West Twickenham",
+  "Richmond upon Thames",                 "Whitton (Richmond upon Thames)",
+  
+  "Southwark",                            "Borough & Bankside",
+  "Southwark",                            "Camberwell Green",
+  "Southwark",                            "Champion Hill",
+  "Southwark",                            "Chaucer",
+  "Southwark",                            "Dulwich Hill",
+  "Southwark",                            "Dulwich Village",
+  "Southwark",                            "Dulwich Wood",
+  "Southwark",                            "Faraday",
+  "Southwark",                            "Goose Green",
+  "Southwark",                            "London Bridge & West Bermondsey",
+  "Southwark",                            "Newington (Southwark)",
+  "Southwark",                            "North Bermondsey",
+  "Southwark",                            "North Walworth",
+  "Southwark",                            "Nunhead & Queen's Road",
+  "Southwark",                            "Old Kent Road",
+  "Southwark",                            "Peckham",
+  "Southwark",                            "Peckham Rye",
+  "Southwark",                            "Rotherhithe",
+  "Southwark",                            "Rye Lane",
+  "Southwark",                            "South Bermondsey",
+  "Southwark",                            "St George's (Southwark)",
+  "Southwark",                            "St Giles",
+  "Southwark",                            "Surrey Docks",
+  
+  "Sutton",                               "Beddington",
+  "Sutton",                               "Belmont (Sutton)",
+  "Sutton",                               "Carshalton Central",
+  "Sutton",                               "Carshalton South & Clockhouse",
+  "Sutton",                               "Cheam",
+  "Sutton",                               "Hackbridge",
+  "Sutton",                               "North Cheam",
+  "Sutton",                               "South Beddington & Roundshaw",
+  "Sutton",                               "St Helier East",
+  "Sutton",                               "St Helier West",
+  "Sutton",                               "Stonecot",
+  "Sutton",                               "Sutton Central",
+  "Sutton",                               "Sutton North",
+  "Sutton",                               "Sutton South",
+  "Sutton",                               "Sutton West & East Cheam",
+  "Sutton",                               "The Wrythe",
+  "Sutton",                               "Wallington North",
+  "Sutton",                               "Wallington South",
+  "Sutton",                               "Worcester Park North",
+  "Sutton",                               "Worcester Park South",
+  
+  "Tower Hamlets",                        "Bethnal Green East",
+  "Tower Hamlets",                        "Bethnal Green West",
+  "Tower Hamlets",                        "Blackwall & Cubitt Town",
+  "Tower Hamlets",                        "Bow East",
+  "Tower Hamlets",                        "Bow West",
+  "Tower Hamlets",                        "Bromley North",
+  "Tower Hamlets",                        "Bromley South",
+  "Tower Hamlets",                        "Canary Wharf",
+  "Tower Hamlets",                        "Island Gardens",
+  "Tower Hamlets",                        "Lansbury",
+  "Tower Hamlets",                        "Limehouse",
+  "Tower Hamlets",                        "Mile End (Tower Hamlets)",
+  "Tower Hamlets",                        "Poplar (Tower Hamlets)",
+  "Tower Hamlets",                        "Shadwell",
+  "Tower Hamlets",                        "Spitalfields & Banglatown",
+  "Tower Hamlets",                        "St Dunstan's",
+  "Tower Hamlets",                        "Stepney Green",
+  "Tower Hamlets",                        "St Katharine's & Wapping",
+  "Tower Hamlets",                        "Weavers",
+  "Tower Hamlets",                        "Whitechapel",
+  
+  "Waltham Forest",                       "Cann Hall (Waltham Forest)",
+  "Waltham Forest",                       "Cathall",
+  "Waltham Forest",                       "Chapel End",
+  "Waltham Forest",                       "Chingford Green",
+  "Waltham Forest",                       "Endlebury",
+  "Waltham Forest",                       "Forest (Waltham Forest)",
+  "Waltham Forest",                       "Grove Green",
+  "Waltham Forest",                       "Hale End & Highams Park South",
+  "Waltham Forest",                       "Hatch Lane & Highams Park North",
+  "Waltham Forest",                       "Higham Hill",
+  "Waltham Forest",                       "High Street (Waltham Forest)",
+  "Waltham Forest",                       "Hoe Street",
+  "Waltham Forest",                       "Larkswood",
+  "Waltham Forest",                       "Lea Bridge (Waltham Forest)",
+  "Waltham Forest",                       "Leyton",
+  "Waltham Forest",                       "Leytonstone",
+  "Waltham Forest",                       "Markhouse",
+  "Waltham Forest",                       "St James (Waltham Forest)",
+  "Waltham Forest",                       "Upper Walthamstow",
+  "Waltham Forest",                       "Valley (Waltham Forest)",
+  "Waltham Forest",                       "William Morris",
+  "Waltham Forest",                       "Wood Street",
+  
+  "Wandsworth",                           "Balham",
+  "Wandsworth",                           "Battersea Park",
+  "Wandsworth",                           "East Putney",
+  "Wandsworth",                           "Falconbrook",
+  "Wandsworth",                           "Furzedown",
+  "Wandsworth",                           "Lavender",
+  "Wandsworth",                           "Nine Elms",
+  "Wandsworth",                           "Northcote",
+  "Wandsworth",                           "Roehampton",
+  "Wandsworth",                           "Shaftesbury & Queenstown",
+  "Wandsworth",                           "South Balham",
+  "Wandsworth",                           "Southfields",
+  "Wandsworth",                           "St Mary's (Wandsworth)",
+  "Wandsworth",                           "Thamesfield",
+  "Wandsworth",                           "Tooting Bec",
+  "Wandsworth",                           "Tooting Broadway",
+  "Wandsworth",                           "Trinity (Wandsworth)",
+  "Wandsworth",                           "Wandle (Wandsworth)",
+  "Wandsworth",                           "Wandsworth Common",
+  "Wandsworth",                           "Wandsworth Town",
+  "Wandsworth",                           "West Hill (Wandsworth)",
+  "Wandsworth",                           "West Putney"
+)
+
+muslims_ward  <- muslims_ward  %>%
+  right_join(london_wards_list, by = join_by("ward" == "ward_name"))
+  # mutate(pop_jewish_total = sum(pop_jewish, na.rm = T),
+  #        pop_jewish_share_london = (pop_jewish / pop_jewish_total)*100)
+
+muslims_data_wards_ID <- muslims_ward %>%
+  pull(ltla_code)
+
+muslims_data_wards_ID <- c(muslims_data_wards_ID,
+                           london_wards %>% filter(LAD25NM == "City of London") %>% pull(WD25CD))
+
+london_wards <- london_wards %>% 
+  mutate(WD25NM = case_when(
+    LAD25NM == "City of London" ~ "City of London (Local Authority)",
+    .default = WD25NM
+  ))
+
+london_wards <- london_wards %>% 
+  filter(WD25CD %in% muslims_data_wards_ID)
+
+london_wards_city <- london_wards %>%
+  mutate(
+    geometry = if_else(
+      LAD25NM == "City of London",
+      st_union(geometry),           # merges all City of London wards
+      geometry                      # keeps original for other wards
+    )
+  ) %>%
+  # st_set_geometry("merged_geometry") %>%   # use the new merged column
+  st_make_valid()
+
+london_wards_city <- london_wards_city %>% 
+    slice(25:n())
+
+muslims_ward <- muslims_ward %>% 
+  mutate(ltla_code = if_else(ltla_code == "E09000001", "E05009312", ltla_code))
+
+london_final <- london_wards_city %>%
+  left_join(muslims_ward, by = c("WD25CD" = "ltla_code"))
+
+# As share of each ward
+london_final <- london_final %>% 
+  mutate(muslim_bin = cut(muslim_share, 
+                          breaks = c(0, 5, 10, 15, 20, 25, 30, 40, 50, 60),
+                          labels = c("<5%", "5-10%", "10-15%", "15-20%", "20-25%", 
+                 "25-30%", "30-40%", "40-50%", "50-60%"),
+                          include.lowest = TRUE, right = FALSE))
+
+london_final <- london_final %>% 
+  mutate(muslim_bin = cut(muslim_share, 
+                          breaks = c(0, 10, 20, 30, 40, 50, 60),
+                          labels = c("0-10%", "10-20%", "20-30%", "30-40%", 
+                 "40-50%", "50-60%"),
+                          include.lowest = TRUE, right = FALSE))
+
+```
+
+
+```{r london-wards-chart}
+
+muslims_ward_map <- ggplot(london_final) +
+  geom_sf(aes(fill = muslim_bin),
+          color = "white", linewidth = 0.085) +
+  # coord_sf(
+  #   xlim = c(500000, 560000),   # Easting (x)
+  #   ylim = c(165000, 200000),   # Northing (y)
+  #   expand = FALSE
+  # ) +
+  scale_fill_viridis_d(
+    option = "C",           # Blue-purple Viridis palette
+    direction = 1,         # 1 = dark = higher values
+    name = "Muslim %",
+    labels = c("0-10%", "10-20%", "20-30%", "30-40%", 
+                 "40-50%", "50-60%")
+  ) +
+  labs(
+        title = paste0("11 London wards have a Muslim majority (50%+), led by wards in",
+                       "<br>",
+                       "Tower Hamlets and Newham"),
+        subtitle = paste("Percentage of people who identified as Muslim in each London Ward, Census 2021"),
+        caption = paste0("<b>Data source</b>: Census 2021 from the Office for National Statistics",
+                         "<br>",
+                         "<b>Notes</b>: Based on self-identified religion from Census 2021. A person is counted as Muslim if they ticked the “Muslim” box in the religion",
+                         "<br>",
+                         "question (or wrote in a Muslim variant that ONS classified under Muslim). Grey bars can be read as the share of the total of population of",
+                         "<br>",
+                         "England and Wales that resides in a given region.",
+                         "<br>",
+                         "<b>Graphic</b>: The Data Decoded / @TheDataDecoded")
+    ) +
+  theme_void(base_size = 14, base_family = font_choice) +
+  theme(legend.position = c(0.92, 0.3),
+        legend.direction = "vertical",
+        legend.justification = "center",
+        legend.title = element_text(face = "bold"),
+        plot.background = element_rect(fill = "white", colour = NA),
+        panel.background = element_rect(fill = "white", colour = NA),
+        plot.margin = margin(r = 25, b = 18, l = 18, t = 18, unit = "pt"),
+          plot.title = element_markdown(hjust = 0, face = "bold", margin = margin(b = 5),
+                                        lineheight = 1.1, size = rel(1.6)),
+          plot.title.position = "plot",
+          plot.caption.position = "plot",
+          plot.caption = element_markdown(hjust = 0, vjust = 0, colour = "grey50",
+                                          margin = margin(t = 20), lineheight = 1.25),
+          plot.subtitle = element_markdown(hjust = 0, margin = margin(t = 3, b = 20),
+                                           size = rel(1), lineheight = 1.2)) +
+  geom_curve(data = tibble(x = 53.5e4, y = 17.05e4, xend = 53.53e4, yend = 18.1e4),
+               aes(x = x, y = y, xend = xend, yend = yend),
+               arrow = arrow(length = unit(0.35, "cm"), angle = 20, type = "closed"),
+               color = "black",
+               angle = 102,
+               linewidth = 1.1,
+               curvature = -0.42,
+               inherit.aes = FALSE
+    ) +
+  geom_curve(data = tibble(x = 53.5e4, y = 17.05e4, xend = 53.53e4, yend = 18.1e4),
+               aes(x = x, y = y, xend = xend, yend = yend),
+               arrow = arrow(length = unit(0.35, "cm"), angle = 20, type = "closed"),
+               color = "grey95",
+               angle = 102,
+               linewidth = 0.5,
+               curvature = -0.42,
+               inherit.aes = FALSE
+    ) +
+  geom_curve(data = tibble(x = 53.5e4, y = 17.05e4, xend = 53.77e4, yend = 18.07e4),
+               aes(x = x, y = y, xend = xend, yend = yend),
+               arrow = arrow(length = unit(0.35, "cm"), angle = 20, type = "closed"),
+               color = "black",
+               angle = 102,
+               linewidth = 1.1,
+               curvature = -0.42,
+               inherit.aes = FALSE
+    ) +
+  geom_curve(data = tibble(x = 53.5e4, y = 17.05e4, xend = 53.77e4, yend = 18.07e4),
+               aes(x = x, y = y, xend = xend, yend = yend),
+               arrow = arrow(length = unit(0.35, "cm"), angle = 20, type = "closed"),
+               color = "grey95",
+               angle = 102,
+               linewidth = 0.5,
+               curvature = -0.42,
+               inherit.aes = FALSE
+    ) +
+  annotate("text", x = 53.55e4, y = 17.05e4, label = "Shadwell\nSt Dunstan's\nStepney Green\nPoplar", fontface = "bold",
+           size = 4, color = "grey95", lineheight = 0.9, hjust = 0) +
+  geom_curve(data = tibble(x = 54.3e4, y = 19.91e4, xend = 54.18e4, yend = 18.58e4),
+               aes(x = x, y = y, xend = xend, yend = yend),
+               arrow = arrow(length = unit(0.35, "cm"), angle = 20, type = "closed"),
+               color = "black",
+               # size = 0.4,
+               angle = 102,
+               linewidth = 1.1,
+               curvature = 0.35,
+               inherit.aes = FALSE
+    ) +
+  geom_curve(data = tibble(x = 54.3e4, y = 19.91e4, xend = 54.18e4, yend = 18.58e4),
+               aes(x = x, y = y, xend = xend, yend = yend),
+               arrow = arrow(length = unit(0.35, "cm"), angle = 20, type = "closed"),
+               color = "grey95",
+               # size = 0.4,
+               angle = 102,
+               linewidth = 0.5,
+               curvature = 0.35,
+               inherit.aes = FALSE
+    ) +
+  annotate("text", x = 54.35e4, y = 19.91e4,
+           label = "Plashet\nGreen Street West\nLittle Ilford\nManor Park\nGreen Street East", fontface = "bold",
+           size = 4, color = "grey20", lineheight = 0.9, hjust = 0) +
+  geom_curve(data = tibble(x = 55e4, y = 19.01e4, xend = 54.45e4, yend = 18.6e4),
+               aes(x = x, y = y, xend = xend, yend = yend),
+               arrow = arrow(length = unit(0.35, "cm"), angle = 20, type = "closed"),
+               color = "black",
+               # size = 0.4,
+               angle = 102,
+               linewidth = 1.1,
+               curvature = -0.25,
+               inherit.aes = FALSE
+    ) +
+   geom_curve(data = tibble(x = 55e4, y = 19.01e4, xend = 54.45e4, yend = 18.6e4),
+               aes(x = x, y = y, xend = xend, yend = yend),
+               arrow = arrow(length = unit(0.35, "cm"), angle = 20, type = "closed"),
+               color = "grey95",
+               # size = 0.4,
+               angle = 102,
+               linewidth = 0.5,
+               curvature = -0.25,
+               inherit.aes = FALSE
+    ) +
+  annotate("text", x = 54.57e4, y = 19.1e4,
+           label = "Clementswood", fontface = "bold",
+           size = 4, color = "grey95", lineheight = 0.9, hjust = 0) +
+  geom_curve(data = tibble(x = 55.16e4, y = 18.65e4, xend = 54.6e4, yend = 18.47e4),
+               aes(x = x, y = y, xend = xend, yend = yend),
+               arrow = arrow(length = unit(0.35, "cm"), angle = 20, type = "closed"),
+               color = "black",
+               # size = 0.4,
+               angle = 102,
+               linewidth = 1.1,
+               curvature = 0,
+               inherit.aes = FALSE
+    ) +
+  geom_curve(data = tibble(x = 55.16e4, y = 18.65e4, xend = 54.6e4, yend = 18.47e4),
+               aes(x = x, y = y, xend = xend, yend = yend),
+               arrow = arrow(length = unit(0.35, "cm"), angle = 20, type = "closed"),
+               color = "grey95",
+               # size = 0.4,
+               angle = 102,
+               linewidth = 0.5,
+               curvature = 0,
+               inherit.aes = FALSE
+    ) +
+  annotate("text", x = 55.2e4, y = 18.65e4,
+           label = "Longbridge", fontface = "bold",
+           size = 4, color = "grey95", lineheight = 0.9, hjust = 0) +
+  annotation_north_arrow(
+  location = "bl",
+  which_north = "true",
+  pad_x = unit(0.2, "in"),
+  pad_y = unit(0.2, "in"),
+  style = north_arrow_orienteering()
+)
+
+```
+
+```{r export-map-ward}
+
+svg_path <- file.path(project_path, "plots", "muslims_london_ward.svg")
+
+svg_w <- 10
+svg_h <- 10.3
+
+png_w <- 3000
+png_h <- round(png_w * svg_h / svg_w)  # keep same aspect ratio
+
+ggsave(svg_path, muslims_ward_map, width = svg_w, height = svg_h, bg = "white")
+
+library(rsvg)
+
+png_path <- file.path(project_path, "plots", "muslims_london_ward.png")
+
+rsvg_png(
+    svg  = svg_path,
+    file = png_path,
+    width  = png_w,
+    height = png_h
+)
+
+```
+
+![](plots/muslims_london_ward.svg){width=100%}
