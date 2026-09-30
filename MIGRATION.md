@@ -32,7 +32,40 @@
 - Whitespace check: the pilot SVG has a square 720 × 720 viewBox. Its corresponding 2000 × 2000 PNG export has nonwhite bounds from approximately (49, 46) to (1942, 1950), leaving about 2–3% white margin at each edge inside the chart itself. The former wide gallery frame added letterboxing; that frame is gone.
 - R 4.5.2 parsed `analysis.R`, and an exact source comparison confirmed its 13 chunks match `index.qmd` in order and content. All required R packages were present. Running the extraction against a temporary data copy completed with exit code 0 and produced all six original export filenames. ggplot2 reported a deprecated `size` aesthetic and the local font/locale produced encoding warnings; the original exports were not overwritten.
 - The new initializer was run in a temporary workspace and created the expected draft files and directories. The temporary validation copies were removed afterward.
-- Next: review the two published stories and chart presentation editorially, then migrate further projects one at a time. Final logo and brand system remain open.
+- Next: review the 15 draft stories on the content-migration branch, resolve the three source-folder gaps below, and publish projects individually after editorial approval. Final logo and brand system remain open.
+
+## Existing content migration (drafts for review)
+
+Branch `codex/content-migration` starts from deployed `main` at `3068e53`. It adds `story.md` to each of the 15 remaining folders under `visuals/` that has an `index.qmd`; all are `status: draft`. Chart order follows the rendered Quarto pages. Each chart uses an existing export, usually the smaller PNG when a PNG and SVG represent the same figure. No chart, analysis, input, rendered page, or public route was changed. The two published stories and public gallery remain unchanged.
+
+Start the local preview with `cd website` and `pnpm dev`, then open the draft URLs below. The normal address is `http://localhost:4321/the-data-decoded-visualizations/draft/<slug>/`; use the port Astro prints if 4321 is occupied. Draft charts have local full-size links and are absent from the production build.
+
+| Existing project folder | Status | Draft slug or gap |
+| --- | --- | --- |
+| `2025-01-airbnb-demand` | Blocked | Only a rendered page and chart remain in `docs/`; no source folder, `index.qmd`, or analytical method is present. Its page still says “Text explaining chart.” Recover the source and complete the explanation before creating a story. |
+| `2025-11-04-str-europe-peak-season` | Blocked as a separate story | Rendered page and chart files duplicate `2025-11-str-europe-peak-season`; no separate source folder or `index.qmd`. Keep its old URL, but do not create a duplicate gallery entry. |
+| `2025-11-str-europe-peak-season` | Ready for draft review | `str-europe-peak-season` — causal explanations in the original article need supporting citations before publication. |
+| `2025-12-corruption-index-by-region` | Ready for draft review | `corruption-index-by-region` |
+| `2025-12-europe-capitals-temperature-extremes` | Ready for draft review | `europe-capitals-temperature-extremes` |
+| `2025-12-europe-military-expenditure` | Ready for draft review | `europe-military-expenditure` — review explanatory annotations in the exports separately; the charts were not edited. |
+| `2025-12-import-flags-ggplot` | Ready for draft review | `import-flags-ggplot` |
+| `2025-12-israel-tourist-arrivals-by-continent` | Ready for draft review | `israel-tourist-arrivals-by-continent` |
+| `2025-12-us-somalia-corruption-index` | Ready for draft review | `us-somalia-corruption-index` |
+| `2025-12-us-somalia-fragile-states-index` | Published | Existing public story; no changes. |
+| `2026-01-arXiv-submission-timing-history` | Ready for draft review | `arxiv-submission-timing-history` — the existing monthly chart labels three eras using an article named in its caption; review that attribution before publication. |
+| `2026-01-venezuela-refugees-maduro` | Ready for draft review | `venezuela-refugees-maduro` — chart annotations make historical and causal claims beyond the cited UNHCR counts; confirm their sources before publication. |
+| `2026-02-puerto-rican-population-in-us-and-pr` | Ready for draft review | `puerto-rican-population-in-us-and-pr` — original Quarto description is blank; draft description comes from the existing chart subtitle and needs editorial approval. |
+| `2026-02-us-foreign-born-population-by-county` | Ready for draft review | `us-foreign-born-population-by-county` |
+| `2026-02-us-national-pride-by-party` | Ready for draft review | `us-national-pride-by-party` |
+| `2026-03-global-aviation-co2-emissions` | Published | Existing public pilot; no changes. |
+| `2026-04-denmark-tax-revenue` | Ready for draft review | `denmark-tax-revenue` |
+| `2026-04-denmark-tax-revenue-burden` | Blocked as a separate story | Rendered page and chart files duplicate `2026-04-denmark-tax-revenue`; no separate source folder or `index.qmd`. Keep its old URL, but do not create a duplicate gallery entry. |
+| `2026-05-03-england-wales-jews-geo` | Ready for draft review | `england-wales-jews-geo` |
+| `2026-05-england-wales-muslims-geo` | Ready for draft review | `england-wales-muslims-geo` |
+
+Validation on this branch: `pnpm build` and `pnpm verify` pass with exactly two published projects, 18 preserved legacy pages, two old-route redirects, and no drafts or draft charts in `website/dist/`. The development server used port 4322 because 4321 was occupied and returned 200 for all 15 draft pages and their 34 selected chart routes; every page carried the local-only draft label and links to its charts. The three blocked rendered URLs remain covered by the legacy staging rules.
+
+The two duplicate rendered folders each have plot files identical by hash to their source-backed counterpart (six short-term-rental files and three Denmark files). Several original chart captions name a data provider without a direct dataset link; the drafts preserve the provider attribution and link to the original analysis, while stable source links should be checked during editorial review. No missing citation was filled with a guessed URL.
 
 ## GitHub Pages publishing and rollback
 
