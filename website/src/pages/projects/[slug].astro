@@ -1,0 +1,38 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getProjects } from '../../lib/projects.js';
+
+export async function getStaticPaths() {
+  return (await getProjects()).map((project) => ({ params: { slug: project.slug }, props: { project } }));
+}
+
+const { project } = Astro.props;
+const base = import.meta.env.BASE_URL;
+---
+<Base title={project.title} description={project.description}>
+  <a class="back" href={base}>← All projects</a>
+  <article class="project">
+    <header>
+      <p class="meta"><time datetime={project.date}>{project.date}</time> · {project.topics.join(' · ')}</p>
+      <h1>{project.title}</h1>
+      <p class="lede">{project.description}</p>
+      <p class="byline">By Markos Tsinganis</p>
+    </header>
+    <section class="story introduction" aria-label="Introduction" set:html={project.introductionHtml} />
+    <section class="charts" aria-label="Charts">
+      {project.charts.map((chart, index) => (
+        <figure>
+          <img src={`${base}chart/${project.slug}/${chart.name}`} alt={chart.alt} loading={index === 0 ? 'eager' : 'lazy'} />
+          <figcaption>
+            <span>Chart {index + 1} of {project.charts.length}</span>
+            <a href={`${base}chart/${project.slug}/${chart.name}`} target="_blank" rel="noopener noreferrer" aria-label={`View full-size chart ${index + 1}: ${chart.alt}`}>View full-size chart ↗</a>
+          </figcaption>
+        </figure>
+      ))}
+    </section>
+    <section class="story sources" aria-labelledby="sources-heading">
+      <h2 id="sources-heading">Sources and methodology</h2>
+      <div set:html={project.sourcesHtml} />
+    </section>
+  </article>
+</Base>

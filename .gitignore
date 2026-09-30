@@ -6,3 +6,7 @@
 **/*.quarto_ipynb
 .httr-oauth
 visuals/2026-01-arXiv-submission-timing-history/data/arxiv-metadata-oai-snapshot.json
+website/node_modules/
+website/dist/
+website/.astro/
+.pnpm-store/
