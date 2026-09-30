@@ -51,6 +51,9 @@ for (const item of projects) {
   assert.equal((project.match(/aria-label="View full-size chart /g) || []).length, item.charts.length,
     `${item.slug} needs one accessible full-size link per chart`);
 }
+assert.ok(!gallery.includes(`chart/${somalia.slug}/thumb.svg`), 'Somalia gallery must use the PNG');
+const somaliaPage = await readFile(path.join(dist, 'projects', somalia.slug, 'index.html'), 'utf8');
+assert.ok(!somaliaPage.includes(`chart/${somalia.slug}/thumb.svg`), 'Somalia project must use the PNG');
 
 async function filesIn(dir, prefix = '') {
   const result = [];
@@ -130,6 +133,11 @@ for (const item of projects) {
     expected.add(relative);
   }
 }
+const somaliaSvg = `visuals/${somalia.folder}/plots/thumb.svg`;
+assert.deepEqual(await readFile(path.join(dist, somaliaSvg)),
+  await readFile(path.resolve('..', somaliaSvg)),
+  'the single Somalia SVG compatibility asset must match the original export byte for byte');
+expected.add(somaliaSvg);
 assert.equal((await readFile(path.join(dist, 'legacy-styles.css'), 'utf8')), await readFile(path.join(docs, 'styles.css'), 'utf8'));
 expected.add('search.json'); // Quarto search loads this file dynamically.
 assert.equal((await readFile(path.join(dist, 'search.json'), 'utf8')), await readFile(path.join(docs, 'search.json'), 'utf8'));

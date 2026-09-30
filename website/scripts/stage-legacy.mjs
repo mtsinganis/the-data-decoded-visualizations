@@ -115,4 +115,13 @@ for (const project of published) {
     migratedChartCount++;
   }
 }
-console.log(`Staged ${legacyCount} legacy pages, ${migrated.size} redirects, ${assets.size} required legacy assets, and ${migratedChartCount} designated charts at their old paths.`);
+// Preserve this one bookmarked Quarto export; the Astro story still uses its smaller PNG.
+const somaliaFolder = '2025-12-us-somalia-fragile-states-index';
+const somaliaSvg = `visuals/${somaliaFolder}/plots/thumb.svg`;
+if (!migrated.has(somaliaFolder)) throw new Error('The Somalia SVG exception requires its published redirect');
+const svgSource = path.resolve('..', somaliaSvg);
+if (!(await exists(svgSource))) throw new Error(`Missing compatibility asset: ${svgSource}`);
+const svgTarget = path.join(dist, somaliaSvg);
+await mkdir(path.dirname(svgTarget), { recursive: true });
+await copyFile(svgSource, svgTarget);
+console.log(`Staged ${legacyCount} legacy pages, ${migrated.size} redirects, ${assets.size} required legacy assets, ${migratedChartCount} designated charts, and one SVG compatibility asset.`);
