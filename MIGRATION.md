@@ -21,7 +21,7 @@
 
 ## Current status
 
-- Working branch: `astro-migration`, created from clean `main` at `802d91d`.
+- Working branch: `astro-migration`, created from clean `main` at `802d91d`. The prototype was committed as `8fb29e6` and pushed to `origin/astro-migration`; this branch does not publish the live site.
 - Pilot: `visuals/2026-03-global-aviation-co2-emissions/`. Original `index.qmd`, data, and chart exports are retained. `analysis.R` contains its 13 R chunks in the same order, with no calculation edits.
 - The pilot `story.md` reuses the established title, description, chart exports, source, and method from `index.qmd`. Its introduction now explains the 2020 decline and subsequent rise in daily averages. Those figures were checked against the Carbon Monitor workbook using the date parsing, country/sector sums, and annual means in `analysis.R`: 3.54 MtCO₂/day in 2019, 1.94 in 2020, and 3.88 in 2025. Its `post.md` remains a draft starter, not approved post copy.
 - Second local project: `visuals/2025-12-us-somalia-fragile-states-index/` now has a published `story.md` and draft `post.md`. Its original `index.qmd`, saved CSV, cache, and exports remain in place. The story uses the existing 758 KB PNG export as its sole website chart; the roughly 29 MB SVG stays out of the website output. The saved CSV confirms Somalia ranked 1st in 2013 and 2023, while the U.S. moved from 159th to 141st; it contains 178 countries per year through 2020 and 179 from 2021 through 2023.
@@ -31,7 +31,33 @@
 - Whitespace check: the pilot SVG has a square 720 × 720 viewBox. Its corresponding 2000 × 2000 PNG export has nonwhite bounds from approximately (49, 46) to (1942, 1950), leaving about 2–3% white margin at each edge inside the chart itself. The former wide gallery frame added letterboxing; that frame is gone.
 - R 4.5.2 parsed `analysis.R`, and an exact source comparison confirmed its 13 chunks match `index.qmd` in order and content. All required R packages were present. Running the extraction against a temporary data copy completed with exit code 0 and produced all six original export filenames. ggplot2 reported a deprecated `size` aesthetic and the local font/locale produced encoding warnings; the original exports were not overwritten.
 - The new initializer was run in a temporary workspace and created the expected draft files and directories. The temporary validation copies were removed afterward.
-- Next: review both local stories and chart presentation, then decide whether to add another project. Final logo and brand system remain open. Deployment and Pages settings remain a later cutover step.
+- Next: implement and review the publishing preparation below while the live Quarto site stays on `main/docs`. Final logo and brand system remain open. Review both local stories and chart presentation before cutover.
+
+## GitHub Pages publishing plan (prepared; not enabled)
+
+### Current hosting
+
+- GitHub Pages reports **Deploy from a branch: `main`, `/docs`**. The live URL is `https://mtsinganis.github.io/the-data-decoded-visualizations/`; no custom domain is configured, and HTTPS is enforced. The last successful deployment shown in Pages settings was the generated `pages-build-deployment` run on May 7, 2026. The Actions list shows only that GitHub-managed workflow; there is no tracked `.github/workflows/` file on `main`.
+- `_quarto.yml` renders `index.qmd` and `visuals/*/index.qmd` into `docs/`, and publishes plot and shared asset resources. The committed `docs/index.html`, `docs/visuals/<existing-folder>/index.html`, and their support files currently serve the website. Keep `docs/` and `_quarto.yml` unchanged through the switch so rollback remains available.
+
+### Prepare and validate before cutover
+
+1. Add `site: 'https://mtsinganis.github.io'` to `website/astro.config.mjs`; retain the existing `/the-data-decoded-visualizations/` base path. Keep the site static and build it from finished chart exports only.
+2. Add `.github/workflows/deploy-astro.yml` on this branch. On pushes to `main` (and optional manual runs after cutover), check out the repository, set up a pinned Node and pnpm version, install from `website/pnpm-lock.yaml` with a frozen lockfile, run `pnpm build` and `pnpm verify` in `website/`, upload **only** `website/dist/` with `actions/upload-pages-artifact`, then deploy with `actions/deploy-pages`. Give the deploy job `pages: write` and `id-token: write`, use the `github-pages` environment, and prevent simultaneous deployments. Branch checks may build and verify, but must not deploy `astro-migration`.
+3. Preserve old project links before enabling that workflow. The current Quarto output has many `/visuals/<existing-folder>/` pages, whereas Astro currently builds only `/projects/<slug>/` for two stories. For published migrated projects, generate a static page at their old `/visuals/<folder>/` URL that redirects to the new project route and provides a normal fallback link. Derive folder and slug from the existing project/story data, without another metadata file. For projects without a published `story.md`, stage their existing `docs/visuals/<folder>/` HTML and required static dependencies from `docs/` into the Pages artifact at the same paths. Use an explicit allowlist for HTML, CSS, JavaScript, fonts, and chart images; exclude source data, caches, R, QMD, and other analysis files. Audit relative asset paths and legacy links before choosing which support files to include. Do not copy the old `docs/index.html` over Astro's home page.
+4. Add a development-only draft preview in `website/src/lib/projects.js` and Astro routes so `pnpm dev` can show a draft locally. Production builds and the gallery must still exclude every draft. Extend `pnpm verify` to check the old URL map, all referenced legacy assets, draft exclusion, and the final output allowlist. Compare the list of current `docs/visuals/*/index.html` paths against the artifact; check the home page, both migrated projects, several unmigrated projects, chart links, and 404 behavior locally.
+
+### Switch and rollback (requires separate approval)
+
+5. After editorial and build review, merge the prepared branch into `main`, change **Settings → Pages → Build and deployment → Source** from **Deploy from a branch** to **GitHub Actions**, and run or await the `main` deployment workflow. Confirm the deployment and sample old and new URLs on the public site before considering the switch complete. Do not delete `docs/` or change the repository's default branch as part of cutover. GitHub documents [the source switch](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) and [the Pages artifact/deploy steps](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages); Astro documents [its GitHub Pages base-path setup](https://docs.astro.build/en/guides/deploy/github/).
+6. If the Astro deployment or legacy links fail, restore **Settings → Pages → Source → Deploy from a branch → `main` → `/docs`** and save. Because the prior `docs/` output remains committed on `main`, GitHub Pages can publish the previous Quarto site again. Keep the prior successful Pages run and its URL noted during cutover; verify the home page and sample legacy links after rollback. Fix the Astro artifact on the branch before attempting another switch.
+
+### Everyday workflow after deployment is ready
+
+1. From the repository root, source `R/new_story_project.R` and run `new_story_project("YYYY-MM-topic", "Working title")`. It creates one topic folder with `data/`, `analysis.R`, `plots/`, `story.md`, and `post.md`, with the story in draft status.
+2. Keep inputs in `data/`; use R and ggplot2 in `analysis.R` to check sources, calculate results, and export finished charts to `plots/`. Write the reader-facing introduction, sources, methodology, stable slug, chart order, and accessible chart descriptions in `story.md`. Prepare X copy in `post.md` for review; posting remains manual.
+3. Run `pnpm dev` from `website/` and use the development-only draft route to review copy and charts locally. Run `pnpm build` and `pnpm verify` to confirm the public artifact still excludes the draft and any unlisted data or exports.
+4. After editorial approval, change only that project's `story.md` status to `published`, rerun build and verification, review its gallery and project pages, then commit and push to `main`. The Actions workflow publishes the new page automatically. Check the deployment and public URLs. A push to `astro-migration` alone never publishes.
 
 ## Local workflow
 
