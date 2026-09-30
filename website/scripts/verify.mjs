@@ -1,11 +1,15 @@
 import assert from 'node:assert/strict';
-import { mkdtemp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
+import { mkdtemp, mkdir, readFile, readdir, rm, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { getProjects } from '../src/lib/projects.js';
+import { getDraftProjects, getProjects } from '../src/lib/projects.js';
 
 const base = '/the-data-decoded-visualizations/';
 const dist = path.resolve('dist');
+const docs = path.resolve('../docs');
 const projects = await getProjects();
+const config = await readFile('astro.config.mjs', 'utf8');
+assert.match(config, /site:\s*'https:\/\/mtsinganis\.github\.io'/);
+assert.match(config, /base:\s*'\/the-data-decoded-visualizations\/'/);
 assert.ok(projects.length >= 2, 'the aviation pilot and Somalia project should be published');
 const pilot = projects.find((item) => item.slug === 'global-aviation-co2-emissions');
 const somalia = projects.find((item) => item.slug === 'us-somalia-fragile-states-index');
@@ -56,20 +60,106 @@ async function filesIn(dir, prefix = '') {
   }
   return result;
 }
-assert.deepEqual((await filesIn(dist)).sort(), [
+const expected = new Set([
   'index.html', 'styles.css',
   ...projects.map((item) => `projects/${item.slug}/index.html`),
   ...projects.flatMap((item) => item.charts.map((chart) => `chart/${item.slug}/${chart.name}`)),
-].sort(), 'output contains only pages, CSS, and designated charts');
+]);
+
+function localTarget(source, url) {
+  if (!url || /^(?:#|[a-z][a-z\d+.-]*:|\/\/)/i.test(url)) return null;
+  const clean = decodeURIComponent(url.split(/[?#]/, 1)[0]);
+  if (!clean) return null;
+  const result = clean.startsWith(base) ? clean.slice(base.length) :
+    clean.startsWith('/') ? null : path.posix.normalize(path.posix.join(path.posix.dirname(source), clean));
+  assert.ok(result && !result.startsWith('../') && !path.posix.isAbsolute(result), `invalid local URL in ${source}: ${url}`);
+  return result.endsWith('/') ? `${result}index.html` : result;
+}
+
+function references(text) {
+  const refs = [...text.matchAll(/\b(?:src|href)\s*=\s*["']([^"']+)["']/gi)].map((match) => match[1]);
+  for (const match of text.matchAll(/\bsrcset\s*=\s*["']([^"']+)["']/gi)) {
+    refs.push(...match[1].split(',').map((part) => part.trim().split(/\s+/)[0]));
+  }
+  return refs;
+}
+
+const legacyRoot = path.join(docs, 'visuals');
+const folders = await readdir(legacyRoot, { withFileTypes: true });
+let legacyCount = 0;
+const redirects = new Set();
+for (const entry of folders.filter((item) => item.isDirectory())) {
+  const relative = `visuals/${entry.name}/index.html`;
+  let original;
+  try { original = await readFile(path.join(docs, relative), 'utf8'); }
+  catch (error) { if (error.code === 'ENOENT') continue; throw error; }
+  expected.add(relative);
+  const output = await readFile(path.join(dist, relative), 'utf8');
+  const migrated = projects.find((item) => item.folder === entry.name);
+  if (migrated) {
+    const destination = `${base}projects/${migrated.slug}/`;
+    assert.ok(output.includes(`content="0; url=${destination}"`), `${relative} must redirect to its new route`);
+    assert.ok(output.includes(`href="${destination}"`), `${relative} needs a visible fallback link`);
+    redirects.add(migrated.folder);
+    continue;
+  }
+  legacyCount++;
+  assert.equal(output, original.replaceAll('href="../../styles.css"', 'href="../../legacy-styles.css"'),
+    `${relative} must preserve its rendered legacy page, apart from the CSS collision`);
+  for (const url of references(output)) {
+    const target = localTarget(relative, url);
+    if (!target || target === 'index.html') continue;
+    assert.ok((await stat(path.join(dist, target))).isFile(), `${relative} has a broken local reference: ${url}`);
+    if (!target.endsWith('.html')) expected.add(target);
+  }
+}
+for (const item of projects.filter((project) => !redirects.has(project.folder))) {
+  const relative = `visuals/${item.folder}/index.html`;
+  const output = await readFile(path.join(dist, relative), 'utf8');
+  const destination = `${base}projects/${item.slug}/`;
+  assert.ok(output.includes(`content="0; url=${destination}"`) && output.includes(`href="${destination}"`),
+    `${relative} needs a redirect and visible fallback link`);
+  expected.add(relative);
+}
+assert.ok(legacyCount > 0, 'unmigrated legacy pages must remain available');
+for (const item of projects) {
+  for (const chart of item.charts) {
+    const relative = `visuals/${item.folder}/plots/${chart.name}`;
+    assert.deepEqual(await readFile(path.join(dist, relative)), await readFile(chart.file),
+      `${relative} must preserve the designated chart at its old direct URL`);
+    expected.add(relative);
+  }
+}
+assert.equal((await readFile(path.join(dist, 'legacy-styles.css'), 'utf8')), await readFile(path.join(docs, 'styles.css'), 'utf8'));
+expected.add('search.json'); // Quarto search loads this file dynamically.
+assert.equal((await readFile(path.join(dist, 'search.json'), 'utf8')), await readFile(path.join(docs, 'search.json'), 'utf8'));
+for (const relative of [...expected].filter((file) => file.endsWith('.css') && file !== 'styles.css')) {
+  const css = await readFile(path.join(dist, relative), 'utf8');
+  for (const match of css.matchAll(/url\(["']?([^"')]+)["']?\)/gi)) {
+    const target = localTarget(relative, match[1]);
+    if (!target) continue;
+    assert.ok((await stat(path.join(dist, target))).isFile(), `${relative} has a broken CSS asset: ${match[1]}`);
+    expected.add(target);
+  }
+}
+assert.ok(!(await filesIn(dist)).some((file) => file.startsWith('draft/') || file.startsWith('draft-chart/')),
+  'draft routes and charts must be absent from production');
+assert.deepEqual((await filesIn(dist)).sort(), [...expected].sort(),
+  'public output must contain only Astro pages, designated charts, legacy pages, and required legacy assets');
 
 const fixture = await mkdtemp(path.resolve('node_modules', '.draft-check-'));
 try {
   const draft = path.join(fixture, 'sample-draft');
   await mkdir(draft);
-  await writeFile(path.join(draft, 'story.md'), '---\nstatus: draft\n---\nUnapproved copy');
+  await mkdir(path.join(draft, 'plots'));
+  await writeFile(path.join(draft, 'plots', 'draft.svg'), '<svg xmlns="http://www.w3.org/2000/svg"/>');
+  await writeFile(path.join(draft, 'story.md'), '---\ntitle: "Unapproved"\nslug: sample-draft\nstatus: draft\ncharts:\n  - file: plots/draft.svg\n    alt: Unapproved chart\n---\nUnapproved copy');
   assert.deepEqual(await getProjects(fixture), [], 'draft stories must be excluded');
+  const previews = await getDraftProjects(fixture);
+  assert.equal(previews.length, 1, 'draft story must be available to local preview');
+  assert.equal(previews[0].charts[0].name, 'draft.svg');
 } finally {
   await rm(fixture, { recursive: true, force: true });
 }
 
-console.log('Verified two gallery entries, page order, full-size links, chart paths, draft exclusion, and output allowlist.');
+console.log(`Verified ${projects.length} published projects, ${legacyCount} preserved legacy pages, ${projects.length} redirects, local assets, draft exclusion, base paths, and output allowlist.`);

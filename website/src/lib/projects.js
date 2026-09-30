@@ -6,7 +6,7 @@ import { marked } from 'marked';
 const visuals = path.resolve(process.cwd(), '../visuals');
 const chartPattern = /^plots\/[A-Za-z0-9][A-Za-z0-9._-]*\.(?:png|svg|jpg|jpeg|webp)$/i;
 
-export async function getProjects(root = visuals) {
+export async function getProjects(root = visuals, { includeDrafts = false } = {}) {
   const folders = await readdir(root, { withFileTypes: true });
   const projects = [];
   const slugs = new Set();
@@ -20,9 +20,10 @@ export async function getProjects(root = visuals) {
       throw error;
     }
     const { data, content } = matter(source);
-    if (data.status === 'draft') continue;
-    if (data.status !== 'published') throw new Error(`${folder.name}: status must be draft or published`);
-    if (!data.title || !data.description || !data.date || !Array.isArray(data.topics)) {
+    if (data.status === 'draft' && !includeDrafts) continue;
+    if (!['draft', 'published'].includes(data.status)) throw new Error(`${folder.name}: status must be draft or published`);
+    const draft = data.status === 'draft';
+    if (!data.title || (!draft && (!data.description || !data.date || !Array.isArray(data.topics)))) {
       throw new Error(`${folder.name}: missing title, date, topics, or description`);
     }
     if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(data.slug || '')) {
@@ -30,11 +31,11 @@ export async function getProjects(root = visuals) {
     }
     if (slugs.has(data.slug)) throw new Error(`Duplicate project slug: ${data.slug}`);
     slugs.add(data.slug);
-    if (!Array.isArray(data.charts) || data.charts.length === 0) {
+    if (!Array.isArray(data.charts) || (!draft && data.charts.length === 0)) {
       throw new Error(`${folder.name}: a published project needs an ordered chart list`);
     }
     const sections = content.split(/^## Sources and methodology\s*$/m);
-    if (sections.length !== 2 || !sections[0].trim() || !sections[1].trim()) {
+    if (!draft && (sections.length !== 2 || !sections[0].trim() || !sections[1].trim())) {
       throw new Error(`${folder.name}: story needs an introduction and a Sources and methodology section`);
     }
     const charts = [];
@@ -48,16 +49,21 @@ export async function getProjects(root = visuals) {
     }
     projects.push({
       folder: folder.name,
+      status: data.status,
       slug: data.slug,
       title: data.title,
-      date: data.date instanceof Date ? data.date.toISOString().slice(0, 10) : String(data.date),
-      topics: data.topics,
-      description: data.description,
+      date: data.date instanceof Date ? data.date.toISOString().slice(0, 10) : String(data.date || ''),
+      topics: Array.isArray(data.topics) ? data.topics : [],
+      description: data.description || '',
       featured: data.featured === true,
       charts,
-      introductionHtml: await marked.parse(sections[0]),
-      sourcesHtml: await marked.parse(sections[1]),
+      introductionHtml: await marked.parse(sections[0] || ''),
+      sourcesHtml: await marked.parse(sections[1] || ''),
     });
   }
   return projects.sort((a, b) => Number(b.featured) - Number(a.featured) || b.date.localeCompare(a.date));
+}
+
+export async function getDraftProjects(root = visuals) {
+  return (await getProjects(root, { includeDrafts: true })).filter((project) => project.status === 'draft');
 }
