@@ -67,7 +67,6 @@ if (length(viewbox) != 3) stop("Could not read simplified logo viewBox")
 logo_ratio <- as.numeric(viewbox[[2]]) / as.numeric(viewbox[[3]])
 logo_width <- grid::unit(0.60, "in")
 logo_height <- grid::unit(0.60 / logo_ratio, "in")
-logo_source <- gsub("#0062DF", blue, logo_source, fixed = TRUE)
 raster_width <- 366L
 logo_png <- rsvg::rsvg_png(charToRaw(logo_source), width = raster_width,
   height = as.integer(round(raster_width / logo_ratio)))

@@ -19,14 +19,14 @@
 
     <main>
       <section id="symbol" class="section">
-        <div class="section-head"><div><p class="eyebrow">01 / Symbol development</p><h2>Keep the creature recognizable.</h2></div><p>The untouched raster is shown beside two transparent, flat-fill SVG interpretations. The long beak, rearward crest, curved wings, and feet remain part of the silhouette.</p></div>
+        <div class="section-head"><div><p class="eyebrow">01 / Symbol development</p><h2>Keep the creature recognizable.</h2></div><p>The untouched raster retains its original blue. The working faithful, simplified, and compact SVG marks use confirmed #2455FF. The long beak, rearward crest, curved wings, and feet remain part of the silhouette.</p></div>
         <div class="reference-grid">
           <figure class="tile reference"><div class="reference-canvas"><img src="reference/blue-pterosaur-original.png" alt="Original supplied blue pterosaur on white, with sweeping wings, long beak, backward crest, eye and feet"></div><figcaption><strong>Supplied reference</strong><span>Preserved byte-for-byte; white is in the image.</span></figcaption></figure>
           <figure class="tile"><div class="mark-canvas"><img src="pterosaur-mark.svg" alt="Faithful one-color vector of the supplied pterosaur"></div><figcaption><strong>Faithful vector</strong><span>Curves and narrow details closest to the supplied form.</span></figcaption></figure>
           <figure class="tile"><div class="mark-canvas"><img src="pterosaur-simplified.svg" alt="Lightly simplified one-color vector of the supplied pterosaur"></div><figcaption><strong>Light simplification</strong><span>Broader eye opening and fewer fragile foot cutouts.</span></figcaption></figure>
         </div>
-        <div class="tile size-study"><div class="card-title"><h3>Actual-size tests</h3><p>Each circle is the stated CSS pixel size. The mark sits inside the circular safe area; the footer sample uses the same SVGs at 24 px wide. The compact trial follows the observed loss of eye and feet in the first two versions at 24 px.</p></div><div id="size-tests" class="size-grid"></div></div>
-        <div class="tile color-study"><div class="card-title"><h3>One shape, five contexts</h3><p>Original sampled blue, proposed blue, raspberry, black, and reversed white. No gradients or embedded bitmap.</p></div><div id="mark-colors" class="color-grid"></div></div>
+        <div class="tile size-study"><div class="card-title"><h3>Actual-size tests</h3><p>All working marks use #2455FF. Each circle is the stated CSS pixel size. The mark sits inside the circular safe area; the footer sample uses the same SVGs at 24 px wide. The compact trial follows the observed loss of eye and feet in the first two versions at 24 px.</p></div><div id="size-tests" class="size-grid"></div></div>
+        <div class="tile color-study"><div class="card-title"><h3>Historical color treatments</h3><p>The original sampled blue, confirmed blue, raspberry, black, and reversed white are shown as earlier comparisons. The source SVG now uses #2455FF; masks apply the other colors only for this labeled trial.</p></div><div id="mark-colors" class="color-grid"></div></div>
       </section>
 
       <section id="identity" class="section">
@@ -36,7 +36,7 @@
       </section>
 
       <section id="palettes" class="section">
-        <div class="section-head"><div><p class="eyebrow">03 / Data color system</p><h2>Identity color is only one role.</h2></div><p>Frozen trial values separate highlights, neutral context, categories, ordered intensity, and signed deviation. Twelve and sixteen categories are stress tests, not a recommendation to rely on color alone.</p></div>
+        <div class="section-head"><div><p class="eyebrow">03 / Archived data color trial</p><h2>Identity color is only one role.</h2></div><p>These earlier frozen values separate highlights, neutral context, categories, ordered intensity, and signed deviation. The current R study holds the active palette proposal. Twelve and sixteen categories are stress tests, not a recommendation to rely on color alone.</p></div>
         <div class="palette-stack" id="palette-tables"></div>
         <div class="tile"><div class="card-title"><h3>Contrast on actual surfaces</h3><p>WCAG ratios are calculated against paper and white. The table distinguishes normal text (4.5:1) from chart marks and large text (3:1). Labels and strokes remain necessary where marks blend into the ground.</p></div><div class="table-wrap"><table id="contrast-table"><thead><tr><th>Color / role</th><th>Paper #F7F5EE</th><th>White #FFFFFF</th><th>Ink #172033</th><th>Use</th></tr></thead><tbody></tbody></table></div></div>
         <div class="tile diagnostics"><div class="card-title"><h3>Simulated category collisions</h3><p>Closest pair in each set by Oklab distance after full-severity simulation. Smaller numbers indicate more similar colors; they are not accessibility pass/fail thresholds.</p></div><div class="table-wrap"><table id="collision-table"><thead><tr><th>Set</th><th>Standard</th><th>Protanopia</th><th>Deuteranopia</th><th>Tritanopia</th><th>Grayscale</th></tr></thead><tbody></tbody></table></div><p id="step-check" class="diagnostic-note"></p></div>

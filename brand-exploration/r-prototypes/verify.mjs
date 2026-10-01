@@ -15,6 +15,11 @@ assert.deepEqual(readdirSync(join(here,'exports')).sort(),
   [...names.flatMap(name=>[`${name}.png`,`${name}.svg`]),'layout.json'].sort(),
   'the current study exports only its eleven designated cases');
 const logo = readFileSync(join(here, '..', 'pterosaur-simplified.svg'), 'utf8');
+for (const filename of ['pterosaur-mark.svg', 'pterosaur-simplified.svg', 'pterosaur-compact.svg']) {
+  const source = readFileSync(join(here, '..', filename), 'utf8');
+  assert.match(source, /<path fill="#2455FF"/, `${filename}: working fill is confirmed blue`);
+  assert.doesNotMatch(source, /#0062DF/i, `${filename}: old reference blue is absent`);
+}
 const [, intrinsicWidth, intrinsicHeight] = logo.match(/viewBox="[\d.]+ [\d.]+ ([\d.]+) ([\d.]+)"/) || [];
 assert.ok(intrinsicWidth && intrinsicHeight, 'simplified mark has an intrinsic viewBox');
 const intrinsicRatio = Number(intrinsicWidth) / Number(intrinsicHeight);
