@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" role="img" aria-labelledby="title">
+  <title id="title">Data cells resolving into a clear diagonal</title>
+  <path fill="#203149" d="M11 12h17v17H11zm21 0h17v17H32zm21 0h17v17H53zM11 33h17v17H11zm42 0h17v17H53zM11 54h17v17H11zm21 0h17v17H32zm21 0h17v17H53z"/>
+  <path fill="#C35639" d="M34 44 44 34l5 5-10 10z"/>
+</svg>
