@@ -33,7 +33,8 @@
 - R 4.5.2 parsed `analysis.R`, and an exact source comparison confirmed its 13 chunks match `index.qmd` in order and content. All required R packages were present. Running the extraction against a temporary data copy completed with exit code 0 and produced all six original export filenames. ggplot2 reported a deprecated `size` aesthetic and the local font/locale produced encoding warnings; the original exports were not overwritten.
 - The new initializer was run in a temporary workspace and created the expected draft files and directories. The temporary validation copies were removed afterward.
 - Content batch: `codex/content-migration` passed [build-only CI](https://github.com/mtsinganis/the-data-decoded-visualizations/actions/runs/36871708045), with deploy skipped. It was merged into `main` at `aa88b8c`; [Astro deployment run 36872405331](https://github.com/mtsinganis/the-data-decoded-visualizations/actions/runs/36872405331) passed both build and deploy. The public homepage contains 16 gallery links. All 16 project pages, 36 chart URLs, and 20 legacy project routes returned 200; the Somalia compatibility SVG returned 200, while the draft Venezuela project route and an unknown project route returned 404.
-- Next: correct and review the Venezuela chart annotations separately. Final logo and brand system remain open.
+- Workflow handoff: `README.md` is the practical Windows/RStudio guide for starting a draft, producing charts, previewing, verifying, and publishing through a topic branch and pull request. The earlier README contained conflicting X links (`TheDataDecoder` and `TheDataDecoded`); the confirmed account is `https://x.com/TheDataDecoded`. The initializer still creates drafts and now rejects any existing project path, including a file with that name. Verification accepts additional draft and published stories while checking the 16-project baseline, Venezuela's draft status, the three archived exceptions, legacy routes, and output allowlist. A temporary initialized topic passed both draft and published build/verification; it was removed and the 16-project build passed again.
+- Next milestone: decide the brand identity and develop reusable templates for future charts. The Venezuela story stays draft until its chart annotations are corrected and reviewed; that separate repair does not hold up new project work.
 
 ## Existing content migration (reviewed batch)
 
@@ -73,7 +74,7 @@ The two duplicate rendered folders each have plot files identical by hash to the
 ### Previous hosting and rollback reference
 
 - Before cutover, GitHub Pages used **Deploy from a branch: `main`, `/docs`**. The live URL was and remains `https://mtsinganis.github.io/the-data-decoded-visualizations/`; there is no custom domain, and HTTPS is enforced. The previous live deployment was [the generated Pages run](https://github.com/mtsinganis/the-data-decoded-visualizations/actions/runs/25470615741) on May 7, 2026. Commit `802d91d` is the pre-migration `main` reference. The `docs/` tree and `_quarto.yml` on deployed `9b2da16` match that reference exactly.
-- `_quarto.yml` renders `index.qmd` and `visuals/*/index.qmd` into `docs/`, and publishes plot and shared asset resources. The committed `docs/index.html`, `docs/visuals/<existing-folder>/index.html`, and their support files currently serve the website. Keep `docs/` and `_quarto.yml` unchanged through the switch so rollback remains available.
+- `_quarto.yml` rendered `index.qmd` and `visuals/*/index.qmd` into `docs/`, including plot and shared asset resources. The committed `docs/index.html`, `docs/visuals/<existing-folder>/index.html`, and their support files remain available for rollback. Astro now serves the homepage.
 
 ### Completed preparation
 
@@ -93,11 +94,8 @@ The two duplicate rendered folders each have plot files identical by hash to the
 
 ### Everyday publishing workflow
 
-1. From the repository root, source `R/new_story_project.R` and run `new_story_project("YYYY-MM-topic", "Working title")`. It creates one topic folder with `data/`, `analysis.R`, `plots/`, `story.md`, and `post.md`, with the story in draft status.
-2. Keep inputs in `data/`; use R and ggplot2 in `analysis.R` to check sources, calculate results, and export finished charts to `plots/`. Write the reader-facing introduction, sources, methodology, stable slug, chart order, and accessible chart descriptions in `story.md`. Prepare X copy in `post.md` for review; posting remains manual.
-3. Run `pnpm dev` from `website/` and open `http://localhost:4321/the-data-decoded-visualizations/draft/<slug>/` to review copy and charts locally. The slug comes from `story.md`. Run `pnpm build` and `pnpm verify` to confirm the public artifact still excludes the draft and any unlisted data or exports.
-4. After editorial approval, change only that project's `story.md` status to `published`, rerun build and verification, review its gallery and project pages, then commit and push to `main`. The Actions workflow publishes the new page automatically. Check the deployment and public URLs. A push to `astro-migration` alone never publishes.
+Use [README.md](README.md) for the current step-by-step Windows/RStudio workflow and commands. Keep this file for migration decisions, status, legacy-route coverage, and rollback instructions.
 
 ## Local workflow
 
-Run `pnpm install` in `website/`, then `pnpm dev` for local review or `pnpm build` to produce `website/dist/`. Open `http://localhost:4321/the-data-decoded-visualizations/` (Astro's default port) for a local preview. Run `pnpm verify` after a build to check routes and assets. From the repository root, source `R/new_story_project.R` and call `new_story_project("YYYY-MM-topic", "Working title")` to make a draft project. Edit its `story.md` and put finished charts in `plots/`; set `status: published` only when content is ready.
+The local commands are maintained in [README.md](README.md).

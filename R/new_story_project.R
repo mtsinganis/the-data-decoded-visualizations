@@ -7,7 +7,7 @@ new_story_project <- function(folder, title, date = Sys.Date()) {
     stop("Run this function from the repository root.")
   }
   project <- file.path("visuals", folder)
-  if (dir.exists(project)) stop("Project folder already exists: ", project)
+  if (file.exists(project)) stop("Project path already exists: ", project)
   dir.create(file.path(project, "data"), recursive = TRUE)
   dir.create(file.path(project, "plots"))
   file.create(file.path(project, "data", ".gitkeep"))

@@ -10,9 +10,12 @@ const projects = await getProjects();
 const config = await readFile('astro.config.mjs', 'utf8');
 assert.match(config, /site:\s*'https:\/\/mtsinganis\.github\.io'/);
 assert.match(config, /base:\s*'\/the-data-decoded-visualizations\/'/);
-assert.equal(projects.length, 16, 'the two existing stories and 14 reviewed stories should be published');
+assert.ok(projects.length >= 16, 'the 16 existing published stories must remain available');
 const draftSlugs = new Set((await getDraftProjects()).map((item) => item.slug));
-assert.deepEqual([...draftSlugs], ['venezuela-refugees-maduro'], 'Venezuela must remain a draft');
+assert.ok(draftSlugs.has('venezuela-refugees-maduro'), 'Venezuela must remain a draft');
+for (const folder of ['2025-01-airbnb-demand', '2025-11-04-str-europe-peak-season', '2026-04-denmark-tax-revenue-burden']) {
+  assert.ok(!projects.some((item) => item.folder === folder), `${folder} must stay out of the gallery`);
+}
 const pilot = projects.find((item) => item.slug === 'global-aviation-co2-emissions');
 const somalia = projects.find((item) => item.slug === 'us-somalia-fragile-states-index');
 assert.ok(pilot && somalia, 'both projects should be discovered from story.md');
@@ -55,7 +58,9 @@ for (const item of projects) {
     `${item.slug} needs one accessible full-size link per chart`);
 }
 assert.ok(!gallery.includes(`chart/${somalia.slug}/thumb.svg`), 'Somalia gallery must use the PNG');
-assert.ok(!gallery.includes(`${base}projects/venezuela-refugees-maduro/`), 'draft must stay out of gallery');
+for (const slug of draftSlugs) {
+  assert.ok(!gallery.includes(`${base}projects/${slug}/`), `${slug} draft must stay out of gallery`);
+}
 const somaliaPage = await readFile(path.join(dist, 'projects', somalia.slug, 'index.html'), 'utf8');
 assert.ok(!somaliaPage.includes(`chart/${somalia.slug}/thumb.svg`), 'Somalia project must use the PNG');
 
@@ -130,7 +135,7 @@ for (const item of projects.filter((project) => !redirects.has(project.folder)))
 }
 assert.ok(legacyCount > 0, 'unmigrated legacy pages must remain available');
 assert.equal(legacyCount + redirects.size, 20, 'all 20 existing project routes must be covered');
-assert.equal(legacyCount, 4, 'the three archived exceptions and Venezuela should retain rendered pages');
+assert.ok(legacyCount >= 3, 'the three archived exceptions should retain rendered pages');
 for (const item of projects) {
   for (const chart of item.charts) {
     const relative = `visuals/${item.folder}/plots/${chart.name}`;
