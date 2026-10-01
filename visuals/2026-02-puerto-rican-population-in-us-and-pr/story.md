@@ -4,7 +4,7 @@ slug: "puerto-rican-population-in-us-and-pr"
 date: "2026-02-11"
 topics: [U.S., Puerto Rico, Bad Bunny]
 description: "Puerto Rican-origin population in U.S. counties and total residents of Puerto Rico's municipios in 2024."
-status: draft
+status: published
 featured: false
 charts:
   - file: plots/puerto_ricans_us.png

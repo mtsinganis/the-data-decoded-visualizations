@@ -4,7 +4,7 @@ slug: "denmark-tax-revenue"
 date: "2026-04-01"
 topics: [Denmark, Tax revenue]
 description: "Tax revenue as share of GDP (1972-2025)"
-status: draft
+status: published
 featured: false
 charts:
   - file: plots/tax-revenue-line-chart.png

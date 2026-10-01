@@ -4,7 +4,7 @@ slug: "us-foreign-born-population-by-county"
 date: "2026-02-17"
 topics: [U.S., Immigration]
 description: "Share of foreign-born nationals by U.S. county and change from 2009 to 2024"
-status: draft
+status: published
 featured: false
 charts:
   - file: plots/foreign_born_2024_annotated.png

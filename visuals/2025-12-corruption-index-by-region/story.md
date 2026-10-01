@@ -4,7 +4,7 @@ slug: "corruption-index-by-region"
 date: "2025-12-09"
 topics: [corruption, Transparency International, World Regions]
 description: "Corruption Perceptions Index (CPI) in the period 2012-2024"
-status: draft
+status: published
 featured: false
 charts:
   - file: plots/corruption_index_by_region.png

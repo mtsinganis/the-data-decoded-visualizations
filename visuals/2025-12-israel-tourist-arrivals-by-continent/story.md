@@ -4,7 +4,7 @@ slug: "israel-tourist-arrivals-by-continent"
 date: "2026-01-07"
 topics: [Israel, Tourism, Gaza War]
 description: "Tourist arrivals by world region (2022-2025)"
-status: draft
+status: published
 featured: false
 charts:
   - file: plots/israel-tourist-arrivals-by-continent.png

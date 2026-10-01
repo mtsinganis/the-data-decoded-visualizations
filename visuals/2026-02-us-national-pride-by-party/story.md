@@ -4,7 +4,7 @@ slug: "us-national-pride-by-party"
 date: "2026-02-20"
 topics: [U.S., National Pride, Gallup]
 description: "Gallup poll (2001-2025)"
-status: draft
+status: published
 featured: false
 charts:
   - file: plots/pride_by_political_affiliation.png

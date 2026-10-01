@@ -4,7 +4,7 @@ slug: "import-flags-ggplot"
 date: "2025-12-16"
 topics: [R, ggplot, flags, DataViz, Corruption Index]
 description: "An example comparing the Corruption Perception Index Europe's Big Four (France, Germany, UK and Italy) in 2024"
-status: draft
+status: published
 featured: false
 charts:
   - file: plots/corruption_index_big_four_round.png

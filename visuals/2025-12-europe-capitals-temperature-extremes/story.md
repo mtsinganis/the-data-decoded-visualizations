@@ -4,7 +4,7 @@ slug: "europe-capitals-temperature-extremes"
 date: "2025-12-29"
 topics: [Europe, Temperature, MeteoStat]
 description: "A look at the minimum and maximum temperatures recorded"
-status: draft
+status: published
 featured: false
 charts:
   - file: plots/europe-capitals-temperature-extremes.png

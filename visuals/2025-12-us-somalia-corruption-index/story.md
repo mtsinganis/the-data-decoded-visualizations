@@ -4,7 +4,7 @@ slug: "us-somalia-corruption-index"
 date: "2025-12-07"
 topics: [corruption, Transparency International, USA, Somalia]
 description: "Corruption Perceptions Index (CPI) in the U.S. and Somalia (2012–2024)"
-status: draft
+status: published
 featured: false
 charts:
   - file: plots/us_somalia_corruption_index.png

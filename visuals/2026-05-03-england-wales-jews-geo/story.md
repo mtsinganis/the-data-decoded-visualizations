@@ -4,7 +4,7 @@ slug: "england-wales-jews-geo"
 date: "2026-05-03"
 topics: [Jews, England, Wales]
 description: "2021 Census data"
-status: draft
+status: published
 featured: false
 charts:
   - file: plots/jewish_share_by_region.png
