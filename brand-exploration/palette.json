@@ -9,6 +9,7 @@
     "vermilion": "#D94A38",
     "crimson": "#C83242"
   },
+  "recommendedAccent": "crimson",
   "categoricalBase": ["#2455FF", "#078A80", "#AA6E1E", null, "#7656B4", "#277A9C", "#9B5387", "#577637"],
   "categoricalExtension12": ["#5E637C", "#B87B4B", "#477B63", "#99559D"],
   "categoricalExtension16": ["#70769C", "#876F27", "#4E8B91", "#A0569A"],

@@ -14,7 +14,9 @@ bbox_ratio <- function(pixels) {
 }
 source_ratio <- bbox_ratio(source_pixels)
 
-for (name in c("ranked-short", "ranked-long", "ranked-landscape", "series-vermilion", "series-crimson", "sequential-heatmap")) {
+for (name in c("ranked-short", "ranked-long", "ranked-landscape", "series-vermilion",
+               "series-crimson", "sequential-heatmap", "multipanel", "annotated-tall",
+               "composition-vermilion", "composition-crimson")) {
   image <- png::readPNG(file.path(here, "exports", paste0(name, ".png")))
   height <- dim(image)[1]
   footer <- image[(height - 240):height, , 1:3]
@@ -27,7 +29,7 @@ for (name in c("ranked-short", "ranked-long", "ranked-landscape", "series-vermil
   }
   cat(name, ": PNG footer mark bounds ", round(output_ratio, 3),
     " vs source ", round(source_ratio, 3), "\n", sep = "")
-  if (startsWith(name, "ranked-")) {
+  if (startsWith(name, "ranked-") || name == "annotated-tall") {
     light <- c(0xA6, 0xB0, 0xBD) / 255
     context_pixels <- abs(image[, , 1] - light[[1]]) < 0.005 &
       abs(image[, , 2] - light[[2]]) < 0.005 &
