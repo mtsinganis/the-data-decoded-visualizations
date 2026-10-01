@@ -10,7 +10,9 @@ const projects = await getProjects();
 const config = await readFile('astro.config.mjs', 'utf8');
 assert.match(config, /site:\s*'https:\/\/mtsinganis\.github\.io'/);
 assert.match(config, /base:\s*'\/the-data-decoded-visualizations\/'/);
-assert.ok(projects.length >= 2, 'the aviation pilot and Somalia project should be published');
+assert.equal(projects.length, 16, 'the two existing stories and 14 reviewed stories should be published');
+const draftSlugs = new Set((await getDraftProjects()).map((item) => item.slug));
+assert.deepEqual([...draftSlugs], ['venezuela-refugees-maduro'], 'Venezuela must remain a draft');
 const pilot = projects.find((item) => item.slug === 'global-aviation-co2-emissions');
 const somalia = projects.find((item) => item.slug === 'us-somalia-fragile-states-index');
 assert.ok(pilot && somalia, 'both projects should be discovered from story.md');
@@ -21,6 +23,7 @@ assert.deepEqual(somalia.charts.map((chart) => chart.name), ['us_somalia_fragile
   'Somalia project should publish only its finished PNG');
 
 const gallery = await readFile(path.join(dist, 'index.html'), 'utf8');
+const htmlText = (value) => value.replaceAll('&', '&amp;').replaceAll("'", '&#39;').replaceAll('"', '&quot;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
 assert.ok(gallery.includes('class="site-name"') && gallery.includes('>The Data Decoded</a>'), 'collection is the header wordmark');
 assert.ok(gallery.includes('<h1>Interesting questions, explored through data.</h1>'), 'gallery uses the chosen headline');
 assert.ok(gallery.includes('By Markos Tsinganis'), 'gallery retains secondary author credit');
@@ -28,7 +31,7 @@ assert.ok(gallery.includes('By Markos Tsinganis'), 'gallery retains secondary au
 for (const item of projects) {
   const project = await readFile(path.join(dist, 'projects', item.slug, 'index.html'), 'utf8');
   assert.ok(gallery.includes(`${base}projects/${item.slug}/`), `gallery links to ${item.slug}`);
-  assert.ok(gallery.includes(item.title) && gallery.includes(item.description),
+  assert.ok(gallery.includes(htmlText(item.title)) && gallery.includes(htmlText(item.description)),
     `gallery shows title and description for ${item.slug}`);
   assert.ok(project.includes('By Markos Tsinganis'), `${item.slug} retains author credit`);
   const positions = [
@@ -52,6 +55,7 @@ for (const item of projects) {
     `${item.slug} needs one accessible full-size link per chart`);
 }
 assert.ok(!gallery.includes(`chart/${somalia.slug}/thumb.svg`), 'Somalia gallery must use the PNG');
+assert.ok(!gallery.includes(`${base}projects/venezuela-refugees-maduro/`), 'draft must stay out of gallery');
 const somaliaPage = await readFile(path.join(dist, 'projects', somalia.slug, 'index.html'), 'utf8');
 assert.ok(!somaliaPage.includes(`chart/${somalia.slug}/thumb.svg`), 'Somalia project must use the PNG');
 
@@ -125,6 +129,8 @@ for (const item of projects.filter((project) => !redirects.has(project.folder)))
   expected.add(relative);
 }
 assert.ok(legacyCount > 0, 'unmigrated legacy pages must remain available');
+assert.equal(legacyCount + redirects.size, 20, 'all 20 existing project routes must be covered');
+assert.equal(legacyCount, 4, 'the three archived exceptions and Venezuela should retain rendered pages');
 for (const item of projects) {
   for (const chart of item.charts) {
     const relative = `visuals/${item.folder}/plots/${chart.name}`;

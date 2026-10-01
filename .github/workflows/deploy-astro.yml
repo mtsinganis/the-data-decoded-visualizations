@@ -2,7 +2,9 @@ name: Astro site
 
 on:
   push:
-    branches: [astro-migration, main]
+    branches: [astro-migration, codex/content-migration, main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
