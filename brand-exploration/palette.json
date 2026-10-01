@@ -11,6 +11,8 @@
   },
   "recommendedAccent": "crimson",
   "categoricalBase": ["#2455FF", "#078A80", "#AA6E1E", null, "#7656B4", "#277A9C", "#9B5387", "#577637"],
+  "categoricalB": ["#2455FF", "#087F79", "#D49A44", "#C83242", "#6F62B6", "#61A5C7", "#4A5E72", "#86A65D"],
+  "recommendedCategorical": "B",
   "categoricalExtension12": ["#5E637C", "#B87B4B", "#477B63", "#99559D"],
   "categoricalExtension16": ["#70769C", "#876F27", "#4E8B91", "#A0569A"],
   "sequential": ["#F0F4F4", "#D3E4EA", "#A8CBDD", "#72A6CC", "#3F7BB5", "#20558E", "#12365B"],

@@ -14,9 +14,9 @@ bbox_ratio <- function(pixels) {
 }
 source_ratio <- bbox_ratio(source_pixels)
 
-for (name in c("ranked-short", "ranked-long", "ranked-landscape", "series-vermilion",
-               "series-crimson", "sequential-heatmap", "multipanel", "annotated-tall",
-               "composition-vermilion", "composition-crimson")) {
+for (name in c("ranked-short", "ranked-long-before", "ranked-long-after",
+               "ranked-landscape", "series-A", "series-B", "sequential-heatmap",
+               "multipanel", "annotated-tall", "composition-A", "composition-B")) {
   image <- png::readPNG(file.path(here, "exports", paste0(name, ".png")))
   height <- dim(image)[1]
   footer <- image[(height - 240):height, , 1:3]
