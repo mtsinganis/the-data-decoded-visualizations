@@ -15,7 +15,7 @@
 
 1. **Pilot and local prototype (complete on this branch):** Preserve the Quarto site; extract aviation R chunks; add pilot story and post starter; add Astro gallery, project page, and project initializer; validate a local build.
 2. **Pilot refinement (deployed):** Establish The Data Decoded as the primary typographic identity with secondary Markos Tsinganis credit; show gallery previews at natural proportions; keep the project reading order and full-size chart links; check reader-facing prose against the R analysis and inspect desktop and mobile layouts.
-3. **Wider migration (content batch prepared):** The aviation and U.S.–Somalia Fragile States Index stories are live. Fourteen more source-backed stories have passed editorial review and are marked published for the next deployment; Venezuela remains draft because annotations in its existing export need correction. Existing charts can be shown without rewriting their `index.qmd` analyses.
+3. **Wider migration (16 projects deployed):** The aviation and U.S.–Somalia Fragile States Index stories remain live. Fourteen more source-backed stories passed editorial review and were deployed; Venezuela remains draft because annotations in its existing export need correction. Existing charts can be shown without rewriting their `index.qmd` analyses.
 4. **Website design pass (complete locally):** Align the header, introduction, two-column gallery, project pages, and footer within a responsive content width; refine type and spacing while keeping the charts prominent. Later, choose the final identity, logo, and domain, and add richer article layouts or navigation only as needed.
 5. **Publishing preparation (complete):** Build and verify Astro in CI without deploying `astro-migration`; retain old project URLs and local draft previews.
 6. **Cutover (complete):** Astro now serves the live site through GitHub Actions. The Quarto output remains committed for rollback.
@@ -32,38 +32,39 @@
 - Whitespace check: the pilot SVG has a square 720 × 720 viewBox. Its corresponding 2000 × 2000 PNG export has nonwhite bounds from approximately (49, 46) to (1942, 1950), leaving about 2–3% white margin at each edge inside the chart itself. The former wide gallery frame added letterboxing; that frame is gone.
 - R 4.5.2 parsed `analysis.R`, and an exact source comparison confirmed its 13 chunks match `index.qmd` in order and content. All required R packages were present. Running the extraction against a temporary data copy completed with exit code 0 and produced all six original export filenames. ggplot2 reported a deprecated `size` aesthetic and the local font/locale produced encoding warnings; the original exports were not overwritten.
 - The new initializer was run in a temporary workspace and created the expected draft files and directories. The temporary validation copies were removed afterward.
-- Next: complete CI and deploy the 14 reviewed stories, then address the Venezuela chart annotations separately. Final logo and brand system remain open.
+- Content batch: `codex/content-migration` passed [build-only CI](https://github.com/mtsinganis/the-data-decoded-visualizations/actions/runs/36871708045), with deploy skipped. It was merged into `main` at `aa88b8c`; [Astro deployment run 36872405331](https://github.com/mtsinganis/the-data-decoded-visualizations/actions/runs/36872405331) passed both build and deploy. The public homepage contains 16 gallery links. All 16 project pages, 36 chart URLs, and 20 legacy project routes returned 200; the Somalia compatibility SVG returned 200, while the draft Venezuela project route and an unknown project route returned 404.
+- Next: correct and review the Venezuela chart annotations separately. Final logo and brand system remain open.
 
 ## Existing content migration (reviewed batch)
 
-Branch `codex/content-migration` started from deployed `main` at `3068e53`. It adds `story.md` to each of the 15 remaining folders under `visuals/` that has an `index.qmd`. Fourteen have been reviewed and marked `status: published`; Venezuela remains `status: draft`. Chart order follows the rendered Quarto pages. Each chart uses an existing export, usually the smaller PNG when a PNG and SVG represent the same figure. No chart, analysis, input, rendered page, or public route was changed.
+Branch `codex/content-migration` started from deployed `main` at `3068e53`. It added `story.md` to each of the 15 remaining folders under `visuals/` that has an `index.qmd`. Fourteen were reviewed, marked `status: published`, and deployed; Venezuela remains `status: draft`. Chart order follows the rendered Quarto pages. Each chart uses an existing export, usually the smaller PNG when a PNG and SVG represent the same figure. No chart, analysis, input, or rendered legacy page was changed.
 
-Start the local preview with `cd website` and `pnpm dev`, then open the draft URLs below. The normal address is `http://localhost:4321/the-data-decoded-visualizations/draft/<slug>/`; use the port Astro prints if 4321 is occupied. Draft charts have local full-size links and are absent from the production build.
+To review the remaining Venezuela draft locally, run `cd website` and `pnpm dev`, then open `http://localhost:4321/the-data-decoded-visualizations/draft/venezuela-refugees-maduro/` (or the port Astro prints). Its charts have local full-size links and remain absent from the production build.
 
 | Existing project folder | Status | Slug or exception |
 | --- | --- | --- |
 | `2025-01-airbnb-demand` | Archived legacy page | Only a rendered page and chart remain in `docs/`; no source folder, `index.qmd`, or analytical method is present. The page still says “Text explaining chart.” It remains at its old URL and has no gallery entry. |
 | `2025-11-04-str-europe-peak-season` | Preserved duplicate URL | Rendered page and chart files duplicate `2025-11-str-europe-peak-season`; no separate gallery entry. |
-| `2025-11-str-europe-peak-season` | Published in prepared batch | `str-europe-peak-season` |
-| `2025-12-corruption-index-by-region` | Published in prepared batch | `corruption-index-by-region` |
-| `2025-12-europe-capitals-temperature-extremes` | Published in prepared batch | `europe-capitals-temperature-extremes` |
-| `2025-12-europe-military-expenditure` | Published in prepared batch | `europe-military-expenditure` |
-| `2025-12-import-flags-ggplot` | Published in prepared batch | `import-flags-ggplot` |
-| `2025-12-israel-tourist-arrivals-by-continent` | Published in prepared batch | `israel-tourist-arrivals-by-continent` |
-| `2025-12-us-somalia-corruption-index` | Published in prepared batch | `us-somalia-corruption-index` |
+| `2025-11-str-europe-peak-season` | Published | `str-europe-peak-season` |
+| `2025-12-corruption-index-by-region` | Published | `corruption-index-by-region` |
+| `2025-12-europe-capitals-temperature-extremes` | Published | `europe-capitals-temperature-extremes` |
+| `2025-12-europe-military-expenditure` | Published | `europe-military-expenditure` |
+| `2025-12-import-flags-ggplot` | Published | `import-flags-ggplot` |
+| `2025-12-israel-tourist-arrivals-by-continent` | Published | `israel-tourist-arrivals-by-continent` |
+| `2025-12-us-somalia-corruption-index` | Published | `us-somalia-corruption-index` |
 | `2025-12-us-somalia-fragile-states-index` | Published | Existing public story; no changes. |
-| `2026-01-arXiv-submission-timing-history` | Published in prepared batch | `arxiv-submission-timing-history` |
+| `2026-01-arXiv-submission-timing-history` | Published | `arxiv-submission-timing-history` |
 | `2026-01-venezuela-refugees-maduro` | Draft; blocked | `venezuela-refugees-maduro` — the existing chart places PdVSA sanctions and Colombia's temporary protection program in 2018; primary sources date them to 2019 and 2021. The exports need correction and review before publication. |
-| `2026-02-puerto-rican-population-in-us-and-pr` | Published in prepared batch | `puerto-rican-population-in-us-and-pr` — the original Quarto description was blank; the story uses the existing chart subtitle and distinguishes two Census measures. |
-| `2026-02-us-foreign-born-population-by-county` | Published in prepared batch | `us-foreign-born-population-by-county` |
-| `2026-02-us-national-pride-by-party` | Published in prepared batch | `us-national-pride-by-party` |
+| `2026-02-puerto-rican-population-in-us-and-pr` | Published | `puerto-rican-population-in-us-and-pr` — the original Quarto description was blank; the story uses the existing chart subtitle and distinguishes two Census measures. |
+| `2026-02-us-foreign-born-population-by-county` | Published | `us-foreign-born-population-by-county` |
+| `2026-02-us-national-pride-by-party` | Published | `us-national-pride-by-party` |
 | `2026-03-global-aviation-co2-emissions` | Published | Existing public pilot; no changes. |
-| `2026-04-denmark-tax-revenue` | Published in prepared batch | `denmark-tax-revenue` |
+| `2026-04-denmark-tax-revenue` | Published | `denmark-tax-revenue` |
 | `2026-04-denmark-tax-revenue-burden` | Preserved duplicate URL | Rendered page and chart files duplicate `2026-04-denmark-tax-revenue`; no separate gallery entry. |
-| `2026-05-03-england-wales-jews-geo` | Published in prepared batch | `england-wales-jews-geo` |
-| `2026-05-england-wales-muslims-geo` | Published in prepared batch | `england-wales-muslims-geo` |
+| `2026-05-03-england-wales-jews-geo` | Published | `england-wales-jews-geo` |
+| `2026-05-england-wales-muslims-geo` | Published | `england-wales-muslims-geo` |
 
-Validation on this branch: `pnpm build` and `pnpm verify` pass with 16 published projects (two already live and 14 prepared), 36 designated charts, four preserved rendered legacy pages, 16 old-route redirects, and no draft routes or draft charts in `website/dist/`. The four retained pages are Venezuela, Airbnb, and the two duplicate URLs. The larger gallery was reviewed at desktop and 390px mobile width; it stays in two and one columns respectively, with natural chart proportions and no horizontal overflow. This build has not yet been deployed.
+Validation: `pnpm build` and `pnpm verify` pass with 16 published projects (two existing and 14 new), 36 designated charts, four preserved rendered legacy pages, 16 old-route redirects, and no draft routes or draft charts in `website/dist/`. The four retained pages are Venezuela, Airbnb, and the two duplicate URLs. The larger gallery was reviewed at desktop and 390px mobile width; it stays in two and one columns respectively, with natural chart proportions and no horizontal overflow. The deployed public routes passed the checks recorded above.
 
 The two duplicate rendered folders each have plot files identical by hash to their source-backed counterpart (six short-term-rental files and three Denmark files). Several original chart captions name a data provider without a direct dataset link; the stories preserve the provider attribution and link to the original analysis. No missing citation was filled with a guessed URL. For STR, the story presents proposed explanations as possibilities and links [Eurostat's separate 2024 seasonality evidence](https://ec.europa.eu/eurostat/statistics-explained/SEPDF/cache/1945.pdf?v=7690771989285447). For military spending, it links [SIPRI's 2024 burden finding](https://www.sipri.org/media/press-release/2025/unprecedented-rise-global-military-expenditure-european-and-middle-east-spending-surges) and a [Greek Defence Ministry statement](https://www.mod.mil.gr/en/speech-minister-national-defence-nikolaos-panagiotopoulos-parliament-during-discussion/), while explaining that spending values do not prove motives. For arXiv, it links [Faruk Alpay's original essay](https://lightcapai.medium.com/the-event-horizon-of-knowledge-why-3-million-arxiv-papers-are-a-warning-signal-48fc9b74fb33) and identifies the chart's era labels as interpretations; the chart's first era ends in 2011 whereas the essay says 2010. The Venezuela chart contains material chronology errors: the [U.S. Treasury dated PdVSA sanctions to January 2019](https://home.treasury.gov/news/press-releases/sm594), and [UNHCR dated Colombia's temporary protection announcement to February 2021](https://www.unhcr.org/news/unhcr-and-iom-welcome-colombias-decision-regularize-venezuelan-refugees-and-migrants). Its story remains draft because the existing export cannot be made reliable through website prose alone.
 
