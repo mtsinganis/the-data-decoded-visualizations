@@ -1,0 +1,17 @@
+{
+  "brandBlue": "#2455FF",
+  "ink": "#172033",
+  "paper": "#F7F5EE",
+  "slate": "#7B8494",
+  "limeDecorative": "#D6EE42",
+  "context": ["#D9DEE3", "#A6B0BD", "#617087"],
+  "warmAccentCandidates": {
+    "vermilion": "#D94A38",
+    "crimson": "#C83242"
+  },
+  "categoricalBase": ["#2455FF", "#078A80", "#AA6E1E", null, "#7656B4", "#277A9C", "#9B5387", "#577637"],
+  "categoricalExtension12": ["#5E637C", "#B87B4B", "#477B63", "#99559D"],
+  "categoricalExtension16": ["#70769C", "#876F27", "#4E8B91", "#A0569A"],
+  "sequential": ["#F0F4F4", "#D3E4EA", "#A8CBDD", "#72A6CC", "#3F7BB5", "#20558E", "#12365B"],
+  "diverging": ["#9B3652", "#C8617A", "#E3AAB6", "#F2DBDB", "#F3F1EB", "#D4E5EF", "#94BED9", "#4B86B8", "#245578"]
+}

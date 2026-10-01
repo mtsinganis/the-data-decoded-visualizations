@@ -1,6 +1,6 @@
 # Project guidance
 
-- The Data Decoded is the primary brand and X identity for Markos Tsinganis's independent visualization collection. Show Markos as the creator with secondary credit on the website only; do not put his name on charts or any X account surface. Use a typographic wordmark until a new logo is decided. Prioritize clear questions, sound analysis, source attribution, accessible explanation, and consistent design without assuming a final brand system.
+- The Data Decoded is the primary brand and X identity for Markos Tsinganis's independent visualization collection. Show Markos as the creator with secondary credit on the website only; do not put his name on charts or any X account surface. Work Sans is the approved sole font family and #2455FF is the confirmed brand blue. The lightly simplified pterosaur is the preferred exploration mark, but no new logo or production chart template has been approved. Prioritize clear questions, sound analysis, source attribution, accessible explanation, and consistent design.
 - Read [MIGRATION.md](MIGRATION.md) before migration work; it records decisions and current status.
 - Keep one topic per existing `visuals/` folder. Preserve folder names, original inputs, exports, and legacy `index.qmd` during the transition.
 - Use R and ggplot2 for analysis and exports. New projects normally use one `analysis.R`, plus `data/`, `plots/`, `story.md`, and `post.md`.

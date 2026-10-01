@@ -1,8 +1,8 @@
-# The Data Decoded: reference-led brand study
+# The Data Decoded: local brand study
 
-This is a local proposal, outside Astro and the production artifact. It changes no published page, historical chart, R template, or X account. The Data Decoded remains the publication name. Markos Tsinganis appears only in the website application examples. Every chart value and schematic map region is **synthetic demonstration data**.
+This development-only comparison is outside Astro and its production artifact. It changes no live page, historical chart, or production R template. All chart values and map regions are **synthetic demonstration data**. Markos Tsinganis appears only in website examples, never on a chart or X application.
 
-## Preview
+## Preview and exports
 
 From the repository root in PowerShell:
 
@@ -10,50 +10,43 @@ From the repository root in PowerShell:
 python -m http.server 8765 --directory brand-exploration
 ```
 
-Open <http://localhost:8765/>. If Windows exposes Python as `py`, substitute `py -m http.server ...`. Stop with Ctrl+C. The page requests Work Sans and IBM Plex Sans from Google Fonts for this local comparison; offline fallback text is not a reliable type comparison.
+Open <http://localhost:8765/r-prototypes/> for the current Work Sans chart-frame study. The root page at <http://localhost:8765/> retains the earlier symbol, color, and chart trials. <http://localhost:8765/typography/> archives the Work Sans versus Georgia title comparison. Stop the server with Ctrl+C. Current preview fonts are served from `fonts/` locally; no Google Fonts request is needed.
 
-Review captures: [desktop, 1280 px](screenshots/refined-desktop.jpg), [mobile, 390 px](screenshots/refined-mobile.jpg), and [deuteranopia simulation](screenshots/vision-deutan.jpg). The last capture shows how several categorical colors converge while numeric labels and line styles remain. The older `desktop.jpg` and `mobile.jpg` document the previous three-direction study.
+Regenerate the direct R exports from the repository root:
 
-## Supplied logo and recommendation
+```powershell
+& 'C:\Program Files\R\R-4.5.2\bin\Rscript.exe' brand-exploration/r-prototypes/render.R
+node brand-exploration/r-prototypes/verify.mjs
+```
 
-`reference/blue-pterosaur-original.png` is a byte-for-byte copy of the supplied 1254 × 1254 raster (SHA-256 `565F2D4A7D7DB62C34948E4EFE89A8931C9C5F0D327AF9F14617844393B07636`). The white background is part of that file. Its central blue field samples near `#0062DF`; this is an approximation from the image, **not** a previously defined brand specification. The raster is retained separately and never embedded in an SVG.
+Use your own Rscript path if R is installed elsewhere. The script requires `ggplot2`, `ragg`, `svglite`, `systemfonts`, `jsonlite`, `base64enc`, `rsvg`, and `png`. Five synthetic frames each produce a 1080 × 1920 PNG and a self-contained SVG in `r-prototypes/exports/`. The SVG contains editable chart geometry and text, three embedded Work Sans font files, and a small rasterized rendering of the lightly simplified logo. The logo source remains vector. Embedding the licensed font bytes lets a browser render the SVG without Work Sans installed; other SVG consumers may vary, so use the PNG for fixed appearance. The OFL license accompanies the font files in this repository.
 
-`pterosaur-mark.svg` is a manually redrawn faithful vector. `pterosaur-simplified.svg` widens the eye and removes fragile foot detail. Actual-size tests showed the eye and feet weakening in both at 24 px, so `pterosaur-compact.svg` tests an enlarged eye and stronger feet at that size. All three keep the curved upper and lower wings, long beak, backward crest, and dynamic body line. They use transparent backgrounds, a flat fill, path geometry, and a padded `viewBox` (`20 180 1220 900`). Avatar samples place each mark at 78% of circle diameter so wing tips stay inside the circular safe area. The same page checks 24, 32, and 48 px avatars and 24 px-wide chart-footer marks. The compact drawing remains a proposal, not an automatic replacement.
+The R script registers the pinned TTF files under explicit aliases, checks each file's internal family name, and checks that font matching resolves to those exact paths. A missing file stops export before opening a graphics device; it does not silently substitute Arial. To check the failure path without changing the study, set `TDD_FONT_DIR` to an empty directory when running the script. R can use the bundled TTFs without a Windows-wide installation. For other RStudio scripts that call `family = 'Work Sans'` directly, install the three TTFs with Windows Explorer, restart RStudio, and confirm `systemfonts::match_font('Work Sans')` resolves to Work Sans. Source, pinned version, hashes, license, and Windows instructions are in [fonts/README.md](fonts/README.md).
 
-**Recommended next trial:** use the faithful vector for wordmarks and larger placements, the lightly simplified version at 32–48 px, and the compact trial only where a 24 px mark is unavoidable. The reference blue gives the strongest visual continuity; `#2455FF` and raspberry `#E63B7A` remain options. Test on real devices before approving a logo. Do not replace the current production logo yet.
+## Confirmed identity and open choices
 
-## Type and identity color
+- **Approved family:** Work Sans alone. Titles use Bold; optional subtitles and body use Regular; labels and annotations use Regular or Medium; sources and notes use Regular at an intended readable size. Size, weight, and spacing form the hierarchy. Georgia and IBM Plex comparisons are historical exploration, not live options.
+- **Confirmed blue:** `#2455FF`. On paper `#F7F5EE`, its measured WCAG contrast is 5.04:1.
+- **Preferred trial mark:** `pterosaur-simplified.svg`, the lightly simplified interpretation. `pterosaur-compact.svg` remains a 24 px test only, for use where an actual-size test makes its stronger eye and feet necessary. No new logo is approved for production replacement.
+- **Open warm accent:** vermilion `#D94A38` or crimson `#C83242`. On paper, their contrast ratios are 3.86:1 and 4.82:1. Vermilion is unsuitable for ordinary small text on this paper; use ink for labels. Crimson clears 4.5:1 on paper, but the categorical system still needs review.
+- **Other proposed colors:** ink `#172033`, paper `#F7F5EE`, context slate `#7B8494`, and decorative lime `#D6EE42`. Lime is not a data or small-text color.
 
-Work Sans and IBM Plex Sans are compared with identical wording, weight, size, spacing, and layout. Work Sans is the tentative preference: its open forms suit the flowing symbol. IBM Plex Sans is a clear, slightly more technical alternative. Both are available under the SIL Open Font License 1.1 from the [Work Sans source](https://github.com/weiweihuanghuang/Work-Sans) and [IBM Plex source](https://github.com/IBM/plex). Before production use, pin a release, self-host its web fonts, keep the OFL license with redistributed files, and install matching TTF/OTF files on the Windows machine that renders R charts. Check the installed family in R with `systemfonts::match_font("Work Sans")` or `systemfonts::match_font("IBM Plex Sans")`; then set the ggplot2 text family explicitly and export with a font-aware device such as `ragg`. No font is installed by this branch.
+The supplied raster, `reference/blue-pterosaur-original.png`, is preserved byte-for-byte (1254 × 1254, SHA-256 `565F2D4A7D7DB62C34948E4EFE89A8931C9C5F0D327AF9F14617844393B07636`). Its sampled central blue is approximately `#0062DF`; that sample is not a brand specification. The faithful, simplified, and compact SVGs have transparent backgrounds, flat fills, clean paths, and padded viewBoxes. The silhouette retains curved sweeping wings, long beak, backward crest, eye, and feet. Earlier 24/32/48 px avatar and footer tests showed the faithful eye and feet weakening at 24 px; the simplified version is preferred and the compact version is reserved for that small case. The full silhouette fits inside the circular avatar safe area. No raster image is embedded in the logo SVGs.
 
-The local comparison uses the sampled blue `#0062DF`, alternative blue `#2455FF`, and proposed raspberry `#E63B7A`, with ink `#172033`, paper `#F7F5EE`, context slate `#7B8494`, and decorative lime `#D6EE42`. The wordmark uses the publication name; the creator credit is secondary in website mockups only. The SVG silhouette is tested in one color, black, and reversed white. None of these colors is approved for production.
+## Data-color system and limits
 
-## Frozen data-color proposal and provenance
+The current frozen proposal is [palette.json](palette.json): confirmed blue, three context neutrals, eight categorical colors with a warm slot for either accent, four additional colors for a 12-category stress test, four more for a 16-category stress test, plus sequential and diverging scales. The two direct R line exports hold data, order, title, labels, spacing, and frame constant while changing only the warm slot. The current local page shows both 8/12/16 sets with numeric keys. The 12/16 sets are stress tests, not a recommendation to identify many categories by hue alone.
 
-The exact hex values are frozen in the `P` object at the top of [`exploration.js`](exploration.js) and displayed in the comparison page. Its roles are:
+Use dark strokes for thin lines, plus direct labels or distinct dash patterns. Large fills can be lighter when values are labeled and adjacent areas have clear boundaries. Use ink for text on paper and light fills. The line test uses direct end labels and line patterns; the heatmap prints values in every cell. The ranked bar highlights one value in confirmed blue against neutral context. The chart frame holds title, optional subtitle, sources/notes, and a modest logo/channel signature constant while leaving the plot structure flexible. Source and note lines are 16 pt in the 7.5 × 13.33 in master; inspect the reduced phone view and open the full export for small labels.
 
-- **Highlights:** sampled blue `#0062DF`, alternate blue `#2455FF`, raspberry `#E63B7A`; ink and slate provide lower-emphasis marks. Lime `#D6EE42` is decorative only.
-- **Neutral context:** `#D8DDE1`, `#AEB8C1`, `#647184`.
-- **Eight categorical colors:** `#1B6CB8`, `#C43D70`, `#188471`, `#A66A1D`, `#7752A3`, `#B84932`, `#4E772C`, `#52657E`.
-- **12-color extension:** adds `#A04489`, `#287F9C`, `#8A634A`, `#777543`.
-- **16-color extension:** adds `#6860A5`, `#966817`, `#2E8564`, `#9A5271`.
-- **Sequential, low to high:** `#F0F4F4`, `#D3E4EA`, `#A8CBDD`, `#72A6CC`, `#3F7BB5`, `#20558E`, `#12365B`.
-- **Diverging, negative to positive:** `#9B3652`, `#C8617A`, `#E3AAB6`, `#F2DBDB`, `#F3F1EB`, `#D4E5EF`, `#94BED9`, `#4B86B8`, `#245578`.
+These manual proposals are informed by [ColorBrewer's qualitative, sequential, and diverging guidance](https://colorbrewer2.org/learnmore/schemes.html), [Paul Tol's notes on categorical discrimination](https://sronpersonalpages.nl/~pault/data/colourschemes.pdf), and [Crameri and colleagues on perceptual color maps](https://doi.org/10.1038/s41467-020-19160-7). They are not copied or certified versions of those palettes. The current page calculates nearest categorical pairs with Oklab after full-severity protanopia, deuteranopia, tritanopia, and grayscale approximations using the [Machado et al. model](https://pubmed.ncbi.nlm.nih.gov/19834201/). Standard-display nearest pairs are 02/06 at distance 7.6 for eight categories, 07/12 at 3.4 for twelve, and 12/16 at 1.5 for sixteen. In the eight-color set, vermilion's closest pair under simulated deuteranopia is 03/04 at 2.2, while crimson's is 02/07 at 2.7. Both variants have an eight-color grayscale collision at 02/03 (rounded distance 0.0). These figures flag possible collisions, not accessibility thresholds. The earlier root page has separate diagnostics for its **earlier** categorical set. Human review is still needed before a template. Do not call either palette color-blind safe; use grouping, texture, facets, and labels.
 
-These are **new manual proposals**, not copied ColorBrewer, Tol, or Crameri palettes. [ColorBrewer's scheme guidance](https://colorbrewer2.org/learnmore/schemes.html) informed the separation of qualitative, sequential, and diverging roles. [Paul Tol's color notes](https://sronpersonalpages.nl/~pault/data/colourschemes.pdf) informed the caution around many categories. [Crameri and colleagues](https://doi.org/10.1038/s41467-020-19160-7) informed the avoidance of rainbow scales and the need to inspect perceptual ordering. The frozen sequential proposal was checked in [Oklab](https://bottosson.github.io/posts/oklab/): lightness steps are 96 → 91 → 82 → 70 → 57 → 44 → 33 from low to high. Values were hand-selected, then measured perceptually; they are not an optimized or certified accessible palette.
+## Archived comparisons and font rights
 
-The page calculates WCAG 2.2 contrast on the **actual paper and white backgrounds** using relative luminance. On paper, ink is 14.91:1, sampled blue 5.05:1, alternate blue 5.04:1, raspberry 3.65:1, slate 3.46:1, and lime 1.19:1. The [text criterion](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) is 4.5:1 for normal text; [non-text graphics](https://www.w3.org/WAI/WCAG22/understanding/non-text-contrast.html) commonly use a 3:1 target when needed to understand content. Thus raspberry and slate can serve as larger marks with labels, but should not be normal-size text on paper; lime should not carry data meaning on paper. Use ink for labels on light fills. Thin lines need dark enough strokes plus direct labels or line patterns. Large fills can be lighter when bordered and numerically labeled.
+The [Georgia comparison](typography/index.html) has four 360 × 640 frames: Work Sans throughout versus Georgia Bold in the title, each with a short and a wrapped question. Its old PNG captures freeze the historical rendered appearance. Its SVG sources now refer to local Work Sans files and the viewer's Georgia installation; they remain an archive, separate from the reproducible R exports above. Run `node brand-exploration/typography/generate.mjs` and `node brand-exploration/typography/verify.mjs` to check their sources and dimensions.
 
-## Stress-test results and limits
+[Microsoft's Georgia listing](https://learn.microsoft.com/en-us/typography/font-list/georgia) describes it as a Windows font. [Microsoft's font FAQ](https://learn.microsoft.com/en-us/typography/fonts/font-faq) says Windows font files generally cannot be redistributed, uploaded as webfonts, or converted without additional rights; rendered graphics are a separate use. No Georgia file is in this repository. Work Sans is redistributed under the [SIL Open Font License 1.1](fonts/OFL.txt), with its copyright notice and pinned source recorded next to the TTFs. The earlier IBM Plex and sampled-blue/raspberry trials remain in the root comparison for historical context.
 
-The controls apply the same six chart datasets to three highlight choices and to standard, protanopia, deuteranopia, tritanopia, and grayscale views. The vision simulations use full-severity [Machado et al. matrices](https://pubmed.ncbi.nlm.nih.gov/19834201/) on linear-light RGB, then convert back to sRGB. The page reports the nearest categorical pair under each condition using Oklab distance (×100). These distances flag collisions; they are **not** pass/fail accessibility thresholds.
+## Remaining decisions
 
-| Set | Standard nearest | Protanopia nearest | Deuteranopia nearest | Tritanopia nearest | Grayscale nearest |
-| --- | --- | --- | --- | --- | --- |
-| 8 | 03/07: 8.6 | 04/07: 1.4 | 04/06: 3.0 | 02/06: 2.7 | 05/08: 0.0 |
-| 12 | 11/12: 6.2 | 04/07: 1.4 | 11/12: 2.1 | 03/10: 1.5 | 05/08: 0.0 |
-| 16 | 03/15: 2.2 | 02/16: 0.5 | 03/16: 1.1 | 03/15: 0.4 | 05/08: 0.0 |
-
-The eight-color set already has weak pairs in simulated color-vision conditions. The 12/16-color extensions contain more near duplicates and should not be used as the only way to identify categories. The eight-series line chart therefore uses direct end labels and dash patterns; the bar, heatmap, map, and stress charts include values or numbered labels. The schematic map has invented regions and is not a geographic visualization. These tests do not establish universal readability or color-blind safety. Human testing, print checks, and real content remain necessary before any production palette is chosen.
-
-The prior abstract `decode-mark.svg` and `tdd-mark.svg` are retained as historical exploratory files; the previous angular Flight drawing has been replaced by the reference-based vector. None enters `website/dist/`.
+Review the simplified logo at actual X avatar and chart-footer sizes on real devices, choose the warm accent, assess revised categorical extensions under color-vision simulations and grayscale, then decide whether a reusable R chart template is warranted. The live website, historical charts, and X account remain unchanged.

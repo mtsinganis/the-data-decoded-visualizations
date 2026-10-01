@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Work Sans chart frame · The Data Decoded</title>
+  <style>
+    @font-face{font-family:'Work Sans';src:url('../fonts/WorkSans-Regular.ttf') format('truetype');font-weight:400;font-display:swap}
+    @font-face{font-family:'Work Sans';src:url('../fonts/WorkSans-Medium.ttf') format('truetype');font-weight:500;font-display:swap}
+    @font-face{font-family:'Work Sans';src:url('../fonts/WorkSans-Bold.ttf') format('truetype');font-weight:700;font-display:swap}
+    :root{font-family:'Work Sans',sans-serif;color:#172033;background:#f7f5ee}
+    *{box-sizing:border-box}body{margin:0}a{color:#2455ff}a:focus-visible{outline:3px solid #2455ff;outline-offset:3px}
+    .wrap{max-width:1320px;margin:auto;padding:28px clamp(18px,4vw,56px) 80px}
+    nav{display:flex;gap:20px;align-items:center;flex-wrap:wrap;font-size:.92rem}
+    header{border-bottom:1px solid #d9dee3;padding-bottom:30px}
+    .eyebrow{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;font-weight:500;color:#617087}
+    h1{font-size:clamp(2rem,5vw,4rem);line-height:1.05;letter-spacing:-.04em;max-width:900px;margin:.6em 0 .3em}
+    h2{font-size:clamp(1.4rem,2.5vw,2rem);letter-spacing:-.025em;margin:0 0 10px}
+    h3{font-size:1.06rem;margin:.2em 0 .5em}p{line-height:1.55;max-width:78ch}
+    section{padding-top:42px}.status{font-weight:500;color:#2455ff}
+    .swatches{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:20px 0}
+    .swatch{background:#fff;border:1px solid #d9dee3;padding:7px;font-size:.8rem}
+    .swatch i{display:block;height:44px;margin-bottom:7px}.swatch span{display:block;overflow-wrap:anywhere}
+    .cases{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;align-items:start}
+    figure{margin:0;background:#fff;border:1px solid #d9dee3;padding:12px}
+    figcaption{padding:3px 4px 11px}figcaption p{font-size:.9rem;margin:0 0 8px}
+    figure img{display:block;width:100%;height:auto;max-width:540px;margin:auto}
+    .phone{width:min(390px,100%);margin:20px auto;background:#fff;border:8px solid #172033;border-radius:25px;padding:8px;overflow:hidden}
+    .phone img{display:block;width:100%;height:auto}
+    .small{font-size:.88rem;color:#465469}
+    @media(max-width:740px){.cases{grid-template-columns:1fr}.wrap{padding-left:16px;padding-right:16px}figure{padding:8px}}
+  </style>
+</head>
+<body><div class="wrap">
+  <header>
+    <nav><strong>The Data Decoded</strong><a href="../">Earlier symbol and palette study</a><a href="../typography/">Archived Georgia comparison</a></nav>
+    <p class="eyebrow">Local exploration · synthetic demonstration data</p>
+    <h1>One font. A flexible chart frame.</h1>
+    <p>Work Sans and <strong>#2455FF</strong> are confirmed identity choices. The lightly simplified pterosaur is the preferred trial mark. Two warm accents and the data palette remain open for review. These are direct R exports, separate from the live website and historical charts.</p>
+    <p class="status">Title Bold · subtitle and body Regular · labels Regular or Medium · source and note Regular</p>
+  </header>
+  <main>
+    <section><h2>Warm accent and categorical tests</h2><p>Each eight-color proposal replaces only the fourth categorical hue. The same synthetic line chart below compares vermilion <strong>#D94A38</strong> with crimson <strong>#C83242</strong>. Twelve and sixteen categories are stress tests, with numeric keys so color is never the only identifier.</p><label for="vision">Approximate viewing condition: </label><select id="vision"><option value="normal">Standard</option><option value="protan">Protanopia</option><option value="deutan">Deuteranopia</option><option value="tritan">Tritanopia</option><option value="gray">Grayscale</option></select><div id="palette-sets"></div><p class="small">Colors are frozen in <a href="../palette.json">palette.json</a>. Simulated colors and Oklab nearest-pair distances are diagnostic, not pass/fail accessibility scores. Neither variant is approved as a production palette.</p></section>
+    <section><h2>Direct R exports</h2><p>The frame reserves positions for a title, optional subtitle, sources and notes, and a modest logo/channel footer. The plot itself can change shape and method. Open the SVG to inspect editable vector chart geometry and embedded Work Sans fonts.</p>
+      <div class="cases">
+        <figure><figcaption><h3>Short title</h3><p>Work Sans Bold in a compact title area.</p><a href="exports/ranked-short.svg">View SVG</a></figcaption><img src="exports/ranked-short.png" alt="Synthetic ranked bar chart with a short Work Sans title"></figure>
+        <figure><figcaption><h3>Wrapped title</h3><p>Same data, with a long three-line title and reserved subtitle.</p><a href="exports/ranked-long.svg">View SVG</a></figcaption><img src="exports/ranked-long.png" alt="Synthetic ranked bar chart with a long wrapped Work Sans title"></figure>
+        <figure><figcaption><h3>Vermilion accent</h3><p>Eight directly labeled synthetic series. Categorical slot four is vermilion.</p><a href="exports/series-vermilion.svg">View SVG</a></figcaption><img src="exports/series-vermilion.png" alt="Eight-series synthetic line chart using vermilion as the warm accent"></figure>
+        <figure><figcaption><h3>Crimson accent</h3><p>Identical data and layout; categorical slot four is crimson.</p><a href="exports/series-crimson.svg">View SVG</a></figcaption><img src="exports/series-crimson.png" alt="Eight-series synthetic line chart using crimson as the warm accent"></figure>
+        <figure><figcaption><h3>Sequential heatmap</h3><p>Every synthetic cell includes its value.</p><a href="exports/sequential-heatmap.svg">View SVG</a></figcaption><img src="exports/sequential-heatmap.png" alt="Synthetic sequential heatmap with numerical labels"></figure>
+      </div>
+    </section>
+    <section><h2>At 390-pixel phone width</h2><p>Representative full portrait chart displayed inside a phone-width frame. Use the full-size link for small labels.</p><div class="phone"><img src="exports/ranked-long.png" alt="The long-title chart reduced to a realistic phone viewing width"></div></section>
+    <section><h2>What remains open</h2><p>Choose between vermilion and crimson after reviewing real subject matter. Dense categorical palettes still need direct labels, grouping or patterns. The Georgia title comparison is retained only as an archive; Work Sans is the sole approved family.</p><p class="small">See <a href="../README.md">study notes</a> for font source and license, Windows use, SVG portability, contrast, and palette limitations.</p></section>
+  </main>
+</div><script>
+  const M={protan:[[.152286,1.052583,-.204868],[.114503,.786281,.099216],[-.003882,-.048116,1.051998]],deutan:[[.367322,.860646,-.227968],[.280085,.672501,.047413],[-.01182,.04294,.968881]],tritan:[[1.255528,-.076749,-.178779],[-.078411,.930809,.147602],[.004733,.691367,.3039]]};
+  const rgb=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)/255),lin=x=>x<=.04045?x/12.92:((x+.055)/1.055)**2.4,gam=x=>x<=.0031308?12.92*x:1.055*x**(1/2.4)-.055;
+  const hx=a=>'#'+a.map(v=>Math.round(Math.max(0,Math.min(1,v))*255).toString(16).padStart(2,'0')).join('').toUpperCase();
+  const simulate=(hex,mode)=>{if(mode==='normal')return hex;const c=rgb(hex).map(lin);if(mode==='gray'){const y=c[0]*.2126+c[1]*.7152+c[2]*.0722;return hx([y,y,y].map(gam))}return hx(M[mode].map(row=>gam(Math.max(0,Math.min(1,row.reduce((sum,k,i)=>sum+k*c[i],0))))))};
+  const lab=h=>{const [r,g,b]=rgb(h).map(lin),l=Math.cbrt(.4122214708*r+.5363325363*g+.0514459929*b),m=Math.cbrt(.2119034982*r+.6806995451*g+.1073969566*b),s=Math.cbrt(.0883024619*r+.2817188376*g+.6299787005*b);return [.2104542553*l+.793617785*m-.0040720468*s,1.9779984951*l-2.428592205*m+.4505937099*s,.0259040371*l+.7827717662*m-.808675766*s]};
+  const closest=colors=>{let best=[Infinity,0,0];for(let i=0;i<colors.length;i++)for(let j=i+1;j<colors.length;j++){const a=lab(colors[i]),b=lab(colors[j]),d=Math.hypot(...a.map((v,k)=>v-b[k]))*100;if(d<best[0])best=[d,i+1,j+1]}return best};
+  fetch('../palette.json').then(r=>r.json()).then(p=>{
+    const host=document.getElementById('palette-sets');
+    const draw=()=>{host.replaceChildren();const mode=document.getElementById('vision').value;
+    for(const [name,accent] of Object.entries(p.warmAccentCandidates)){
+      const section=document.createElement('section'); const title=document.createElement('h3');title.textContent=`${name[0].toUpperCase()+name.slice(1)} · ${accent}`;section.append(title);
+      for(const [count,extension] of [[8,[]],[12,p.categoricalExtension12],[16,[...p.categoricalExtension12,...p.categoricalExtension16]]]){
+        const colors=[...p.categoricalBase];colors[3]=accent;colors.push(...extension);
+        const display=colors.map(hex=>simulate(hex,mode)),[distance,a,b]=closest(display);
+        const label=document.createElement('p');label.textContent=`${count} categories · nearest simulated pair ${String(a).padStart(2,'0')}/${String(b).padStart(2,'0')} · Oklab distance ${distance.toFixed(1)}`;label.className='small';section.append(label);
+        const grid=document.createElement('div');grid.className='swatches';colors.forEach((hex,i)=>{const box=document.createElement('div');box.className='swatch';const chip=document.createElement('i');chip.style.background=display[i];const text=document.createElement('span');text.textContent=`${String(i+1).padStart(2,'0')} · ${hex}`;box.append(chip,text);grid.append(box)});section.append(grid)
+      }host.append(section)
+    }};document.getElementById('vision').addEventListener('change',draw);draw();
+  }).catch(()=>{document.getElementById('palette-sets').textContent='Palette could not load. Serve this directory with the preview command in the study notes.'})
+</script></body></html>

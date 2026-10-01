@@ -5,9 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
   <title>The Data Decoded · reference-led brand study</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <script src="exploration.js" defer></script>
 </head>
@@ -16,8 +13,8 @@
     <header class="masthead">
       <p class="eyebrow">Local study / 01 October 2026 / proposal only</p>
       <h1>The Data Decoded<span>— a closer look at its pterosaur.</span></h1>
-      <p class="lede">A reference-led symbol, two type choices, and a chart color system tested with the same synthetic data. This page is separate from the published website and existing chart exports.</p>
-      <nav aria-label="Sections"><a href="#symbol">Symbol</a><a href="#identity">Identity</a><a href="#palettes">Data color</a><a href="#charts">Chart tests</a><a href="#findings">Findings</a></nav>
+      <p class="lede">Earlier reference and palette trials remain here for comparison. <strong>Work Sans and #2455FF are confirmed.</strong> The current direct R chart-frame and warm-accent study is <a href="r-prototypes/">here</a>. None of this enters the published website.</p>
+      <nav aria-label="Sections"><a href="r-prototypes/">Current R study</a><a href="#symbol">Symbol</a><a href="#identity">Earlier type study</a><a href="#palettes">Earlier palette</a><a href="#charts">Earlier chart tests</a><a href="typography/">Georgia archive</a></nav>
     </header>
 
     <main>
@@ -33,7 +30,7 @@
       </section>
 
       <section id="identity" class="section">
-        <div class="section-head"><div><p class="eyebrow">02 / Identity application</p><h2>Type and color, held constant.</h2></div><p>Both font trials use the same wording, size, weight, and layout. Markos Tsinganis appears only as a secondary website credit, never in the chart footer or avatar.</p></div>
+        <div class="section-head"><div><p class="eyebrow">02 / Archived identity application</p><h2>Earlier type and color trial.</h2></div><p>Work Sans is now the sole approved family and #2455FF is confirmed blue. The earlier alternatives below remain as an archive. Markos Tsinganis appears only as a secondary website credit, never in the chart footer or avatar.</p></div>
         <div id="font-tests" class="font-grid"></div>
         <div id="identity-colors" class="identity-grid"></div>
       </section>
@@ -48,7 +45,7 @@
 
       <section id="charts" class="section">
         <div class="section-head"><div><p class="eyebrow">04 / Synthetic application tests</p><h2>Same data, different color conditions.</h2></div><p>All values below are invented for this visual test. Select a color proposal and a simulated viewing condition. The data, layout, annotations, and chart footer stay identical.</p></div>
-        <div class="controls tile"><label>Identity color <select id="theme-select"><option value="original">Reference blue · #0062DF</option><option value="electric">Alternative blue · #2455FF</option><option value="raspberry">Raspberry · #E63B7A</option></select></label><label>Viewing condition <select id="vision-select"><option value="normal">Standard display</option><option value="protan">Protanopia simulation</option><option value="deutan">Deuteranopia simulation</option><option value="tritan">Tritanopia simulation</option><option value="gray">Grayscale simulation</option></select></label><p>Simulation is an approximation, not a substitute for testing with people.</p></div>
+        <div class="controls tile"><label>Earlier identity color trial <select id="theme-select"><option value="original">Reference sampled blue · #0062DF</option><option value="electric" selected>Confirmed blue · #2455FF</option><option value="raspberry">Earlier raspberry trial · #E63B7A</option></select></label><label>Viewing condition <select id="vision-select"><option value="normal">Standard display</option><option value="protan">Protanopia simulation</option><option value="deutan">Deuteranopia simulation</option><option value="tritan">Tritanopia simulation</option><option value="gray">Grayscale simulation</option></select></label><p>Simulation is an approximation, not a substitute for testing with people.</p></div>
         <div class="chart-grid"><article class="chart-card portrait"><h3>Highlighted ranking</h3><p>Six synthetic values; one focus bar. Portrait size tests the publication signature.</p><div id="ranked-chart"></div></article><article class="chart-card portrait"><h3>Eight-series trend</h3><p>Direct end labels and dash patterns help distinguish close colors.</p><div id="line-chart"></div></article><article class="chart-card"><h3>12 and 16 categories</h3><p>Stress test: numeric keys accompany every colored item.</p><div id="category-chart"></div></article><article class="chart-card"><h3>Stacked composition</h3><p>Eight synthetic components over four periods, with labels beside the stack.</p><div id="stacked-chart"></div></article><article class="chart-card"><h3>Sequential heatmap</h3><p>Ordered 0–100 values. Each cell carries its number.</p><div id="heatmap-chart"></div></article><article class="chart-card"><h3>Diverging schematic map</h3><p>Invented regions and deviations; not real geography. Signed values label each region.</p><div id="map-chart"></div></article></div>
       </section>
 
