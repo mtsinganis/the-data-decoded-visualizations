@@ -42,8 +42,15 @@ medium <- "TDD Work Sans Medium"
 # The small chart signature uses the lightly simplified mark. It is rasterized
 # inside the R devices; all plotted geometry and text remain SVG vectors.
 logo_source <- paste(readLines(file.path(study, "pterosaur-simplified.svg"), warn = FALSE), collapse = "\n")
+viewbox <- regmatches(logo_source, regexec('viewBox="[0-9.]+ [0-9.]+ ([0-9.]+) ([0-9.]+)"', logo_source))[[1]]
+if (length(viewbox) != 3) stop("Could not read simplified logo viewBox")
+logo_ratio <- as.numeric(viewbox[[2]]) / as.numeric(viewbox[[3]])
+logo_width <- grid::unit(0.60, "in")
+logo_height <- grid::unit(0.60 / logo_ratio, "in")
 logo_source <- gsub("#0062DF", blue, logo_source, fixed = TRUE)
-logo_png <- rsvg::rsvg_png(charToRaw(logo_source), width = 180, height = 133)
+raster_width <- 366L
+logo_png <- rsvg::rsvg_png(charToRaw(logo_source), width = raster_width,
+  height = as.integer(round(raster_width / logo_ratio)))
 logo_raster <- png::readPNG(logo_png, native = TRUE)
 
 base_plot <- function() {
@@ -69,8 +76,9 @@ regions <- data.frame(
 )
 ranked <- ggplot2::ggplot(regions, ggplot2::aes(x = change, y = region)) +
   ggplot2::geom_col(ggplot2::aes(fill = focus), width = 0.56, show.legend = FALSE) +
-  ggplot2::geom_text(ggplot2::aes(label = change), hjust = -0.35, family = medium, size = 5.4) +
-  ggplot2::scale_fill_manual(values = c("TRUE" = blue, "FALSE" = pal$context[[3]])) +
+  ggplot2::geom_text(ggplot2::aes(label = change), hjust = -0.35, family = medium,
+    colour = ink, size = 5.4) +
+  ggplot2::scale_fill_manual(values = c("TRUE" = blue, "FALSE" = pal$context[[2]])) +
   ggplot2::scale_x_continuous(limits = c(0, 33), breaks = c(0, 10, 20, 30), expand = c(0, 0)) +
   ggplot2::labs(x = "Index-point change", y = NULL) + base_plot()
 
@@ -104,28 +112,33 @@ heatmap_plot <- ggplot2::ggplot(heat, ggplot2::aes(x = column, y = row, fill = v
   ggplot2::coord_equal() + base_plot() +
   ggplot2::theme(panel.grid = ggplot2::element_blank())
 
-draw_frame <- function(plot, title_lines, subtitle = NULL, source, note) {
+draw_frame <- function(plot, title_lines, subtitle = NULL, source, note, landscape = FALSE) {
   grid::grid.newpage()
   grid::grid.rect(gp = grid::gpar(fill = paper, col = NA))
-  grid::grid.text(paste(title_lines, collapse = "\n"), x = 0.065, y = 0.955,
-    just = c("left", "top"), gp = grid::gpar(fontfamily = regular, fontface = "bold", fontsize = 36,
+  grid::grid.text(paste(title_lines, collapse = "\n"), x = 0.065, y = if (landscape) 0.945 else 0.955,
+    just = c("left", "top"), gp = grid::gpar(fontfamily = regular, fontface = "bold", fontsize = if (landscape) 30 else 36,
       col = ink, lineheight = 1.06))
-  if (!is.null(subtitle)) grid::grid.text(subtitle, x = 0.065, y = 0.815,
+  if (!is.null(subtitle)) grid::grid.text(subtitle, x = 0.065, y = if (landscape) 0.835 else 0.815,
     just = c("left", "center"), gp = grid::gpar(fontfamily = regular, fontsize = 18, col = ink))
-  divider_y <- if (is.null(subtitle)) 0.865 else 0.777
+  divider_y <- if (landscape) 0.79 else if (is.null(subtitle)) 0.865 else 0.777
   grid::grid.lines(x = c(0.065, 0.935), y = c(divider_y, divider_y), gp = grid::gpar(col = "#D7D9D7", lwd = 0.8))
-  print(plot, vp = grid::viewport(x = 0.50, y = if (is.null(subtitle)) 0.535 else 0.49,
-    width = 0.89, height = if (is.null(subtitle)) 0.60 else 0.53))
-  grid::grid.text(source, x = 0.065, y = 0.184, just = "left",
+  print(plot, vp = grid::viewport(x = 0.50, y = if (landscape) 0.53 else if (is.null(subtitle)) 0.535 else 0.49,
+    width = 0.89, height = if (landscape) 0.46 else if (is.null(subtitle)) 0.60 else 0.53))
+  grid::grid.text(source, x = 0.065, y = if (landscape) 0.265 else 0.184, just = "left",
     gp = grid::gpar(fontfamily = regular, fontsize = 16, col = ink))
-  grid::grid.text(note, x = 0.065, y = 0.155, just = "left",
+  grid::grid.text(note, x = 0.065, y = if (landscape) 0.225 else 0.155, just = "left",
     gp = grid::gpar(fontfamily = regular, fontsize = 16, col = ink))
-  grid::grid.lines(x = c(0.065, 0.935), y = c(0.103, 0.103), gp = grid::gpar(col = "#D7D9D7", lwd = 0.8))
-  grid::grid.text("SYNTHETIC DATA", x = 0.065, y = 0.069, just = "left",
+  footer_y <- if (landscape) grid::unit(0.75, "in") else grid::unit(0.90, "in")
+  rule_y <- if (landscape) grid::unit(1.25, "in") else grid::unit(1.37, "in")
+  grid::grid.lines(x = c(0.065, 0.935), y = rule_y, gp = grid::gpar(col = "#D7D9D7", lwd = 0.8))
+  grid::grid.text("SYNTHETIC DATA", x = 0.065, y = footer_y, just = "left",
     gp = grid::gpar(fontfamily = medium, fontsize = 13, col = ink))
-  grid::grid.raster(logo_raster, x = 0.565, y = 0.069, width = 0.080, height = 0.056)
-  grid::grid.text("THE DATA DECODED", x = 0.628, y = 0.069, just = "left",
+  logo_x <- grid::unit(1, "npc") - grid::unit(3.17, "in")
+  grid::grid.raster(logo_raster, x = logo_x, y = footer_y, width = logo_width, height = logo_height)
+  grid::grid.text("THE DATA DECODED", x = logo_x + grid::unit(0.42, "in"), y = footer_y, just = "left",
     gp = grid::gpar(fontfamily = medium, fontsize = 13, col = ink))
+  placed_ratio <- grid::convertWidth(logo_width, "in", valueOnly = TRUE) / grid::convertHeight(logo_height, "in", valueOnly = TRUE)
+  if (abs(placed_ratio - logo_ratio) > 0.001) stop("Footer logo placement changed intrinsic ratio")
 }
 
 out <- file.path(here, "exports")
@@ -137,6 +150,9 @@ cases <- list(
   list(key = "ranked-long", plot = ranked, title = c("Where did the index rise", "most across six sample", "years?"),
     subtitle = "Five invented regions, ranked by change", source = "Source: synthetic demonstration data",
     note = "Note: values are illustrative, not observed."),
+  list(key = "ranked-landscape", plot = ranked, title = "Where did it rise most?",
+    subtitle = "Five invented regions, ranked by change", source = "Source: synthetic demonstration data",
+    note = "Note: values are illustrative, not observed.", landscape = TRUE),
   list(key = "series-vermilion", plot = make_series("vermilion"), title = "Eight synthetic trajectories",
     subtitle = NULL, source = "Source: synthetic demonstration data",
     note = "Note: direct labels and line patterns carry identity."),
@@ -160,14 +176,18 @@ font_css <- paste0(
 for (item in cases) {
   png_file <- file.path(out, paste0(item$key, ".png"))
   svg_file <- file.path(out, paste0(item$key, ".svg"))
-  ragg::agg_png(png_file, width = 1080, height = 1920, units = "px", res = 144, background = paper)
-  draw_frame(item$plot, item$title, item$subtitle, item$source, item$note)
+  landscape <- isTRUE(item$landscape)
+  ragg::agg_png(png_file, width = if (landscape) 1920 else 1080,
+    height = if (landscape) 1080 else 1920, units = "px", res = 144, background = paper)
+  draw_frame(item$plot, item$title, item$subtitle, item$source, item$note, landscape)
   grDevices::dev.off()
-  svglite::svglite(svg_file, width = 7.5, height = 13.333333, bg = paper)
-  draw_frame(item$plot, item$title, item$subtitle, item$source, item$note)
+  svglite::svglite(svg_file, width = if (landscape) 13.333333 else 7.5,
+    height = if (landscape) 7.5 else 13.333333, bg = paper)
+  draw_frame(item$plot, item$title, item$subtitle, item$source, item$note, landscape)
   grDevices::dev.off()
   svg <- paste(readLines(svg_file, warn = FALSE, encoding = "UTF-8"), collapse = "\n")
   if (!grepl('font-family: "Work Sans"', svg, fixed = TRUE)) stop("SVG missing Work Sans family: ", item$key)
+  svg <- sub("preserveAspectRatio='none'", "preserveAspectRatio='xMidYMid meet'", svg, fixed = TRUE)
   svg <- sub("(<svg[^>]*>)", paste0("\\1\n<title>", paste(item$title, collapse = " "), "</title>", font_css), svg, perl = TRUE)
   writeLines(svg, svg_file, useBytes = TRUE)
   cat("Exported ", item$key, ": PNG + self-contained SVG\n", sep = "")

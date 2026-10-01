@@ -23,6 +23,7 @@
     .swatch{background:#fff;border:1px solid #d9dee3;padding:7px;font-size:.8rem}
     .swatch i{display:block;height:44px;margin-bottom:7px}.swatch span{display:block;overflow-wrap:anywhere}
     .cases{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;align-items:start}
+    .cases figure.wide{grid-column:1/-1}.cases figure.wide img{max-width:100%}
     figure{margin:0;background:#fff;border:1px solid #d9dee3;padding:12px}
     figcaption{padding:3px 4px 11px}figcaption p{font-size:.9rem;margin:0 0 8px}
     figure img{display:block;width:100%;height:auto;max-width:540px;margin:auto}
@@ -42,10 +43,11 @@
   </header>
   <main>
     <section><h2>Warm accent and categorical tests</h2><p>Each eight-color proposal replaces only the fourth categorical hue. The same synthetic line chart below compares vermilion <strong>#D94A38</strong> with crimson <strong>#C83242</strong>. Twelve and sixteen categories are stress tests, with numeric keys so color is never the only identifier.</p><label for="vision">Approximate viewing condition: </label><select id="vision"><option value="normal">Standard</option><option value="protan">Protanopia</option><option value="deutan">Deuteranopia</option><option value="tritan">Tritanopia</option><option value="gray">Grayscale</option></select><div id="palette-sets"></div><p class="small">Colors are frozen in <a href="../palette.json">palette.json</a>. Simulated colors and Oklab nearest-pair distances are diagnostic, not pass/fail accessibility scores. Neither variant is approved as a production palette.</p></section>
-    <section><h2>Direct R exports</h2><p>The frame reserves positions for a title, optional subtitle, sources and notes, and a modest logo/channel footer. The plot itself can change shape and method. Open the SVG to inspect editable vector chart geometry and embedded Work Sans fonts.</p>
+    <section><h2>Direct R exports</h2><p>The frame reserves positions for a title, optional subtitle, sources and notes, and a modest logo/channel footer. The plot itself can change shape and method. Non-highlighted filled bars now use provisional light context <strong>#A6B0BD</strong>; the highlighted bar stays <strong>#2455FF</strong> and labels stay dark ink. Open the SVG to inspect editable vector chart geometry and embedded Work Sans fonts.</p>
       <div class="cases">
         <figure><figcaption><h3>Short title</h3><p>Work Sans Bold in a compact title area.</p><a href="exports/ranked-short.svg">View SVG</a></figcaption><img src="exports/ranked-short.png" alt="Synthetic ranked bar chart with a short Work Sans title"></figure>
         <figure><figcaption><h3>Wrapped title</h3><p>Same data, with a long three-line title and reserved subtitle.</p><a href="exports/ranked-long.svg">View SVG</a></figcaption><img src="exports/ranked-long.png" alt="Synthetic ranked bar chart with a long wrapped Work Sans title"></figure>
+        <figure class="wide"><figcaption><h3>Landscape frame</h3><p>The same ranked data and proportional pterosaur footer on a 1920 × 1080 canvas.</p><a href="exports/ranked-landscape.svg">View SVG</a></figcaption><img src="exports/ranked-landscape.png" alt="Landscape synthetic ranked bar chart with a proportionally placed pterosaur footer"></figure>
         <figure><figcaption><h3>Vermilion accent</h3><p>Eight directly labeled synthetic series. Categorical slot four is vermilion.</p><a href="exports/series-vermilion.svg">View SVG</a></figcaption><img src="exports/series-vermilion.png" alt="Eight-series synthetic line chart using vermilion as the warm accent"></figure>
         <figure><figcaption><h3>Crimson accent</h3><p>Identical data and layout; categorical slot four is crimson.</p><a href="exports/series-crimson.svg">View SVG</a></figcaption><img src="exports/series-crimson.png" alt="Eight-series synthetic line chart using crimson as the warm accent"></figure>
         <figure><figcaption><h3>Sequential heatmap</h3><p>Every synthetic cell includes its value.</p><a href="exports/sequential-heatmap.svg">View SVG</a></figcaption><img src="exports/sequential-heatmap.png" alt="Synthetic sequential heatmap with numerical labels"></figure>

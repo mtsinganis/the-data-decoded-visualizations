@@ -4,20 +4,34 @@ import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
 
 const here = dirname(fileURLToPath(import.meta.url));
-const names = ['ranked-short', 'ranked-long', 'series-vermilion', 'series-crimson', 'sequential-heatmap'];
+const names = ['ranked-short', 'ranked-long', 'ranked-landscape', 'series-vermilion', 'series-crimson', 'sequential-heatmap'];
+const logo = readFileSync(join(here, '..', 'pterosaur-simplified.svg'), 'utf8');
+const [, intrinsicWidth, intrinsicHeight] = logo.match(/viewBox="[\d.]+ [\d.]+ ([\d.]+) ([\d.]+)"/) || [];
+assert.ok(intrinsicWidth && intrinsicHeight, 'simplified mark has an intrinsic viewBox');
+const intrinsicRatio = Number(intrinsicWidth) / Number(intrinsicHeight);
 for (const name of names) {
+  const landscape = name === 'ranked-landscape';
   const png = readFileSync(join(here, 'exports', `${name}.png`));
   assert.equal(png.subarray(0, 8).toString('hex'), '89504e470d0a1a0a');
-  assert.equal(png.readUInt32BE(16), 1080);
-  assert.equal(png.readUInt32BE(20), 1920);
+  assert.equal(png.readUInt32BE(16), landscape ? 1920 : 1080);
+  assert.equal(png.readUInt32BE(20), landscape ? 1080 : 1920);
   const svg = readFileSync(join(here, 'exports', `${name}.svg`), 'utf8');
-  assert.match(svg, /viewBox='0 0 540\.00 960\.00'/);
+  assert.match(svg, landscape ? /viewBox='0 0 960\.00 540\.00'/ : /viewBox='0 0 540\.00 960\.00'/);
   assert.match(svg, /font-family: "Work Sans"/);
   assert.equal((svg.match(/data:font\/ttf;base64,/g) || []).length, 3);
   assert.match(svg, /THE DATA DECODED/);
   assert.match(svg, /synthetic demonstration data/);
   assert.doesNotMatch(svg, /@import|https?:\/\/fonts\./i);
-  console.log(`${name}: 1080×1920 PNG, self-contained SVG with three Work Sans weights`);
+  const [, width, height] = svg.match(/<image width='([\d.]+)' height='([\d.]+)'[^>]+preserveAspectRatio='xMidYMid meet'/) || [];
+  assert.ok(width && height, `${name}: logo image has physical width, height, and meet rule`);
+  const placedRatio = Number(width) / Number(height);
+  assert.ok(Math.abs(placedRatio - intrinsicRatio) < 0.005,
+    `${name}: placed logo ratio ${placedRatio} differs from intrinsic ${intrinsicRatio}`);
+  if (name.startsWith('ranked-')) {
+    assert.match(svg, /#A6B0BD/i, `${name}: provisional light context fill`);
+    assert.match(svg, /#2455FF/i, `${name}: blue highlight`);
+  }
+  console.log(`${name}: ${landscape ? '1920×1080' : '1080×1920'} PNG, self-contained SVG, logo ${placedRatio.toFixed(3)} vs ${intrinsicRatio.toFixed(3)}`);
 }
 
 const palette = JSON.parse(readFileSync(join(here, '..', 'palette.json'), 'utf8'));
