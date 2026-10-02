@@ -108,7 +108,7 @@ axis_months <- scale_x_continuous(breaks=1:12,labels=month.abb,limits=c(.8,15.3)
 month_ends <- months %>% filter((year %in% c(2020,2021,2025) & month==12) | (year==2026 & month==6)) %>%
   mutate(label=if_else(year==2026,"2026\nthrough Jun 30",as.character(year)),
     lx=if_else(year==2026,6.4,12.3),
-    ly=case_when(year==2020 ~ 140,year==2021 ~ 105,year==2025 ~ 36,TRUE ~ 34))
+    ly=case_when(year==2020 ~ 140,year==2021 ~ 105,year==2025 ~ 36,TRUE ~ 61))
 p_month <- ggplot() +
   annotate("segment",x=.8,xend=12,y=seq(50,250,50),yend=seq(50,250,50),colour="#E6E8EB",linewidth=.35) +
   annotate("segment",x=.8,xend=12,y=0,yend=0,colour="#939BA5",linewidth=.5) +

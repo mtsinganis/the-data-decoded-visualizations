@@ -39,3 +39,4 @@ pnpm build and pnpm verify passed, including draft exclusion and output allowlis
 ### Monthly title and 2026 annotation follow-up
 
 Monthly title now reads: "The summer 2020 spike stands out against 2025’s lower monthly counts". The 2026 annotation moves below the observed line to x=6.4, y=34, with Lato Regular 400 at the same 4.6 mm size as the July annotation, no white text background, and its solid teal connector retained. Full-size regenerated PNG reviewed: the text is clear of historical lines and the December annotation. Cumulative exports and verified calculations are unchanged. PNG/SVG regenerated directly from R; no build or test rerun for this presentation-only follow-up.
+Monthly 2026 annotation position refined to x=6.4, y=61: both lines now sit below the blue series and above the 50-incident gridline. Regenerated PNG/SVG and visually reviewed; Regular weight and transparent background retained.
