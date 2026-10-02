@@ -108,7 +108,7 @@ axis_months <- scale_x_continuous(breaks=1:12,labels=month.abb,limits=c(.8,15.3)
 month_ends <- months %>% filter((year %in% c(2020,2021,2025) & month==12) | (year==2026 & month==6)) %>%
   mutate(label=if_else(year==2026,"2026\nthrough Jun 30",as.character(year)),
     lx=if_else(year==2026,6.4,12.3),
-    ly=case_when(year==2020 ~ 140,year==2021 ~ 105,year==2025 ~ 36,TRUE ~ 61))
+    ly=case_when(year==2020 ~ 105,year==2021 ~ 140,year==2025 ~ 36,TRUE ~ 61))
 p_month <- ggplot() +
   annotate("segment",x=.8,xend=12,y=seq(50,250,50),yend=seq(50,250,50),colour="#E6E8EB",linewidth=.35) +
   annotate("segment",x=.8,xend=12,y=0,yend=0,colour="#939BA5",linewidth=.5) +
@@ -119,13 +119,13 @@ p_month <- ggplot() +
   geom_point(data=month_ends,aes(x=month,y=incidents,colour=factor(year)),size=2.5) +
   geom_segment(data=month_ends,aes(x=month,y=incidents,xend=lx,yend=ly,colour=factor(year)),linewidth=.4) +
   geom_label(data=month_ends %>% filter(year!=2026),aes(x=lx,y=ly,label=label,colour=factor(year)),hjust=0,
-    fill=paper,linewidth=0,label.padding=unit(.08,"lines"),family=bold_alias,size=4.6,lineheight=1.05) +
+    fill=paper,linewidth=0,label.padding=unit(.08,"lines"),family=bold_alias,size=4.6,lineheight=.95) +
   geom_text(data=month_ends %>% filter(year==2026),aes(x=lx,y=ly,label=label,colour=factor(year)),hjust=0,
-    family=regular_alias,size=4.6,lineheight=1.05) +
+    family=regular_alias,size=4.6,lineheight=.95) +
   annotate("text",x=7.25,y=275,label="Jul 2020: 243",hjust=0,family=regular_alias,size=4.6,colour=crimson) +
   annotate("segment",x=7.2,y=264,xend=7,yend=243,colour=crimson,linewidth=.5) +
   annotate("text",x=10.7,y=14,label="Dec 2025: 35\nlowest month since 2006",hjust=1,
-    family=regular_alias,size=4.35,colour=blue,lineheight=1.05) +
+    family=regular_alias,size=4.35,colour=blue,lineheight=.95) +
   annotate("segment",x=10.9,y=20,xend=12,yend=35,colour=blue,linewidth=.5) +
   scale_colour_manual(values=styles) + axis_months +
   scale_y_continuous(breaks=seq(0,250,50),limits=c(0,287),expand=c(0,0)) + base_theme
@@ -145,9 +145,9 @@ p_cum <- ggplot() +
   geom_point(data=cum_ends,aes(x=month,y=cumulative,colour=factor(year)),size=2.5) +
   geom_segment(data=cum_ends,aes(x=month,y=cumulative,xend=lx,yend=ly,colour=factor(year)),linewidth=.4) +
   geom_label(data=cum_ends,aes(x=lx,y=ly,label=label,colour=factor(year)),hjust=0,
-    fill=paper,linewidth=0,label.padding=unit(.08,"lines"),family=bold_alias,size=4.6,lineheight=1.05) +
+    fill=paper,linewidth=0,label.padding=unit(.08,"lines"),family=bold_alias,size=4.6,lineheight=.95) +
   annotate("text",x=2,y=1250,label="2025 had less than half\nthe shootings of 2021",
-    hjust=0,family=regular_alias,size=4.6,colour=support,lineheight=1.15) +
+    hjust=0,family=regular_alias,size=4.6,colour=support,lineheight=.95) +
   scale_colour_manual(values=styles) + axis_months +
   scale_y_continuous(breaks=seq(0,1500,500),limits=c(0,1780),expand=c(0,0)) + base_theme
 
