@@ -2,6 +2,14 @@
 
 This development-only comparison is outside Astro and its production artifact. It changes no live page, historical chart, or production R template. All chart values and map regions are **synthetic demonstration data**. Markos Tsinganis appears only in website examples, never on a chart or X application.
 
+## Current defaults after the NYC trial revision
+
+White `#FFFFFF` is the default for future chart canvases, panels, legends, and label backgrounds. Earlier paper-background synthetic exports remain archived exploration; this revision does not regenerate them. Keep dimensions flexible: the NYC monthly and cumulative masters are each 8.8 × 8.8 inches (2112 × 2112 PNG pixels).
+
+**Source:** is mandatory. **Notes:** is optional; omit empty notes. Use bold field labels with regular Work Sans content, align fields with the main content's left margin, and hang continuation lines beneath the content after the label. Keep metadata smaller than chart labels but readable at the intended size. Include actual snapshot/access dates, and leave detailed definitions and methodology on the project page. Retain the faint divider, then the left-aligned simplified pterosaur and THE DATA DECODED, preserving intrinsic logo proportions and comfortable spacing.
+
+The NYC presentation trial uses solid series, faint solid gridlines, solid annotation leaders, direct endpoint labels, and one PNG/SVG master per chart. Year colors are blue `#2455FF` (2025), crimson `#C83242` (2020), palette B amber `#D49A44` (2021), and palette B teal `#087F79` (2026). The subdued context lines use `#A6B0BD` at 65% opacity and thin strokes; this is a chart-specific choice. The SVG exporter inserts metadata and embedded licensed fonts inside the single SVG root, after its opening tag. No shared production R functions or chart templates are approved or extracted. Visual approval remains pending.
+
 ## Preview and exports
 
 From the repository root in PowerShell:

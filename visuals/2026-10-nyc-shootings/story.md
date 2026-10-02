@@ -10,9 +10,9 @@ description: "Two views of reported NYC shooting incidents: monthly counts and w
 status: draft
 featured: false
 charts:
-  - file: plots/cumulative_web.png
+  - file: plots/cumulative.png
     alt: "Cumulative reported shooting incidents by month for each year from 2006 through 2025, with 2026 ending at June 30. Annual lines restart in January. 2020 and 2021 have the highest endpoints; 2025 is the lowest complete-year endpoint. 2025 totals 688 incidents, 56 percent below 2021's 1,562."
-  - file: plots/monthly_web.png
+  - file: plots/monthly.png
     alt: "Monthly reported shooting incidents in New York City, 2006 through 2025, with 2026 through June 30. Thin gray lines show other years; 2020, 2021, 2025, and 2026 are highlighted. July 2020 peaks at 243 incidents; December 2025 has 35, the lowest month in this dataset."
 ---
 
