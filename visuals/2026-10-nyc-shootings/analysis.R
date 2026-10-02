@@ -58,18 +58,19 @@ write_csv(coverage, file.path(project, "data/monthly_coverage.csv"))
 # Use confirmed palette roles from the brand study. 2021 amber (#D49A44) is palette B.
 paper <- "#FFFFFF"; ink <- "#172033"; blue <- "#2455FF"
 crimson <- "#C83242"; amber <- "#D49A44"; teal <- "#087F79"; context <- "#A6B0BD"
-font_dir <- "brand-exploration/fonts"
-font_files <- file.path(font_dir, paste0("WorkSans-", c("Regular", "Medium", "Bold"), ".ttf"))
-if (any(!file.exists(font_files))) stop("Bundled Work Sans font files missing")
-font_info <- lapply(font_files, function(path) systemfonts::font_info(path = path))
-if (!all(vapply(font_info, function(x) identical(x$family[[1]], "Work Sans"), logical(1)))) stop("A bundled font is not Work Sans")
-regular_alias <- "TDD Work Sans"; medium_alias <- "TDD Work Sans Medium"
-systemfonts::register_font(regular_alias, plain = font_files[1], bold = font_files[3])
-systemfonts::register_font(medium_alias, plain = font_files[2])
-resolved <- c(systemfonts::match_fonts(regular_alias)$path[1],
-              systemfonts::match_fonts(medium_alias)$path[1],
-              systemfonts::match_fonts(regular_alias, weight = "bold")$path[1])
-if (!identical(normalizePath(resolved), normalizePath(font_files))) stop("Work Sans resolved to a substitute font")
+# Default for new charts: exact licensed Lato Regular 400 / Bold 700 / Black 900.
+font_dir <- Sys.getenv("TDD_LATO_FONT_DIR","brand-exploration/fonts/lato")
+font_files <- file.path(font_dir,paste0("Lato-",c("Regular","Bold","Black"),".ttf"))
+if(any(!file.exists(font_files))) stop("Required bundled Lato font missing: Regular, Bold and Black must exist in ",font_dir)
+infos <- lapply(font_files,function(p) systemfonts::font_info(path=p))
+if(!all(vapply(infos,function(i) i$family[[1]]=="Lato",logical(1))) ||
+   !identical(vapply(infos,function(i) i$style[[1]],character(1)),c("Regular","Bold","Black"))) stop("Unexpected bundled Lato family or weight")
+regular_alias <- "TDD Lato"; bold_alias <- "TDD Lato Bold"; title_alias <- "TDD Lato Black"
+systemfonts::register_font(regular_alias,plain=font_files[1],bold=font_files[2])
+systemfonts::register_font(bold_alias,plain=font_files[2])
+systemfonts::register_font(title_alias,plain=font_files[3],bold=font_files[3])
+resolved <- c(systemfonts::match_fonts(regular_alias)$path[1],systemfonts::match_fonts(bold_alias)$path[1],systemfonts::match_fonts(title_alias,weight="bold")$path[1])
+if(!identical(normalizePath(resolved),normalizePath(font_files))) stop("Lato resolved to a substitute font")
 
 months <- month_grid %>% arrange(year, month) %>%
   mutate(x = month, year_group = factor(year),
@@ -106,20 +107,20 @@ axis_months <- scale_x_continuous(breaks=1:12,labels=month.abb,limits=c(.8,15.3)
 # Refine the monthly view first; endpoint labels have short solid leaders.
 month_ends <- months %>% filter((year %in% c(2020,2021,2025) & month==12) | (year==2026 & month==6)) %>%
   mutate(label=if_else(year==2026,"2026\nthrough Jun 30",as.character(year)),
-    lx=if_else(year==2026,6.3,12.3),
-    ly=case_when(year==2020 ~ 140,year==2021 ~ 105,year==2025 ~ 36,TRUE ~ 100))
+    lx=if_else(year==2026,6.4,12.3),
+    ly=case_when(year==2020 ~ 140,year==2021 ~ 105,year==2025 ~ 36,TRUE ~ 103))
 p_month <- ggplot() +
-  geom_line(data=context_years,aes(x=month,y=incidents,group=year),colour=context,alpha=.65,linewidth=.42) +
+  geom_line(data=context_years,aes(x=month,y=incidents,group=year),colour=context,alpha=.45,linewidth=.30) +
   geom_line(data=months %>% filter(highlight),aes(x=month,y=incidents,group=year,colour=factor(year)),linewidth=1.2) +
   geom_line(data=months %>% filter(year==2025),aes(x=month,y=incidents),colour=blue,linewidth=1.55) +
   geom_point(data=month_ends,aes(x=month,y=incidents,colour=factor(year)),size=2.5) +
   geom_segment(data=month_ends,aes(x=month,y=incidents,xend=lx,yend=ly,colour=factor(year)),linewidth=.4) +
   geom_label(data=month_ends,aes(x=lx,y=ly,label=label,colour=factor(year)),hjust=0,
-    fill=paper,linewidth=0,label.padding=unit(.08,"lines"),family=medium_alias,size=4.6,lineheight=1.05) +
-  annotate("text",x=7.25,y=275,label="Jul 2020: 243",hjust=0,family=medium_alias,size=4.6,colour=crimson) +
+    fill=paper,linewidth=0,label.padding=unit(.08,"lines"),family=bold_alias,size=4.6,lineheight=1.05) +
+  annotate("text",x=7.25,y=275,label="Jul 2020: 243",hjust=0,family=regular_alias,size=4.6,colour=crimson) +
   annotate("segment",x=7.2,y=264,xend=7,yend=243,colour=crimson,linewidth=.5) +
   annotate("text",x=10.7,y=14,label="Dec 2025: 35\nlowest month since 2006",hjust=1,
-    family=medium_alias,size=4.35,colour=blue,lineheight=1.05) +
+    family=regular_alias,size=4.35,colour=blue,lineheight=1.05) +
   annotate("segment",x=10.9,y=20,xend=12,yend=35,colour=blue,linewidth=.5) +
   scale_colour_manual(values=styles) + axis_months +
   scale_y_continuous(breaks=seq(0,250,50),limits=c(0,287),expand=c(0,0)) + base_theme
@@ -136,9 +137,9 @@ p_cum <- ggplot() +
   geom_point(data=cum_ends,aes(x=month,y=cumulative,colour=factor(year)),size=2.5) +
   geom_segment(data=cum_ends,aes(x=month,y=cumulative,xend=lx,yend=ly,colour=factor(year)),linewidth=.4) +
   geom_label(data=cum_ends,aes(x=lx,y=ly,label=label,colour=factor(year)),hjust=0,
-    fill=paper,linewidth=0,label.padding=unit(.08,"lines"),family=medium_alias,size=4.6,lineheight=1.05) +
+    fill=paper,linewidth=0,label.padding=unit(.08,"lines"),family=bold_alias,size=4.6,lineheight=1.05) +
   annotate("text",x=1.1,y=1410,label=sprintf("2025 was %.0f%% below 2021\n%s fewer incidents",abs(change_pct),comma(abs(change_n))),
-    hjust=0,family=medium_alias,size=4.6,colour=support,lineheight=1.15) +
+    hjust=0,family=regular_alias,size=4.6,colour=support,lineheight=1.15) +
   scale_colour_manual(values=styles) + axis_months +
   scale_y_continuous(breaks=seq(0,1500,500),limits=c(0,1780),expand=c(0,0)) + base_theme
 
@@ -148,8 +149,8 @@ logo_ratio <- as.numeric(viewbox[2])/as.numeric(viewbox[3])
 logo_raster <- png::readPNG(rsvg::rsvg_png(charToRaw(logo_source),width=488,height=round(488/logo_ratio)),native=TRUE)
 
 # Text measurements and compact paragraphs are local to this trial, not shared templates.
-wrap_lines <- function(text,width,fontsize,face="plain") {
-  pushViewport(viewport(gp=gpar(fontfamily=regular_alias,fontsize=fontsize,fontface=face)))
+wrap_lines <- function(text,width,fontsize,face="plain",family=regular_alias) {
+  pushViewport(viewport(gp=gpar(fontfamily=family,fontsize=fontsize,fontface=face)))
   on.exit(popViewport())
   lines <- character()
   for (paragraph in strsplit(text,"\n",fixed=TRUE)[[1]]) {
@@ -168,10 +169,10 @@ frame <- function(plot,title,subtitle,key,width=8.8,height=8.8,dpi=240) {
   draw <- function() {
     grid.newpage(); grid.rect(gp=gpar(fill=paper,col=NA))
     left <- .40; content <- width-.80; top <- height-.34
-    title_lines <- wrap_lines(title,content,22,"bold")
+    title_lines <- wrap_lines(title,content,22,"bold",family=title_alias)
     title_h <- length(title_lines)*22/72*1.08
     grid.text(paste(title_lines,collapse="\n"),x=unit(left,"in"),y=unit(top,"in"),just=c("left","top"),
-      gp=gpar(fontfamily=regular_alias,fontface="bold",fontsize=22,col=ink,lineheight=1.08))
+      gp=gpar(fontfamily=title_alias,fontface="bold",fontsize=22,col=ink,lineheight=1.08))
     sub_top <- top-title_h-.10
     sub_lines <- wrap_lines(subtitle,content,14.5)
     grid.text(paste(sub_lines,collapse="\n"),x=unit(left,"in"),y=unit(sub_top,"in"),just=c("left","top"),
@@ -208,18 +209,26 @@ frame <- function(plot,title,subtitle,key,width=8.8,height=8.8,dpi=240) {
     logo_w <- .60; logo_h <- logo_w/logo_ratio
     grid.raster(logo_raster,x=unit(left+logo_w/2,"in"),y=unit(.43,"in"),width=unit(logo_w,"in"),height=unit(logo_h,"in"))
     grid.text("THE DATA DECODED",x=unit(left+logo_w+.14,"in"),y=unit(.43,"in"),just="left",
-      gp=gpar(fontfamily=medium_alias,fontsize=14,col=ink))
+      gp=gpar(fontfamily=regular_alias,fontsize=14,col=ink))
   }
   png_path <- file.path(project,"plots",paste0(key,".png")); svg_path <- file.path(project,"plots",paste0(key,".svg"))
   png_render <- paste0(png_path,".render.png")
   ragg::agg_png(png_render,width=width,height=height,units="in",res=dpi,background=paper); draw(); dev.off()
   if(!file.exists(png_render) || file.size(png_render)<1000) stop("PNG render failed")
-  if(!file.copy(png_render,png_path,overwrite=TRUE)) stop("PNG replacement failed")
-  unlink(png_render)
+  backup <- paste0(png_path,".previous")
+  if(file.exists(backup)) stop("Previous PNG backup exists; review before replacing: ",backup)
+  if(file.exists(png_path) && !file.rename(png_path,backup)) stop("Cannot preserve previous PNG")
+  if(!file.rename(png_render,png_path)) {
+    if(file.exists(backup)) file.rename(backup,png_path)
+    stop("PNG replacement failed; previous export restored")
+  }
+  if(file.exists(backup)) unlink(backup)
   svglite::svglite(svg_path,width=width,height=height,bg=paper); draw(); dev.off()
   # Insert after the complete SVG opening tag, leaving the XML declaration intact.
-  css <- paste0('<metadata>Work Sans copyright 2019 The Work Sans Project Authors; SIL Open Font License 1.1. See brand-exploration/fonts/OFL.txt.</metadata><style type="text/css"><![CDATA[',
-    paste(vapply(seq_along(font_files),function(i) paste0('@font-face{font-family:"Work Sans";font-weight:',c(400,500,700)[i],';src:url(data:font/ttf;base64,',base64enc::base64encode(font_files[i],linewidth=0),') format("truetype");}'),character(1)),collapse=""),']]></style>')
+  notices <- paste(readLines(file.path(font_dir,"Lato-OFL.txt"),warn=FALSE),collapse="\n")
+  notices <- gsub("&","&amp;",notices,fixed=TRUE); notices <- gsub("<","&lt;",notices,fixed=TRUE)
+  css <- paste0('<metadata>',notices,'</metadata><style type="text/css"><![CDATA[',
+    paste(vapply(seq_along(font_files),function(i) paste0('@font-face{font-family:"Lato";font-weight:',c(400,700,900)[i],';src:url(data:font/ttf;base64,',base64enc::base64encode(font_files[i],linewidth=0),') format("truetype");}'),character(1)),collapse=""),']]></style>')
   svg <- paste(readLines(svg_path,warn=FALSE),collapse="\n")
   if(length(regmatches(svg,gregexpr("<svg[ >]",svg))[[1]])!=1) stop("Expected one SVG root")
   svg <- sub("(<svg\\b[^>]*>)",paste0("\\1\n",css),svg,perl=TRUE)

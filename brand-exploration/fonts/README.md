@@ -1,6 +1,6 @@
 # Work Sans font source
 
-Work Sans is the approved sole font family for The Data Decoded. These three unmodified static TTF files and `OFL.txt` come from the official [Work Sans repository](https://github.com/weiweihuanghuang/Work-Sans), release **v2.010**, commit [`6634e7b2395e9dba4ac8611c4529968a9719d606`](https://github.com/weiweihuanghuang/Work-Sans/commit/6634e7b2395e9dba4ac8611c4529968a9719d606), under `fonts/static/TTF/`. The upstream copyright notice is in `OFL.txt` beside the fonts. The license is SIL Open Font License 1.1; keep the notice and license with redistributed copies. Do not sell font files by themselves or relicense modified versions.
+Work Sans is retained for archived exploration. Lato is the adopted default for future charts; see [Lato files and weights](lato/README.md). These three unmodified static TTF files and `OFL.txt` come from the official [Work Sans repository](https://github.com/weiweihuanghuang/Work-Sans), release **v2.010**, commit [`6634e7b2395e9dba4ac8611c4529968a9719d606`](https://github.com/weiweihuanghuang/Work-Sans/commit/6634e7b2395e9dba4ac8611c4529968a9719d606), under `fonts/static/TTF/`. The upstream copyright notice is in `OFL.txt` beside the fonts. The license is SIL Open Font License 1.1; keep the notice and license with redistributed copies. Do not sell font files by themselves or relicense modified versions.
 
 | File | SHA-256 |
 | --- | --- |
