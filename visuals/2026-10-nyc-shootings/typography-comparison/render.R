@@ -62,10 +62,11 @@ work_files <- file.path(font_dir,paste0("WorkSans-",c("Regular","Medium","Bold")
 comparison <- file.path(project,"typography-comparison")
 extra_dir <- Sys.getenv("TDD_COMPARISON_FONT_DIR",file.path(comparison,"fonts"))
 lato_files <- file.path(extra_dir,paste0("Lato-",c("Regular","Medium","Bold"),".ttf"))
+black_file <- file.path(extra_dir,"Lato-Black.ttf")
 playfair_file <- file.path(extra_dir,"PlayfairDisplay-wght.ttf")
 font_files <- if(treatment=="B") lato_files else work_files
 body_family <- if(treatment=="B") "Lato" else "Work Sans"
-if(any(!file.exists(c(work_files,lato_files,playfair_file)))) stop("Comparison font file missing: restore the pinned files in typography-comparison/fonts or brand-exploration/fonts")
+if(any(!file.exists(c(work_files,lato_files,playfair_file,black_file)))) stop("Comparison font file missing: restore the pinned files in typography-comparison/fonts or brand-exploration/fonts")
 if(!all(vapply(font_files,function(p) systemfonts::font_info(path=p)$family[[1]]==body_family,logical(1)))) stop("Unexpected body font family")
 regular_alias <- paste("NYC trial",body_family)
 medium_alias <- paste("NYC trial",body_family,"Medium")
@@ -83,6 +84,13 @@ if(treatment=="A") {
   systemfonts::register_font(title_alias,plain=list(path=playfair_file,index=262144),bold=list(path=playfair_file,index=262144))
   match <- systemfonts::match_fonts(title_alias,weight="bold")
   if(normalizePath(match$path[1])!=normalizePath(playfair_file) || match$index[1]!=262144) stop("Playfair resolved to a substitute or wrong instance")
+}
+if(treatment=="B") {
+  info <- systemfonts::font_info(path=black_file)
+  if(info$family[[1]]!="Lato" || info$style[[1]]!="Black") stop("Expected official Lato Black")
+  title_alias <- "NYC trial Lato Black"
+  systemfonts::register_font(title_alias,plain=black_file,bold=black_file)
+  if(normalizePath(systemfonts::match_fonts(title_alias,weight="bold")$path[1])!=normalizePath(black_file)) stop("Lato Black resolved to substitute")
 }
 months <- month_grid %>% arrange(year, month) %>%
   mutate(x = month, year_group = factor(year),
@@ -222,7 +230,7 @@ frame <- function(plot,title,subtitle,key,width=8.8,height=8.8,dpi=240) {
     grid.draw(g); popViewport()
     if(device_label=="PNG") {
       measurements[[treatment]] <<- data.frame(treatment=treatment,title_family=title_family,body_family=body_family,
-        title_pt=22,title_lines=length(title_lines),title_text=paste(title_lines,collapse=" | "),
+        title_pt=22,title_weight=if(treatment=="B") 900 else 700,title_lines=length(title_lines),title_text=paste(title_lines,collapse=" | "),
         subtitle_lines=length(sub_lines),source_lines=length(source_lines),notes_lines=length(note_lines),
         plot_top_in=plot_top,plot_bottom_in=plot_bottom,plot_available_in=plot_top-plot_bottom,
         panel_left_allocation_in=convertWidth(sum(g$widths[1:6]),"in",valueOnly=TRUE),
@@ -246,6 +254,7 @@ frame <- function(plot,title,subtitle,key,width=8.8,height=8.8,dpi=240) {
   # Insert after the complete SVG opening tag, leaving the XML declaration intact.
   css_rules <- paste(vapply(seq_along(font_files),function(i) paste0('@font-face{font-family:"',body_family,'";font-weight:',c(400,500,700)[i],';src:url(data:font/ttf;base64,',base64enc::base64encode(font_files[i],linewidth=0),') format("truetype");}'),character(1)),collapse="")
   if(treatment=="A") css_rules <- paste0(css_rules,'@font-face{font-family:"Playfair Display";font-weight:400 900;src:url(data:font/ttf;base64,',base64enc::base64encode(playfair_file,linewidth=0),') format("truetype");}')
+  if(treatment=="B") css_rules <- paste0(css_rules,'@font-face{font-family:"Lato";font-weight:900;src:url(data:font/ttf;base64,',base64enc::base64encode(black_file,linewidth=0),') format("truetype");}')
   notices <- paste(readLines("brand-exploration/fonts/OFL.txt",warn=FALSE),collapse="\n")
   if(treatment=="B") notices <- paste(notices,paste(readLines(file.path(extra_dir,"Lato-OFL.txt"),warn=FALSE),collapse="\n"),sep="\n")
   if(treatment=="A") notices <- paste(notices,paste(readLines(file.path(extra_dir,"PlayfairDisplay-OFL.txt"),warn=FALSE),collapse="\n"),sep="\n")

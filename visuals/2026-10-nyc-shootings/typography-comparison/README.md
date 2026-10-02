@@ -20,12 +20,12 @@ The renderer contains a frozen local copy of the current analysis/design, omitti
 | Treatment | Title | Everything else | Title lines | Plot frame height |
 |---|---|---|---:|---:|
 | A | Playfair Display Bold | Work Sans | 2 | 5.6535 in |
-| B | Lato Bold | Lato | 2 | 5.6535 in |
+| B | Lato Black | Lato | 2 | 5.6535 in |
 | C | Work Sans Bold | Work Sans | 2 | 5.6535 in |
 
 Sizes identical throughout: title 22 pt; subtitle and ticks 14.5 pt; direct labels and comparison annotation 4.6 mm (about 13.1 pt); metadata 13 pt; signature 14 pt. Canvas 8.8 × 8.8 in at 240 dpi (2112 × 2112 PNG). Title leading 1.08, metadata leading 0.195 in, Source/Notes gap 0.035 in, mark width 0.60 in at intrinsic 1220:900 ratio, signature gap 0.14 in. No colored title words.
 
-All title, subtitle, Source and Notes wrapping is device-measured. Each subtitle and each metadata field fits one line. A wraps after “record”, leaving “low in 2025” on line 2. B uses Lato Bold for the title; updated wrapping is recorded in measurements.csv. C wraps after “a”, keeping “record low in 2025” on line 2. No sizes or positions changed to improve a particular treatment. Axis allocations are frozen to C's measured ggplot gtable (left allocation 0.5539 in; bottom allocation 0.3162 in), preventing font widths from moving the panel or any data geometry. `measurements.csv` records bounds and line counts. C's PNG is pixel-identical to the current master.
+All title, subtitle, Source and Notes wrapping is device-measured. Each subtitle and each metadata field fits one line. A wraps after “record”, leaving “low in 2025” on line 2. B uses Lato Black (900) at 22 pt for the title; updated wrapping is recorded in measurements.csv. C wraps after “a”, keeping “record low in 2025” on line 2. No sizes or positions changed to improve a particular treatment. Axis allocations are frozen to C's measured ggplot gtable (left allocation 0.5539 in; bottom allocation 0.3162 in), preventing font widths from moving the panel or any data geometry. `measurements.csv` records bounds and line counts. C's PNG is pixel-identical to the current master.
 
 ## Export and collision checks
 
@@ -40,3 +40,5 @@ Browser text rectangles show no clipping. No endpoint, annotation, axis, Source/
 Prefer C for this chart at phone width: it has the clearest compact headline and keeps “record low” together. A is the strongest alternative for a more editorial serif title, with familiar Work Sans elsewhere. B's narrower body text saves some horizontal room without changing line counts or plot space, and does not provide a clear readability gain over A/C. This is a review recommendation, not a brand decision. Final choice remains open.
 
 Fonts and licenses: see `fonts/README.md` and `fonts/manifest.json`. Official Google Fonts revision `9710da1eacb3be272583c3224dcb70f9da6eadbb`; Playfair Display and Lato use SIL OFL 1.1. No new system-wide font install and no historical exports regenerated. These comparison assets are not listed in story.md and do not enter the public build.
+
+Option B now trials Lato Black (900) for the 22 pt title only; body Regular/Medium/Bold files and weights remain unchanged. Two title lines and 5.6535 inch plot allocation retained. XML and actual browser confirm embedded weight 900.

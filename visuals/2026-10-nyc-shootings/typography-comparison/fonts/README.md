@@ -3,7 +3,7 @@
 Unmodified files retrieved October 2, 2026 from the official Google Fonts repository, pinned to commit `9710da1eacb3be272583c3224dcb70f9da6eadbb`.
 
 - Playfair Display: `https://github.com/google/fonts/tree/9710da1eacb3be272583c3224dcb70f9da6eadbb/ofl/playfairdisplay` (upstream: clauseggers/Playfair-Display). Original filename `PlayfairDisplay[wght].ttf`; only filesystem filename simplified locally. Font contents and internal names unchanged.
-- Lato: `https://github.com/google/fonts/tree/9710da1eacb3be272583c3224dcb70f9da6eadbb/ofl/lato` (Regular, Medium, Bold).
+- Lato: `https://github.com/google/fonts/tree/9710da1eacb3be272583c3224dcb70f9da6eadbb/ofl/lato` (Regular, Medium, Bold, Black).
 
 Both are SIL Open Font License 1.1. Complete notices/licenses retained as `PlayfairDisplay-OFL.txt` and `Lato-OFL.txt`; reserved names preserved. These licenses permit embedding and redistribution with the notices. Work Sans continues to use the existing pinned files and OFL in `brand-exploration/fonts/`. Full required notices for used families are included inside exported SVG metadata. `manifest.json` records SHA-256 for downloaded files.
 

@@ -28,5 +28,10 @@
     "file": "PlayfairDisplay-wght.ttf",
     "sha256": "c40f2293766a503bc70cce9e512ef844a4ccb7cbcde792fe2ea31d191917d8d6",
     "source_revision": "9710da1eacb3be272583c3224dcb70f9da6eadbb"
+  },
+  {
+    "file": "Lato-Black.ttf",
+    "sha256": "808c62839c62dbce7de689af7603666fc7f8b81e0df537d8a5212c87580d4337",
+    "source_revision": "9710da1eacb3be272583c3224dcb70f9da6eadbb"
   }
 ]
