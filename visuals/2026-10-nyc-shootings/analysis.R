@@ -106,9 +106,9 @@ axis_months <- scale_x_continuous(breaks=1:12,labels=month.abb,limits=c(.8,15.3)
 
 # Refine the monthly view first; endpoint labels have short solid leaders.
 month_ends <- months %>% filter((year %in% c(2020,2021,2025) & month==12) | (year==2026 & month==6)) %>%
-  mutate(label=if_else(year==2026,"2026\nthrough Jun 30",as.character(year)),
+  mutate(label=if_else(year==2026,"2026: 322\nthrough Jun 30",as.character(year)),
     lx=if_else(year==2026,6.4,12.3),
-    ly=case_when(year==2020 ~ 105,year==2021 ~ 140,year==2025 ~ 36,TRUE ~ 61))
+    ly=case_when(year==2020 ~ 140,year==2021 ~ 105,year==2025 ~ 36,TRUE ~ 61))
 p_month <- ggplot() +
   annotate("segment",x=.8,xend=12,y=seq(50,250,50),yend=seq(50,250,50),colour="#E6E8EB",linewidth=.35) +
   annotate("segment",x=.8,xend=12,y=0,yend=0,colour="#939BA5",linewidth=.5) +
@@ -116,13 +116,13 @@ p_month <- ggplot() +
   geom_line(data=months %>% filter(highlight & year!=2026),aes(x=month,y=incidents,group=year,colour=factor(year)),linewidth=1.2) +
   geom_line(data=months %>% filter(year==2026),aes(x=month,y=incidents),colour=paper,linewidth=1.65) +
   geom_line(data=months %>% filter(year==2026),aes(x=month,y=incidents),colour=teal,linewidth=1.2) +
+  geom_segment(data=month_ends,aes(x=month,y=incidents,xend=if_else(year==2026,lx-.10,lx),yend=ly,colour=factor(year)),linewidth=.4) +
   geom_point(data=month_ends,aes(x=month,y=incidents,colour=factor(year)),size=2.5) +
-  geom_segment(data=month_ends,aes(x=month,y=incidents,xend=lx,yend=ly,colour=factor(year)),linewidth=.4) +
   geom_label(data=month_ends %>% filter(year!=2026),aes(x=lx,y=ly,label=label,colour=factor(year)),hjust=0,
     fill=paper,linewidth=0,label.padding=unit(.08,"lines"),family=bold_alias,size=4.6,lineheight=.95) +
   geom_text(data=month_ends %>% filter(year==2026),aes(x=lx,y=ly,label=label,colour=factor(year)),hjust=0,
     family=regular_alias,size=4.6,lineheight=.95) +
-  annotate("text",x=7.25,y=275,label="Jul 2020: 243",hjust=0,family=regular_alias,size=4.6,colour=crimson) +
+  annotate("text",x=7.25,y=275,label="Jul 2020: 243\nhighest month since 2006",hjust=0,family=regular_alias,size=4.6,colour=crimson,lineheight=.95) +
   annotate("segment",x=7.2,y=264,xend=7,yend=243,colour=crimson,linewidth=.5) +
   annotate("text",x=10.7,y=14,label="Dec 2025: 35\nlowest month since 2006",hjust=1,
     family=regular_alias,size=4.35,colour=blue,lineheight=.95) +
