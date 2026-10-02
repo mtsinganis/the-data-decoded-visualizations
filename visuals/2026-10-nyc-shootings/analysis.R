@@ -102,7 +102,7 @@ base_theme <- theme_minimal(base_family=regular_alias, base_size=16) +
     panel.background=element_rect(fill=paper,colour=NA), plot.background=element_rect(fill=paper,colour=NA),
     legend.background=element_rect(fill=paper,colour=NA), plot.margin=margin(4,2,3,0))
 context_years <- months %>% filter(!highlight)
-axis_months <- scale_x_continuous(breaks=1:12,labels=month.abb,limits=c(.8,15.3),expand=c(0,0))
+axis_months <- scale_x_continuous(breaks=1:12,labels=month.abb,limits=c(.8,14.4),expand=c(0,0))
 
 # Refine the monthly view first; endpoint labels have short solid leaders.
 month_ends <- months %>% filter((year %in% c(2020,2021,2025) & month==12) | (year==2026 & month==6)) %>%
