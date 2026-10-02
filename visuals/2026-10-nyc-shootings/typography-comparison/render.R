@@ -75,7 +75,7 @@ resolved <- c(systemfonts::match_fonts(regular_alias)$path[1],systemfonts::match
 if(!identical(normalizePath(resolved),normalizePath(font_files))) stop("Body font resolved to a substitute")
 title_alias <- regular_alias
 title_family <- body_family
-if(treatment!="C") {
+if(treatment=="A") {
   info <- systemfonts::font_info(path=playfair_file,index=262144)
   if(info$family[[1]]!="Playfair Display" || info$style[[1]]!="Bold") stop("Pinned Playfair named Bold instance unavailable")
   title_alias <- "NYC trial Playfair Display"
@@ -245,10 +245,10 @@ frame <- function(plot,title,subtitle,key,width=8.8,height=8.8,dpi=240) {
   svglite::svglite(svg_path,width=width,height=height,bg=paper); draw(); dev.off()
   # Insert after the complete SVG opening tag, leaving the XML declaration intact.
   css_rules <- paste(vapply(seq_along(font_files),function(i) paste0('@font-face{font-family:"',body_family,'";font-weight:',c(400,500,700)[i],';src:url(data:font/ttf;base64,',base64enc::base64encode(font_files[i],linewidth=0),') format("truetype");}'),character(1)),collapse="")
-  if(treatment!="C") css_rules <- paste0(css_rules,'@font-face{font-family:"Playfair Display";font-weight:400 900;src:url(data:font/ttf;base64,',base64enc::base64encode(playfair_file,linewidth=0),') format("truetype");}')
+  if(treatment=="A") css_rules <- paste0(css_rules,'@font-face{font-family:"Playfair Display";font-weight:400 900;src:url(data:font/ttf;base64,',base64enc::base64encode(playfair_file,linewidth=0),') format("truetype");}')
   notices <- paste(readLines("brand-exploration/fonts/OFL.txt",warn=FALSE),collapse="\n")
   if(treatment=="B") notices <- paste(notices,paste(readLines(file.path(extra_dir,"Lato-OFL.txt"),warn=FALSE),collapse="\n"),sep="\n")
-  if(treatment!="C") notices <- paste(notices,paste(readLines(file.path(extra_dir,"PlayfairDisplay-OFL.txt"),warn=FALSE),collapse="\n"),sep="\n")
+  if(treatment=="A") notices <- paste(notices,paste(readLines(file.path(extra_dir,"PlayfairDisplay-OFL.txt"),warn=FALSE),collapse="\n"),sep="\n")
   notices <- gsub("&","&amp;",notices,fixed=TRUE); notices <- gsub("<","&lt;",notices,fixed=TRUE)
   css <- paste0('<metadata>',notices,'</metadata><style type="text/css"><![CDATA[',css_rules,']]></style>')
   svg <- paste(readLines(svg_path,warn=FALSE),collapse="\n")
@@ -279,7 +279,7 @@ if(!is.null(warnings())) print(warnings())
 
 # Side-by-side review sheet, directly from R; individual exports remain the chart previews.
 ragg::agg_png("visuals/2026-10-nyc-shootings/typography-comparison/exports/comparison-phone.png",width=1170,height=434,units="px",res=96,background="white")
-labels <- c("A: Playfair Display + Work Sans","B: Playfair Display + Lato","C: Work Sans throughout")
+labels <- c("A: Playfair Display + Work Sans","B: Lato throughout","C: Work Sans throughout")
 # Use normalized coordinates rather than default native 0..1 units.
 grid::grid.newpage()
 for(i in 1:3) {

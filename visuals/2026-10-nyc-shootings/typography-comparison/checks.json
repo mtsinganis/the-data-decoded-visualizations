@@ -19,10 +19,10 @@
       2112,
       2112
     ],
-    "browser_fonts": "loaded",
+    "browser_fonts": "Lato loaded; title weight 700",
     "text_clipping": 0,
     "non_title_text_overlaps": 0,
-    "title_metric_overlap_screen_px": 0.99,
+    "title_metric_overlap_screen_px": 0,
     "visible_glyph_collisions": 0
   },
   "C": {
