@@ -145,12 +145,12 @@ OTHER DEALINGS IN THE FONT SOFTWARE.</metadata><style type="text/css"><![CDATA[@
 </defs>
 <g clip-path='url(#cpNjEuMTl8NjAyLjgxfDExMC42Nnw0OTAuNTE=)'>
 <rect x='61.19' y='110.66' width='541.62' height='379.86' style='stroke-width: 1.55; stroke: none; fill: #FFFFFF;' />
-<polyline points='61.19,490.51 602.81,490.51 ' style='stroke-width: 0.75; stroke: #E6E8EB; stroke-linecap: butt;' />
-<polyline points='61.19,424.33 602.81,424.33 ' style='stroke-width: 0.75; stroke: #E6E8EB; stroke-linecap: butt;' />
-<polyline points='61.19,358.16 602.81,358.16 ' style='stroke-width: 0.75; stroke: #E6E8EB; stroke-linecap: butt;' />
-<polyline points='61.19,291.98 602.81,291.98 ' style='stroke-width: 0.75; stroke: #E6E8EB; stroke-linecap: butt;' />
-<polyline points='61.19,225.80 602.81,225.80 ' style='stroke-width: 0.75; stroke: #E6E8EB; stroke-linecap: butt;' />
-<polyline points='61.19,159.63 602.81,159.63 ' style='stroke-width: 0.75; stroke: #E6E8EB; stroke-linecap: butt;' />
+<line x1='61.19' y1='424.33' x2='479.54' y2='424.33' style='stroke-width: 0.75; stroke: #E6E8EB; stroke-linecap: butt;' />
+<line x1='61.19' y1='358.16' x2='479.54' y2='358.16' style='stroke-width: 0.75; stroke: #E6E8EB; stroke-linecap: butt;' />
+<line x1='61.19' y1='291.98' x2='479.54' y2='291.98' style='stroke-width: 0.75; stroke: #E6E8EB; stroke-linecap: butt;' />
+<line x1='61.19' y1='225.80' x2='479.54' y2='225.80' style='stroke-width: 0.75; stroke: #E6E8EB; stroke-linecap: butt;' />
+<line x1='61.19' y1='159.63' x2='479.54' y2='159.63' style='stroke-width: 0.75; stroke: #E6E8EB; stroke-linecap: butt;' />
+<line x1='61.19' y1='490.51' x2='479.54' y2='490.51' style='stroke-width: 1.07; stroke: #939BA5; stroke-linecap: butt;' />
 <polyline points='68.66,342.27 106.02,383.30 143.37,385.95 180.72,340.95 218.07,313.16 255.43,297.27 292.78,266.83 330.13,256.24 367.48,289.33 404.84,291.98 442.19,330.36 479.54,315.80 ' style='stroke-width: 0.64; stroke: #A6B0BD; stroke-opacity: 0.45; stroke-linecap: butt;' />
 <polyline points='68.66,371.39 106.02,408.45 143.37,395.22 180.72,359.48 218.07,276.10 255.43,281.39 292.78,273.45 330.13,277.42 367.48,315.80 404.84,294.63 442.19,359.48 479.54,364.78 ' style='stroke-width: 0.64; stroke: #A6B0BD; stroke-opacity: 0.45; stroke-linecap: butt;' />
 <polyline points='68.66,359.48 106.02,405.80 143.37,358.16 180.72,330.36 218.07,290.66 255.43,290.66 292.78,262.86 330.13,269.48 367.48,290.66 404.84,335.66 442.19,356.83 479.54,323.75 ' style='stroke-width: 0.64; stroke: #A6B0BD; stroke-opacity: 0.45; stroke-linecap: butt;' />
@@ -171,8 +171,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.</metadata><style type="text/css"><![CDATA[@
 <polyline points='68.66,403.16 106.02,430.95 143.37,416.39 180.72,416.39 218.07,358.16 255.43,219.19 292.78,168.89 330.13,171.54 367.48,291.98 404.84,311.83 442.19,336.98 479.54,333.01 ' style='stroke-width: 2.56; stroke: #C83242; stroke-linecap: butt;' />
 <polyline points='68.66,389.92 106.02,388.60 143.37,359.48 180.72,294.63 218.07,262.86 255.43,272.13 292.78,282.72 330.13,272.13 367.48,310.51 404.84,321.10 442.19,333.01 479.54,331.69 ' style='stroke-width: 2.56; stroke: #D49A44; stroke-linecap: butt;' />
 <polyline points='68.66,424.33 106.02,434.92 143.37,428.31 180.72,397.86 218.07,420.36 255.43,391.25 292.78,391.25 330.13,388.60 367.48,405.80 404.84,430.95 442.19,417.72 479.54,444.19 ' style='stroke-width: 2.56; stroke: #2455FF; stroke-linecap: butt;' />
+<polyline points='68.66,437.57 106.02,436.25 143.37,412.42 180.72,415.07 218.07,424.33 255.43,391.25 ' style='stroke-width: 3.52; stroke: #FFFFFF; stroke-linecap: butt;' />
 <polyline points='68.66,437.57 106.02,436.25 143.37,412.42 180.72,415.07 218.07,424.33 255.43,391.25 ' style='stroke-width: 2.56; stroke: #087F79; stroke-linecap: butt;' />
-<polyline points='68.66,424.33 106.02,434.92 143.37,428.31 180.72,397.86 218.07,420.36 255.43,391.25 292.78,391.25 330.13,388.60 367.48,405.80 404.84,430.95 442.19,417.72 479.54,444.19 ' style='stroke-width: 3.31; stroke: #2455FF; stroke-linecap: butt;' />
 <circle cx='479.54' cy='333.01' r='3.18' style='stroke-width: 1.03; stroke: #C83242; fill: #C83242;' />
 <circle cx='479.54' cy='331.69' r='3.18' style='stroke-width: 1.03; stroke: #D49A44; fill: #D49A44;' />
 <circle cx='479.54' cy='444.19' r='3.18' style='stroke-width: 1.03; stroke: #2455FF; fill: #2455FF;' />

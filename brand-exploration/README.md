@@ -85,3 +85,9 @@ The frame is ready for a **trial on one new real project**, with B as the provis
 ## NYC A/B/C typography comparison (unapproved)
 
 The isolated [cumulative-chart comparison](../visuals/2026-10-nyc-shootings/typography-comparison/README.md) tests Playfair Display + Work Sans (A), Lato throughout (B), and current reduced Work Sans (C). All use identical sizes and geometry: two 22 pt title lines, 5.6535 inch plot allocation, 2112px square exports. Exact official font files and licenses are bundled only inside that comparison. C's PNG matches the current master pixel for pixel. Recommendation is C at phone size, with A as the serif alternative; final choice is pending user review. This records the earlier Work Sans direction; the Lato adoption above now governs future charts. No new shared functions, production-font changes, or other chart exports.
+
+### NYC line boundary and zero baseline refinement
+
+Reserve a direct-label margin beyond the final data x-position; gridlines and the zero baseline stop at December in the NYC trial. Use a distinct zero baseline when zero is meaningful and visible, secondary to the data but darker than major grids. For horizontal bars this generally means a vertical zero line; it is not mandatory decoration for every chart type.
+
+NYC highlighted strokes are equally 1.2 mm; historical strokes retain their thinner weights. The observed January-June 2026 segment alone has a subtle 1.65 mm white underlay (0.225 mm margin per side), drawn immediately before the 1.2 mm teal stroke. Everything remains solid. Major grids are #E6E8EB / 0.35 mm; the single zero baseline is #939BA5 / 0.5 mm. The cumulative comparison is left-aligned near February, vertically centered at 1,250, without a box or leader. These remain local trial choices, with no shared functions extracted.

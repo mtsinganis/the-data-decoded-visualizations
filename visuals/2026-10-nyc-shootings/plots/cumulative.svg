@@ -145,10 +145,10 @@ OTHER DEALINGS IN THE FONT SOFTWARE.</metadata><style type="text/css"><![CDATA[@
 </defs>
 <g clip-path='url(#cpNjkuNjB8NjAyLjgxfDExMC42Nnw0OTAuNTE=)'>
 <rect x='69.60' y='110.66' width='533.21' height='379.86' style='stroke-width: 1.55; stroke: none; fill: #FFFFFF;' />
-<polyline points='69.60,490.51 602.81,490.51 ' style='stroke-width: 0.75; stroke: #E6E8EB; stroke-linecap: butt;' />
-<polyline points='69.60,383.81 602.81,383.81 ' style='stroke-width: 0.75; stroke: #E6E8EB; stroke-linecap: butt;' />
-<polyline points='69.60,277.11 602.81,277.11 ' style='stroke-width: 0.75; stroke: #E6E8EB; stroke-linecap: butt;' />
-<polyline points='69.60,170.41 602.81,170.41 ' style='stroke-width: 0.75; stroke: #E6E8EB; stroke-linecap: butt;' />
+<line x1='69.60' y1='383.81' x2='481.46' y2='383.81' style='stroke-width: 0.75; stroke: #E6E8EB; stroke-linecap: butt;' />
+<line x1='69.60' y1='277.11' x2='481.46' y2='277.11' style='stroke-width: 0.75; stroke: #E6E8EB; stroke-linecap: butt;' />
+<line x1='69.60' y1='170.41' x2='481.46' y2='170.41' style='stroke-width: 0.75; stroke: #E6E8EB; stroke-linecap: butt;' />
+<line x1='69.60' y1='490.51' x2='481.46' y2='490.51' style='stroke-width: 1.07; stroke: #939BA5; stroke-linecap: butt;' />
 <polyline points='76.95,466.61 113.73,449.33 150.50,432.47 187.27,408.35 224.04,379.76 260.82,348.60 297.59,312.53 334.36,274.76 371.14,242.32 407.91,210.31 444.68,184.49 481.46,156.32 ' style='stroke-width: 0.90; stroke: #A6B0BD; stroke-opacity: 0.65; stroke-linecap: butt;' />
 <polyline points='76.95,471.31 113.73,458.07 150.50,442.71 187.27,421.58 224.04,387.01 260.82,353.29 297.59,318.30 334.36,283.94 371.14,255.77 407.91,224.19 444.68,203.06 481.46,182.79 ' style='stroke-width: 0.90; stroke: #A6B0BD; stroke-opacity: 0.65; stroke-linecap: butt;' />
 <polyline points='76.95,469.38 113.73,455.73 150.50,434.39 187.27,408.57 224.04,376.34 260.82,344.12 297.59,307.41 334.36,271.77 371.14,239.55 407.91,214.58 444.68,193.03 481.46,166.14 ' style='stroke-width: 0.90; stroke: #A6B0BD; stroke-opacity: 0.65; stroke-linecap: butt;' />
@@ -169,8 +169,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.</metadata><style type="text/css"><![CDATA[@
 <polyline points='76.95,476.43 113.73,466.82 150.50,454.87 187.27,442.92 224.04,421.58 260.82,377.84 297.59,325.98 334.36,274.55 371.14,242.54 407.91,213.73 444.68,188.97 481.46,163.58 ' style='stroke-width: 2.56; stroke: #C83242; stroke-linecap: butt;' />
 <polyline points='76.95,474.29 113.73,457.86 150.50,436.73 187.27,405.15 224.04,368.45 260.82,333.23 297.59,299.73 334.36,264.52 371.14,235.50 407.91,208.18 444.68,182.79 481.46,157.18 ' style='stroke-width: 2.56; stroke: #D49A44; stroke-linecap: butt;' />
 <polyline points='76.95,479.84 113.73,470.88 150.50,460.85 187.27,445.91 224.04,434.60 260.82,418.60 297.59,402.59 334.36,386.16 371.14,372.50 407.91,362.90 444.68,351.16 481.46,343.69 ' style='stroke-width: 2.56; stroke: #2455FF; stroke-linecap: butt;' />
+<polyline points='76.95,481.98 113.73,473.23 150.50,460.64 187.27,448.47 224.04,437.80 260.82,421.80 ' style='stroke-width: 3.52; stroke: #FFFFFF; stroke-linecap: butt;' />
 <polyline points='76.95,481.98 113.73,473.23 150.50,460.64 187.27,448.47 224.04,437.80 260.82,421.80 ' style='stroke-width: 2.56; stroke: #087F79; stroke-linecap: butt;' />
-<polyline points='76.95,479.84 113.73,470.88 150.50,460.85 187.27,445.91 224.04,434.60 260.82,418.60 297.59,402.59 334.36,386.16 371.14,372.50 407.91,362.90 444.68,351.16 481.46,343.69 ' style='stroke-width: 3.31; stroke: #2455FF; stroke-linecap: butt;' />
 <circle cx='481.46' cy='163.58' r='3.18' style='stroke-width: 1.03; stroke: #C83242; fill: #C83242;' />
 <circle cx='481.46' cy='157.18' r='3.18' style='stroke-width: 1.03; stroke: #D49A44; fill: #D49A44;' />
 <circle cx='481.46' cy='343.69' r='3.18' style='stroke-width: 1.03; stroke: #2455FF; fill: #2455FF;' />
@@ -188,8 +188,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.</metadata><style type="text/css"><![CDATA[@
 <polygon points='276.04,454.63 361.24,454.63 361.14,454.63 361.52,454.61 361.89,454.54 362.25,454.40 362.57,454.21 362.87,453.97 363.12,453.69 363.32,453.37 363.47,453.02 363.56,452.65 363.59,452.27 363.59,452.27 363.59,426.32 363.59,426.32 363.56,425.94 363.47,425.57 363.32,425.22 363.12,424.90 362.87,424.62 362.57,424.38 362.25,424.19 361.89,424.05 361.52,423.98 361.24,423.96 276.04,423.96 276.33,423.98 275.95,423.96 275.57,424.01 275.21,424.11 274.87,424.28 274.55,424.49 274.28,424.75 274.05,425.06 273.88,425.39 273.76,425.75 273.70,426.13 273.69,426.32 273.69,452.27 273.70,452.08 273.70,452.46 273.76,452.84 273.88,453.20 274.05,453.53 274.28,453.84 274.55,454.10 274.87,454.31 275.21,454.48 275.57,454.58 275.95,454.63 ' style='stroke-width: 0.00; stroke: none; fill: #FFFFFF;' />
 <text x='274.79' y='435.78' style='font-size: 13.09px; font-weight: bold;fill: #087F79; font-family: "Lato";' textLength='59.59px' lengthAdjust='spacingAndGlyphs'>2026: 322</text>
 <text x='274.79' y='452.27' style='font-size: 13.09px; font-weight: bold;fill: #087F79; font-family: "Lato";' textLength='87.39px' lengthAdjust='spacingAndGlyphs'>through Jun 30</text>
-<text x='80.63' y='185.27' style='font-size: 13.09px;fill: #666666; font-family: "Lato";' textLength='156.38px' lengthAdjust='spacingAndGlyphs'>2025 was 56% below 2021</text>
-<text x='80.63' y='203.33' style='font-size: 13.09px;fill: #666666; font-family: "Lato";' textLength='113.80px' lengthAdjust='spacingAndGlyphs'>874 fewer incidents</text>
+<text x='113.73' y='219.41' style='font-size: 13.09px;fill: #666666; font-family: "Lato";' textLength='133.38px' lengthAdjust='spacingAndGlyphs'>2025 had less than half</text>
+<text x='113.73' y='237.48' style='font-size: 13.09px;fill: #666666; font-family: "Lato";' textLength='126.34px' lengthAdjust='spacingAndGlyphs'>the shootings of 2021</text>
 </g>
 <g clip-path='url(#cpMC4wMHw2MzMuNjB8MC4wMHw2MzMuNjA=)'>
 <text x='62.43' y='495.71' text-anchor='end' style='font-size: 14.50px;fill: #666666; font-family: "Lato";' textLength='8.41px' lengthAdjust='spacingAndGlyphs'>0</text>

@@ -98,7 +98,7 @@ styles <- c("2020"=crimson, "2021"=amber, "2025"=blue, "2026"=teal)
 base_theme <- theme_minimal(base_family=regular_alias, base_size=16) +
   theme(text=element_text(colour=ink), axis.text=element_text(colour=support,size=14.5),
     axis.title=element_blank(), legend.position="none", panel.grid.minor=element_blank(),
-    panel.grid.major.x=element_blank(), panel.grid.major.y=element_line(colour="#E6E8EB",linewidth=.35,linetype="solid"),
+    panel.grid.major.x=element_blank(), panel.grid.major.y=element_blank(),
     panel.background=element_rect(fill=paper,colour=NA), plot.background=element_rect(fill=paper,colour=NA),
     legend.background=element_rect(fill=paper,colour=NA), plot.margin=margin(4,2,3,0))
 context_years <- months %>% filter(!highlight)
@@ -110,9 +110,12 @@ month_ends <- months %>% filter((year %in% c(2020,2021,2025) & month==12) | (yea
     lx=if_else(year==2026,6.4,12.3),
     ly=case_when(year==2020 ~ 140,year==2021 ~ 105,year==2025 ~ 36,TRUE ~ 103))
 p_month <- ggplot() +
+  annotate("segment",x=.8,xend=12,y=seq(50,250,50),yend=seq(50,250,50),colour="#E6E8EB",linewidth=.35) +
+  annotate("segment",x=.8,xend=12,y=0,yend=0,colour="#939BA5",linewidth=.5) +
   geom_line(data=context_years,aes(x=month,y=incidents,group=year),colour=context,alpha=.45,linewidth=.30) +
-  geom_line(data=months %>% filter(highlight),aes(x=month,y=incidents,group=year,colour=factor(year)),linewidth=1.2) +
-  geom_line(data=months %>% filter(year==2025),aes(x=month,y=incidents),colour=blue,linewidth=1.55) +
+  geom_line(data=months %>% filter(highlight & year!=2026),aes(x=month,y=incidents,group=year,colour=factor(year)),linewidth=1.2) +
+  geom_line(data=months %>% filter(year==2026),aes(x=month,y=incidents),colour=paper,linewidth=1.65) +
+  geom_line(data=months %>% filter(year==2026),aes(x=month,y=incidents),colour=teal,linewidth=1.2) +
   geom_point(data=month_ends,aes(x=month,y=incidents,colour=factor(year)),size=2.5) +
   geom_segment(data=month_ends,aes(x=month,y=incidents,xend=lx,yend=ly,colour=factor(year)),linewidth=.4) +
   geom_label(data=month_ends,aes(x=lx,y=ly,label=label,colour=factor(year)),hjust=0,
@@ -131,14 +134,17 @@ cum_ends <- cum %>% filter((year %in% c(2020,2021,2025) & month==12) | (year==20
     lx=if_else(year==2026,6.35,12.3),
     ly=case_when(year==2020 ~ 1460,year==2021 ~ 1650,year==2025 ~ 688,TRUE ~ 240))
 p_cum <- ggplot() +
+  annotate("segment",x=.8,xend=12,y=seq(500,1500,500),yend=seq(500,1500,500),colour="#E6E8EB",linewidth=.35) +
+  annotate("segment",x=.8,xend=12,y=0,yend=0,colour="#939BA5",linewidth=.5) +
   geom_line(data=cum %>% filter(!highlight),aes(x=month,y=cumulative,group=year),colour=context,alpha=.65,linewidth=.42) +
-  geom_line(data=cum %>% filter(highlight),aes(x=month,y=cumulative,group=year,colour=factor(year)),linewidth=1.2) +
-  geom_line(data=cum %>% filter(year==2025),aes(x=month,y=cumulative),colour=blue,linewidth=1.55) +
+  geom_line(data=cum %>% filter(highlight & year!=2026),aes(x=month,y=cumulative,group=year,colour=factor(year)),linewidth=1.2) +
+  geom_line(data=cum %>% filter(year==2026),aes(x=month,y=cumulative),colour=paper,linewidth=1.65) +
+  geom_line(data=cum %>% filter(year==2026),aes(x=month,y=cumulative),colour=teal,linewidth=1.2) +
   geom_point(data=cum_ends,aes(x=month,y=cumulative,colour=factor(year)),size=2.5) +
   geom_segment(data=cum_ends,aes(x=month,y=cumulative,xend=lx,yend=ly,colour=factor(year)),linewidth=.4) +
   geom_label(data=cum_ends,aes(x=lx,y=ly,label=label,colour=factor(year)),hjust=0,
     fill=paper,linewidth=0,label.padding=unit(.08,"lines"),family=bold_alias,size=4.6,lineheight=1.05) +
-  annotate("text",x=1.1,y=1410,label=sprintf("2025 was %.0f%% below 2021\n%s fewer incidents",abs(change_pct),comma(abs(change_n))),
+  annotate("text",x=2,y=1250,label="2025 had less than half\nthe shootings of 2021",
     hjust=0,family=regular_alias,size=4.6,colour=support,lineheight=1.15) +
   scale_colour_manual(values=styles) + axis_months +
   scale_y_continuous(breaks=seq(0,1500,500),limits=c(0,1780),expand=c(0,0)) + base_theme
