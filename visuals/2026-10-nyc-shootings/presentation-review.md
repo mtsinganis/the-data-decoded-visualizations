@@ -35,3 +35,7 @@ Both master pairs regenerated directly from R. Gridlines and the single darker z
 The cumulative annotation now reads "2025 had less than half / the shootings of 2021", left-aligned at February and vertically centered around 1,250 in supporting gray. Full-size PNG and 390 px PNG/SVG browser reviews found no collisions or clipping. XML checks confirmed one zero baseline per chart and all grid endpoints matching December; highlighted widths are equal. Both browser SVGs loaded Lato 400/700/900; exact-file R checks passed. The amber 2021 text remains faint at phone width and footer text remains compact; no new visual issues observed.
 
 pnpm build and pnpm verify passed, including draft exclusion and output allowlist. Saved snapshot, calculations, original reference exports and unrelated files remain unchanged. Story remains draft and X post unapproved.
+
+### Monthly title and 2026 annotation follow-up
+
+Monthly title now reads: "The summer 2020 spike stands out against 2025’s lower monthly counts". The 2026 annotation moves below the observed line to x=6.4, y=34, with Lato Regular 400 at the same 4.6 mm size as the July annotation, no white text background, and its solid teal connector retained. Full-size regenerated PNG reviewed: the text is clear of historical lines and the December annotation. Cumulative exports and verified calculations are unchanged. PNG/SVG regenerated directly from R; no build or test rerun for this presentation-only follow-up.
