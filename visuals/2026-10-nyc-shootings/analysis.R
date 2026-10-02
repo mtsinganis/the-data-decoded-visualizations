@@ -92,9 +92,10 @@ peak_month <- month_grid %>% filter(year == 2020) %>% slice_max(incidents, n=1, 
 
 
 # Presentation trial: flexible frame, solid data series, one master per chart.
+support <- "#666666"
 styles <- c("2020"=crimson, "2021"=amber, "2025"=blue, "2026"=teal)
 base_theme <- theme_minimal(base_family=regular_alias, base_size=16) +
-  theme(text=element_text(colour=ink), axis.text=element_text(colour=ink,size=17),
+  theme(text=element_text(colour=ink), axis.text=element_text(colour=support,size=14.5),
     axis.title=element_blank(), legend.position="none", panel.grid.minor=element_blank(),
     panel.grid.major.x=element_blank(), panel.grid.major.y=element_line(colour="#E6E8EB",linewidth=.35,linetype="solid"),
     panel.background=element_rect(fill=paper,colour=NA), plot.background=element_rect(fill=paper,colour=NA),
@@ -113,12 +114,12 @@ p_month <- ggplot() +
   geom_line(data=months %>% filter(year==2025),aes(x=month,y=incidents),colour=blue,linewidth=1.55) +
   geom_point(data=month_ends,aes(x=month,y=incidents,colour=factor(year)),size=2.5) +
   geom_segment(data=month_ends,aes(x=month,y=incidents,xend=lx,yend=ly,colour=factor(year)),linewidth=.4) +
-  geom_label(data=month_ends,aes(x=lx,y=ly,label=label),colour=ink,hjust=0,
-    fill=paper,linewidth=0,label.padding=unit(.08,"lines"),family=medium_alias,size=5.4,lineheight=1.05) +
-  annotate("text",x=7.25,y=275,label="Jul 2020: 243",hjust=0,family=medium_alias,size=5.4,colour=ink) +
+  geom_label(data=month_ends,aes(x=lx,y=ly,label=label,colour=factor(year)),hjust=0,
+    fill=paper,linewidth=0,label.padding=unit(.08,"lines"),family=medium_alias,size=4.6,lineheight=1.05) +
+  annotate("text",x=7.25,y=275,label="Jul 2020: 243",hjust=0,family=medium_alias,size=4.6,colour=crimson) +
   annotate("segment",x=7.2,y=264,xend=7,yend=243,colour=crimson,linewidth=.5) +
   annotate("text",x=10.7,y=14,label="Dec 2025: 35\nlowest month since 2006",hjust=1,
-    family=medium_alias,size=5.1,colour=ink,lineheight=1.05) +
+    family=medium_alias,size=4.35,colour=blue,lineheight=1.05) +
   annotate("segment",x=10.9,y=20,xend=12,yend=35,colour=blue,linewidth=.5) +
   scale_colour_manual(values=styles) + axis_months +
   scale_y_continuous(breaks=seq(0,250,50),limits=c(0,287),expand=c(0,0)) + base_theme
@@ -134,10 +135,10 @@ p_cum <- ggplot() +
   geom_line(data=cum %>% filter(year==2025),aes(x=month,y=cumulative),colour=blue,linewidth=1.55) +
   geom_point(data=cum_ends,aes(x=month,y=cumulative,colour=factor(year)),size=2.5) +
   geom_segment(data=cum_ends,aes(x=month,y=cumulative,xend=lx,yend=ly,colour=factor(year)),linewidth=.4) +
-  geom_label(data=cum_ends,aes(x=lx,y=ly,label=label),colour=ink,hjust=0,
-    fill=paper,linewidth=0,label.padding=unit(.08,"lines"),family=medium_alias,size=5.4,lineheight=1.05) +
+  geom_label(data=cum_ends,aes(x=lx,y=ly,label=label,colour=factor(year)),hjust=0,
+    fill=paper,linewidth=0,label.padding=unit(.08,"lines"),family=medium_alias,size=4.6,lineheight=1.05) +
   annotate("text",x=1.1,y=1410,label=sprintf("2025 was %.0f%% below 2021\n%s fewer incidents",abs(change_pct),comma(abs(change_n))),
-    hjust=0,family=medium_alias,size=5.4,colour=ink,lineheight=1.15) +
+    hjust=0,family=medium_alias,size=4.6,colour=support,lineheight=1.15) +
   scale_colour_manual(values=styles) + axis_months +
   scale_y_continuous(breaks=seq(0,1500,500),limits=c(0,1780),expand=c(0,0)) + base_theme
 
@@ -146,7 +147,7 @@ viewbox <- regmatches(logo_source,regexec('viewBox="[0-9.]+ [0-9.]+ ([0-9.]+) ([
 logo_ratio <- as.numeric(viewbox[2])/as.numeric(viewbox[3])
 logo_raster <- png::readPNG(rsvg::rsvg_png(charToRaw(logo_source),width=488,height=round(488/logo_ratio)),native=TRUE)
 
-# Text measurements and hanging indents are local to this trial, not shared templates.
+# Text measurements and compact paragraphs are local to this trial, not shared templates.
 wrap_lines <- function(text,width,fontsize,face="plain") {
   pushViewport(viewport(gp=gpar(fontfamily=regular_alias,fontsize=fontsize,fontface=face)))
   on.exit(popViewport())
@@ -167,29 +168,38 @@ frame <- function(plot,title,subtitle,key,width=8.8,height=8.8,dpi=240) {
   draw <- function() {
     grid.newpage(); grid.rect(gp=gpar(fill=paper,col=NA))
     left <- .40; content <- width-.80; top <- height-.34
-    title_lines <- wrap_lines(title,content,25,"bold")
-    title_h <- length(title_lines)*25/72*1.08
+    title_lines <- wrap_lines(title,content,22,"bold")
+    title_h <- length(title_lines)*22/72*1.08
     grid.text(paste(title_lines,collapse="\n"),x=unit(left,"in"),y=unit(top,"in"),just=c("left","top"),
-      gp=gpar(fontfamily=regular_alias,fontface="bold",fontsize=25,col=ink,lineheight=1.08))
+      gp=gpar(fontfamily=regular_alias,fontface="bold",fontsize=22,col=ink,lineheight=1.08))
     sub_top <- top-title_h-.10
-    sub_lines <- wrap_lines(subtitle,content,17)
+    sub_lines <- wrap_lines(subtitle,content,14.5)
     grid.text(paste(sub_lines,collapse="\n"),x=unit(left,"in"),y=unit(sub_top,"in"),just=c("left","top"),
-      gp=gpar(fontfamily=regular_alias,fontsize=17,col=ink,lineheight=1.1))
-    plot_top <- sub_top-length(sub_lines)*17/72*1.1-.16
-    label_w <- .91; meta_size <- 16; meta_leading <- .27
+      gp=gpar(fontfamily=regular_alias,fontsize=14.5,col=support,lineheight=1.1))
+    plot_top <- sub_top-length(sub_lines)*14.5/72*1.1-.16
+    meta_size <- 13; meta_leading <- .195; field_gap <- .035
     source <- "NYPD via NYC Open Data (5ucz-vwe8). Snapshot: Oct 2, 2026."
-    note <- "Incidents, not people shot. 2026 through June 30."
-    source_lines <- wrap_lines(source,content-label_w,meta_size)
-    note_lines <- if(nzchar(note)) wrap_lines(note,content-label_w,meta_size) else character()
-    metadata_top <- 1.04+(length(source_lines)+length(note_lines))*meta_leading+.09
+    note <- "Incidents, not people shot. 2025: lowest annual total in this dataset since 2006."
+    source_lines <- wrap_lines(paste("Source:",source),content,meta_size)
+    note_lines <- if(nzchar(note)) wrap_lines(paste("Notes:",note),content,meta_size) else character()
+    metadata_top <- 1.01+(length(source_lines)+length(note_lines))*meta_leading+field_gap
     field <- function(label,lines,y) {
-      grid.text(label,x=unit(left,"in"),y=unit(y,"in"),just=c("left","top"),
-        gp=gpar(fontfamily=regular_alias,fontface="bold",fontsize=meta_size,col=ink))
-      for(i in seq_along(lines)) grid.text(lines[i],x=unit(left+label_w,"in"),y=unit(y-(i-1)*meta_leading,"in"),
-        just=c("left","top"),gp=gpar(fontfamily=regular_alias,fontsize=meta_size,col=ink))
+      for(i in seq_along(lines)) {
+        line_y <- y-(i-1)*meta_leading
+        if(i==1) {
+          label_grob <- textGrob(label,gp=gpar(fontfamily=regular_alias,fontface="bold",fontsize=meta_size))
+          space_grob <- textGrob(" ",gp=gpar(fontfamily=regular_alias,fontsize=meta_size))
+          offset <- convertWidth(grobWidth(label_grob)+grobWidth(space_grob),"in",valueOnly=TRUE)
+          grid.text(label,x=unit(left,"in"),y=unit(line_y,"in"),just=c("left","top"),
+            gp=gpar(fontfamily=regular_alias,fontface="bold",fontsize=meta_size,col=support))
+          grid.text(substring(lines[i],nchar(label)+2),x=unit(left+offset,"in"),y=unit(line_y,"in"),
+            just=c("left","top"),gp=gpar(fontfamily=regular_alias,fontsize=meta_size,col=support))
+        } else grid.text(lines[i],x=unit(left,"in"),y=unit(line_y,"in"),just=c("left","top"),
+          gp=gpar(fontfamily=regular_alias,fontsize=meta_size,col=support))
+      }
     }
     field("Source:",source_lines,metadata_top)
-    if(length(note_lines)) field("Notes:",note_lines,metadata_top-length(source_lines)*meta_leading-.09)
+    if(length(note_lines)) field("Notes:",note_lines,metadata_top-length(source_lines)*meta_leading-field_gap)
     plot_bottom <- metadata_top+.23
     pushViewport(viewport(x=unit(left,"in"),y=unit(plot_bottom,"in"),width=unit(content,"in"),
       height=unit(plot_top-plot_bottom,"in"),just=c("left","bottom")))
@@ -201,7 +211,11 @@ frame <- function(plot,title,subtitle,key,width=8.8,height=8.8,dpi=240) {
       gp=gpar(fontfamily=medium_alias,fontsize=14,col=ink))
   }
   png_path <- file.path(project,"plots",paste0(key,".png")); svg_path <- file.path(project,"plots",paste0(key,".svg"))
-  ragg::agg_png(png_path,width=width,height=height,units="in",res=dpi,background=paper); draw(); dev.off()
+  png_render <- paste0(png_path,".render.png")
+  ragg::agg_png(png_render,width=width,height=height,units="in",res=dpi,background=paper); draw(); dev.off()
+  if(!file.exists(png_render) || file.size(png_render)<1000) stop("PNG render failed")
+  if(!file.copy(png_render,png_path,overwrite=TRUE)) stop("PNG replacement failed")
+  unlink(png_render)
   svglite::svglite(svg_path,width=width,height=height,bg=paper); draw(); dev.off()
   # Insert after the complete SVG opening tag, leaving the XML declaration intact.
   css <- paste0('<metadata>Work Sans copyright 2019 The Work Sans Project Authors; SIL Open Font License 1.1. See brand-exploration/fonts/OFL.txt.</metadata><style type="text/css"><![CDATA[',
@@ -211,9 +225,10 @@ frame <- function(plot,title,subtitle,key,width=8.8,height=8.8,dpi=240) {
   svg <- sub("(<svg\\b[^>]*>)",paste0("\\1\n",css),svg,perl=TRUE)
   writeLines(svg,svg_path,useBytes=TRUE)
 }
-frame(p_month,"Monthly NYC shooting incidents fell after the 2020-2021 peak",
-      "Monthly incidents, 2006-2025; 2026 through June 30", "monthly",8.8,8.8)
-frame(p_cum,"NYC shooting incidents fell 56% from 2021 to 2025",
-      "Cumulative incidents by month, 2006-2025; 2026 through June 30", "cumulative",8.8,8.8)
+headline <- "NYC shootings surged in 2020\u20132021, then fell to a record low in 2025"
+frame(p_month,headline,
+      "Monthly incident counts since 2006; 2026 through June 30", "monthly",8.8,8.8)
+frame(p_cum,headline,
+      "Cumulative incident counts since 2006; 2026 through June 30", "cumulative",8.8,8.8)
 cat(sprintf("Verified calculations retained: 2025=%d; 2021=%d; Jan-Jun 2026=%d vs 2025=%d\n",annual_totals,peak_total,first_half,first_half_25))
 

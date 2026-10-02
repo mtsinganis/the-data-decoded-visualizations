@@ -6,9 +6,17 @@ This development-only comparison is outside Astro and its production artifact. I
 
 White `#FFFFFF` is the default for future chart canvases, panels, legends, and label backgrounds. Earlier paper-background synthetic exports remain archived exploration; this revision does not regenerate them. Keep dimensions flexible: the NYC monthly and cumulative masters are each 8.8 × 8.8 inches (2112 × 2112 PNG pixels).
 
-**Source:** is mandatory. **Notes:** is optional; omit empty notes. Use bold field labels with regular Work Sans content, align fields with the main content's left margin, and hang continuation lines beneath the content after the label. Keep metadata smaller than chart labels but readable at the intended size. Include actual snapshot/access dates, and leave detailed definitions and methodology on the project page. Retain the faint divider, then the left-aligned simplified pterosaur and THE DATA DECODED, preserving intrinsic logo proportions and comfortable spacing.
+**Source:** is mandatory. **Notes:** is optional; omit empty notes. Use bold field labels with regular Work Sans content, align fields with the main content's left margin, use one normal space after each colon, and align continuation lines at the footer left margin. Tighten field spacing; do not use padded columns or hanging indents. Keep metadata smaller than chart labels but readable at the intended size. Include actual snapshot/access dates, and leave detailed definitions and methodology on the project page. Retain the faint divider, then the left-aligned simplified pterosaur and THE DATA DECODED, preserving intrinsic logo proportions and comfortable spacing.
 
 The NYC presentation trial uses solid series, faint solid gridlines, solid annotation leaders, direct endpoint labels, and one PNG/SVG master per chart. Year colors are blue `#2455FF` (2025), crimson `#C83242` (2020), palette B amber `#D49A44` (2021), and palette B teal `#087F79` (2026). The subdued context lines use `#A6B0BD` at 65% opacity and thin strokes; this is a chart-specific choice. The SVG exporter inserts metadata and embedded licensed fonts inside the single SVG root, after its opening tag. No shared production R functions or chart templates are approved or extracted. Visual approval remains pending.
+
+### NYC typography refinement (provisional sizes)
+
+Shared headline: “NYC shootings surged in 2020–2021, then fell to a record low in 2025”. Notes define the record as the lowest annual total in this dataset since 2006. Subtitles state incident counts, coverage since 2006, and 2026 through June 30.
+
+Actual sizes: title 25 → 22 pt; subtitle/axis ticks 17 → 14.5 pt; year labels and main annotations 5.4 → 4.6 mm (about 15.4 → 13.1 pt); December annotation 5.1 → 4.35 mm (14.5 → 12.4 pt); metadata 16 → 13 pt. Metadata leading 0.27 → 0.195 inch; field gap 0.09 → 0.035 inch. Signature remains 14 pt and logo remains 0.60 inch wide at intrinsic 1220:900 ratio. Masters stay square, 8.8 inches / 240 dpi / 2112 pixels. Smaller text releases space to the plot.
+
+Supporting text uses provisional `#666666` (5.74:1 against white); title remains ink. Specific highlighted labels and annotations match unchanged series colors; the general comparison uses gray. White-background contrast: blue 5.50:1, crimson 5.26:1, teal 4.86:1, amber 2.47:1. Amber's matching 2021 text is faint at phone width and does not meet a 4.5:1 small-text target; this limitation is documented under the requested unchanged palette. Sizing remains chart-specific and unapproved; no other exports regenerated.
 
 ## Preview and exports
 

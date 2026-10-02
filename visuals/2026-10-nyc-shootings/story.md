@@ -1,5 +1,5 @@
 ---
-title: "NYC shooting counts fell after the 2020–2021 peak"
+title: "NYC shootings surged in 2020–2021, then fell to a record low in 2025"
 slug: "nyc-shootings"
 date: "2026-10-02"
 topics:
@@ -11,12 +11,12 @@ status: draft
 featured: false
 charts:
   - file: plots/cumulative.png
-    alt: "Cumulative reported shooting incidents by month for each year from 2006 through 2025, with 2026 ending at June 30. Annual lines restart in January. 2020 and 2021 have the highest endpoints; 2025 is the lowest complete-year endpoint. 2025 totals 688 incidents, 56 percent below 2021's 1,562."
+    alt: "Cumulative reported shooting incidents by month for each year from 2006 through 2025, with 2026 ending at June 30. Annual lines restart in January. 2020 and 2021 have the highest endpoints; 2025 is the lowest complete-year endpoint since 2006 in this dataset. 2025 totals 688 incidents, 56 percent below 2021's 1,562."
   - file: plots/monthly.png
     alt: "Monthly reported shooting incidents in New York City, 2006 through 2025, with 2026 through June 30. Thin gray lines show other years; 2020, 2021, 2025, and 2026 are highlighted. July 2020 peaks at 243 incidents; December 2025 has 35, the lowest month in this dataset."
 ---
 
-Reported shooting incidents climbed to their highest annual totals in this dataset in 2020 and 2021, then declined. The two charts show the scale of that change from different angles: cumulative progress through each year and month-by-month counts. These records describe incidents, not the number of people shot, and they do not represent all gun violence.
+Reported shooting incidents surged in 2020–2021, then fell to 688 in 2025: the lowest annual total in this dataset since 2006. The two charts show the scale of that change from different angles: cumulative progress through each year and month-by-month counts. These records describe incidents, not the number of people shot, and they do not represent all gun violence.
 
 ## Sources and methodology
 
