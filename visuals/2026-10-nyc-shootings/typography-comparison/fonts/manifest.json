@@ -1,0 +1,32 @@
+[
+  {
+    "file": "Lato-Bold.ttf",
+    "sha256": "8a0aace75d33794eece4b28187bfc1df0bbd2888b5d8a56e01788c8d65d16be1",
+    "source_revision": "9710da1eacb3be272583c3224dcb70f9da6eadbb"
+  },
+  {
+    "file": "Lato-Medium.ttf",
+    "sha256": "d3ac182a6833e005745dd75679fbad081c0b12535df4e93ad8ed57817a31a338",
+    "source_revision": "9710da1eacb3be272583c3224dcb70f9da6eadbb"
+  },
+  {
+    "file": "Lato-OFL.txt",
+    "sha256": "74ba064d03f1f1c4a952da936c3eb71866c34404916734de3cae73b34357e59e",
+    "source_revision": "9710da1eacb3be272583c3224dcb70f9da6eadbb"
+  },
+  {
+    "file": "Lato-Regular.ttf",
+    "sha256": "d636e4683231f931eda222d588e944d082bfd3bdba02f928bee461c0f185b251",
+    "source_revision": "9710da1eacb3be272583c3224dcb70f9da6eadbb"
+  },
+  {
+    "file": "PlayfairDisplay-OFL.txt",
+    "sha256": "566be814f8e96e93dfa16101331557eb6b5467e9e03f627c0910fe93ca12300e",
+    "source_revision": "9710da1eacb3be272583c3224dcb70f9da6eadbb"
+  },
+  {
+    "file": "PlayfairDisplay-wght.ttf",
+    "sha256": "c40f2293766a503bc70cce9e512ef844a4ccb7cbcde792fe2ea31d191917d8d6",
+    "source_revision": "9710da1eacb3be272583c3224dcb70f9da6eadbb"
+  }
+]

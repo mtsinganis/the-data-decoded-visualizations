@@ -1,0 +1,43 @@
+{
+  "A": {
+    "xml": "valid single SVG root",
+    "geometry_and_logo_identical": true,
+    "png_dimensions": [
+      2112,
+      2112
+    ],
+    "browser_fonts": "loaded",
+    "text_clipping": 0,
+    "non_title_text_overlaps": 0,
+    "title_metric_overlap_screen_px": 0.99,
+    "visible_glyph_collisions": 0
+  },
+  "B": {
+    "xml": "valid single SVG root",
+    "geometry_and_logo_identical": true,
+    "png_dimensions": [
+      2112,
+      2112
+    ],
+    "browser_fonts": "loaded",
+    "text_clipping": 0,
+    "non_title_text_overlaps": 0,
+    "title_metric_overlap_screen_px": 0.99,
+    "visible_glyph_collisions": 0
+  },
+  "C": {
+    "xml": "valid single SVG root",
+    "geometry_and_logo_identical": true,
+    "png_dimensions": [
+      2112,
+      2112
+    ],
+    "browser_fonts": "loaded",
+    "text_clipping": 0,
+    "non_title_text_overlaps": 0,
+    "title_metric_overlap_screen_px": 0,
+    "visible_glyph_collisions": 0
+  },
+  "missing_font_test": "stopped clearly before any exports",
+  "C_png": "pixel-identical to current master (R png::readPNG comparison)"
+}

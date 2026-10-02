@@ -71,3 +71,7 @@ The [Georgia comparison](typography/index.html) has four 360 × 640 frames: Work
 ## Remaining decisions
 
 The frame is ready for a **trial on one new real project**, with B as the provisional categorical choice. Review the simplified logo at actual X avatar and chart-footer sizes on real devices, and check that project's real title, source length, plot labels, legend placement, and palette distinctions at full and phone sizes. Keep any publication decision separate. After that review, extract only approved frame measurements, typography, and footer drawing into shared `R/` functions; plot structures should remain flexible. The live website, historical charts, and X account remain unchanged.
+
+## NYC A/B/C typography comparison (unapproved)
+
+The isolated [cumulative-chart comparison](../visuals/2026-10-nyc-shootings/typography-comparison/README.md) tests Playfair Display + Work Sans (A), Playfair Display + Lato (B), and current reduced Work Sans (C). All use identical sizes and geometry: two 22 pt title lines, 5.6535 inch plot allocation, 2112px square exports. Exact official font files and licenses are bundled only inside that comparison. C's PNG matches the current master pixel for pixel. Recommendation is C at phone size, with A as the serif alternative; final choice is pending user review. Work Sans remains approved for production. No new shared functions, production-font changes, or other chart exports.
