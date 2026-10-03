@@ -1,0 +1,3 @@
+# Preserve supplied snapshot and original script byte-for-byte.
+data/shootings_snapshot.csv -text
+data/nyc_shootings_original.R -text
