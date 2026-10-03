@@ -125,7 +125,7 @@ p_month <- ggplot() +
   annotate("text",x=7.25,y=275,label="Jul 2020: 243\nhighest month since 2006",hjust=0,family=bold_alias,size=4.6,colour=crimson,lineheight=.95) +
   annotate("segment",x=7.2,y=264,xend=7,yend=243,colour=crimson,linewidth=.5) +
   annotate("text",x=10.7,y=14,label="Dec 2025: 35\nlowest month since 2006",hjust=1,
-    family=bold_alias,size=4.35,colour=blue,lineheight=.95) +
+    family=bold_alias,size=4.6,colour=blue,lineheight=.95) +
   annotate("segment",x=10.9,y=20,xend=12,yend=35,colour=blue,linewidth=.5) +
   scale_colour_manual(values=styles) + axis_months +
   scale_y_continuous(breaks=seq(0,250,50),limits=c(0,287),expand=c(0,0)) + base_theme
