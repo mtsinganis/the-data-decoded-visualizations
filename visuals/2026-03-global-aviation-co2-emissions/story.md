@@ -5,7 +5,6 @@ date: "2026-03-30"
 topics: [Aviation, CO2, Emissions]
 description: "Evolution and seasonality in the period 2019–2025, and contribution by international vs. domestic aviation"
 status: published
-featured: true
 charts:
   - file: plots/thumb.svg
     alt: "Chart of global daily aviation CO₂ emissions from 2019 through 2025."
