@@ -126,7 +126,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.</metadata><style type="text/css"><![CDATA[@
 <text x='28.80' y='539.68' style='font-size: 13.00px; font-weight: bold;fill: #666666; font-family: "Lato";' textLength='43.00px' lengthAdjust='spacingAndGlyphs'>Source:</text>
 <text x='75.13' y='539.60' style='font-size: 13.00px;fill: #666666; font-family: "Lato";' textLength='360.53px' lengthAdjust='spacingAndGlyphs'>NYPD via NYC Open Data (5ucz-vwe8). Snapshot: Oct 2, 2026.</text>
 <text x='28.80' y='556.24' style='font-size: 13.00px; font-weight: bold;fill: #666666; font-family: "Lato";' textLength='37.95px' lengthAdjust='spacingAndGlyphs'>Notes:</text>
-<text x='70.08' y='556.16' style='font-size: 13.00px;fill: #666666; font-family: "Lato";' textLength='450.34px' lengthAdjust='spacingAndGlyphs'>Incidents, not people shot. 2025: lowest annual total in this dataset since 2006.</text>
+<text x='70.08' y='556.16' style='font-size: 13.00px;fill: #666666; font-family: "Lato";' textLength='520.25px' lengthAdjust='spacingAndGlyphs'>Incidents, not people shot. Counts are by incident month; 2026 includes January–June only.</text>
 </g>
 <defs>
   <clipPath id='cpMjguODB8NjA0LjgwfDEwNi42N3w1MTMuNzI='>
@@ -187,13 +187,13 @@ OTHER DEALINGS IN THE FONT SOFTWARE.</metadata><style type="text/css"><![CDATA[@
 <text x='520.17' y='356.27' style='font-size: 13.09px; font-weight: bold;fill: #D49A44; font-family: "Lato";' textLength='30.31px' lengthAdjust='spacingAndGlyphs'>2021</text>
 <polygon points='521.53,449.95 549.65,449.95 549.55,449.95 549.93,449.94 550.30,449.86 550.66,449.73 550.98,449.54 551.28,449.30 551.53,449.01 551.73,448.69 551.88,448.34 551.97,447.97 552.00,447.60 552.00,447.60 552.00,438.13 552.00,438.13 551.97,437.75 551.88,437.39 551.73,437.04 551.53,436.72 551.28,436.43 550.98,436.19 550.66,436.00 550.30,435.87 549.93,435.79 549.65,435.78 521.53,435.78 521.82,435.79 521.44,435.78 521.06,435.82 520.70,435.93 520.35,436.09 520.04,436.31 519.77,436.57 519.54,436.87 519.36,437.21 519.24,437.57 519.18,437.94 519.18,438.13 519.18,447.60 519.18,447.41 519.18,447.79 519.24,448.16 519.36,448.52 519.54,448.86 519.77,449.16 520.04,449.42 520.35,449.64 520.70,449.80 521.06,449.90 521.44,449.95 ' style='stroke-width: 0.00; stroke: none; fill: #FFFFFF;' />
 <text x='520.17' y='447.59' style='font-size: 13.09px; font-weight: bold;fill: #2455FF; font-family: "Lato";' textLength='30.31px' lengthAdjust='spacingAndGlyphs'>2025</text>
-<text x='284.21' y='407.00' style='font-size: 13.09px;fill: #087F79; font-family: "Lato";' textLength='59.66px' lengthAdjust='spacingAndGlyphs'>2026: 322</text>
-<text x='284.21' y='421.92' style='font-size: 13.09px;fill: #087F79; font-family: "Lato";' textLength='86.70px' lengthAdjust='spacingAndGlyphs'>through Jun 30</text>
-<text x='318.06' y='123.76' style='font-size: 13.09px;fill: #C83242; font-family: "Lato";' textLength='78.73px' lengthAdjust='spacingAndGlyphs'>Jul 2020: 243</text>
-<text x='318.06' y='138.69' style='font-size: 13.09px;fill: #C83242; font-family: "Lato";' textLength='148.61px' lengthAdjust='spacingAndGlyphs'>highest month since 2006</text>
+<text x='284.21' y='407.04' style='font-size: 13.09px; font-weight: bold;fill: #087F79; font-family: "Lato";' textLength='37.08px' lengthAdjust='spacingAndGlyphs'>2026 ·</text>
+<text x='284.21' y='421.96' style='font-size: 13.09px; font-weight: bold;fill: #087F79; font-family: "Lato";' textLength='76.05px' lengthAdjust='spacingAndGlyphs'>through June</text>
+<text x='318.06' y='123.80' style='font-size: 13.09px; font-weight: bold;fill: #C83242; font-family: "Lato";' textLength='78.81px' lengthAdjust='spacingAndGlyphs'>Jul 2020: 243</text>
+<text x='318.06' y='138.72' style='font-size: 13.09px; font-weight: bold;fill: #C83242; font-family: "Lato";' textLength='150.00px' lengthAdjust='spacingAndGlyphs'>highest month since 2006</text>
 <line x1='316.07' y1='141.10' x2='308.10' y2='168.89' style='stroke-width: 1.07; stroke: #C83242; stroke-linecap: butt;' />
-<text x='455.46' y='469.36' text-anchor='end' style='font-size: 12.38px;fill: #2455FF; font-family: "Lato";' textLength='74.22px' lengthAdjust='spacingAndGlyphs'>Dec 2025: 35</text>
-<text x='455.46' y='483.47' text-anchor='end' style='font-size: 12.38px;fill: #2455FF; font-family: "Lato";' textLength='136.91px' lengthAdjust='spacingAndGlyphs'>lowest month since 2006</text>
+<text x='455.46' y='469.40' text-anchor='end' style='font-size: 12.38px; font-weight: bold;fill: #2455FF; font-family: "Lato";' textLength='74.12px' lengthAdjust='spacingAndGlyphs'>Dec 2025: 35</text>
+<text x='455.46' y='483.51' text-anchor='end' style='font-size: 12.38px; font-weight: bold;fill: #2455FF; font-family: "Lato";' textLength='138.23px' lengthAdjust='spacingAndGlyphs'>lowest month since 2006</text>
 <line x1='463.42' y1='464.04' x2='507.23' y2='444.19' style='stroke-width: 1.07; stroke: #2455FF; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMC4wMHw2MzMuNjB8MC4wMHw2MzMuNjA=)'>

@@ -106,7 +106,7 @@ axis_months <- scale_x_continuous(breaks=1:12,labels=month.abb,limits=c(.8,14.4)
 
 # Refine the monthly view first; endpoint labels have short solid leaders.
 month_ends <- months %>% filter((year %in% c(2020,2021,2025) & month==12) | (year==2026 & month==6)) %>%
-  mutate(label=if_else(year==2026,"2026: 322\nthrough Jun 30",as.character(year)),
+  mutate(label=if_else(year==2026,"2026 \u00b7\nthrough June",as.character(year)),
     lx=if_else(year==2026,6.4,12.3),
     ly=case_when(year==2020 ~ 140,year==2021 ~ 105,year==2025 ~ 36,TRUE ~ 61))
 p_month <- ggplot() +
@@ -121,11 +121,11 @@ p_month <- ggplot() +
   geom_label(data=month_ends %>% filter(year!=2026),aes(x=lx,y=ly,label=label,colour=factor(year)),hjust=0,
     fill=paper,linewidth=0,label.padding=unit(.08,"lines"),family=bold_alias,size=4.6,lineheight=.95) +
   geom_text(data=month_ends %>% filter(year==2026),aes(x=lx,y=ly,label=label,colour=factor(year)),hjust=0,
-    family=regular_alias,size=4.6,lineheight=.95) +
-  annotate("text",x=7.25,y=275,label="Jul 2020: 243\nhighest month since 2006",hjust=0,family=regular_alias,size=4.6,colour=crimson,lineheight=.95) +
+    family=bold_alias,size=4.6,lineheight=.95) +
+  annotate("text",x=7.25,y=275,label="Jul 2020: 243\nhighest month since 2006",hjust=0,family=bold_alias,size=4.6,colour=crimson,lineheight=.95) +
   annotate("segment",x=7.2,y=264,xend=7,yend=243,colour=crimson,linewidth=.5) +
   annotate("text",x=10.7,y=14,label="Dec 2025: 35\nlowest month since 2006",hjust=1,
-    family=regular_alias,size=4.35,colour=blue,lineheight=.95) +
+    family=bold_alias,size=4.35,colour=blue,lineheight=.95) +
   annotate("segment",x=10.9,y=20,xend=12,yend=35,colour=blue,linewidth=.5) +
   scale_colour_manual(values=styles) + axis_months +
   scale_y_continuous(breaks=seq(0,250,50),limits=c(0,287),expand=c(0,0)) + base_theme
@@ -188,7 +188,8 @@ frame <- function(plot,title,subtitle,key,width=8.8,height=8.8,dpi=240) {
     plot_top <- sub_top-length(sub_lines)*14.5/72*1.1-.16
     meta_size <- 13; meta_leading <- .195; field_gap <- .035
     source <- "NYPD via NYC Open Data (5ucz-vwe8). Snapshot: Oct 2, 2026."
-    note <- "Incidents, not people shot. 2025: lowest annual total in this dataset since 2006."
+    note <- if(key=="monthly") "Incidents, not people shot. Counts are by incident month; 2026 includes January\u2013June only." else
+      "Incidents, not people shot. 2025: lowest annual total in this dataset since 2006."
     source_lines <- wrap_lines(paste("Source:",source),content,meta_size)
     note_lines <- if(nzchar(note)) wrap_lines(paste("Notes:",note),content,meta_size) else character()
     metadata_top <- 1.01+(length(source_lines)+length(note_lines))*meta_leading+field_gap
@@ -245,7 +246,7 @@ frame <- function(plot,title,subtitle,key,width=8.8,height=8.8,dpi=240) {
 headline <- "NYC shootings surged in 2020\u20132021, then fell to a record low in 2025"
 frame(p_month,"The summer 2020 spike stands out against 2025\u2019s lower monthly counts",
       "Monthly incident counts since 2006; 2026 through June 30", "monthly",8.8,8.8)
-frame(p_cum,headline,
+if(Sys.getenv("TDD_EXPORT_ONLY")!="monthly") frame(p_cum,headline,
       "Cumulative incident counts since 2006; 2026 through June 30", "cumulative",8.8,8.8)
 cat(sprintf("Verified calculations retained: 2025=%d; 2021=%d; Jan-Jun 2026=%d vs 2025=%d\n",annual_totals,peak_total,first_half,first_half_25))
 
