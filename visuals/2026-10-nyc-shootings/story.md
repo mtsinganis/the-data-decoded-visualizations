@@ -1,7 +1,7 @@
 ---
 title: "NYC shootings surged in 2020–2021, then fell to a record low in 2025"
 slug: "nyc-shootings"
-date: "2026-10-02"
+date: "2026-10-04"
 topics:
   - New York City
   - Public safety
