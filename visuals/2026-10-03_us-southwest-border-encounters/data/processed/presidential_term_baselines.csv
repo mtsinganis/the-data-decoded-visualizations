@@ -1,0 +1,4 @@
+term_id,term,start_year,end_year,baseline_date,baseline_total,baseline_days,baseline_daily,denominator_status
+trump_first,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid
+biden,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid
+trump_second,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid
