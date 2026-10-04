@@ -22,5 +22,12 @@ const base = import.meta.env.BASE_URL;
     </header>
     <main><slot /></main>
     <footer>© {new Date().getFullYear()} The Data Decoded · Created by Markos Tsinganis · <a href="https://github.com/mtsinganis/the-data-decoded-visualizations">Source and analysis</a> · <a class="follow-x" href="https://x.com/TheDataDecoded">Follow on X</a></footer>
+    {import.meta.env.PROD && (
+      <>
+        <!-- Cloudflare Web Analytics -->
+        <script is:inline type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "00fd1c38dc2348bd91a9b05d6e186e13"}'></script>
+        <!-- End Cloudflare Web Analytics -->
+      </>
+    )}
   </body>
 </html>
