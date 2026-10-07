@@ -6,7 +6,7 @@ topics:
   - United States
   - Border enforcement
 description: "Published southwest Border Patrol totals through August 2026, with a monthly timeline and three presidential-term trajectories relative to their starting January daily rates."
-status: draft
+status: published
 featured: false
 charts:
   - file: plots/monthly-timeline.png
@@ -93,4 +93,4 @@ The separate at-entry series from October 2023 onward supports a sensitivity che
 
 Validation confirms 116/116 published-total observations, zero duplicates/missing chart counts, 35/35 total = entry + large matches, 3/3 starting January indices exactly 100, correct 48/48/20 monthly term alignment and endpoints, six independent count/day index checks, leap-year February divisors, and 28 missing future second-term indices. The y-axis contains every calculated index. Raw detail keys are unique, counts are nonnegative integers, sector/component/geography and Title 42 checks pass. FY2017–FY2018 HTML matches 24 PDF monthly observations; fiscal totals and FY2020 HTML/CSV match. Successive final-release overlaps agree, with early-release revisions recorded separately.
 
-Charts use established Lato weights, white backgrounds and The Data Decoded branding. Both PNGs are rendered directly at **3,000 × 3,000 pixels**, **400 dpi**, on **7.5 × 7.5-inch** square canvases, with matching SVG compositions. Full-size, 1,000-pixel and 375-pixel previews support layout inspection. The timeline is presented first, followed by the presidential-term index; the rejected annual overlays have no active chart references. Detailed evidence is in `narrative/scope-evidence.md`; every verified monthly total/entry difference is in `data/processed/scope_monthly_differences.csv` and `narrative/monthly-scope-differences.md`. The index is in `data/processed/presidential_term_index.csv`, and the supporting classification in `data/processed/at_entry_sensitivity.csv`. Raw snapshots, dates and hashes are recorded in the manifest. The project remains draft and unpublished.
+Charts use established Lato weights, white backgrounds and The Data Decoded branding. Both PNGs are rendered directly at **3,000 × 3,000 pixels**, **400 dpi**, on **7.5 × 7.5-inch** square canvases, with matching SVG compositions. Full-size, 1,000-pixel and 375-pixel previews support layout inspection. The timeline is presented first, followed by the presidential-term index; the rejected annual overlays have no active chart references. Detailed evidence is in `narrative/scope-evidence.md`; every verified monthly total/entry difference is in `data/processed/scope_monthly_differences.csv` and `narrative/monthly-scope-differences.md`. The index is in `data/processed/presidential_term_index.csv`, and the supporting classification in `data/processed/at_entry_sensitivity.csv`. Raw snapshots, dates and hashes are recorded in the manifest. The article is published on The Data Decoded website.

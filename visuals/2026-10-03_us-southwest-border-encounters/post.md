@@ -1,6 +1,6 @@
 # Draft X mini-thread — not posted
 
-Two X Premium posts, in the order below. Attachment instructions, ALT text and character counts are editorial metadata, not post copy. Counts include spaces, paragraph breaks and the internal link placeholder, but exclude ALT text. Recount after replacing the placeholder; X applies its own URL weighting.
+Two X Premium posts, in the order below. Attachment instructions, ALT text and character counts are editorial metadata, not post copy. Counts include spaces, paragraph breaks and the methodology URL, but exclude ALT text. X applies its own URL weighting.
 
 **Attach:** `plots/monthly-timeline.png`
 
@@ -22,7 +22,7 @@ Published southwest U.S. Border Patrol encounters per day, averaged monthly, Jan
 
 **Attach:** `plots/presidential-term-index.png`
 
-**Draft text · 925 characters · 134 words:**
+**Draft text · 976 characters · 125 words:**
 
 How do southwest U.S. Border Patrol encounters compare relative to each term’s starting point? Each line starts at 100 using that term’s January average daily encounters.
 
@@ -32,7 +32,7 @@ By August 2026, encounters were approximately 70% below January 2025. Trump’s 
 
 Encounters are events, not unique people. Recent totals include interior apprehensions whose consistent inclusion in earlier totals is unconfirmed.
 
-Methodology: [INTERNAL PLACEHOLDER — insert verified public project URL before posting]
+Methodology: https://mtsinganis.github.io/the-data-decoded-visualizations/projects/us-southwest-border-encounters/#sources-and-methodology
 
 **ALT text:** Reuse `story.md` → `charts` → `plots/presidential-term-index.png` verbatim:
 
@@ -40,7 +40,7 @@ Monthly southwest U.S. Border Patrol daily encounters indexed to each term’s s
 
 ---
 
-**Unresolved link:** Project status is `draft`; no suitable published project methodology page is established. Resolve the explicitly marked internal placeholder to a verified public methodology URL before posting. Do not publish the placeholder.
+**Methodology link:** Uses the published article’s Sources and methodology section. Confirm the live URL after deployment. X copy remains draft.
 
 **Verification:** Validated monthly daily rates: January 2017 1,018.580645; January 2021 2,429.548387; January 2025 938.870968; December 2023 8,056.129032; December 2024 1,526.451613; August 2026 286.129032. December-to-December decline is 81.0523%; August 2026 versus January 2025 decline is 69.5241%. Baselines and displayed daily rates round to whole encounters per day. Higher first-term indexed peak reflects the lower denominator; the higher absolute peak occurred during Biden’s term. No unresolved numerical issue; historical interior-component consistency remains a measurement limitation.
 
