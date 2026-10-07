@@ -1,7 +1,7 @@
 ---
 title: "How US southwest border encounters changed, 2017–2026"
 slug: "us-southwest-border-encounters"
-date: "2026-10-03"
+date: "2026-10-07"
 topics:
   - United States
   - Border enforcement
