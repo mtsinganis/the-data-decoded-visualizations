@@ -166,3 +166,7 @@ Start-Process 'https://mtsinganis.github.io/the-data-decoded-visualizations/proj
 Check the published chart and full-size link there. Post to [X](https://x.com/TheDataDecoded) manually after reviewing `post.md`.
 
 For migration history and the Quarto rollback procedure, see [MIGRATION.md](MIGRATION.md).
+
+## Website design preview
+
+The website uses locally hosted Lato Regular 400 and Bold 700, and the saved chart-style logo lockup. Public asset copies live in `website/public/`; keep fonts and logo copies identical to the permanent assets. `xPostUrl` in a story is optional and must identify an actual published X status; only then does a project show its discussion link. Gallery projects retain newest-first ordering.

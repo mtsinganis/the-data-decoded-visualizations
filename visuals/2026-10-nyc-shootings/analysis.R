@@ -59,7 +59,7 @@ write_csv(coverage, file.path(project, "data/monthly_coverage.csv"))
 paper <- "#FFFFFF"; ink <- "#172033"; blue <- "#2455FF"
 crimson <- "#C83242"; amber <- "#D49A44"; teal <- "#087F79"; context <- "#A6B0BD"
 # Default for new charts: exact licensed Lato Regular 400 / Bold 700 / Black 900.
-font_dir <- Sys.getenv("TDD_LATO_FONT_DIR","brand-exploration/fonts/lato")
+font_dir <- Sys.getenv("TDD_LATO_FONT_DIR","assets/fonts/lato")
 font_files <- file.path(font_dir,paste0("Lato-",c("Regular","Bold","Black"),".ttf"))
 if(any(!file.exists(font_files))) stop("Required bundled Lato font missing: Regular, Bold and Black must exist in ",font_dir)
 infos <- lapply(font_files,function(p) systemfonts::font_info(path=p))
@@ -151,7 +151,7 @@ p_cum <- ggplot() +
   scale_colour_manual(values=styles) + axis_months +
   scale_y_continuous(breaks=seq(0,1500,500),limits=c(0,1780),expand=c(0,0)) + base_theme
 
-logo_source <- paste(readLines("brand-exploration/pterosaur-simplified.svg",warn=FALSE),collapse="\n")
+logo_source <- paste(readLines("assets/brand/pterosaur-simplified.svg",warn=FALSE),collapse="\n")
 viewbox <- regmatches(logo_source,regexec('viewBox="[0-9.]+ [0-9.]+ ([0-9.]+) ([0-9.]+)"',logo_source))[[1]]
 logo_ratio <- as.numeric(viewbox[2])/as.numeric(viewbox[3])
 logo_raster <- png::readPNG(rsvg::rsvg_png(charToRaw(logo_source),width=488,height=round(488/logo_ratio)),native=TRUE)
@@ -249,4 +249,3 @@ frame(p_month,"The summer 2020 spike stands out against 2025\u2019s lower monthl
 if(Sys.getenv("TDD_EXPORT_ONLY")!="monthly") frame(p_cum,headline,
       "Cumulative incident counts since 2006; 2026 through June 30", "cumulative",8.8,8.8)
 cat(sprintf("Verified calculations retained: 2025=%d; 2021=%d; Jan-Jun 2026=%d vs 2025=%d\n",annual_totals,peak_total,first_half,first_half_25))
-

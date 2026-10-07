@@ -47,6 +47,10 @@ export async function getProjects(root = visuals, { includeDrafts = false } = {}
       if (!(await stat(file)).isFile()) throw new Error(`Chart is not a file: ${file}`);
       charts.push({ file, name: path.basename(file), alt: chart.alt });
     }
+    const xPostUrl = data.xPostUrl || null;
+    if (xPostUrl && !/^https:\/\/(?:x\.com|twitter\.com)\/[A-Za-z0-9_]+\/status\/\d+$/.test(xPostUrl)) {
+      throw new Error(`${folder.name}: xPostUrl must be an actual published X post URL`);
+    }
     projects.push({
       folder: folder.name,
       status: data.status,
@@ -57,6 +61,7 @@ export async function getProjects(root = visuals, { includeDrafts = false } = {}
       description: data.description || '',
       featured: data.featured === true,
       charts,
+      xPostUrl,
       introductionHtml: await marked.parse(sections[0] || ''),
       sourcesHtml: await marked.parse(sections[1] || ''),
     });

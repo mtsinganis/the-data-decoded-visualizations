@@ -17,17 +17,15 @@ const base = import.meta.env.BASE_URL;
   </head>
   <body>
     <header class="site-header">
-      <div class="identity">
-        <a class="site-name" href={base}>The Data Decoded</a>
-        <span>Data visualizations</span>
-      </div>
+      <a class="site-name" href={base}><img class="brand-lockup" src={`${base}brand/the-data-decoded-lockup.svg`} alt="The Data Decoded — homepage" width="305" height="44" /></a>
       <nav aria-label="Main navigation">
         <a href={base}>Gallery</a>
         <a href="https://github.com/mtsinganis/the-data-decoded-visualizations">GitHub</a>
+      <a class="follow-x" href="https://x.com/TheDataDecoded">Follow on X</a>
       </nav>
     </header>
     <main><slot /></main>
-    <footer>© {new Date().getFullYear()} The Data Decoded · Created by Markos Tsinganis · <a href="https://github.com/mtsinganis/the-data-decoded-visualizations">Source and analysis</a></footer>
+    <footer>© {new Date().getFullYear()} The Data Decoded · Created by Markos Tsinganis · <a href="https://github.com/mtsinganis/the-data-decoded-visualizations">Source and analysis</a> · <a class="follow-x" href="https://x.com/TheDataDecoded">Follow on X</a></footer>
     {import.meta.env.PROD && (
       <>
         <!-- Cloudflare Web Analytics -->

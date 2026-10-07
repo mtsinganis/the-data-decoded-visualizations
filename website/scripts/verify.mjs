@@ -27,15 +27,24 @@ assert.deepEqual(somalia.charts.map((chart) => chart.name), ['us_somalia_fragile
 
 const gallery = await readFile(path.join(dist, 'index.html'), 'utf8');
 const htmlText = (value) => value.replaceAll('&', '&amp;').replaceAll("'", '&#39;').replaceAll('"', '&quot;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
-assert.ok(gallery.includes('class="site-name"') && gallery.includes('>The Data Decoded</a>'), 'collection is the header wordmark');
+assert.ok(gallery.includes('class="site-name"') && gallery.includes('alt="The Data Decoded — homepage"'), 'collection is the header wordmark');
 assert.ok(gallery.includes('<h1>Interesting questions, explored through data.</h1>'), 'gallery uses the chosen headline');
 assert.ok(gallery.includes('By Markos Tsinganis'), 'gallery retains secondary author credit');
+assert.equal((gallery.match(/>Follow on X<\/a>/g) || []).length, 2, 'header and footer expose confirmed X profile');
+const firstProject = gallery.match(/href="[^"]*\/projects\/([^/]+)\/"/);
+assert.equal(firstProject?.[1], projects[0].slug, 'gallery follows project ordering');
+for (const file of ['Lato-Regular.ttf', 'Lato-Bold.ttf', 'Lato-OFL.txt']) {
+  assert.deepEqual(await readFile(path.join(dist, 'fonts', file)), await readFile(path.resolve('../assets/fonts/lato', file)), 'public Lato must match licensed asset');
+}
+assert.deepEqual(await readFile(path.join(dist, 'brand/the-data-decoded-lockup.svg')), await readFile(path.resolve('../assets/brand/the-data-decoded-lockup.svg')), 'public logo matches permanent asset');
+
 
 for (const item of projects) {
   const project = await readFile(path.join(dist, 'projects', item.slug, 'index.html'), 'utf8');
   assert.ok(gallery.includes(`${base}projects/${item.slug}/`), `gallery links to ${item.slug}`);
   assert.ok(gallery.includes(htmlText(item.title)) && gallery.includes(htmlText(item.description)),
     `gallery shows title and description for ${item.slug}`);
+  assert.equal(project.includes('Discuss this chart on X'), Boolean(item.xPostUrl), 'discussion links require a published X post');
   assert.ok(project.includes('By Markos Tsinganis'), `${item.slug} retains author credit`);
   const positions = [
     project.indexOf('<h1>'),
@@ -73,7 +82,7 @@ async function filesIn(dir, prefix = '') {
   return result;
 }
 const expected = new Set([
-  'index.html', 'styles.css',
+  'index.html', 'styles.css', 'fonts/Lato-Regular.ttf', 'fonts/Lato-Bold.ttf', 'fonts/Lato-OFL.txt', 'brand/the-data-decoded-lockup.svg',
   ...projects.map((item) => `projects/${item.slug}/index.html`),
   ...projects.flatMap((item) => item.charts.map((chart) => `chart/${item.slug}/${chart.name}`)),
 ]);
