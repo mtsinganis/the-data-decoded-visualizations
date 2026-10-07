@@ -1,0 +1,8 @@
+check,result
+Baseline indices = 100,3/3 exact
+Observed monthly counts per term,48 / 48 / 20
+Month 13 = next January,3/3 exact
+Four-year endpoints exclude following January,December 2020 / December 2024
+Second term ends August 2026 at month 20,Exact
+Unavailable months remain missing,28 missing; no interpolation
+Independent count/day checks,6/6 exact

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" role="img" aria-labelledby="title">
+  <title id="title">TDD letter monogram</title>
+  <path fill="#242821" d="M5 24h22v7h-7v26h-8V31H5z"/>
+  <path fill="#242821" fill-rule="evenodd" d="M30 24h10c11 0 17 6 17 16s-6 17-17 17H30zm8 7v19h2c6 0 9-4 9-10s-3-9-9-9z"/>
+  <path fill="#242821" fill-rule="evenodd" d="M56 24h7c10 0 15 6 15 16s-5 17-15 17h-7zm7 7v19c5 0 8-4 8-10s-3-9-8-9z"/>
+</svg>

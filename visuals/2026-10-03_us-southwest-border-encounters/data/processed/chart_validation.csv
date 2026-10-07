@@ -1,0 +1,8 @@
+check,result
+Timeline equals published totals throughout,116/116 unchanged
+Total = entry + large,35/35 exact
+January indices = 100,10/10 exact
+January denominator status,10/10 positive
+Independent all-month count/day validation,116/116 exact
+Unavailable future months,4/4 missing
+Index peak containment,276.9045 < 300

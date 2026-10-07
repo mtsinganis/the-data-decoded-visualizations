@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='720.00pt' height='720.00pt' viewBox='0 0 720.00 720.00'>
+<g class='svglite'>
+<defs>
+  <style type='text/css'><![CDATA[
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+    .svglite g.glyphgroup path {
+      fill: inherit;
+      stroke: none;
+    }
+  ]]></style>
+</defs>
+<rect width='100%' height='100%' style='stroke: none; fill: #FFFFFF;'/>
+<defs>
+  <clipPath id='cpMC4wMHw3MjAuMDB8MC4wMHw3MjAuMDA='>
+    <rect x='0.00' y='0.00' width='720.00' height='720.00' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw3MjAuMDA=)'>
+<rect x='0.00' y='0.00' width='720.00' height='720.00' style='stroke-width: 1.36; stroke: none; fill: #FFFFFF;' />
+<polyline points='42.30,619.41 655.24,619.41 ' style='stroke-width: 1.36; stroke: #EBEBEB; stroke-dasharray: 7.24,7.24; stroke-linecap: butt;' />
+<polyline points='42.30,517.93 655.24,517.93 ' style='stroke-width: 1.36; stroke: #EBEBEB; stroke-dasharray: 7.24,7.24; stroke-linecap: butt;' />
+<polyline points='42.30,416.46 655.24,416.46 ' style='stroke-width: 1.36; stroke: #EBEBEB; stroke-dasharray: 7.24,7.24; stroke-linecap: butt;' />
+<polyline points='42.30,314.98 655.24,314.98 ' style='stroke-width: 1.36; stroke: #EBEBEB; stroke-dasharray: 7.24,7.24; stroke-linecap: butt;' />
+<polyline points='42.30,213.51 655.24,213.51 ' style='stroke-width: 1.36; stroke: #EBEBEB; stroke-dasharray: 7.24,7.24; stroke-linecap: butt;' />
+<polyline points='42.30,112.04 655.24,112.04 ' style='stroke-width: 1.36; stroke: #EBEBEB; stroke-dasharray: 7.24,7.24; stroke-linecap: butt;' />
+<line x1='42.30' y1='619.41' x2='655.24' y2='619.41' style='stroke-width: 1.36; stroke: #4D4D4D; stroke-linecap: butt;' />
+<polyline points='48.37,392.10 103.54,455.02 158.71,459.08 213.88,390.08 269.05,347.46 324.22,323.10 379.39,276.42 434.56,260.19 489.73,310.93 544.90,314.98 600.07,373.84 655.24,351.52 ' style='stroke-width: 1.36; stroke: #D9D9D9; stroke-linecap: butt;' />
+<polyline points='48.37,436.75 103.54,493.58 158.71,473.28 213.88,418.49 269.05,290.63 324.22,298.75 379.39,286.57 434.56,292.66 489.73,351.52 544.90,319.04 600.07,418.49 655.24,426.61 ' style='stroke-width: 1.36; stroke: #D9D9D9; stroke-linecap: butt;' />
+<polyline points='48.37,418.49 103.54,489.52 158.71,416.46 213.88,373.84 269.05,312.95 324.22,312.95 379.39,270.34 434.56,280.48 489.73,312.95 544.90,381.96 600.07,414.43 655.24,363.69 ' style='stroke-width: 1.36; stroke: #D9D9D9; stroke-linecap: butt;' />
+<polyline points='48.37,459.08 103.54,467.20 158.71,444.87 213.88,386.02 269.05,357.60 324.22,317.01 379.39,268.31 434.56,274.39 489.73,383.99 544.90,398.19 600.07,371.81 655.24,422.55 ' style='stroke-width: 1.36; stroke: #D9D9D9; stroke-linecap: butt;' />
+<polyline points='48.37,444.87 103.54,450.96 158.71,404.28 213.88,375.87 269.05,373.84 324.22,298.75 379.39,278.45 434.56,288.60 489.73,329.19 544.90,398.19 600.07,400.22 655.24,400.22 ' style='stroke-width: 1.36; stroke: #D9D9D9; stroke-linecap: butt;' />
+<polyline points='48.37,450.96 103.54,463.14 158.71,463.14 213.88,398.19 269.05,353.54 324.22,363.69 379.39,266.28 434.56,256.13 489.73,278.45 544.90,304.84 600.07,392.10 655.24,377.90 ' style='stroke-width: 1.36; stroke: #D9D9D9; stroke-linecap: butt;' />
+<polyline points='48.37,434.72 103.54,450.96 158.71,408.34 213.88,420.52 269.05,335.28 324.22,321.07 379.39,237.86 434.56,345.43 489.73,365.72 544.90,436.75 600.07,442.84 655.24,446.90 ' style='stroke-width: 1.36; stroke: #D9D9D9; stroke-linecap: butt;' />
+<polyline points='48.37,430.67 103.54,517.93 158.71,483.43 213.88,459.08 269.05,461.11 324.22,377.90 379.39,392.10 434.56,343.40 489.73,402.25 544.90,414.43 600.07,452.99 655.24,459.08 ' style='stroke-width: 1.36; stroke: #D9D9D9; stroke-linecap: butt;' />
+<polyline points='48.37,463.14 103.54,528.08 158.71,452.99 213.88,442.84 269.05,392.10 324.22,373.84 379.39,347.46 434.56,345.43 489.73,424.58 544.90,430.67 600.07,438.78 655.24,414.43 ' style='stroke-width: 1.36; stroke: #D9D9D9; stroke-linecap: butt;' />
+<polyline points='48.37,436.75 103.54,499.67 158.71,479.37 213.88,442.84 269.05,351.52 324.22,400.22 379.39,381.96 434.56,371.81 489.73,420.52 544.90,455.02 600.07,457.05 655.24,426.61 ' style='stroke-width: 1.36; stroke: #D9D9D9; stroke-linecap: butt;' />
+<polyline points='48.37,499.67 103.54,495.61 158.71,483.43 213.88,483.43 269.05,444.87 324.22,428.64 379.39,422.55 434.56,325.13 489.73,400.22 544.90,448.93 600.07,487.49 655.24,489.52 ' style='stroke-width: 1.36; stroke: #D9D9D9; stroke-linecap: butt;' />
+<polyline points='48.37,501.70 103.54,538.23 158.71,521.99 213.88,481.40 269.05,483.43 324.22,459.08 379.39,459.08 434.56,450.96 489.73,459.08 544.90,471.25 600.07,521.99 655.24,483.43 ' style='stroke-width: 1.36; stroke: #D9D9D9; stroke-linecap: butt;' />
+<polyline points='48.37,499.67 103.54,546.35 158.71,526.05 213.88,519.96 269.05,463.14 324.22,477.34 379.39,438.78 434.56,465.17 489.73,475.31 544.90,481.40 600.07,507.79 655.24,501.70 ' style='stroke-width: 1.36; stroke: #D9D9D9; stroke-linecap: butt;' />
+<polyline points='48.37,513.87 103.54,534.17 158.71,505.76 213.88,493.58 269.05,495.61 324.22,438.78 379.39,440.81 434.56,434.72 489.73,483.43 544.90,493.58 600.07,515.90 655.24,505.76 ' style='stroke-width: 1.36; stroke: #D9D9D9; stroke-linecap: butt;' />
+<polyline points='48.37,418.49 103.54,467.20 158.71,386.02 213.88,406.31 269.05,381.96 324.22,365.72 379.39,264.25 434.56,386.02 489.73,381.96 544.90,444.87 600.07,457.05 655.24,446.90 ' style='stroke-width: 1.36; stroke: #D9D9D9; stroke-linecap: butt;' />
+<polyline points='48.37,469.23 103.54,491.55 158.71,446.90 213.88,475.31 269.05,446.90 324.22,408.34 379.39,390.08 434.56,442.84 489.73,463.14 544.90,461.11 600.07,487.49 655.24,473.28 ' style='stroke-width: 1.36; stroke: #D9D9D9; stroke-linecap: butt;' />
+<polyline points='48.37,487.49 103.54,511.84 158.71,489.52 213.88,497.64 269.05,440.81 324.22,402.25 379.39,434.72 434.56,469.23 489.73,434.72 544.90,452.99 600.07,481.40 655.24,495.61 ' style='stroke-width: 1.36; stroke: #D9D9D9; stroke-linecap: butt;' />
+<polyline points='48.37,485.46 103.54,528.08 158.71,505.76 213.88,505.76 269.05,416.46 324.22,203.36 379.39,126.24 434.56,130.30 489.73,314.98 544.90,345.43 600.07,383.99 655.24,377.90 ' style='stroke-width: 2.13; stroke: #8B3626; stroke-linecap: butt;' />
+<polyline points='48.37,517.93 103.54,534.17 158.71,524.02 213.88,477.34 269.05,511.84 324.22,467.20 379.39,467.20 434.56,463.14 489.73,489.52 544.90,528.08 600.07,507.79 655.24,548.38 ' style='stroke-width: 2.13; stroke: #0000CD; stroke-linecap: butt;' />
+<polyline points='48.37,465.17 103.54,463.14 158.71,418.49 213.88,319.04 269.05,270.34 324.22,284.54 379.39,300.78 434.56,284.54 489.73,343.40 544.90,359.63 600.07,377.90 655.24,375.87 ' style='stroke-width: 2.13; stroke: #008B00; stroke-linecap: butt;' />
+<circle cx='655.24' cy='377.90' r='2.49' style='stroke-width: 0.90; stroke: #8B3626; fill: #8B3626;' />
+<circle cx='655.24' cy='375.87' r='2.49' style='stroke-width: 0.90; stroke: #008B00; fill: #008B00;' />
+<circle cx='655.24' cy='548.38' r='2.49' style='stroke-width: 0.90; stroke: #0000CD; fill: #0000CD;' />
+<text x='661.13' y='388.67' style='font-size: 12.80px; font-weight: bold;fill: #8B3626; font-family: "Segoe UI";' textLength='29.44px' lengthAdjust='spacingAndGlyphs'>2020</text>
+<text x='661.13' y='374.06' style='font-size: 12.80px; font-weight: bold;fill: #008B00; font-family: "Segoe UI";' textLength='29.44px' lengthAdjust='spacingAndGlyphs'>2021</text>
+<text x='661.13' y='552.86' style='font-size: 12.80px; font-weight: bold;fill: #0000CD; font-family: "Segoe UI";' textLength='29.44px' lengthAdjust='spacingAndGlyphs'>2025</text>
+<text x='36.03' y='623.33' text-anchor='end' style='font-size: 11.20px;fill: #4D4D4D; font-family: "Segoe UI";' textLength='6.03px' lengthAdjust='spacingAndGlyphs'>0</text>
+<text x='36.03' y='521.85' text-anchor='end' style='font-size: 11.20px;fill: #4D4D4D; font-family: "Segoe UI";' textLength='12.06px' lengthAdjust='spacingAndGlyphs'>50</text>
+<text x='36.03' y='420.38' text-anchor='end' style='font-size: 11.20px;fill: #4D4D4D; font-family: "Segoe UI";' textLength='18.09px' lengthAdjust='spacingAndGlyphs'>100</text>
+<text x='36.03' y='318.90' text-anchor='end' style='font-size: 11.20px;fill: #4D4D4D; font-family: "Segoe UI";' textLength='18.09px' lengthAdjust='spacingAndGlyphs'>150</text>
+<text x='36.03' y='217.43' text-anchor='end' style='font-size: 11.20px;fill: #4D4D4D; font-family: "Segoe UI";' textLength='18.09px' lengthAdjust='spacingAndGlyphs'>200</text>
+<text x='36.03' y='115.96' text-anchor='end' style='font-size: 11.20px;fill: #4D4D4D; font-family: "Segoe UI";' textLength='18.09px' lengthAdjust='spacingAndGlyphs'>250</text>
+<text x='48.37' y='641.14' text-anchor='middle' style='font-size: 11.20px;fill: #4D4D4D; font-family: "Segoe UI";' textLength='16.02px' lengthAdjust='spacingAndGlyphs'>Jan</text>
+<text x='103.54' y='641.14' text-anchor='middle' style='font-size: 11.20px;fill: #4D4D4D; font-family: "Segoe UI";' textLength='17.89px' lengthAdjust='spacingAndGlyphs'>Feb</text>
+<text x='158.71' y='641.14' text-anchor='middle' style='font-size: 11.20px;fill: #4D4D4D; font-family: "Segoe UI";' textLength='19.62px' lengthAdjust='spacingAndGlyphs'>Mar</text>
+<text x='213.88' y='641.14' text-anchor='middle' style='font-size: 11.20px;fill: #4D4D4D; font-family: "Segoe UI";' textLength='17.69px' lengthAdjust='spacingAndGlyphs'>Apr</text>
+<text x='269.05' y='641.14' text-anchor='middle' style='font-size: 11.20px;fill: #4D4D4D; font-family: "Segoe UI";' textLength='21.14px' lengthAdjust='spacingAndGlyphs'>May</text>
+<text x='324.22' y='641.14' text-anchor='middle' style='font-size: 11.20px;fill: #4D4D4D; font-family: "Segoe UI";' textLength='16.66px' lengthAdjust='spacingAndGlyphs'>Jun</text>
+<text x='379.39' y='641.14' text-anchor='middle' style='font-size: 11.20px;fill: #4D4D4D; font-family: "Segoe UI";' textLength='13.03px' lengthAdjust='spacingAndGlyphs'>Jul</text>
+<text x='434.56' y='641.14' text-anchor='middle' style='font-size: 11.20px;fill: #4D4D4D; font-family: "Segoe UI";' textLength='20.14px' lengthAdjust='spacingAndGlyphs'>Aug</text>
+<text x='489.73' y='641.14' text-anchor='middle' style='font-size: 11.20px;fill: #4D4D4D; font-family: "Segoe UI";' textLength='18.36px' lengthAdjust='spacingAndGlyphs'>Sep</text>
+<text x='544.90' y='641.14' text-anchor='middle' style='font-size: 11.20px;fill: #4D4D4D; font-family: "Segoe UI";' textLength='17.41px' lengthAdjust='spacingAndGlyphs'>Oct</text>
+<text x='600.07' y='641.14' text-anchor='middle' style='font-size: 11.20px;fill: #4D4D4D; font-family: "Segoe UI";' textLength='20.30px' lengthAdjust='spacingAndGlyphs'>Nov</text>
+<text x='655.24' y='641.14' text-anchor='middle' style='font-size: 11.20px;fill: #4D4D4D; font-family: "Segoe UI";' textLength='18.86px' lengthAdjust='spacingAndGlyphs'>Dec</text>
+<text x='17.93' y='81.20' style='font-size: 14.00px; font-family: "Segoe UI";' textLength='26.33px' lengthAdjust='spacingAndGlyphs'>NYC</text>
+<text x='48.09' y='81.20' style='font-size: 14.00px; font-family: "Segoe UI";' textLength='60.52px' lengthAdjust='spacingAndGlyphs'>shootings</text>
+<text x='112.43' y='81.20' style='font-size: 14.00px; font-family: "Segoe UI";' textLength='15.02px' lengthAdjust='spacingAndGlyphs'>by</text>
+<text x='131.28' y='81.20' style='font-size: 14.00px; font-family: "Segoe UI";' textLength='40.86px' lengthAdjust='spacingAndGlyphs'>month</text>
+<text x='175.96' y='81.20' style='font-size: 14.00px; font-family: "Segoe UI";' textLength='23.30px' lengthAdjust='spacingAndGlyphs'>and</text>
+<text x='203.09' y='81.20' style='font-size: 14.00px; font-family: "Segoe UI";' textLength='29.14px' lengthAdjust='spacingAndGlyphs'>year,</text>
+<text x='236.06' y='81.20' style='font-size: 14.00px; font-family: "Segoe UI";' textLength='65.97px' lengthAdjust='spacingAndGlyphs'>2006-2025</text>
+<text x='17.93' y='33.61' style='font-size: 22.40px; font-weight: bold; font-family: "Segoe UI";' textLength='44.69px' lengthAdjust='spacingAndGlyphs'>NYC</text>
+<text x='68.79' y='33.61' style='font-size: 22.40px; font-weight: bold; font-family: "Segoe UI";' textLength='103.03px' lengthAdjust='spacingAndGlyphs'>shootings</text>
+<text x='178.00' y='33.61' style='font-size: 22.40px; font-weight: bold; font-family: "Segoe UI";' textLength='72.03px' lengthAdjust='spacingAndGlyphs'>surged</text>
+<text x='256.20' y='33.61' style='font-size: 22.40px; font-weight: bold; font-family: "Segoe UI";' textLength='19.91px' lengthAdjust='spacingAndGlyphs'>in</text>
+<text x='282.28' y='33.61' style='font-size: 22.40px; font-weight: bold;fill: #8B3626; font-family: "Segoe UI";' textLength='51.50px' lengthAdjust='spacingAndGlyphs'>2020</text>
+<text x='333.78' y='33.61' style='font-size: 22.40px; font-weight: bold; font-family: "Segoe UI";' textLength='9.05px' lengthAdjust='spacingAndGlyphs'>-</text>
+<text x='342.82' y='33.61' style='font-size: 22.40px; font-weight: bold;fill: #008B00; font-family: "Segoe UI";' textLength='51.50px' lengthAdjust='spacingAndGlyphs'>2021</text>
+<text x='400.50' y='33.61' style='font-size: 22.40px; font-weight: bold; font-family: "Segoe UI";' textLength='52.78px' lengthAdjust='spacingAndGlyphs'>amid</text>
+<text x='459.45' y='33.61' style='font-size: 22.40px; font-weight: bold; font-family: "Segoe UI";' textLength='102.86px' lengthAdjust='spacingAndGlyphs'>pandemic</text>
+<text x='568.48' y='33.61' style='font-size: 22.40px; font-weight: bold; font-family: "Segoe UI";' textLength='118.62px' lengthAdjust='spacingAndGlyphs'>disruptions</text>
+<text x='17.93' y='58.16' style='font-size: 22.40px; font-weight: bold; font-family: "Segoe UI";' textLength='39.45px' lengthAdjust='spacingAndGlyphs'>and</text>
+<text x='63.56' y='58.16' style='font-size: 22.40px; font-weight: bold; font-family: "Segoe UI";' textLength='59.05px' lengthAdjust='spacingAndGlyphs'>social</text>
+<text x='128.78' y='58.16' style='font-size: 22.40px; font-weight: bold; font-family: "Segoe UI";' textLength='72.64px' lengthAdjust='spacingAndGlyphs'>unrest,</text>
+<text x='207.59' y='58.16' style='font-size: 22.40px; font-weight: bold; font-family: "Segoe UI";' textLength='47.86px' lengthAdjust='spacingAndGlyphs'>then</text>
+<text x='261.62' y='58.16' style='font-size: 22.40px; font-weight: bold; font-family: "Segoe UI";' textLength='33.41px' lengthAdjust='spacingAndGlyphs'>fell</text>
+<text x='301.20' y='58.16' style='font-size: 22.40px; font-weight: bold; font-family: "Segoe UI";' textLength='22.31px' lengthAdjust='spacingAndGlyphs'>to</text>
+<text x='329.68' y='58.16' style='font-size: 22.40px; font-weight: bold; font-family: "Segoe UI";' textLength='68.47px' lengthAdjust='spacingAndGlyphs'>lowest</text>
+<text x='404.32' y='58.16' style='font-size: 22.40px; font-weight: bold; font-family: "Segoe UI";' textLength='48.86px' lengthAdjust='spacingAndGlyphs'>level</text>
+<text x='459.35' y='58.16' style='font-size: 22.40px; font-weight: bold; font-family: "Segoe UI";' textLength='19.91px' lengthAdjust='spacingAndGlyphs'>in</text>
+<text x='485.43' y='58.16' style='font-size: 22.40px; font-weight: bold; font-family: "Segoe UI";' textLength='84.58px' lengthAdjust='spacingAndGlyphs'>decades</text>
+<text x='576.18' y='58.16' style='font-size: 22.40px; font-weight: bold; font-family: "Segoe UI";' textLength='19.91px' lengthAdjust='spacingAndGlyphs'>in</text>
+<text x='602.26' y='58.16' style='font-size: 22.40px; font-weight: bold;fill: #0000CD; font-family: "Segoe UI";' textLength='51.50px' lengthAdjust='spacingAndGlyphs'>2025</text>
+<text x='17.93' y='671.54' style='font-size: 11.20px; font-weight: bold;fill: #7F7F7F; font-family: "Segoe UI";' textLength='24.64px' lengthAdjust='spacingAndGlyphs'>Data</text>
+<text x='45.67' y='671.54' style='font-size: 11.20px; font-weight: bold;fill: #7F7F7F; font-family: "Segoe UI";' textLength='34.36px' lengthAdjust='spacingAndGlyphs'>source</text>
+<text x='80.03' y='671.54' style='font-size: 11.20px;fill: #7F7F7F; font-family: "Segoe UI";' textLength='2.42px' lengthAdjust='spacingAndGlyphs'>:</text>
+<text x='85.51' y='671.54' style='font-size: 11.20px;fill: #7F7F7F; font-family: "Segoe UI";' textLength='25.44px' lengthAdjust='spacingAndGlyphs'>Data:</text>
+<text x='114.01' y='671.54' style='font-size: 11.20px;fill: #7F7F7F; font-family: "Segoe UI";' textLength='22.30px' lengthAdjust='spacingAndGlyphs'>New</text>
+<text x='139.37' y='671.54' style='font-size: 11.20px;fill: #7F7F7F; font-family: "Segoe UI";' textLength='21.22px' lengthAdjust='spacingAndGlyphs'>York</text>
+<text x='163.65' y='671.54' style='font-size: 11.20px;fill: #7F7F7F; font-family: "Segoe UI";' textLength='18.83px' lengthAdjust='spacingAndGlyphs'>City</text>
+<text x='185.54' y='671.54' style='font-size: 11.20px;fill: #7F7F7F; font-family: "Segoe UI";' textLength='28.83px' lengthAdjust='spacingAndGlyphs'>Police</text>
+<text x='217.43' y='671.54' style='font-size: 11.20px;fill: #7F7F7F; font-family: "Segoe UI";' textLength='59.25px' lengthAdjust='spacingAndGlyphs'>Department</text>
+<text x='279.75' y='671.54' style='font-size: 11.20px;fill: #7F7F7F; font-family: "Segoe UI";' textLength='35.42px' lengthAdjust='spacingAndGlyphs'>(NYPD)</text>
+<text x='318.23' y='671.54' style='font-size: 11.20px;fill: #7F7F7F; font-family: "Segoe UI";' textLength='13.75px' lengthAdjust='spacingAndGlyphs'>via</text>
+<text x='335.04' y='671.54' style='font-size: 11.20px;fill: #7F7F7F; font-family: "Segoe UI";' textLength='21.05px' lengthAdjust='spacingAndGlyphs'>NYC</text>
+<text x='359.15' y='671.54' style='font-size: 11.20px;fill: #7F7F7F; font-family: "Segoe UI";' textLength='27.19px' lengthAdjust='spacingAndGlyphs'>Open</text>
+<text x='389.40' y='671.54' style='font-size: 11.20px;fill: #7F7F7F; font-family: "Segoe UI";' textLength='23.02px' lengthAdjust='spacingAndGlyphs'>Data</text>
+<text x='415.48' y='671.54' style='font-size: 11.20px;fill: #7F7F7F; font-family: "Segoe UI";' textLength='4.55px' lengthAdjust='spacingAndGlyphs'>•</text>
+<text x='423.09' y='671.54' style='font-size: 11.20px;fill: #7F7F7F; font-family: "Segoe UI";' textLength='49.56px' lengthAdjust='spacingAndGlyphs'>Shootings</text>
+<text x='475.71' y='671.54' style='font-size: 11.20px;fill: #7F7F7F; font-family: "Segoe UI";' textLength='66.44px' lengthAdjust='spacingAndGlyphs'>2006–Present</text>
+<text x='545.21' y='671.54' style='font-size: 11.20px;fill: #7F7F7F; font-family: "Segoe UI";' textLength='41.95px' lengthAdjust='spacingAndGlyphs'>(dataset:</text>
+<text x='590.23' y='671.54' style='font-size: 11.20px;fill: #7F7F7F; font-family: "Segoe UI";' textLength='55.75px' lengthAdjust='spacingAndGlyphs'>5ucz-vwe8)</text>
+<text x='17.93' y='685.48' style='font-size: 11.20px; font-weight: bold;fill: #7F7F7F; font-family: "Segoe UI";' textLength='30.97px' lengthAdjust='spacingAndGlyphs'>Notes</text>
+<text x='48.90' y='685.48' style='font-size: 11.20px;fill: #7F7F7F; font-family: "Segoe UI";' textLength='2.42px' lengthAdjust='spacingAndGlyphs'>:</text>
+<text x='54.39' y='685.48' style='font-size: 11.20px;fill: #7F7F7F; font-family: "Segoe UI";' textLength='37.97px' lengthAdjust='spacingAndGlyphs'>Reflects</text>
+<text x='95.42' y='685.48' style='font-size: 11.20px;fill: #7F7F7F; font-family: "Segoe UI";' textLength='43.00px' lengthAdjust='spacingAndGlyphs'>reported</text>
+<text x='141.48' y='685.48' style='font-size: 11.20px;fill: #7F7F7F; font-family: "Segoe UI";' textLength='43.62px' lengthAdjust='spacingAndGlyphs'>shooting</text>
+<text x='188.17' y='685.48' style='font-size: 11.20px;fill: #7F7F7F; font-family: "Segoe UI";' textLength='44.22px' lengthAdjust='spacingAndGlyphs'>incidents</text>
+<text x='235.45' y='685.48' style='font-size: 11.20px;fill: #7F7F7F; font-family: "Segoe UI";' textLength='20.06px' lengthAdjust='spacingAndGlyphs'>(not</text>
+<text x='258.57' y='685.48' style='font-size: 11.20px;fill: #7F7F7F; font-family: "Segoe UI";' textLength='11.09px' lengthAdjust='spacingAndGlyphs'>all</text>
+<text x='272.73' y='685.48' style='font-size: 11.20px;fill: #7F7F7F; font-family: "Segoe UI";' textLength='19.25px' lengthAdjust='spacingAndGlyphs'>gun</text>
+<text x='295.04' y='685.48' style='font-size: 11.20px;fill: #7F7F7F; font-family: "Segoe UI";' textLength='46.31px' lengthAdjust='spacingAndGlyphs'>violence).</text>
+<text x='17.93' y='699.43' style='font-size: 11.20px; font-weight: bold;fill: #7F7F7F; font-family: "Segoe UI";' textLength='40.64px' lengthAdjust='spacingAndGlyphs'>Graphic</text>
+<text x='58.57' y='699.43' style='font-size: 11.20px;fill: #7F7F7F; font-family: "Segoe UI";' textLength='2.42px' lengthAdjust='spacingAndGlyphs'>:</text>
+<text x='64.06' y='699.43' style='font-size: 11.20px;fill: #7F7F7F; font-family: "Segoe UI";' textLength='18.03px' lengthAdjust='spacingAndGlyphs'>The</text>
+<text x='85.15' y='699.43' style='font-size: 11.20px;fill: #7F7F7F; font-family: "Segoe UI";' textLength='23.02px' lengthAdjust='spacingAndGlyphs'>Data</text>
+<text x='111.23' y='699.43' style='font-size: 11.20px;fill: #7F7F7F; font-family: "Segoe UI";' textLength='44.45px' lengthAdjust='spacingAndGlyphs'>Decoded</text>
+<text x='158.75' y='699.43' style='font-size: 11.20px;fill: #7F7F7F; font-family: "Segoe UI";' textLength='4.36px' lengthAdjust='spacingAndGlyphs'>/</text>
+<text x='166.17' y='699.43' style='font-size: 11.20px;fill: #7F7F7F; font-family: "Segoe UI";' textLength='96.19px' lengthAdjust='spacingAndGlyphs'>@TheDataDecoded</text>
+</g>
+</g>
+</svg>

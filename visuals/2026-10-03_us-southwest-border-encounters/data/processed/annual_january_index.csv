@@ -1,0 +1,121 @@
+date,calendar_year,month,days_in_month,monthly_encounters,average_daily_encounters,source_release,definition_flag,series,title42_period,split_available,january_daily,denominator_status,index
+2017-01-01,2017,1,31,31576,1018.5806451612904,CBP FY2017 monthly HTML,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,1018.5806451612904,valid,100
+2017-02-01,2017,2,28,18754,669.7857142857143,CBP FY2017 monthly HTML,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,1018.5806451612904,valid,65.75676825075104
+2017-03-01,2017,3,31,12195,393.38709677419354,CBP FY2017 monthly HTML,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,1018.5806451612904,valid,38.621104636432726
+2017-04-01,2017,4,30,11127,370.9,CBP FY2017 monthly HTML,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,1018.5806451612904,valid,36.41341525209019
+2017-05-01,2017,5,31,14519,468.35483870967744,CBP FY2017 monthly HTML,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,1018.5806451612904,valid,45.981124904991134
+2017-06-01,2017,6,30,16087,536.2333333333333,CBP FY2017 monthly HTML,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,1018.5806451612904,valid,52.64515243644963
+2017-07-01,2017,7,31,18187,586.6774193548387,CBP FY2017 monthly HTML,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,1018.5806451612904,valid,57.59754243729414
+2017-08-01,2017,8,31,22288,718.9677419354839,CBP FY2017 monthly HTML,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,1018.5806451612904,valid,70.58525462376488
+2017-09-01,2017,9,30,22537,751.2333333333333,CBP FY2017 monthly HTML,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,1018.5806451612904,valid,73.75295583143316
+2017-10-01,2017,10,31,25488,822.1935483870968,CBP FY2018 monthly HTML,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,1018.5806451612904,valid,80.71953382315684
+2017-11-01,2017,11,30,29085,969.5,CBP FY2018 monthly HTML,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,1018.5806451612904,valid,95.1814669369141
+2017-12-01,2017,12,31,28995,935.3225806451612,CBP FY2018 monthly HTML,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,1018.5806451612904,valid,91.82607043324043
+2018-01-01,2018,1,31,25975,837.9032258064516,CBP FY2018 monthly HTML,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,837.9032258064516,valid,100
+2018-02-01,2018,2,28,26666,952.3571428571428,CBP FY2018 monthly HTML,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,837.9032258064516,valid,113.65956276639626
+2018-03-01,2018,3,31,37390,1206.1290322580646,CBP FY2018 monthly HTML,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,837.9032258064516,valid,143.94610202117423
+2018-04-01,2018,4,30,38243,1274.7666666666669,CBP FY2018 monthly HTML,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,837.9032258064516,valid,152.13769650304783
+2018-05-01,2018,5,31,40339,1301.258064516129,CBP FY2018 monthly HTML,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,837.9032258064516,valid,155.2993262752647
+2018-06-01,2018,6,30,34089,1136.3,CBP FY2018 monthly HTML,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,837.9032258064516,valid,135.61231953801735
+2018-07-01,2018,7,31,31299,1009.6451612903226,CBP FY2018 monthly HTML,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,837.9032258064516,valid,120.49663137632338
+2018-08-01,2018,8,31,37524,1210.451612903226,CBP FY2018 monthly HTML,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,837.9032258064516,valid,144.4619826756497
+2018-09-01,2018,9,30,41486,1382.8666666666666,CBP FY2018 monthly HTML,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,837.9032258064516,valid,165.0389477061277
+2018-10-01,2018,10,31,51005,1645.3225806451612,CBP FY2019 monthly HTML,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,837.9032258064516,valid,196.3618864292589
+2018-11-01,2018,11,30,51857,1728.5666666666666,CBP FY2019 monthly HTML,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,837.9032258064516,valid,206.29669554058387
+2018-12-01,2018,12,31,50751,1637.1290322580646,CBP FY2019 monthly HTML,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,837.9032258064516,valid,195.3840230991338
+2019-01-01,2019,1,31,47979,1547.7096774193549,CBP FY2019 monthly HTML,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,1547.7096774193549,valid,100
+2019-02-01,2019,2,28,66883,2388.6785714285716,CBP FY2019 monthly HTML,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,1547.7096774193549,valid,154.33634655638033
+2019-03-01,2019,3,31,92833,2994.6129032258063,CBP FY2019 monthly HTML,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,1547.7096774193549,valid,193.4867337793618
+2019-04-01,2019,4,30,99273,3309.1,CBP FY2019 monthly HTML,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,1547.7096774193549,valid,213.80624856708144
+2019-05-01,2019,5,31,132856,4285.677419354839,CBP FY2019 monthly HTML,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,1547.7096774193549,valid,276.9044790429146
+2019-06-01,2019,6,30,94902,3163.4,CBP FY2019 monthly HTML,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,1547.7096774193549,valid,204.39233831467934
+2019-07-01,2019,7,31,71978,2321.8709677419356,CBP FY2019 monthly HTML,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,1547.7096774193549,valid,150.01980032931075
+2019-08-01,2019,8,31,50684,1634.967741935484,CBP FY2019 monthly HTML,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,1547.7096774193549,valid,105.63788324058443
+2019-09-01,2019,9,30,40507,1350.2333333333331,CBP FY2019 monthly HTML,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,1547.7096774193549,valid,87.24073726699874
+2019-10-01,2019,10,31,35402,1142,fy20-fy23-aor.csv,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,1547.7096774193549,valid,73.78644823777068
+2019-11-01,2019,11,30,33524,1117.4666666666667,fy20-fy23-aor.csv,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,1547.7096774193549,valid,72.20131029547649
+2019-12-01,2019,12,31,32853,1059.774193548387,fy20-fy23-aor.csv,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,1547.7096774193549,valid,68.47370724692053
+2020-01-01,2020,1,31,29205,942.0967741935484,fy20-fy23-aor.csv,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,942.0967741935484,valid,100
+2020-02-01,2020,2,29,30077,1037.1379310344828,fy20-fy23-aor.csv,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,942.0967741935484,valid,110.0882583874986
+2020-03-01,2020,3,31,30389,980.2903225806452,fy20-fy23-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,942.0967741935484,valid,104.05410032528677
+2020-04-01,2020,4,30,16182,539.4,fy20-fy23-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,942.0967741935484,valid,57.25526450950179
+2020-05-01,2020,5,31,21593,696.5483870967741,fy20-fy23-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,942.0967741935484,valid,73.93596986817325
+2020-06-01,2020,6,30,30836,1027.8666666666666,fy20-fy23-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,942.0967741935484,valid,109.10414883296238
+2020-07-01,2020,7,31,38536,1243.0967741935483,fy20-fy23-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,942.0967741935484,valid,131.95000856017805
+2020-08-01,2020,8,31,47283,1525.258064516129,fy20-fy23-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,942.0967741935484,valid,161.90035952747817
+2020-09-01,2020,9,30,54771,1825.7,fy20-fy23-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,942.0967741935484,valid,193.79113165553844
+2020-10-01,2020,10,31,69032,2226.8387096774195,fy21-fy24-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,942.0967741935484,valid,236.37048450607773
+2020-11-01,2020,11,30,69169,2305.633333333333,fy21-fy24-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,942.0967741935484,valid,244.73423500542145
+2020-12-01,2020,12,31,71141,2294.8709677419356,fy21-fy24-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,942.0967741935484,valid,243.59185071049478
+2021-01-01,2021,1,31,75316,2429.548387096774,fy21-fy24-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,2429.548387096774,valid,100
+2021-02-01,2021,2,28,97643,3487.25,fy21-fy24-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,2429.548387096774,valid,143.53490626161772
+2021-03-01,2021,3,31,169216,5458.580645161291,fy21-fy24-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,2429.548387096774,valid,224.67470391417496
+2021-04-01,2021,4,30,173699,5789.966666666666,fy21-fy24-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,2429.548387096774,valid,238.31452369571758
+2021-05-01,2021,5,31,172654,5569.4838709677415,fy21-fy24-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,2429.548387096774,valid,229.23947102873225
+2021-06-01,2021,6,30,178649,5954.966666666666,fy21-fy24-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,2429.548387096774,valid,245.1059093242693
+2021-07-01,2021,7,31,200658,6472.8387096774195,fy21-fy24-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,2429.548387096774,valid,266.4214775080992
+2021-08-01,2021,8,31,196514,6339.1612903225805,fy21-fy24-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,2429.548387096774,valid,260.9193265707154
+2021-09-01,2021,9,30,185515,6183.833333333333,fy21-fy24-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,2429.548387096774,valid,254.52604139005436
+2021-10-01,2021,10,31,159113,5132.677419354839,fy22-fy25-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,2429.548387096774,valid,211.26055552605027
+2021-11-01,2021,11,30,167015,5567.166666666667,fy22-fy25-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,2429.548387096774,valid,229.14409510152782
+2021-12-01,2021,12,31,170602,5503.290322580645,fy22-fy25-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,2429.548387096774,valid,226.51495034255672
+2022-01-01,2022,1,31,147877,4770.225806451613,fy22-fy25-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,4770.225806451613,valid,100
+2022-02-01,2022,2,28,159170,5684.642857142857,fy22-fy25-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,4770.225806451613,valid,119.16926132625667
+2022-03-01,2022,3,31,211181,6812.290322580645,fy22-fy25-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,4770.225806451613,valid,142.80855034927677
+2022-04-01,2022,4,30,203504,6783.466666666666,fy22-fy25-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,4770.225806451613,valid,142.2043094373477
+2022-05-01,2022,5,31,224370,7237.741935483871,fy22-fy25-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,4770.225806451613,valid,151.72744916383212
+2022-06-01,2022,6,30,192399,6413.3,fy22-fy25-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,4770.225806451613,valid,134.44436930692402
+2022-07-01,2022,7,31,181834,5865.612903225807,fy22-fy25-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,4770.225806451613,valid,122.9630030363072
+2022-08-01,2022,8,31,181774,5863.677419354839,fy22-fy25-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,4770.225806451613,valid,122.92242877526593
+2022-09-01,2022,9,30,207597,6919.9,fy22-fy25-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,4770.225806451613,valid,145.06441163940303
+2022-10-01,2022,10,31,205134,6617.225806451613,latest-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,4770.225806451613,valid,138.7193410740007
+2022-11-01,2022,11,30,207680,6922.666666666667,latest-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,4770.225806451613,valid,145.1224102914359
+2022-12-01,2022,12,31,222018,7161.870967741936,latest-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,4770.225806451613,valid,150.1369381310143
+2023-01-01,2023,1,31,129513,4177.8387096774195,latest-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,4177.8387096774195,valid,100
+2023-02-01,2023,2,28,130521,4661.464285714285,latest-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,4177.8387096774195,valid,111.57597527440709
+2023-03-01,2023,3,31,163672,5279.741935483871,latest-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,4177.8387096774195,valid,126.37495849837468
+2023-04-01,2023,4,30,183921,6130.7,latest-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,4177.8387096774195,valid,146.74333850655918
+2023-05-01,2023,5,31,171382,5528.451612903225,latest-aor.csv,Interior exclusion unestablished: split unavailable,Published total,TRUE,FALSE,4177.8387096774195,valid,132.32802884652503
+2023-06-01,2023,6,30,99538,3317.9333333333334,latest-aor.csv,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,4177.8387096774195,valid,79.41745873644602
+2023-07-01,2023,7,31,132642,4278.774193548387,latest-aor.csv,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,4177.8387096774195,valid,102.41597368603922
+2023-08-01,2023,8,31,181054,5840.451612903225,latest-aor.csv,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,4177.8387096774195,valid,139.79600503424365
+2023-09-01,2023,9,30,218763,7292.1,latest-aor.csv,Interior exclusion unestablished: split unavailable,Published total,FALSE,FALSE,4177.8387096774195,valid,174.54240114891942
+2023-10-01,2023,10,31,188749,6088.677419354839,latest-aor.csv,At Large included: confirmed by split table,Published total,FALSE,TRUE,4177.8387096774195,valid,145.73749353346767
+2023-11-01,2023,11,30,191106,6370.2,latest-aor.csv,At Large included: confirmed by split table,Published total,FALSE,TRUE,4177.8387096774195,valid,152.4759676634778
+2023-12-01,2023,12,31,249740,8056.129032258064,latest-aor.csv,At Large included: confirmed by split table,Published total,FALSE,TRUE,4177.8387096774195,valid,192.83006339131978
+2024-01-01,2024,1,31,124215,4006.935483870968,latest-aor.csv,At Large included: confirmed by split table,Published total,FALSE,TRUE,4006.935483870968,valid,100
+2024-02-01,2024,2,29,140641,4849.689655172414,latest-aor.csv,At Large included: confirmed by split table,Published total,FALSE,TRUE,4006.935483870968,valid,121.0323868376161
+2024-03-01,2024,3,31,137473,4434.612903225807,latest-aor.csv,At Large included: confirmed by split table,Published total,FALSE,TRUE,4006.935483870968,valid,110.6734291349676
+2024-04-01,2024,4,30,128895,4296.5,latest-aor.csv,At Large included: confirmed by split table,Published total,FALSE,TRUE,4006.935483870968,valid,107.22658294086867
+2024-05-01,2024,5,31,117905,3803.3870967741937,latest-aor.csv,At Large included: confirmed by split table,Published total,FALSE,TRUE,4006.935483870968,valid,94.92009821680152
+2024-06-01,2024,6,30,83532,2784.4,latest-aor.csv,At Large included: confirmed by split table,Published total,FALSE,TRUE,4006.935483870968,valid,69.48951414885481
+2024-07-01,2024,7,31,56400,1819.354838709677,latest-aor.csv,At Large included: confirmed by split table,Published total,FALSE,TRUE,4006.935483870968,valid,45.4051443062432
+2024-08-01,2024,8,31,58009,1871.258064516129,latest-aor.csv,At Large included: confirmed by split table,Published total,FALSE,TRUE,4006.935483870968,valid,46.700479008171314
+2024-09-01,2024,9,30,53858,1795.2666666666669,latest-aor.csv,At Large included: confirmed by split table,Published total,FALSE,TRUE,4006.935483870968,valid,44.80398234244389
+2024-10-01,2024,10,31,56515,1823.064516129032,latest-aor.csv,At Large included: confirmed by split table,Published total,FALSE,TRUE,4006.935483870968,valid,45.49772571750593
+2024-11-01,2024,11,30,46609,1553.6333333333334,latest-aor.csv,At Large included: confirmed by split table,Published total,FALSE,TRUE,4006.935483870968,valid,38.77360490547304
+2024-12-01,2024,12,31,47320,1526.451612903226,latest-aor.csv,At Large included: confirmed by split table,Published total,FALSE,TRUE,4006.935483870968,valid,38.0952380952381
+2025-01-01,2025,1,31,29105,938.8709677419356,latest-aor.csv,At Large included: confirmed by split table,Published total,FALSE,TRUE,938.8709677419356,valid,100
+2025-02-01,2025,2,28,8349,298.17857142857144,latest-aor.csv,At Large included: confirmed by split table,Published total,FALSE,TRUE,938.8709677419356,valid,31.75927062115002
+2025-03-01,2025,3,31,7179,231.5806451612903,latest-aor.csv,At Large included: confirmed by split table,Published total,FALSE,TRUE,938.8709677419356,valid,24.66586497165435
+2025-04-01,2025,4,30,8376,279.2,latest-aor.csv,At Large included: confirmed by split table,Published total,FALSE,TRUE,938.8709677419356,valid,29.737845730974055
+2025-05-01,2025,5,31,8724,281.4193548387097,latest-aor.csv,At Large included: confirmed by split table,Published total,FALSE,TRUE,938.8709677419356,valid,29.974231231747122
+2025-06-01,2025,6,30,6066,202.2,latest-aor.csv,At Large included: confirmed by split table,Published total,FALSE,TRUE,938.8709677419356,valid,21.53650575502491
+2025-07-01,2025,7,31,4592,148.1290322580645,latest-aor.csv,At Large included: confirmed by split table,Published total,FALSE,TRUE,938.8709677419356,valid,15.777357842295137
+2025-08-01,2025,8,31,6317,203.7741935483871,latest-aor.csv,At Large included: confirmed by split table,Published total,FALSE,TRUE,938.8709677419356,valid,21.704174540456965
+2025-09-01,2025,9,30,8386,279.53333333333336,latest-aor.csv,At Large included: confirmed by split table,Published total,FALSE,TRUE,938.8709677419356,valid,29.773349367233582
+2025-10-01,2025,10,31,7988,257.6774193548387,latest-aor.csv,At Large included: confirmed by split table,Published total,FALSE,TRUE,938.8709677419356,valid,27.445456107198073
+2025-11-01,2025,11,30,7353,245.1,latest-aor.csv,At Large included: confirmed by split table,Published total,FALSE,TRUE,938.8709677419356,valid,26.105823741625144
+2025-12-01,2025,12,31,6476,208.9032258064516,latest-aor.csv,At Large included: confirmed by split table,Published total,FALSE,TRUE,938.8709677419356,valid,22.250472427417964
+2026-01-01,2026,1,31,6076,196,latest-aor.csv,At Large included: confirmed by split table,Published total,FALSE,TRUE,196,valid,100
+2026-02-01,2026,2,28,6599,235.67857142857144,latest-aor.csv,At Large included: confirmed by split table,Published total,FALSE,TRUE,196,valid,120.24416909620992
+2026-03-01,2026,3,31,8270,266.7741935483871,latest-aor.csv,At Large included: confirmed by split table,Published total,FALSE,TRUE,196,valid,136.10928242264646
+2026-04-01,2026,4,30,8966,298.8666666666667,latest-aor.csv,At Large included: confirmed by split table,Published total,FALSE,TRUE,196,valid,152.48299319727892
+2026-05-01,2026,5,31,10011,322.93548387096774,latest-aor.csv,At Large included: confirmed by split table,Published total,FALSE,TRUE,196,valid,164.76300197498355
+2026-06-01,2026,6,30,9855,328.5,latest-aor.csv,At Large included: confirmed by split table,Published total,FALSE,TRUE,196,valid,167.60204081632654
+2026-07-01,2026,7,31,9296,299.8709677419355,latest-aor.csv,At Large included: confirmed by split table,Published total,FALSE,TRUE,196,valid,152.99539170506912
+2026-08-01,2026,8,31,8870,286.1290322580645,latest-aor.csv,At Large included: confirmed by split table,Published total,FALSE,TRUE,196,valid,145.98420013166557
+2026-09-01,2026,9,NA,NA,NA,NA,NA,NA,NA,NA,196,valid,NA
+2026-10-01,2026,10,NA,NA,NA,NA,NA,NA,NA,NA,196,valid,NA
+2026-11-01,2026,11,NA,NA,NA,NA,NA,NA,NA,NA,196,valid,NA
+2026-12-01,2026,12,NA,NA,NA,NA,NA,NA,NA,NA,196,valid,NA

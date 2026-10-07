@@ -1,0 +1,9 @@
+date,fiscal_year,month,monthly_encounters,source_release,rank,title42,calendar_year,days_in_month,average_daily_encounters,series,definition_flag,title42_period,split_available
+2023-12-01,2024,12,249740,latest-aor.csv,4,0,2023,31,8056.129032258064,Published total,At Large included: confirmed by split table,FALSE,TRUE
+2024-01-01,2024,1,124215,latest-aor.csv,4,0,2024,31,4006.935483870968,Published total,At Large included: confirmed by split table,FALSE,TRUE
+2024-06-01,2024,6,83532,latest-aor.csv,4,0,2024,30,2784.4,Published total,At Large included: confirmed by split table,FALSE,TRUE
+2024-12-01,2025,12,47320,latest-aor.csv,4,0,2024,31,1526.4516129032259,Published total,At Large included: confirmed by split table,FALSE,TRUE
+2025-01-01,2025,1,29105,latest-aor.csv,4,0,2025,31,938.8709677419355,Published total,At Large included: confirmed by split table,FALSE,TRUE
+2025-02-01,2025,2,8349,latest-aor.csv,4,0,2025,28,298.17857142857144,Published total,At Large included: confirmed by split table,FALSE,TRUE
+2025-12-01,2026,12,6476,latest-aor.csv,4,0,2025,31,208.90322580645162,Published total,At Large included: confirmed by split table,FALSE,TRUE
+2026-08-01,2026,8,8870,latest-aor.csv,4,0,2026,31,286.1290322580645,Published total,At Large included: confirmed by split table,FALSE,TRUE

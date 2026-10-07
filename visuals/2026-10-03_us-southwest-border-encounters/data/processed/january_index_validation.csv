@@ -1,0 +1,6 @@
+check,result
+January = 100,10/10 exact
+January denominators positive and available,10/10 valid
+Independent count/day checks,5/5 exact
+Leap February 2020/2024,29 days each
+Unavailable Sep-Dec 2026 missing,4/4 missing

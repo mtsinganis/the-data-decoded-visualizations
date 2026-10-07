@@ -1,0 +1,7 @@
+check,result
+Expected months Jan2017-Aug2026,116/116
+Duplicate monthly keys,0
+Missing observations,0
+PDF vs HTML monthly values,24/24 exact
+FY2020 HTML vs CSV,12/12 exact
+FY2024-FY2026 total = entry + large = CSV,35/35 exact

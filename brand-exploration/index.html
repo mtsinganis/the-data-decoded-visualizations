@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>The Data Decoded · reference-led brand study</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="exploration.js" defer></script>
+</head>
+<body>
+  <div class="shell">
+    <header class="masthead">
+      <p class="eyebrow">Local study / 01 October 2026 / proposal only</p>
+      <h1>The Data Decoded<span>— a closer look at its pterosaur.</span></h1>
+      <p class="lede">Earlier reference and palette trials remain here for comparison. <strong>Work Sans and #2455FF are confirmed.</strong> The current direct R chart-frame and warm-accent study is <a href="r-prototypes/">here</a>. None of this enters the published website.</p>
+      <nav aria-label="Sections"><a href="r-prototypes/">Current R study</a><a href="#symbol">Symbol</a><a href="#identity">Earlier type study</a><a href="#palettes">Earlier palette</a><a href="#charts">Earlier chart tests</a><a href="typography/">Georgia archive</a></nav>
+    </header>
+
+    <main>
+      <section id="symbol" class="section">
+        <div class="section-head"><div><p class="eyebrow">01 / Symbol development</p><h2>Keep the creature recognizable.</h2></div><p>The untouched raster retains its original blue. The working faithful, simplified, and compact SVG marks use confirmed #2455FF. The long beak, rearward crest, curved wings, and feet remain part of the silhouette.</p></div>
+        <div class="reference-grid">
+          <figure class="tile reference"><div class="reference-canvas"><img src="reference/blue-pterosaur-original.png" alt="Original supplied blue pterosaur on white, with sweeping wings, long beak, backward crest, eye and feet"></div><figcaption><strong>Supplied reference</strong><span>Preserved byte-for-byte; white is in the image.</span></figcaption></figure>
+          <figure class="tile"><div class="mark-canvas"><img src="pterosaur-mark.svg" alt="Faithful one-color vector of the supplied pterosaur"></div><figcaption><strong>Faithful vector</strong><span>Curves and narrow details closest to the supplied form.</span></figcaption></figure>
+          <figure class="tile"><div class="mark-canvas"><img src="pterosaur-simplified.svg" alt="Lightly simplified one-color vector of the supplied pterosaur"></div><figcaption><strong>Light simplification</strong><span>Broader eye opening and fewer fragile foot cutouts.</span></figcaption></figure>
+        </div>
+        <div class="tile size-study"><div class="card-title"><h3>Actual-size tests</h3><p>All working marks use #2455FF. Each circle is the stated CSS pixel size. The mark sits inside the circular safe area; the footer sample uses the same SVGs at 24 px wide. The compact trial follows the observed loss of eye and feet in the first two versions at 24 px.</p></div><div id="size-tests" class="size-grid"></div></div>
+        <div class="tile color-study"><div class="card-title"><h3>Historical color treatments</h3><p>The original sampled blue, confirmed blue, raspberry, black, and reversed white are shown as earlier comparisons. The source SVG now uses #2455FF; masks apply the other colors only for this labeled trial.</p></div><div id="mark-colors" class="color-grid"></div></div>
+      </section>
+
+      <section id="identity" class="section">
+        <div class="section-head"><div><p class="eyebrow">02 / Archived identity application</p><h2>Earlier type and color trial.</h2></div><p>Work Sans is now the sole approved family and #2455FF is confirmed blue. The earlier alternatives below remain as an archive. Markos Tsinganis appears only as a secondary website credit, never in the chart footer or avatar.</p></div>
+        <div id="font-tests" class="font-grid"></div>
+        <div id="identity-colors" class="identity-grid"></div>
+      </section>
+
+      <section id="palettes" class="section">
+        <div class="section-head"><div><p class="eyebrow">03 / Archived data color trial</p><h2>Identity color is only one role.</h2></div><p>These earlier frozen values separate highlights, neutral context, categories, ordered intensity, and signed deviation. The current R study holds the active palette proposal. Twelve and sixteen categories are stress tests, not a recommendation to rely on color alone.</p></div>
+        <div class="palette-stack" id="palette-tables"></div>
+        <div class="tile"><div class="card-title"><h3>Contrast on actual surfaces</h3><p>WCAG ratios are calculated against paper and white. The table distinguishes normal text (4.5:1) from chart marks and large text (3:1). Labels and strokes remain necessary where marks blend into the ground.</p></div><div class="table-wrap"><table id="contrast-table"><thead><tr><th>Color / role</th><th>Paper #F7F5EE</th><th>White #FFFFFF</th><th>Ink #172033</th><th>Use</th></tr></thead><tbody></tbody></table></div></div>
+        <div class="tile diagnostics"><div class="card-title"><h3>Simulated category collisions</h3><p>Closest pair in each set by Oklab distance after full-severity simulation. Smaller numbers indicate more similar colors; they are not accessibility pass/fail thresholds.</p></div><div class="table-wrap"><table id="collision-table"><thead><tr><th>Set</th><th>Standard</th><th>Protanopia</th><th>Deuteranopia</th><th>Tritanopia</th><th>Grayscale</th></tr></thead><tbody></tbody></table></div><p id="step-check" class="diagnostic-note"></p></div>
+        <div class="guidance-grid"><div class="tile"><h3>Thin lines</h3><p>Use darker categorical variants or pair light series with a dark outline. Stroke at least 2.5 px in these mockups. Direct labels and differing dash patterns carry meaning when hues converge.</p></div><div class="tile"><h3>Large fills</h3><p>Allow lighter tints when the value is read from labels or a legend. Separate adjacent fills with a paper or ink border. Sequential steps follow increasing perceptual lightness contrast.</p></div><div class="tile"><h3>Text</h3><p>Use ink on paper for body copy and data labels. Raspberry, lime, and several chart colors fail normal-text contrast on paper; reserve them for shapes and use ink text over light fills.</p></div></div>
+      </section>
+
+      <section id="charts" class="section">
+        <div class="section-head"><div><p class="eyebrow">04 / Synthetic application tests</p><h2>Same data, different color conditions.</h2></div><p>All values below are invented for this visual test. Select a color proposal and a simulated viewing condition. The data, layout, annotations, and chart footer stay identical.</p></div>
+        <div class="controls tile"><label>Earlier identity color trial <select id="theme-select"><option value="original">Reference sampled blue · #0062DF</option><option value="electric" selected>Confirmed blue · #2455FF</option><option value="raspberry">Earlier raspberry trial · #E63B7A</option></select></label><label>Viewing condition <select id="vision-select"><option value="normal">Standard display</option><option value="protan">Protanopia simulation</option><option value="deutan">Deuteranopia simulation</option><option value="tritan">Tritanopia simulation</option><option value="gray">Grayscale simulation</option></select></label><p>Simulation is an approximation, not a substitute for testing with people.</p></div>
+        <div class="chart-grid"><article class="chart-card portrait"><h3>Highlighted ranking</h3><p>Six synthetic values; one focus bar. Portrait size tests the publication signature.</p><div id="ranked-chart"></div></article><article class="chart-card portrait"><h3>Eight-series trend</h3><p>Direct end labels and dash patterns help distinguish close colors.</p><div id="line-chart"></div></article><article class="chart-card"><h3>12 and 16 categories</h3><p>Stress test: numeric keys accompany every colored item.</p><div id="category-chart"></div></article><article class="chart-card"><h3>Stacked composition</h3><p>Eight synthetic components over four periods, with labels beside the stack.</p><div id="stacked-chart"></div></article><article class="chart-card"><h3>Sequential heatmap</h3><p>Ordered 0–100 values. Each cell carries its number.</p><div id="heatmap-chart"></div></article><article class="chart-card"><h3>Diverging schematic map</h3><p>Invented regions and deviations; not real geography. Signed values label each region.</p><div id="map-chart"></div></article></div>
+      </section>
+
+      <section id="findings" class="section"><div class="section-head"><div><p class="eyebrow">05 / Review notes</p><h2>What survives the tests?</h2></div></div><div class="findings-grid"><div class="tile"><h3>Symbol</h3><p>The faithful vector is the recommended starting point for wordmarks and larger placements. At 24 px its eye and feet weaken, so the compact trial enlarges both details while keeping the same wing, crest, and beak silhouette. The middle variant remains useful around 32–48 px.</p></div><div class="tile"><h3>Color</h3><p>Both blues feel closer to the supplied identity. Raspberry is a useful contrasting direction, but its vibrancy does not make it readable as small text on paper. Lime is decorative only.</p></div><div class="tile"><h3>Dense charts</h3><p>The 12/16-color extensions contain near neighbors, especially in simulated color-vision conditions. Prefer grouping, facets, direct labels, texture, or fewer categories for finished analytical charts.</p></div></div><p class="method-note">Palette rationale and provenance are documented in <a href="README.md">the study notes</a>. This is a proposal, not an approved brand or a production chart template.</p></section>
+    </main>
+    <footer class="page-footer"><strong>The Data Decoded</strong><span>Local brand exploration · no production changes</span></footer>
+  </div>
+</body>
+</html>

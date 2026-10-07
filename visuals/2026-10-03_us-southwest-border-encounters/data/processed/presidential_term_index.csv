@@ -1,0 +1,145 @@
+term_id,term_month,date,term,start_year,end_year,baseline_date,baseline_total,baseline_days,baseline_daily,denominator_status,monthly_encounters,days_in_month,average_daily_encounters,source_release,definition_flag,term_year,index,availability
+trump_first,1,2017-01-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,31576,31,1018.5806451612904,CBP FY2017 monthly HTML,Interior exclusion unestablished: split unavailable,1,100,observed
+trump_first,2,2017-02-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,18754,28,669.7857142857143,CBP FY2017 monthly HTML,Interior exclusion unestablished: split unavailable,1,65.75676825075104,observed
+trump_first,3,2017-03-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,12195,31,393.38709677419354,CBP FY2017 monthly HTML,Interior exclusion unestablished: split unavailable,1,38.621104636432726,observed
+trump_first,4,2017-04-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,11127,30,370.9,CBP FY2017 monthly HTML,Interior exclusion unestablished: split unavailable,1,36.41341525209019,observed
+trump_first,5,2017-05-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,14519,31,468.35483870967744,CBP FY2017 monthly HTML,Interior exclusion unestablished: split unavailable,1,45.981124904991134,observed
+trump_first,6,2017-06-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,16087,30,536.2333333333333,CBP FY2017 monthly HTML,Interior exclusion unestablished: split unavailable,1,52.64515243644963,observed
+trump_first,7,2017-07-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,18187,31,586.6774193548387,CBP FY2017 monthly HTML,Interior exclusion unestablished: split unavailable,1,57.59754243729414,observed
+trump_first,8,2017-08-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,22288,31,718.9677419354839,CBP FY2017 monthly HTML,Interior exclusion unestablished: split unavailable,1,70.58525462376488,observed
+trump_first,9,2017-09-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,22537,30,751.2333333333333,CBP FY2017 monthly HTML,Interior exclusion unestablished: split unavailable,1,73.75295583143316,observed
+trump_first,10,2017-10-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,25488,31,822.1935483870968,CBP FY2018 monthly HTML,Interior exclusion unestablished: split unavailable,1,80.71953382315684,observed
+trump_first,11,2017-11-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,29085,30,969.5,CBP FY2018 monthly HTML,Interior exclusion unestablished: split unavailable,1,95.1814669369141,observed
+trump_first,12,2017-12-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,28995,31,935.3225806451612,CBP FY2018 monthly HTML,Interior exclusion unestablished: split unavailable,1,91.82607043324043,observed
+trump_first,13,2018-01-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,25975,31,837.9032258064516,CBP FY2018 monthly HTML,Interior exclusion unestablished: split unavailable,2,82.26184443881428,observed
+trump_first,14,2018-02-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,26666,28,952.3571428571428,CBP FY2018 monthly HTML,Interior exclusion unestablished: split unavailable,2,93.49845271272936,observed
+trump_first,15,2018-03-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,37390,31,1206.1290322580646,CBP FY2018 monthly HTML,Interior exclusion unestablished: split unavailable,2,118.41271852039523,observed
+trump_first,16,2018-04-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,38243,30,1274.7666666666669,CBP FY2018 monthly HTML,Interior exclusion unestablished: split unavailable,2,125.15127523013261,observed
+trump_first,17,2018-05-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,40339,31,1301.258064516129,CBP FY2018 monthly HTML,Interior exclusion unestablished: split unavailable,2,127.75209019508486,observed
+trump_first,18,2018-06-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,34089,30,1136.3,CBP FY2018 monthly HTML,Interior exclusion unestablished: split unavailable,2,111.55719533823157,observed
+trump_first,19,2018-07-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,31299,31,1009.6451612903226,CBP FY2018 monthly HTML,Interior exclusion unestablished: split unavailable,2,99.12275145680263,observed
+trump_first,20,2018-08-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,37524,31,1210.451612903226,CBP FY2018 monthly HTML,Interior exclusion unestablished: split unavailable,2,118.8370914618698,observed
+trump_first,21,2018-09-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,41486,30,1382.8666666666666,CBP FY2018 monthly HTML,Interior exclusion unestablished: split unavailable,2,135.7640824254708,observed
+trump_first,22,2018-10-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,51005,31,1645.3225806451612,CBP FY2019 monthly HTML,Interior exclusion unestablished: split unavailable,2,161.53090955155812,observed
+trump_first,23,2018-11-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,51857,30,1728.5666666666666,CBP FY2019 monthly HTML,Interior exclusion unestablished: split unavailable,2,169.70346676800943,observed
+trump_first,24,2018-12-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,50751,31,1637.1290322580646,CBP FY2019 monthly HTML,Interior exclusion unestablished: split unavailable,2,160.7265011401064,observed
+trump_first,25,2019-01-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,47979,31,1547.7096774193549,CBP FY2019 monthly HTML,Interior exclusion unestablished: split unavailable,3,151.94768178363313,observed
+trump_first,26,2019-02-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,66883,28,2388.6785714285716,CBP FY2019 monthly HTML,Interior exclusion unestablished: split unavailable,3,234.51050074197403,observed
+trump_first,27,2019-03-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,92833,31,2994.6129032258063,CBP FY2019 monthly HTML,Interior exclusion unestablished: split unavailable,3,293.99860653661005,observed
+trump_first,28,2019-04-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,99273,30,3309.1,CBP FY2019 monthly HTML,Interior exclusion unestablished: split unavailable,3,324.87363820623256,observed
+trump_first,29,2019-05-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,132856,31,4285.677419354839,CBP FY2019 monthly HTML,Interior exclusion unestablished: split unavailable,3,420.749936660755,observed
+trump_first,30,2019-06-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,94902,30,3163.4,CBP FY2019 monthly HTML,Interior exclusion unestablished: split unavailable,3,310.56941981251583,observed
+trump_first,31,2019-07-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,71978,31,2321.8709677419356,CBP FY2019 monthly HTML,Interior exclusion unestablished: split unavailable,3,227.95160881682293,observed
+trump_first,32,2019-08-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,50684,31,1634.967741935484,CBP FY2019 monthly HTML,Interior exclusion unestablished: split unavailable,3,160.51431466936913,observed
+trump_first,33,2019-09-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,40507,30,1350.2333333333331,CBP FY2019 monthly HTML,Interior exclusion unestablished: split unavailable,3,132.5602778481547,observed
+trump_first,34,2019-10-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,35402,31,1142,fy20-fy23-aor.csv,Interior exclusion unestablished: split unavailable,3,112.11679756777299,observed
+trump_first,35,2019-11-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,33524,30,1117.4666666666667,fy20-fy23-aor.csv,Interior exclusion unestablished: split unavailable,3,109.70821721138418,observed
+trump_first,36,2019-12-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,32853,31,1059.774193548387,fy20-fy23-aor.csv,Interior exclusion unestablished: split unavailable,3,104.04421079300734,observed
+trump_first,37,2020-01-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,29205,31,942.0967741935484,fy20-fy23-aor.csv,Interior exclusion unestablished: split unavailable,4,92.49113250570053,observed
+trump_first,38,2020-02-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,30077,29,1037.1379310344828,fy20-fy23-aor.csv,Interior exclusion unestablished: split unavailable,4,101.8218769383993,observed
+trump_first,39,2020-03-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,30389,31,980.2903225806452,fy20-fy23-aor.csv,Interior exclusion unestablished: split unavailable,4,96.24081580947555,observed
+trump_first,40,2020-04-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,16182,30,539.4,fy20-fy23-aor.csv,Interior exclusion unestablished: split unavailable,4,52.95604256397264,observed
+trump_first,41,2020-05-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,21593,31,696.5483870967741,fy20-fy23-aor.csv,Interior exclusion unestablished: split unavailable,4,68.38421586014694,observed
+trump_first,42,2020-06-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,30836,30,1027.8666666666666,fy20-fy23-aor.csv,Interior exclusion unestablished: split unavailable,4,100.91166286631194,observed
+trump_first,43,2020-07-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,38536,31,1243.0967741935483,fy20-fy23-aor.csv,Interior exclusion unestablished: split unavailable,4,122.04205725867747,observed
+trump_first,44,2020-08-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,47283,31,1525.258064516129,fy20-fy23-aor.csv,Interior exclusion unestablished: split unavailable,4,149.74347605776538,observed
+trump_first,45,2020-09-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,54771,30,1825.7,fy20-fy23-aor.csv,Interior exclusion unestablished: split unavailable,4,179.2396123638206,observed
+trump_first,46,2020-10-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,69032,31,2226.8387096774195,fy21-fy24-aor.csv,Interior exclusion unestablished: split unavailable,4,218.6217380288827,observed
+trump_first,47,2020-11-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,69169,30,2305.633333333333,fy21-fy24-aor.csv,Interior exclusion unestablished: split unavailable,4,226.35746558567686,observed
+trump_first,48,2020-12-01,Trump · first term,2017,2020,2017-01-01,31576,31,1018.5806451612904,valid,71141,31,2294.8709677419356,fy21-fy24-aor.csv,Interior exclusion unestablished: split unavailable,4,225.30086141373195,observed
+biden,1,2021-01-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,75316,31,2429.548387096774,fy21-fy24-aor.csv,Interior exclusion unestablished: split unavailable,1,100,observed
+biden,2,2021-02-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,97643,28,3487.25,fy21-fy24-aor.csv,Interior exclusion unestablished: split unavailable,1,143.53490626161772,observed
+biden,3,2021-03-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,169216,31,5458.580645161291,fy21-fy24-aor.csv,Interior exclusion unestablished: split unavailable,1,224.67470391417496,observed
+biden,4,2021-04-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,173699,30,5789.966666666666,fy21-fy24-aor.csv,Interior exclusion unestablished: split unavailable,1,238.31452369571758,observed
+biden,5,2021-05-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,172654,31,5569.4838709677415,fy21-fy24-aor.csv,Interior exclusion unestablished: split unavailable,1,229.23947102873225,observed
+biden,6,2021-06-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,178649,30,5954.966666666666,fy21-fy24-aor.csv,Interior exclusion unestablished: split unavailable,1,245.1059093242693,observed
+biden,7,2021-07-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,200658,31,6472.8387096774195,fy21-fy24-aor.csv,Interior exclusion unestablished: split unavailable,1,266.4214775080992,observed
+biden,8,2021-08-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,196514,31,6339.1612903225805,fy21-fy24-aor.csv,Interior exclusion unestablished: split unavailable,1,260.9193265707154,observed
+biden,9,2021-09-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,185515,30,6183.833333333333,fy21-fy24-aor.csv,Interior exclusion unestablished: split unavailable,1,254.52604139005436,observed
+biden,10,2021-10-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,159113,31,5132.677419354839,fy22-fy25-aor.csv,Interior exclusion unestablished: split unavailable,1,211.26055552605027,observed
+biden,11,2021-11-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,167015,30,5567.166666666667,fy22-fy25-aor.csv,Interior exclusion unestablished: split unavailable,1,229.14409510152782,observed
+biden,12,2021-12-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,170602,31,5503.290322580645,fy22-fy25-aor.csv,Interior exclusion unestablished: split unavailable,1,226.51495034255672,observed
+biden,13,2022-01-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,147877,31,4770.225806451613,fy22-fy25-aor.csv,Interior exclusion unestablished: split unavailable,2,196.34207870837537,observed
+biden,14,2022-02-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,159170,28,5684.642857142857,fy22-fy25-aor.csv,Interior exclusion unestablished: split unavailable,2,233.9794048693884,observed
+biden,15,2022-03-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,211181,31,6812.290322580645,fy22-fy25-aor.csv,Interior exclusion unestablished: split unavailable,2,280.39327632906685,observed
+biden,16,2022-04-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,203504,30,6783.466666666666,fy22-fy25-aor.csv,Interior exclusion unestablished: split unavailable,2,279.2068971621789,observed
+biden,17,2022-05-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,224370,31,7237.741935483871,fy22-fy25-aor.csv,Interior exclusion unestablished: split unavailable,2,297.9048276594615,observed
+biden,18,2022-06-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,192399,30,6413.3,fy22-fy25-aor.csv,Interior exclusion unestablished: split unavailable,2,263.9708694035796,observed
+biden,19,2022-07-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,181834,31,5865.612903225807,fy22-fy25-aor.csv,Interior exclusion unestablished: split unavailable,2,241.4281162037283,observed
+biden,20,2022-08-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,181774,31,5863.677419354839,fy22-fy25-aor.csv,Interior exclusion unestablished: split unavailable,2,241.3484518561793,observed
+biden,21,2022-09-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,207597,30,6919.9,fy22-fy25-aor.csv,Interior exclusion unestablished: split unavailable,2,284.8224812788783,observed
+biden,22,2022-10-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,205134,31,6617.225806451613,latest-aor.csv,Interior exclusion unestablished: split unavailable,2,272.36443783525414,observed
+biden,23,2022-11-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,207680,30,6922.666666666667,latest-aor.csv,Interior exclusion unestablished: split unavailable,2,284.93635703790255,observed
+biden,24,2022-12-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,222018,31,7161.870967741936,latest-aor.csv,Interior exclusion unestablished: split unavailable,2,294.78198523554096,observed
+biden,25,2023-01-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,129513,31,4177.8387096774195,latest-aor.csv,Interior exclusion unestablished: split unavailable,3,171.9594774018801,observed
+biden,26,2023-02-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,130521,28,4661.464285714285,latest-aor.csv,Interior exclusion unestablished: split unavailable,3,191.86546398792134,observed
+biden,27,2023-03-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,163672,31,5279.741935483871,latest-aor.csv,Interior exclusion unestablished: split unavailable,3,217.31371820064794,observed
+biden,28,2023-04-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,183921,30,6130.7,latest-aor.csv,Interior exclusion unestablished: split unavailable,3,252.33907801795104,observed
+biden,29,2023-05-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,171382,31,5528.451612903225,latest-aor.csv,Interior exclusion unestablished: split unavailable,3,227.5505868606936,observed
+biden,30,2023-06-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,99538,30,3317.9333333333334,latest-aor.csv,Interior exclusion unestablished: split unavailable,3,136.56584700904634,observed
+biden,31,2023-07-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,132642,31,4278.774193548387,latest-aor.csv,Interior exclusion unestablished: split unavailable,3,176.1139731265601,observed
+biden,32,2023-08-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,181054,31,5840.451612903225,latest-aor.csv,Interior exclusion unestablished: split unavailable,3,240.39247968559135,observed
+biden,33,2023-09-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,218763,30,7292.1,latest-aor.csv,Interior exclusion unestablished: split unavailable,3,300.14220086037494,observed
+biden,34,2023-10-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,188749,31,6088.677419354839,latest-aor.csv,At Large included: confirmed by split table,3,250.60943225874982,observed
+biden,35,2023-11-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,191106,30,6370.2,latest-aor.csv,At Large included: confirmed by split table,3,262.19687715757607,observed
+biden,36,2023-12-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,249740,31,8056.129032258064,latest-aor.csv,At Large included: confirmed by split table,3,331.5895692814276,observed
+biden,37,2024-01-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,124215,31,4006.935483870968,latest-aor.csv,At Large included: confirmed by split table,4,164.92511551330395,observed
+biden,38,2024-02-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,140641,29,4849.689655172414,latest-aor.csv,At Large included: confirmed by split table,4,199.61280380044724,observed
+biden,39,2024-03-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,137473,31,4434.612903225807,latest-aor.csv,At Large included: confirmed by split table,4,182.52828084337992,observed
+biden,40,2024-04-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,128895,30,4296.5,latest-aor.csv,At Large included: confirmed by split table,4,176.8435657761963,observed
+biden,41,2024-05-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,117905,31,3803.3870967741937,latest-aor.csv,At Large included: confirmed by split table,4,156.54708162940145,observed
+biden,42,2024-06-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,83532,30,2784.4,latest-aor.csv,At Large included: confirmed by split table,4,114.60566147963249,observed
+biden,43,2024-07-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,56400,31,1819.354838709677,latest-aor.csv,At Large included: confirmed by split table,4,74.88448669605394,observed
+biden,44,2024-08-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,58009,31,1871.258064516129,latest-aor.csv,At Large included: confirmed by split table,4,77.0208189494928,observed
+biden,45,2024-09-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,53858,30,1795.2666666666669,latest-aor.csv,At Large included: confirmed by split table,4,73.89301963283589,observed
+biden,46,2024-10-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,56515,31,1823.064516129032,latest-aor.csv,At Large included: confirmed by split table,4,75.03717669552286,observed
+biden,47,2024-11-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,46609,30,1553.6333333333334,latest-aor.csv,At Large included: confirmed by split table,4,63.94741267902349,observed
+biden,48,2024-12-01,Biden,2021,2024,2021-01-01,75316,31,2429.548387096774,valid,47320,31,1526.451612903226,latest-aor.csv,At Large included: confirmed by split table,4,62.82861543363961,observed
+trump_second,1,2025-01-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,29105,31,938.8709677419356,latest-aor.csv,At Large included: confirmed by split table,1,100,observed
+trump_second,2,2025-02-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,8349,28,298.17857142857144,latest-aor.csv,At Large included: confirmed by split table,1,31.75927062115002,observed
+trump_second,3,2025-03-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,7179,31,231.5806451612903,latest-aor.csv,At Large included: confirmed by split table,1,24.66586497165435,observed
+trump_second,4,2025-04-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,8376,30,279.2,latest-aor.csv,At Large included: confirmed by split table,1,29.737845730974055,observed
+trump_second,5,2025-05-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,8724,31,281.4193548387097,latest-aor.csv,At Large included: confirmed by split table,1,29.974231231747122,observed
+trump_second,6,2025-06-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,6066,30,202.2,latest-aor.csv,At Large included: confirmed by split table,1,21.53650575502491,observed
+trump_second,7,2025-07-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,4592,31,148.1290322580645,latest-aor.csv,At Large included: confirmed by split table,1,15.777357842295137,observed
+trump_second,8,2025-08-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,6317,31,203.7741935483871,latest-aor.csv,At Large included: confirmed by split table,1,21.704174540456965,observed
+trump_second,9,2025-09-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,8386,30,279.53333333333336,latest-aor.csv,At Large included: confirmed by split table,1,29.773349367233582,observed
+trump_second,10,2025-10-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,7988,31,257.6774193548387,latest-aor.csv,At Large included: confirmed by split table,1,27.445456107198073,observed
+trump_second,11,2025-11-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,7353,30,245.1,latest-aor.csv,At Large included: confirmed by split table,1,26.105823741625144,observed
+trump_second,12,2025-12-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,6476,31,208.9032258064516,latest-aor.csv,At Large included: confirmed by split table,1,22.250472427417964,observed
+trump_second,13,2026-01-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,6076,31,196,latest-aor.csv,At Large included: confirmed by split table,2,20.876138120597833,observed
+trump_second,14,2026-02-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,6599,28,235.67857142857144,latest-aor.csv,At Large included: confirmed by split table,2,25.10233882249,observed
+trump_second,15,2026-03-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,8270,31,266.7741935483871,latest-aor.csv,At Large included: confirmed by split table,2,28.414361793506266,observed
+trump_second,16,2026-04-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,8966,30,298.8666666666667,latest-aor.csv,At Large included: confirmed by split table,2,31.832560270285743,observed
+trump_second,17,2026-05-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,10011,31,322.93548387096774,latest-aor.csv,At Large included: confirmed by split table,2,34.3961518639409,observed
+trump_second,18,2026-06-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,9855,30,328.5,latest-aor.csv,At Large included: confirmed by split table,2,34.98883353375708,observed
+trump_second,19,2026-07-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,9296,31,299.8709677419355,latest-aor.csv,At Large included: confirmed by split table,2,31.939529290499912,observed
+trump_second,20,2026-08-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,8870,31,286.1290322580645,latest-aor.csv,At Large included: confirmed by split table,2,30.475863253736467,observed
+trump_second,21,2026-09-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,NA,NA,NA,NA,NA,2,NA,not yet available
+trump_second,22,2026-10-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,NA,NA,NA,NA,NA,2,NA,not yet available
+trump_second,23,2026-11-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,NA,NA,NA,NA,NA,2,NA,not yet available
+trump_second,24,2026-12-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,NA,NA,NA,NA,NA,2,NA,not yet available
+trump_second,25,2027-01-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,NA,NA,NA,NA,NA,3,NA,not yet available
+trump_second,26,2027-02-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,NA,NA,NA,NA,NA,3,NA,not yet available
+trump_second,27,2027-03-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,NA,NA,NA,NA,NA,3,NA,not yet available
+trump_second,28,2027-04-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,NA,NA,NA,NA,NA,3,NA,not yet available
+trump_second,29,2027-05-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,NA,NA,NA,NA,NA,3,NA,not yet available
+trump_second,30,2027-06-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,NA,NA,NA,NA,NA,3,NA,not yet available
+trump_second,31,2027-07-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,NA,NA,NA,NA,NA,3,NA,not yet available
+trump_second,32,2027-08-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,NA,NA,NA,NA,NA,3,NA,not yet available
+trump_second,33,2027-09-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,NA,NA,NA,NA,NA,3,NA,not yet available
+trump_second,34,2027-10-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,NA,NA,NA,NA,NA,3,NA,not yet available
+trump_second,35,2027-11-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,NA,NA,NA,NA,NA,3,NA,not yet available
+trump_second,36,2027-12-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,NA,NA,NA,NA,NA,3,NA,not yet available
+trump_second,37,2028-01-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,NA,NA,NA,NA,NA,4,NA,not yet available
+trump_second,38,2028-02-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,NA,NA,NA,NA,NA,4,NA,not yet available
+trump_second,39,2028-03-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,NA,NA,NA,NA,NA,4,NA,not yet available
+trump_second,40,2028-04-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,NA,NA,NA,NA,NA,4,NA,not yet available
+trump_second,41,2028-05-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,NA,NA,NA,NA,NA,4,NA,not yet available
+trump_second,42,2028-06-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,NA,NA,NA,NA,NA,4,NA,not yet available
+trump_second,43,2028-07-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,NA,NA,NA,NA,NA,4,NA,not yet available
+trump_second,44,2028-08-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,NA,NA,NA,NA,NA,4,NA,not yet available
+trump_second,45,2028-09-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,NA,NA,NA,NA,NA,4,NA,not yet available
+trump_second,46,2028-10-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,NA,NA,NA,NA,NA,4,NA,not yet available
+trump_second,47,2028-11-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,NA,NA,NA,NA,NA,4,NA,not yet available
+trump_second,48,2028-12-01,Trump · second term,2025,2028,2025-01-01,29105,31,938.8709677419356,valid,NA,NA,NA,NA,NA,4,NA,not yet available

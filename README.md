@@ -49,6 +49,9 @@ git checkout -b codex/2026-10-my-next-topic
 
 ### 2. Create the draft and make the charts
 
+For future charts, use bundled **Lato Black 900** titles, **Lato Regular 400** supporting text/annotations/footer content, and **Lato Bold 700** direct labels and Source:/Notes: field names. Exact files/license and current starting sizes are in [brand notes](brand-exploration/README.md) and [font notes](brand-exploration/fonts/lato/README.md). Load exact files and reject substitution. Keep mandatory Source, optional Notes, compact paragraphs with one space after each colon, and the established divider/pterosaur signature. Existing historical exports and comparison studies stay intact; do not extract shared R functions yet.
+
+
 In the RStudio Console, source the initializer from the repository root. It refuses to reuse an existing project path and creates a draft `story.md`:
 
 ```r

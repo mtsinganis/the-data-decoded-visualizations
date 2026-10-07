@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 640" width="360" height="640" role="img" aria-label="Synthetic ranked bar chart, Georgia Bold title: Where did it rise most?">
+  <style>
+    @font-face{font-family:'Work Sans';src:url('../fonts/WorkSans-Regular.ttf') format('truetype');font-weight:400}
+    @font-face{font-family:'Work Sans';src:url('../fonts/WorkSans-Medium.ttf') format('truetype');font-weight:500}
+    @font-face{font-family:'Work Sans';src:url('../fonts/WorkSans-Bold.ttf') format('truetype');font-weight:700}
+    .title-serif{font-family:Georgia,serif;font-size:27px;font-weight:700;letter-spacing:-.025em;fill:#172033}
+    .sans,.row,.value,.footer{font-family:'Work Sans',Arial,sans-serif;fill:#172033}
+    .sans{font-size:13px}.row{font-size:13px;font-weight:600}.value{font-size:14px;font-weight:700}.footer{font-size:10px;font-weight:700;letter-spacing:.02em}
+  </style>
+  <rect width="360" height="640" fill="#F7F5EE"/>
+  <text class="title-serif" x="24" y="55">Where did it rise most?</text>
+  <text class="sans" x="24" y="157">Change in a synthetic index, 2019–2025</text>
+  <line x1="24" x2="336" y1="184" y2="184" stroke="#D7D9D7"/>
+  <text class="sans" x="24" y="211">Index-point change</text>
+  <text class="row" x="24" y="257">Region A</text>
+    <rect x="117" y="241" width="188" height="24" fill="#D8DDE1"/>
+    <rect x="117" y="241" width="175.46666666666667" height="24" fill="#0062DF"/>
+    <text class="value" x="331" y="258" text-anchor="end">28</text><text class="row" x="24" y="310">Region B</text>
+    <rect x="117" y="294" width="188" height="24" fill="#D8DDE1"/>
+    <rect x="117" y="294" width="150.4" height="24" fill="#647184"/>
+    <text class="value" x="331" y="311" text-anchor="end">24</text><text class="row" x="24" y="363">Region C</text>
+    <rect x="117" y="347" width="188" height="24" fill="#D8DDE1"/>
+    <rect x="117" y="347" width="119.06666666666666" height="24" fill="#647184"/>
+    <text class="value" x="331" y="364" text-anchor="end">19</text><text class="row" x="24" y="416">Region D</text>
+    <rect x="117" y="400" width="188" height="24" fill="#D8DDE1"/>
+    <rect x="117" y="400" width="81.46666666666667" height="24" fill="#647184"/>
+    <text class="value" x="331" y="417" text-anchor="end">13</text><text class="row" x="24" y="469">Region E</text>
+    <rect x="117" y="453" width="188" height="24" fill="#D8DDE1"/>
+    <rect x="117" y="453" width="50.13333333333333" height="24" fill="#647184"/>
+    <text class="value" x="331" y="470" text-anchor="end">8</text>
+  <text class="sans" x="24" y="532">Five invented regions · values are illustrative</text>
+  <line x1="24" x2="336" y1="588" y2="588" stroke="#D7D9D7"/>
+  <text class="footer" x="24" y="614">SYNTHETIC DATA</text>
+  <g transform="translate(181 598) scale(.0197 .02) translate(-20 -180)"><path d="M58 202 C237 221 449 312 555 391 C581 412 587 450 605 485 C641 560 681 625 723 630 C760 634 800 610 824 573 C841 545 819 515 788 483 C755 449 727 419 720 392 C770 431 830 470 901 507 C930 523 947 548 964 567 C1033 605 1127 649 1183 682 C1100 661 1008 626 927 601 C887 589 867 601 843 623 L765 708 L811 681 C903 686 977 718 1035 752 C1101 801 1167 943 1195 1053 C1094 943 1000 860 908 811 C809 759 727 746 649 769 C573 793 506 846 442 903 L462 832 L402 853 L383 894 L352 905 C368 884 373 850 381 833 C439 812 493 781 540 727 C504 749 485 762 470 773 C485 607 363 381 58 202 Z M894 535 C916 536 937 549 956 574 C921 575 903 562 894 535 Z" fill="#0062DF"/></g>
+  <text class="footer" x="213" y="614">THE DATA DECODED</text>
+</svg>
