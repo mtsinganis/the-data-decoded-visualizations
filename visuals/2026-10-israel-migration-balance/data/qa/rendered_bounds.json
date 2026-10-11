@@ -1,0 +1,83 @@
+[
+  {
+    "chart": "01-migration-components.png",
+    "title_lines": 1,
+    "subtitle_lines": 2,
+    "header_ink_bounds": [
+      [
+        81,
+        144
+      ],
+      [
+        157,
+        200
+      ],
+      [
+        216,
+        248
+      ]
+    ],
+    "title_line_gap_px": null,
+    "title_to_subtitle_gap_px": 12,
+    "nonwhite_bounds": [
+      95,
+      81,
+      2017,
+      2059
+    ]
+  },
+  {
+    "chart": "02-annual-migration-balance.png",
+    "title_lines": 1,
+    "subtitle_lines": 2,
+    "header_ink_bounds": [
+      [
+        81,
+        147
+      ],
+      [
+        157,
+        200
+      ],
+      [
+        216,
+        248
+      ]
+    ],
+    "title_line_gap_px": null,
+    "title_to_subtitle_gap_px": 9,
+    "nonwhite_bounds": [
+      95,
+      81,
+      2017,
+      2059
+    ]
+  },
+  {
+    "chart": "03-population-growth.png",
+    "title_lines": 1,
+    "subtitle_lines": 2,
+    "header_ink_bounds": [
+      [
+        81,
+        147
+      ],
+      [
+        157,
+        200
+      ],
+      [
+        214,
+        248
+      ]
+    ],
+    "title_line_gap_px": null,
+    "title_to_subtitle_gap_px": 9,
+    "nonwhite_bounds": [
+      95,
+      81,
+      2017,
+      2059
+    ]
+  }
+]

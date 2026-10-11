@@ -1,0 +1,6 @@
+# Preserve audited snapshot and chart bytes; SHA-256 checks must survive clones.
+/visuals/2026-10-eu-youth-unemployment/data/** -text
+/visuals/2026-10-eu-youth-unemployment/plots/** -text
+/visuals/2026-10-israel-migration-balance/data/** -text
+/visuals/2026-10-israel-migration-balance/plots/** -text
+/visuals/2026-10-nyc-shootings/plots/cumulative-extended.svg -text

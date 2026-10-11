@@ -1,0 +1,6 @@
+dimension,code,dsd_codelist,dsd_label,json_label
+freq,M,FREQ,Monthly,Monthly
+s_adj,SA,S_ADJ,"Seasonally adjusted data, not calendar adjusted data","Seasonally adjusted data, not calendar adjusted data"
+age,Y_LT25,AGE,Less than 25 years,Less than 25 years
+unit,PC_ACT,UNIT,Percentage of population in the labour force,Percentage of population in the labour force
+sex,T,SEX,Total,Total

@@ -1,0 +1,39 @@
+{
+  "png_pixels": [
+    3600,
+    2700
+  ],
+  "png_dpi": 300,
+  "svg_viewbox": "0 0 864.00 648.00",
+  "embedded_lato_weights": [
+    400,
+    700,
+    900
+  ],
+  "header_ink_bounds_pixels": [
+    [
+      103,
+      197
+    ],
+    [
+      217,
+      272
+    ]
+  ],
+  "title_to_subtitle_visible_gap_pixels": 19,
+  "wrapped_title_lines": 1,
+  "header_gap_rule": "one title line; no inter-title gap",
+  "white_edge_margins": true,
+  "endpoint_values_and_dates_in_svg": true,
+  "alt_characters": 701,
+  "story_post_alt_identical": true,
+  "status": "published",
+  "png_and_svg_visual_inspection": "Both inspected; monthly frequency in subtitle and revised explanatory Notes including series-break markers; date labels retain 7 pt additional padding",
+  "flagged_breaks": 21,
+  "countries_with_flagged_breaks": 18,
+  "greek_peak": 61.4,
+  "greek_peak_months": [
+    "2013-06-01",
+    "2013-07-01"
+  ]
+}

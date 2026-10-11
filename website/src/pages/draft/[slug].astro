@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import CountryExplorer from '../../components/CountryExplorer.astro';
 import { getDraftProjects } from '../../lib/projects.js';
 
 export async function getStaticPaths() {
@@ -20,6 +21,8 @@ const base = import.meta.env.BASE_URL;
       <p class="lede">{project.description}</p>
     </header>
     <section class="story introduction" aria-label="Introduction" set:html={project.introductionHtml} />
+    {project.presentation === 'country-explorer' ?
+      <CountryExplorer project={project} chartRoute="draft-chart" /> : (
     <section class="charts" aria-label="Charts">
       {project.charts.length === 0 && <p>No charts have been designated yet.</p>}
       {project.charts.map((chart, index) => (
@@ -32,6 +35,11 @@ const base = import.meta.env.BASE_URL;
         </figure>
       ))}
     </section>
+    )}
+    {project.interpretationHtml && <section class="story interpretation" aria-labelledby="interpretation-heading">
+      <h2 id="interpretation-heading">Interpretation</h2>
+      <div set:html={project.interpretationHtml} />
+    </section>}
     {project.sourcesHtml && <section class="story sources" aria-labelledby="sources-heading"><h2 id="sources-heading">Sources and methodology</h2><div set:html={project.sourcesHtml} /></section>}
   </article>
 </Base>

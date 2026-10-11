@@ -1,0 +1,73 @@
+{
+  "chosen_format": "subsetted WOFF2",
+  "chart_count": 28,
+  "country_chart_count": 27,
+  "all_pngs_byte_unchanged": true,
+  "png_files_verified": 29,
+  "png_dimensions": [
+    3600,
+    2700
+  ],
+  "project_bytes_before": 125753613,
+  "svg_bytes_before": 78395955,
+  "svg_bytes_after": 6064623,
+  "svg_reduction_percent": 92.26411235120486,
+  "weights_used": [
+    400,
+    700,
+    900
+  ],
+  "all_glyphs_metrics_shaping_and_non_font_markup_verified": true,
+  "browser_all_28_pixel_and_text_bounds_identical": true,
+  "librsvg_all_28_pixel_identical_with_local_lato": true,
+  "inkscape_sample_pixel_identical_with_local_lato": true,
+  "inkscape_editable_save_reopen_pixel_identical": true,
+  "desktop_embedding_limitation": "Inkscape 1.4 and librsvg 2.61.0 ignore embedded @font-face for full TTF, subset WOFF and subset WOFF2 alike. They require locally available original Lato fonts, as before.",
+  "path_alternative": {
+    "file": "plots/alternatives/youth-unemployment-netherlands-eu-text-paths.svg",
+    "bytes": 573294,
+    "remaining_text_elements": 0,
+    "inkscape_changed_pixels_at_1800x1350": 411,
+    "browser_changed_pixels_at_1800x1350": 82371,
+    "text_editability": false
+  },
+  "sample": {
+    "country": "Netherlands",
+    "original_bytes": 2799866,
+    "subset_woff2_bytes": 216935,
+    "subset_woff_bytes": 229077
+  },
+  "png_sha256": {
+    "plots\\youth-unemployment-eu-country-contact-sheet.png": "bc437f0e984b29ecb158cd1d7b80d36a76614a60dfa9989c61275bfe804a3c3b",
+    "plots\\youth-unemployment-greece-eu.png": "d61cddf8e3f3dc29c45dc6665a26900fa0c22d3117b7f87f7eb23151c030e22e",
+    "plots\\countries\\youth-unemployment-austria-eu.png": "cf771dc53560859d9378396d5d3166afb009e19a5fb5ba010b15f08046ef5261",
+    "plots\\countries\\youth-unemployment-belgium-eu.png": "68c74e52678208b0db6bbd260492b6ca269f12e84eda3c396107d772c21e283f",
+    "plots\\countries\\youth-unemployment-bulgaria-eu.png": "d289cd217aec9f688913c4fa9964c6a032db019f145fd301c1ede1341a44829b",
+    "plots\\countries\\youth-unemployment-croatia-eu.png": "ae9d265d907f7d154d1826bfd221159858fd35423afc30b0815d9d7eb8196bd2",
+    "plots\\countries\\youth-unemployment-cyprus-eu.png": "eaeac7031a7fe697be0093729bb0cbf8bb40671af5170e4d0ddbca822bdd5369",
+    "plots\\countries\\youth-unemployment-czechia-eu.png": "16a526d9e506f3bca79a21cec9978c00e6dcc3640eae32cd55dab271d3fc2395",
+    "plots\\countries\\youth-unemployment-denmark-eu.png": "09a9e3c40d575b167ef27653be03a69fecb6aa58f48eb740da6fd55a6b216a11",
+    "plots\\countries\\youth-unemployment-estonia-eu.png": "c9d703590a5d91d308897c67cee770b11a93fcc7b6f5c2e96c444f8c4b379daa",
+    "plots\\countries\\youth-unemployment-finland-eu.png": "ec4162b971834d9d6b497f635baba628a243857f655825adea2f791bf75bc17c",
+    "plots\\countries\\youth-unemployment-france-eu.png": "2edc779fc49b47246e42c44955ddbe8049e86d8d4ccb194d2c1e05e645193e6f",
+    "plots\\countries\\youth-unemployment-germany-eu.png": "a3c8ae42036ed8e0f31bf2c2fe987d967e7ee9ee659a42f904832ded51e0a761",
+    "plots\\countries\\youth-unemployment-greece-eu.png": "a97285562ba01331ab020d464a2795a884b581a41d01b297753446b7fbd4092d",
+    "plots\\countries\\youth-unemployment-hungary-eu.png": "3733bbb0395da23a3bf85b6a2eb075f920c5bc4d276a8a891a4e1e0907a7123d",
+    "plots\\countries\\youth-unemployment-ireland-eu.png": "5d1b3c1bdf1ee1b2b3f58f6f5cbccec62b90c110bb84ac2f09366d5df22e0bb9",
+    "plots\\countries\\youth-unemployment-italy-eu.png": "cfeef88e8b82661501ed44565674ab13e11e5ffb04b2377e302cdd95c4bad71a",
+    "plots\\countries\\youth-unemployment-latvia-eu.png": "3743e59ae297b1dd846ef5e890244f450820a20e8fb6588e8c8258f730b845cd",
+    "plots\\countries\\youth-unemployment-lithuania-eu.png": "e0e8f6d970b72fd0c9ff7e5eec51c37502da84d3766651fe46754f66d1f4353b",
+    "plots\\countries\\youth-unemployment-luxembourg-eu.png": "e39ec3902fc19b188505d3018bbc8c8786cef4ce38c0a2cabb6e6db8fc5b9827",
+    "plots\\countries\\youth-unemployment-malta-eu.png": "59033eac4744ad11b068a8bce7781d793ffd9819a4d3f412f4bd4914fad2f8b0",
+    "plots\\countries\\youth-unemployment-netherlands-eu.png": "ebb98631f78635cd32f4dd8b16d5e549a5da41669540c68aefe0c4af17bf79b0",
+    "plots\\countries\\youth-unemployment-poland-eu.png": "cd9940fc39eb09606f5a478f30cf53d04793f3c1100ec25ca813e6e7c16d8804",
+    "plots\\countries\\youth-unemployment-portugal-eu.png": "b383e03d669d12e293fdea1d2bf3184aa40d344367c35bb7fd7b1df48709a152",
+    "plots\\countries\\youth-unemployment-romania-eu.png": "c5f37510b715df9f4eace506eb79e3067f693b32aae5c14fde13c160802e3b2b",
+    "plots\\countries\\youth-unemployment-slovakia-eu.png": "71580e265f96796b1ad2acd08a3e00b2e3583ff2deb8f225c2bb90d9a52ab8cc",
+    "plots\\countries\\youth-unemployment-slovenia-eu.png": "6190be99596967e348c9a0d9d3608146b9705c42cdc63a33c0b485c2e65273e0",
+    "plots\\countries\\youth-unemployment-spain-eu.png": "f2d1478bb06276eab78f2b61bf16dea3df3fbb3fcbcaa511c9859262f95e92b5",
+    "plots\\countries\\youth-unemployment-sweden-eu.png": "04c39ee9db0e3912cd83156c7e96565f4835fe2f482624de6f6dce5c812abec8"
+  },
+  "project_bytes_after": 54182453,
+  "project_reduction_percent": 56.91380016254484
+}

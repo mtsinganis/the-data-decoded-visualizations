@@ -1,0 +1,193 @@
+{
+  "status": "draft",
+  "alt_lengths": [
+    {
+      "file": "plots/02-annual-migration-balance.png",
+      "characters": 457,
+      "synchronized": true
+    },
+    {
+      "file": "plots/01-migration-components.png",
+      "characters": 529,
+      "synchronized": true
+    },
+    {
+      "file": "plots/03-population-growth.png",
+      "characters": 445,
+      "synchronized": true
+    }
+  ],
+  "exports": [
+    {
+      "key": "02-annual-migration-balance",
+      "png_pixels": [
+        2112,
+        2112
+      ],
+      "svg_points": [
+        633.6,
+        633.6
+      ],
+      "embedded_fonts": [
+        {
+          "family": "Lato",
+          "weight": "400",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "700",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "900",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "400",
+          "status": "loaded"
+        }
+      ],
+      "mean_absolute_rgb_difference": 0.9889506003453091
+    },
+    {
+      "key": "01-migration-components",
+      "png_pixels": [
+        2112,
+        2112
+      ],
+      "svg_points": [
+        633.6,
+        633.6
+      ],
+      "embedded_fonts": [
+        {
+          "family": "Lato",
+          "weight": "400",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "700",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "900",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "400",
+          "status": "loaded"
+        }
+      ],
+      "mean_absolute_rgb_difference": 0.9727518287754439
+    },
+    {
+      "key": "03-population-growth",
+      "png_pixels": [
+        2112,
+        2112
+      ],
+      "svg_points": [
+        633.6,
+        633.6
+      ],
+      "embedded_fonts": [
+        {
+          "family": "Lato",
+          "weight": "400",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "700",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "900",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "400",
+          "status": "loaded"
+        }
+      ],
+      "mean_absolute_rgb_difference": 0.9784753459069865
+    }
+  ],
+  "pages": [
+    {
+      "width": 1280,
+      "scrollWidth": 1280,
+      "imageCount": 3,
+      "images": [
+        {
+          "alt": "Annual CBS net migration for the Israeli population: plus 27,600 in 2023, minus 18,600 in 2024 and minus 20,900 in 2025. Three bars share a zero baseline. A separate callout gives provisional net migration of approximately minus 8,000 for approximately September 2025–September 2026, about 11½ months. This reporting period overlaps the annual bars, is not a fourth calendar year, and does not establish an annual improvement. Annual figures may be revised.",
+          "loaded": true,
+          "src": "/the-data-decoded-visualizations/draft-chart/israel-migration-balance/02-annual-migration-balance.png"
+        },
+        {
+          "alt": "Waterfall of provisional CBS estimates for approximately September 2025–September 2026, about 11½ months. Approximately 24,000 new immigrants, 4,000 family reunification arrivals and 21,000 returning Israelis add 49,000 people. About 57,000 Israelis moving abroad leave net migration of minus 8,000. A blue bracket groups the three arrivals as 49,000 people, not an extra flow. Departures are red; a filled neutral grey result bar starts at zero, with a red minus 8,000 label. Figures are rounded. This is not calendar year 2026.",
+          "loaded": true,
+          "src": "/the-data-decoded-visualizations/draft-chart/israel-migration-balance/01-migration-components.png"
+        },
+        {
+          "alt": "Population-growth waterfall for approximately September 2025–September 2026, about 11½ months. Approximately 182,000 births minus 50,000 deaths yield plus 132,000. A red step labeled minus 8,000 represents net migration and reduces the result to plus 124,000 total population growth. The negative label describes the change, not its height on the axis. Figures are provisional and rounded; the separately reported foreign population is excluded.",
+          "loaded": true,
+          "src": "/the-data-decoded-visualizations/draft-chart/israel-migration-balance/03-population-growth.png"
+        }
+      ],
+      "sections": [
+        "story introduction",
+        "charts",
+        "story interpretation",
+        "story sources"
+      ],
+      "links": 3,
+      "draftLabel": true
+    },
+    {
+      "width": 390,
+      "scrollWidth": 390,
+      "imageCount": 3,
+      "images": [
+        {
+          "alt": "Annual CBS net migration for the Israeli population: plus 27,600 in 2023, minus 18,600 in 2024 and minus 20,900 in 2025. Three bars share a zero baseline. A separate callout gives provisional net migration of approximately minus 8,000 for approximately September 2025–September 2026, about 11½ months. This reporting period overlaps the annual bars, is not a fourth calendar year, and does not establish an annual improvement. Annual figures may be revised.",
+          "loaded": true,
+          "src": "/the-data-decoded-visualizations/draft-chart/israel-migration-balance/02-annual-migration-balance.png"
+        },
+        {
+          "alt": "Waterfall of provisional CBS estimates for approximately September 2025–September 2026, about 11½ months. Approximately 24,000 new immigrants, 4,000 family reunification arrivals and 21,000 returning Israelis add 49,000 people. About 57,000 Israelis moving abroad leave net migration of minus 8,000. A blue bracket groups the three arrivals as 49,000 people, not an extra flow. Departures are red; a filled neutral grey result bar starts at zero, with a red minus 8,000 label. Figures are rounded. This is not calendar year 2026.",
+          "loaded": true,
+          "src": "/the-data-decoded-visualizations/draft-chart/israel-migration-balance/01-migration-components.png"
+        },
+        {
+          "alt": "Population-growth waterfall for approximately September 2025–September 2026, about 11½ months. Approximately 182,000 births minus 50,000 deaths yield plus 132,000. A red step labeled minus 8,000 represents net migration and reduces the result to plus 124,000 total population growth. The negative label describes the change, not its height on the axis. Figures are provisional and rounded; the separately reported foreign population is excluded.",
+          "loaded": true,
+          "src": "/the-data-decoded-visualizations/draft-chart/israel-migration-balance/03-population-growth.png"
+        }
+      ],
+      "sections": [
+        "story introduction",
+        "charts",
+        "story interpretation",
+        "story sources"
+      ],
+      "links": 3,
+      "draftLabel": true
+    }
+  ],
+  "thread_lengths": [
+    195,
+    257,
+    260,
+    263
+  ],
+  "gallery_exclusion": true
+}

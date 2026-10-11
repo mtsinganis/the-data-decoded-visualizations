@@ -1,0 +1,31 @@
+{
+  "contact_sheet_countries_reviewed": 27,
+  "individual_pngs_reviewed": [
+    "Luxembourg",
+    "Hungary"
+  ],
+  "rendered_svgs_reviewed": [
+    "Greece",
+    "Hungary",
+    "Luxembourg",
+    "Netherlands",
+    "Ireland",
+    "Denmark",
+    "Slovenia"
+  ],
+  "findings": "Long titles fit at the approved size; close endpoint labels are separated; no clipping, label overlap or footer collisions. SVG title boundaries and double spaces in endpoint labels are preserved.",
+  "png_dimensions": [
+    3600,
+    2700
+  ],
+  "dpi": 300,
+  "png_count": 27,
+  "svg_count": 27,
+  "validated_tidy_data_hash_unchanged": true,
+  "reusable_exporter_check": "Final Netherlands PNG and SVG reproduced byte for byte by export_chart.",
+  "published_or_deployed": false,
+  "original_multi_highlight_png_hash_unchanged": true,
+  "all_main_svg_non_font_markup_unchanged": true,
+  "all_29_png_hashes_unchanged_after_font_optimization": true,
+  "font_optimization_review": "All 28 SVGs pixel-identical in Edge 154 and librsvg 2.61.0; identical browser text bounds. Inkscape 1.4 samples and editable save/reopen match originals with local Lato. See SVG-OPTIMIZATION.md."
+}

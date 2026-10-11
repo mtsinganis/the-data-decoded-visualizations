@@ -50,7 +50,7 @@ for (const item of projects) {
     project.indexOf('<h1>'),
     project.indexOf('class="lede"'),
     project.indexOf('aria-label="Introduction"'),
-    project.indexOf('class="charts"'),
+    project.search(/class="charts(?:\s|")/),
     project.indexOf('id="sources-heading"'),
   ];
   assert.ok(positions.every((position, index) => position >= 0 && (index === 0 || position > positions[index - 1])),
@@ -63,8 +63,28 @@ for (const item of projects) {
     previous = position;
     assert.ok((await readFile(path.join(dist, 'chart', item.slug, path.basename(imagePath)))).length > 0);
   }
-  assert.equal((project.match(/aria-label="View full-size chart /g) || []).length, item.charts.length,
+  assert.equal((project.match(/aria-label="View full-size chart /g) || []).length, item.presentation === 'country-explorer' ? item.countryCharts.length : item.charts.length,
     `${item.slug} needs one accessible full-size link per chart`);
+}
+// Country explorers explicitly publish both formats while presenting one figure per country.
+for (const item of projects.filter((project) => project.presentation === 'country-explorer')) {
+  const html = await readFile(path.join(dist, 'projects', item.slug, 'index.html'), 'utf8');
+  assert.equal(item.countryCharts.length, 27, 'all 27 current EU members are present');
+  assert.deepEqual(item.countryCharts.map((c) => c.geo).sort(), ['AT','BE','BG','CY','CZ','DE','DK','EE','EL','ES','FI','FR','HR','HU','IE','IT','LT','LU','LV','MT','NL','PL','PT','RO','SE','SI','SK'].sort());
+  assert.equal(item.charts.length, 54, '27 SVGs and 27 PNGs are explicitly designated');
+  assert.deepEqual(item.countryCharts.map((country) => country.name),
+    [...item.countryCharts.map((country) => country.name)].sort((a, b) => a.localeCompare(b, 'en')));
+  assert.equal((html.match(/class="country-figure"/g) || []).length, 27);
+  assert.equal((html.match(/<option /g) || []).length, 27);
+  assert.ok(html.includes('Explore your country') && html.includes('Downloads for all 27 countries'));
+  assert.equal((html.match(/ download=/g) || []).length, 108, 'each format has figure and directory downloads');
+  assert.equal((html.match(new RegExp(`<img[^>]+src="${base}chart/${item.slug}/`, 'g')) || []).length, 27, 'one SVG image per country');
+  for (const country of item.countryCharts) {
+    for (const format of ['svg', 'png']) {
+      assert.ok(html.includes(`${base}chart/${item.slug}/${country[format].name}`));
+      assert.deepEqual(await readFile(path.join(dist, 'chart', item.slug, country[format].name)), await readFile(country[format].file));
+    }
+  }
 }
 assert.ok(!gallery.includes(`chart/${somalia.slug}/thumb.svg`), 'Somalia gallery must use the PNG');
 for (const slug of draftSlugs) {
@@ -147,7 +167,7 @@ assert.equal(legacyCount + redirects.size, 20, 'all 20 existing project routes m
 assert.ok(legacyCount >= 3, 'the three archived exceptions should retain rendered pages');
 for (const item of projects) {
   for (const chart of item.charts) {
-    const relative = `visuals/${item.folder}/plots/${chart.name}`;
+    const relative = `visuals/${item.folder}/plots/${chart.relative}`;
     assert.deepEqual(await readFile(path.join(dist, relative)), await readFile(chart.file),
       `${relative} must preserve the designated chart at its old direct URL`);
     expected.add(relative);

@@ -1,0 +1,9 @@
+{
+  "browser_bounds_identical": true,
+  "text_paths_changed_pixels": 411,
+  "text_paths_mean_absolute_rgb_error": [
+    0.000194238683127572,
+    0.0001897119341563786,
+    0.00017777777777777779
+  ]
+}

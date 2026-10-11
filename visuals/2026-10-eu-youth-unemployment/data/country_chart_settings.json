@@ -1,0 +1,18 @@
+{
+  "x_start": "2000-01-01",
+  "latest": "2026-09-01",
+  "x_display_end": "2031-11-14",
+  "x_ticks": ["2000-01-01", "2005-01-01", "2010-01-01", "2015-01-01", "2020-01-01", "2026-09-01"],
+  "x_tick_labels": ["Jan\n2000", "2005", "2010", "2015", "2020", "Sep\n2026"],
+  "y_limits": [0, 70],
+  "y_ticks": [0, 10, 20, 30, 40, 50, 60, 70],
+  "featured_colour": "#2455FF",
+  "eu_colour": "#172033",
+  "featured_linewidth": 1.18,
+  "eu_linewidth": 1,
+  "eu_linetype": "42",
+  "background_countries": 26,
+  "layer_order": ["other EU countries", "featured country", "EU27_2020"],
+  "notes": "Rates show the share of 15–24-year-olds who are unemployed among those working or actively seeking and available for work—not among all young people. Monthly figures are adjusted to account for regular seasonal patterns. Open circles denote series breaks.",
+  "subtitle": "Monthly, seasonally-adjusted youth unemployment rate, ages 15–24 (%) · Jan 2000–Sep 2026"
+}

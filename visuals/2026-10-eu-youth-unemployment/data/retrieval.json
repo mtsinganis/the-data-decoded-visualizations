@@ -1,0 +1,11 @@
+{
+  "dataset": "une_rt_m",
+  "latest_available_month": "2026-09",
+  "api_time_dimension_end": "2026-09",
+  "source_updated": "2026-10-08T11:00:00+0200",
+  "retrieved_utc": "2026-10-09T21:31:08Z",
+  "retrieved_date_berlin": "2026-10-09",
+  "observations": 8950,
+  "missing": 38,
+  "geographies": ["BE", "BG", "CZ", "DK", "DE", "EE", "IE", "EL", "ES", "FR", "HR", "IT", "CY", "LV", "LT", "LU", "HU", "MT", "NL", "AT", "PL", "PT", "RO", "SI", "SK", "FI", "SE", "EU27_2020"]
+}

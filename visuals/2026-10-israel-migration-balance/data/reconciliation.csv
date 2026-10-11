@@ -1,0 +1,3 @@
+check,residual_people,precision
+Four migration components minus reported balance,0,CBS approximate thousand; zero residual at reported precision
+Births minus deaths plus migration minus population increase,0,CBS approximate thousand; zero residual at reported precision

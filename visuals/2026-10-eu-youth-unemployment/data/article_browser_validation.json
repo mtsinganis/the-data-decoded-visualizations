@@ -1,0 +1,319 @@
+{
+  "country_count": 27,
+  "desktop_mobile": [
+    {
+      "viewport": 1280,
+      "document": 1280,
+      "body": 1280,
+      "select": {
+        "x": 165.90625,
+        "y": -485.65625,
+        "width": 320,
+        "height": 48,
+        "top": -485.65625,
+        "right": 485.90625,
+        "bottom": -437.65625,
+        "left": 165.90625
+      },
+      "figure": {
+        "x": 92,
+        "y": -380.0625,
+        "width": 1000,
+        "height": 818.5,
+        "top": -380.0625,
+        "right": 1092,
+        "bottom": 438.4375,
+        "left": 92
+      }
+    },
+    {
+      "viewport": 390,
+      "document": 390,
+      "body": 390,
+      "select": {
+        "x": 16,
+        "y": -76.28125,
+        "width": 358,
+        "height": 48,
+        "top": -76.28125,
+        "right": 374,
+        "bottom": -28.28125,
+        "left": 16
+      },
+      "figure": {
+        "x": 16,
+        "y": 29.3125,
+        "width": 358,
+        "height": 408.5,
+        "top": 29.3125,
+        "right": 374,
+        "bottom": 437.8125,
+        "left": 16
+      }
+    }
+  ],
+  "downloads": [
+    {
+      "format": "png",
+      "file": "youth-unemployment-austria-eu.png",
+      "sha256_matches_original": true
+    },
+    {
+      "format": "svg",
+      "file": "youth-unemployment-austria-eu.svg",
+      "sha256_matches_original": true
+    }
+  ],
+  "console_errors": [],
+  "countries": [
+    {
+      "geo": "AT",
+      "country": "Austria",
+      "download_urls": [
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-austria-eu.png",
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-austria-eu.svg"
+      ],
+      "verified": true
+    },
+    {
+      "geo": "BE",
+      "country": "Belgium",
+      "download_urls": [
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-belgium-eu.png",
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-belgium-eu.svg"
+      ],
+      "verified": true
+    },
+    {
+      "geo": "BG",
+      "country": "Bulgaria",
+      "download_urls": [
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-bulgaria-eu.png",
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-bulgaria-eu.svg"
+      ],
+      "verified": true
+    },
+    {
+      "geo": "HR",
+      "country": "Croatia",
+      "download_urls": [
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-croatia-eu.png",
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-croatia-eu.svg"
+      ],
+      "verified": true
+    },
+    {
+      "geo": "CY",
+      "country": "Cyprus",
+      "download_urls": [
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-cyprus-eu.png",
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-cyprus-eu.svg"
+      ],
+      "verified": true
+    },
+    {
+      "geo": "CZ",
+      "country": "Czechia",
+      "download_urls": [
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-czechia-eu.png",
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-czechia-eu.svg"
+      ],
+      "verified": true
+    },
+    {
+      "geo": "DK",
+      "country": "Denmark",
+      "download_urls": [
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-denmark-eu.png",
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-denmark-eu.svg"
+      ],
+      "verified": true
+    },
+    {
+      "geo": "EE",
+      "country": "Estonia",
+      "download_urls": [
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-estonia-eu.png",
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-estonia-eu.svg"
+      ],
+      "verified": true
+    },
+    {
+      "geo": "FI",
+      "country": "Finland",
+      "download_urls": [
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-finland-eu.png",
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-finland-eu.svg"
+      ],
+      "verified": true
+    },
+    {
+      "geo": "FR",
+      "country": "France",
+      "download_urls": [
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-france-eu.png",
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-france-eu.svg"
+      ],
+      "verified": true
+    },
+    {
+      "geo": "DE",
+      "country": "Germany",
+      "download_urls": [
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-germany-eu.png",
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-germany-eu.svg"
+      ],
+      "verified": true
+    },
+    {
+      "geo": "EL",
+      "country": "Greece",
+      "download_urls": [
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-greece-eu.png",
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-greece-eu.svg"
+      ],
+      "verified": true
+    },
+    {
+      "geo": "HU",
+      "country": "Hungary",
+      "download_urls": [
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-hungary-eu.png",
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-hungary-eu.svg"
+      ],
+      "verified": true
+    },
+    {
+      "geo": "IE",
+      "country": "Ireland",
+      "download_urls": [
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-ireland-eu.png",
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-ireland-eu.svg"
+      ],
+      "verified": true
+    },
+    {
+      "geo": "IT",
+      "country": "Italy",
+      "download_urls": [
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-italy-eu.png",
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-italy-eu.svg"
+      ],
+      "verified": true
+    },
+    {
+      "geo": "LV",
+      "country": "Latvia",
+      "download_urls": [
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-latvia-eu.png",
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-latvia-eu.svg"
+      ],
+      "verified": true
+    },
+    {
+      "geo": "LT",
+      "country": "Lithuania",
+      "download_urls": [
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-lithuania-eu.png",
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-lithuania-eu.svg"
+      ],
+      "verified": true
+    },
+    {
+      "geo": "LU",
+      "country": "Luxembourg",
+      "download_urls": [
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-luxembourg-eu.png",
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-luxembourg-eu.svg"
+      ],
+      "verified": true
+    },
+    {
+      "geo": "MT",
+      "country": "Malta",
+      "download_urls": [
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-malta-eu.png",
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-malta-eu.svg"
+      ],
+      "verified": true
+    },
+    {
+      "geo": "NL",
+      "country": "Netherlands",
+      "download_urls": [
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-netherlands-eu.png",
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-netherlands-eu.svg"
+      ],
+      "verified": true
+    },
+    {
+      "geo": "PL",
+      "country": "Poland",
+      "download_urls": [
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-poland-eu.png",
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-poland-eu.svg"
+      ],
+      "verified": true
+    },
+    {
+      "geo": "PT",
+      "country": "Portugal",
+      "download_urls": [
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-portugal-eu.png",
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-portugal-eu.svg"
+      ],
+      "verified": true
+    },
+    {
+      "geo": "RO",
+      "country": "Romania",
+      "download_urls": [
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-romania-eu.png",
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-romania-eu.svg"
+      ],
+      "verified": true
+    },
+    {
+      "geo": "SK",
+      "country": "Slovakia",
+      "download_urls": [
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-slovakia-eu.png",
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-slovakia-eu.svg"
+      ],
+      "verified": true
+    },
+    {
+      "geo": "SI",
+      "country": "Slovenia",
+      "download_urls": [
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-slovenia-eu.png",
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-slovenia-eu.svg"
+      ],
+      "verified": true
+    },
+    {
+      "geo": "ES",
+      "country": "Spain",
+      "download_urls": [
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-spain-eu.png",
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-spain-eu.svg"
+      ],
+      "verified": true
+    },
+    {
+      "geo": "SE",
+      "country": "Sweden",
+      "download_urls": [
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-sweden-eu.png",
+        "/the-data-decoded-visualizations/chart/eu-youth-unemployment/youth-unemployment-sweden-eu.svg"
+      ],
+      "verified": true
+    }
+  ],
+  "shareable_country_url": true,
+  "invalid_country_falls_back_safely": true,
+  "no_javascript_all_27_figures_and_downloads_available": true,
+  "reviewed_at": "2026-10-11",
+  "visual_review": "Desktop and mobile article and gallery inspected; chart, selector, download controls, titles and prose fit without clipping or overlap.",
+  "data_and_charts_regenerated": false
+}

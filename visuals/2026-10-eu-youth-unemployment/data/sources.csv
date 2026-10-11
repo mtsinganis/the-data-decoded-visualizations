@@ -1,0 +1,6 @@
+file,url,retrieved_utc,retrieved_date_berlin,sha256
+une_rt_m.json,https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/une_rt_m?lang=en&freq=M&s_adj=SA&age=Y_LT25&unit=PC_ACT&sex=T&sinceTimePeriod=2000-01&geo=BE&geo=BG&geo=CZ&geo=DK&geo=DE&geo=EE&geo=IE&geo=EL&geo=ES&geo=FR&geo=HR&geo=IT&geo=CY&geo=LV&geo=LT&geo=LU&geo=HU&geo=MT&geo=NL&geo=AT&geo=PL&geo=PT&geo=RO&geo=SI&geo=SK&geo=FI&geo=SE&geo=EU27_2020,2026-10-09T21:31:08Z,2026-10-09,e4c0f1790a34500ed4557744a50e1f227fa6f7d37999612e8527d03b03eacdeb
+une_rt_m_structure.xml,https://ec.europa.eu/eurostat/api/dissemination/sdmx/2.1/datastructure/ESTAT/UNE_RT_M?references=children,2026-10-09T21:31:09Z,2026-10-09,235724b6382ff37a39940cd95daaf20a7b5455e30ebda550a8d342495ba8f829
+une_rt_m_esms.html,https://ec.europa.eu/eurostat/cache/metadata/en/une_rt_m_esms.htm,2026-10-09T21:31:09Z,2026-10-09,c59d38525723189e3ce768c0de9c0eabf020d1195eefe49ee7f73381b21cb4ed
+une_rt_m_footnotes.xlsx,https://ec.europa.eu/eurostat/cache/metadata/Annexes/une_rt_m_esms_an_footnote.xlsx,2026-10-09T21:31:09Z,2026-10-09,3adca851b769a163d2a5316e684e4e3ca50465ed2c3a609608083262bd231f4a
+greek-crosscheck.tsv,https://ec.europa.eu/eurostat/api/dissemination/sdmx/2.1/data/une_rt_m/M.SA.Y_LT25.PC_ACT.T.EL?startPeriod=2000-01&format=TSV,2026-10-09T21:31:09Z,2026-10-09,f7a0e94a809a08ed03612f4cc2b6172d3c1b445138f96e6ea60fee0c3ae8a2b6

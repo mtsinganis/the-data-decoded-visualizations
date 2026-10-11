@@ -1,0 +1,5 @@
+geo,country,first_month,latest_month,final_rate,expected_months,observed_months,missing_months,leading_missing,internal_missing,trailing_missing,flags,colour,label_name,label_y,label_x,label,endpoint_date
+DE,Germany,2000-01-01,2026-08-01,7.4,321,320,1,0,0,1,b;d,#087F79,Germany,5.15,2027-07-08,Germany  7.4%,Aug 2026
+EU27_2020,European Union - 27 countries (from 2020),2000-01-01,2026-08-01,15.4,321,320,1,0,0,1,,#172033,EU-27,13.15,2027-07-08,EU-27  15.4%,Aug 2026
+EL,Greece,2000-01-01,2026-08-01,15.6,321,320,1,0,0,1,b;d,#2455FF,Greece,18.65,2027-07-08,Greece  15.6%,Aug 2026
+ES,Spain,2000-01-01,2026-08-01,22.7,321,320,1,0,0,1,,#C83242,Spain,24.15,2027-07-08,Spain  22.7%,Aug 2026

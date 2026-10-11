@@ -1,0 +1,9 @@
+component,people,period_months,precision,status,source_page
+new_immigrants,24000,11.63,approximately_1000,provisional,1
+family_reunification,4000,11.63,approximately_1000,provisional,1
+returning_israelis,21000,11.63,approximately_1000,provisional,1
+israeli_emigrants,-57000,11.63,approximately_1000,provisional,1
+total_migration_balance,-8000,11.63,approximately_1000,provisional,1
+births,182000,11.63,approximately_1000,provisional,1
+deaths,50000,11.63,approximately_1000,provisional,1
+population_increase,124000,11.63,approximately_1000,provisional,1

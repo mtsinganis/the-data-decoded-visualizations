@@ -1,0 +1,18 @@
+{
+  "renderer": "Inkscape 1.4",
+  "local_lato_available": true,
+  "charts": [
+    {
+      "file": "countries/youth-unemployment-luxembourg-eu.svg",
+      "pixel_identical": true
+    },
+    {
+      "file": "countries/youth-unemployment-hungary-eu.svg",
+      "pixel_identical": true
+    },
+    {
+      "file": "youth-unemployment-greece-eu.svg",
+      "pixel_identical": true
+    }
+  ]
+}

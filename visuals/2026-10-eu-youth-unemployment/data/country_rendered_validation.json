@@ -1,0 +1,211 @@
+{
+  "country_count": 27,
+  "png_count": 27,
+  "svg_count": 27,
+  "png_pixels": [
+    3600,
+    2700
+  ],
+  "dpi": 300,
+  "common_axes_header_footer_and_typography": true,
+  "featured_title_only_blue": true,
+  "continuous_svg_title_with_inline_colour_span": true,
+  "background_countries_per_chart": 26,
+  "exact_plotted_values_per_chart": 8950,
+  "grey_featured_eu_layer_order": true,
+  "endpoint_values_dates_and_labels_verified": true,
+  "no_text_clipping": true,
+  "self_contained_svg_fonts": true,
+  "contact_sheet": "visuals\\2026-10-eu-youth-unemployment\\plots\\youth-unemployment-eu-country-contact-sheet.png",
+  "countries": [
+    {
+      "geo": "AT",
+      "country": "Austria",
+      "final_rate": 13.1,
+      "endpoint": "2026-08-01",
+      "two_labels_clear": true
+    },
+    {
+      "geo": "BE",
+      "country": "Belgium",
+      "final_rate": 19.1,
+      "endpoint": "2026-06-01",
+      "two_labels_clear": true
+    },
+    {
+      "geo": "BG",
+      "country": "Bulgaria",
+      "final_rate": 13.5,
+      "endpoint": "2026-08-01",
+      "two_labels_clear": true
+    },
+    {
+      "geo": "HR",
+      "country": "Croatia",
+      "final_rate": 16.4,
+      "endpoint": "2026-06-01",
+      "two_labels_clear": true
+    },
+    {
+      "geo": "CY",
+      "country": "Cyprus",
+      "final_rate": 11.9,
+      "endpoint": "2026-06-01",
+      "two_labels_clear": true
+    },
+    {
+      "geo": "CZ",
+      "country": "Czechia",
+      "final_rate": 12.0,
+      "endpoint": "2026-08-01",
+      "two_labels_clear": true
+    },
+    {
+      "geo": "DK",
+      "country": "Denmark",
+      "final_rate": 15.0,
+      "endpoint": "2026-08-01",
+      "two_labels_clear": true
+    },
+    {
+      "geo": "EE",
+      "country": "Estonia",
+      "final_rate": 28.4,
+      "endpoint": "2026-08-01",
+      "two_labels_clear": true
+    },
+    {
+      "geo": "FI",
+      "country": "Finland",
+      "final_rate": 22.8,
+      "endpoint": "2026-08-01",
+      "two_labels_clear": true
+    },
+    {
+      "geo": "FR",
+      "country": "France",
+      "final_rate": 20.6,
+      "endpoint": "2026-08-01",
+      "two_labels_clear": true
+    },
+    {
+      "geo": "DE",
+      "country": "Germany",
+      "final_rate": 7.4,
+      "endpoint": "2026-08-01",
+      "two_labels_clear": true
+    },
+    {
+      "geo": "EL",
+      "country": "Greece",
+      "final_rate": 15.6,
+      "endpoint": "2026-08-01",
+      "two_labels_clear": true
+    },
+    {
+      "geo": "HU",
+      "country": "Hungary",
+      "final_rate": 15.4,
+      "endpoint": "2026-08-01",
+      "two_labels_clear": true
+    },
+    {
+      "geo": "IE",
+      "country": "Ireland",
+      "final_rate": 12.5,
+      "endpoint": "2026-09-01",
+      "two_labels_clear": true
+    },
+    {
+      "geo": "IT",
+      "country": "Italy",
+      "final_rate": 20.3,
+      "endpoint": "2026-08-01",
+      "two_labels_clear": true
+    },
+    {
+      "geo": "LV",
+      "country": "Latvia",
+      "final_rate": 16.0,
+      "endpoint": "2026-08-01",
+      "two_labels_clear": true
+    },
+    {
+      "geo": "LT",
+      "country": "Lithuania",
+      "final_rate": 12.5,
+      "endpoint": "2026-08-01",
+      "two_labels_clear": true
+    },
+    {
+      "geo": "LU",
+      "country": "Luxembourg",
+      "final_rate": 20.8,
+      "endpoint": "2026-08-01",
+      "two_labels_clear": true
+    },
+    {
+      "geo": "MT",
+      "country": "Malta",
+      "final_rate": 9.7,
+      "endpoint": "2026-08-01",
+      "two_labels_clear": true
+    },
+    {
+      "geo": "NL",
+      "country": "Netherlands",
+      "final_rate": 8.8,
+      "endpoint": "2026-08-01",
+      "two_labels_clear": true
+    },
+    {
+      "geo": "PL",
+      "country": "Poland",
+      "final_rate": 11.3,
+      "endpoint": "2026-08-01",
+      "two_labels_clear": true
+    },
+    {
+      "geo": "PT",
+      "country": "Portugal",
+      "final_rate": 19.8,
+      "endpoint": "2026-08-01",
+      "two_labels_clear": true
+    },
+    {
+      "geo": "RO",
+      "country": "Romania",
+      "final_rate": 30.8,
+      "endpoint": "2026-06-01",
+      "two_labels_clear": true
+    },
+    {
+      "geo": "SK",
+      "country": "Slovakia",
+      "final_rate": 17.4,
+      "endpoint": "2026-08-01",
+      "two_labels_clear": true
+    },
+    {
+      "geo": "SI",
+      "country": "Slovenia",
+      "final_rate": 14.3,
+      "endpoint": "2026-06-01",
+      "two_labels_clear": true
+    },
+    {
+      "geo": "ES",
+      "country": "Spain",
+      "final_rate": 22.7,
+      "endpoint": "2026-08-01",
+      "two_labels_clear": true
+    },
+    {
+      "geo": "SE",
+      "country": "Sweden",
+      "final_rate": 23.0,
+      "endpoint": "2026-08-01",
+      "two_labels_clear": true
+    }
+  ]
+}
