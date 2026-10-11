@@ -1,0 +1,92 @@
+{
+  "version": "Inkscape 1.4 (86a8ad7, 2024-10-11)",
+  "cases": {
+    "original": {
+      "warnings": "** (org.inkscape.Inkscape:17072): WARNING **: 01:20:34.858: end_font_face_cb: font face rule limited support.\n  font-family : 'Lato';\n  font-weight : 400;\n  src : url([embedded font payload omitted]) format('truetype')\n\n** (org.inkscape.Inkscape:17072): WARNING **: 01:20:34.919: end_font_face_cb: font face rule limited support.\n  font-family : 'Lato';\n  font-weight : 700;\n  src : url([embedded font payload omitted]) format('truetype')\n\n** (org.inkscape.Inkscape:17072): WARNING **: 01:20:34.979: end_font_face_cb: font face rule limited support.\n  font-family : 'Lato';\n  font-weight : 900;\n  src : url([embedded font payload omitted]) format('truetype')",
+      "width": 1800,
+      "height": 1350,
+      "pixel_identical_to_original": true,
+      "difference_bbox": null
+    },
+    "woff2": {
+      "warnings": "** (org.inkscape.Inkscape:16368): WARNING **: 01:20:37.541: end_font_face_cb: font face rule limited support.\n  font-family : 'Lato';\n  font-weight : 400;\n  src : url([embedded font payload omitted]) format('woff2')\n\n** (org.inkscape.Inkscape:16368): WARNING **: 01:20:37.542: end_font_face_cb: font face rule limited support.\n  font-family : 'Lato';\n  font-weight : 700;\n  src : url([embedded font payload omitted]) format('woff2')\n\n** (org.inkscape.Inkscape:16368): WARNING **: 01:20:37.543: end_font_face_cb: font face rule limited support.\n  font-family : 'Lato';\n  font-weight : 900;\n  src : url([embedded font payload omitted]) format('woff2')",
+      "width": 1800,
+      "height": 1350,
+      "pixel_identical_to_original": true,
+      "difference_bbox": null
+    },
+    "woff": {
+      "warnings": "** (org.inkscape.Inkscape:4568): WARNING **: 01:20:40.048: end_font_face_cb: font face rule limited support.\n  font-family : 'Lato';\n  font-weight : 400;\n  src : url([embedded font payload omitted]) format('woff')\n\n** (org.inkscape.Inkscape:4568): WARNING **: 01:20:40.050: end_font_face_cb: font face rule limited support.\n  font-family : 'Lato';\n  font-weight : 700;\n  src : url([embedded font payload omitted]) format('woff')\n\n** (org.inkscape.Inkscape:4568): WARNING **: 01:20:40.051: end_font_face_cb: font face rule limited support.\n  font-family : 'Lato';\n  font-weight : 900;\n  src : url([embedded font payload omitted]) format('woff')",
+      "width": 1800,
+      "height": 1350,
+      "pixel_identical_to_original": true,
+      "difference_bbox": null
+    },
+    "original-alias": {
+      "warnings": "** (org.inkscape.Inkscape:27632): WARNING **: 01:20:42.635: end_font_face_cb: font face rule limited support.\n  font-family : 'TDDWebFontProbe';\n  font-weight : 400;\n  src : url([embedded font payload omitted]) format('truetype')\n\n** (org.inkscape.Inkscape:27632): WARNING **: 01:20:42.688: end_font_face_cb: font face rule limited support.\n  font-family : 'TDDWebFontProbe';\n  font-weight : 700;\n  src : url([embedded font payload omitted]) format('truetype')\n\n** (org.inkscape.Inkscape:27632): WARNING **: 01:20:42.745: end_font_face_cb: font face rule limited support.\n  font-family : 'TDDWebFontProbe';\n  font-weight : 900;\n  src : url([embedded font payload omitted]) format('truetype')",
+      "width": 1800,
+      "height": 1350,
+      "pixel_identical_to_original": false,
+      "difference_bbox": [
+        64,
+        50,
+        1733,
+        1297
+      ]
+    },
+    "woff2-alias": {
+      "warnings": "** (org.inkscape.Inkscape:27220): WARNING **: 01:20:45.235: end_font_face_cb: font face rule limited support.\n  font-family : 'TDDWebFontProbe';\n  font-weight : 400;\n  src : url([embedded font payload omitted]) format('woff2')\n\n** (org.inkscape.Inkscape:27220): WARNING **: 01:20:45.237: end_font_face_cb: font face rule limited support.\n  font-family : 'TDDWebFontProbe';\n  font-weight : 700;\n  src : url([embedded font payload omitted]) format('woff2')\n\n** (org.inkscape.Inkscape:27220): WARNING **: 01:20:45.237: end_font_face_cb: font face rule limited support.\n  font-family : 'TDDWebFontProbe';\n  font-weight : 900;\n  src : url([embedded font payload omitted]) format('woff2')",
+      "width": 1800,
+      "height": 1350,
+      "pixel_identical_to_original": false,
+      "difference_bbox": [
+        64,
+        50,
+        1733,
+        1297
+      ]
+    },
+    "woff-alias": {
+      "warnings": "** (org.inkscape.Inkscape:24948): WARNING **: 01:20:47.775: end_font_face_cb: font face rule limited support.\n  font-family : 'TDDWebFontProbe';\n  font-weight : 400;\n  src : url([embedded font payload omitted]) format('woff')\n\n** (org.inkscape.Inkscape:24948): WARNING **: 01:20:47.778: end_font_face_cb: font face rule limited support.\n  font-family : 'TDDWebFontProbe';\n  font-weight : 700;\n  src : url([embedded font payload omitted]) format('woff')\n\n** (org.inkscape.Inkscape:24948): WARNING **: 01:20:47.779: end_font_face_cb: font face rule limited support.\n  font-family : 'TDDWebFontProbe';\n  font-weight : 900;\n  src : url([embedded font payload omitted]) format('woff')",
+      "width": 1800,
+      "height": 1350,
+      "pixel_identical_to_original": false,
+      "difference_bbox": [
+        64,
+        50,
+        1733,
+        1297
+      ]
+    },
+    "no-font-alias": {
+      "warnings": "",
+      "width": 1800,
+      "height": 1350,
+      "pixel_identical_to_original": false,
+      "difference_bbox": [
+        64,
+        50,
+        1733,
+        1297
+      ]
+    },
+    "woff2-editable-roundtrip": {
+      "bytes": 223049,
+      "remaining_text_elements": 29,
+      "pixel_identical_to_original": true,
+      "difference_bbox": null
+    },
+    "text-paths": {
+      "bytes": 573294,
+      "remaining_text_elements": 0,
+      "pixel_identical_to_original": false,
+      "difference_bbox": [
+        70,
+        78,
+        1699,
+        1189
+      ],
+      "changed_pixels": 411
+    }
+  }
+}

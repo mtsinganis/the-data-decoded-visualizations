@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import CountryExplorer from '../../components/CountryExplorer.astro';
 import { getProjects } from '../../lib/projects.js';
 
 export async function getStaticPaths() {
@@ -19,6 +20,8 @@ const base = import.meta.env.BASE_URL;
       <p class="byline">By Markos Tsinganis</p>
     </header>
     <section class="story introduction" aria-label="Introduction" set:html={project.introductionHtml} />
+    {project.presentation === 'country-explorer' ?
+      <CountryExplorer project={project} chartRoute="chart" /> : (
     <section class="charts" aria-label="Charts">
       {project.charts.map((chart, index) => (
         <figure>
@@ -30,7 +33,12 @@ const base = import.meta.env.BASE_URL;
         </figure>
       ))}
     </section>
+    )}
     {project.xPostUrl && <p class="discussion"><a href={project.xPostUrl}>Discuss this chart on X</a></p>}
+    {project.interpretationHtml && <section class="story interpretation" aria-labelledby="interpretation-heading">
+      <h2 id="interpretation-heading">Interpretation</h2>
+      <div set:html={project.interpretationHtml} />
+    </section>}
     <section class="story sources" aria-labelledby="sources-heading">
       <h2 id="sources-heading">Sources and methodology</h2>
       <div set:html={project.sourcesHtml} />

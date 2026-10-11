@@ -1,0 +1,456 @@
+29/10/2024
+A New Methodology for Estimation of Israelis’ International Migration by
+the Israel Central Bureau of Statistics (ICBS)1
+Written by: Eilat Cohen-Kastro, Senior Department of Demography and
+Census, ICBS
+preface
+International migration constitutes a principal part of the national statistics of
+most countries. Among the important tasks undertaken by the Israel Central
+Bureau of Statistics (ICBS) is definition and measurement of the population of
+migrating Israelis, in order to prepare population estimates, define the
+population of the Population Census, create sampling frames of populations for
+various surveys, and remove Israelis who emigrate from administrative files.
+Additionally, the migrant population is of great public and academic interest,
+resulting in a high demand for data and research on the subject.
+In order to fulfil the required tasks and also maintain high statistical
+quality, the ICBS needs to produce reliable, homogeneous estimates of Israelis’
+international migration. In order to improve the national statistics on the subject
+in accordance with global changes in migration patterns and with technological
+advances, the ICBS set out to update the definitions of Israelis included in
+international migration statistics as well as upgrading to monthly estimates.
+This methodological paper presents the background and rationale for
+developing the new methodology for measuring Israelis' international migration,
+as well as presenting the new definitions and data sources. Also presented are
+the limitations of the data, the new annual estimates, and a comparison with
+the former methodology (pre-change). It was found that the estimate of long-
+term Israeli emigrants is significantly higher using the new methodology (post-
+change), averaging 2.4 times higher than while using the former methodology.
+The estimate of returning Israelis was also found to be significantly higher using
+the new methodology, averaging 2.7 times higher than the estimate of returning
+Israelis using the former methodology. Additionally, the differences between
+population estimates and population growth rates calculated according to the
+two methodologies are presented.
+Keywords: Emigration from Israel, International migration, Departing Israelis,
+Returning Israelis, Migration patterns, International migration balance,
+Population growth components, ICBS.
+1 The author wishes to thanks Aliza Berger from ICBS for her help in translation
+1
+
+Introduction
+Reliable estimation of the extent of Israelis' international migration is crucial to
+the quality of the statistics produced by the Israel Central Bureau of Statistics
+(ICBS). International migration estimates play an important role in the CBS's
+fields of activity. Our work includes determining the de jure population living in
+Israel, for the following purposes: calculating population estimates; producing
+indices, samples, and statistical models; identifying and indicating the
+population not residing in Israel in administrative files from non-ICBS sources;
+and characterizing and researching various aspects of the population in Israel
+and the one emigrating from it.
+Estimation of the migrants and their characteristics should reflect as
+much as possible the changing reality of migration patterns, and the extent to
+which trends among departing and returning Israelis can be identified and
+changes in their characteristics can be monitored in detail. In actuality, there is
+no single "correct" definition of who is a migrant from Israel, because (a) there
+is no survey that asks every departing or returning Israeli the purpose of their
+trip and (b) inaccuracies would certainly still occur as initial migration decisions
+can change with time. Therefore, the ICBS aims to adopt a demographic
+definition of emigration that includes as much of the population as possible who
+– with a reasonable level of certainty – moved their centre of life abroad and
+which, conversely, includes as little as possible of the population who did not.
+Due to these considerations, the ICBS decided to develop a new, updated
+methodology for estimation of international migration that would better meet the
+needs of national statistics. The results of this developmental process are
+presented in this article.
+The aim of this methodological article is to compare the two
+methodologies (former and new) and to present the implications of the new
+methodology on population growth estimates. This is accomplished by
+presenting the methodology formerly used in the Population Sector of the ICBS
+for estimation of migrating Israelis, describing the rationale for updating it,
+followed by a presentation of the new methodology. Additionally, the data
+sources and the limitations of the new methodology are presented. The Results
+chapter presents the series of estimates obtained from using the new
+methodology and compares them to the estimates obtained using the former
+methodology. Additionally, the impact of implementing the new methodology on
+population estimates and on the rate of population growth will be examined.
+2
+
+Current Methodology for Estimating International Migration Among
+Israelis
+The main methodology for calculating the flow of Israelis' migration movements
+has been used in its former form for several decades in the Demography Sector
+of the ICBS. The definitions guiding it have been in effect since 1995. The
+definitions of departing and returning Israelis were not symmetrical; that is, the
+number of days required to stay abroad for departing Israelis differs from the
+number of days required to stay in Israel for returning Israelis. Departing
+Israelis were defined as Israelis who stayed abroad 365 days or more
+continuously, and who before departing stayed at least ninety days
+continuously in Israel. Returning Israelis were defined as Israelis who stayed
+abroad 365 days or more continuously before entering Israel, and who after
+their return stayed at least ninety days continuously in Israel. In consequence,
+these definitions do not include Israelis residing abroad who visit their homeland
+for a short period (less than three months continuously) (CBS, 2023).
+Since 2008, the source of data regarding departing and returning Israelis
+has been registration in the Border Control Registration system, which is
+conducted by border inspectors under the auspices of the Population and
+Immigration Authority. Border inspection stations are located at all entry/exit
+points on Israel's borders by air, land, and sea. In the past, when a
+resident/citizen exited or entered Israel, border inspectors documented the
+action by manually entering the person's information into the Border Control
+Registration system. Starting from 2010, passport information (without manual
+entry) has been scanned at Ben Gurion Airport, and by 2013, the scanning
+method was in use at all border stations in Israel except for a few border
+crossing points. Scanning is intended to reduce manual entry errors and
+thereby improve data quality. This system includes records of all exits/entries,
+the associated personal identification numbers, and the exit/entry dates. This
+data accumulates in statistical data files that are later completed with additional
+personal information from the Population Register: sex, date of birth, religion,
+date of immigration, marital status, and country of birth. The innovation since
+2008 is that these records are transferred directly from the Border Control
+Registration system to the ICBS migration data system, and thus need less
+human intervention. The migration data system aggregates all movements of
+Israelis (including movements of East Jerusalem Arabs passing through
+international border crossing points, but excluding crossings between Israel
+and Palestinian Authority areas) at the borders in a calendar year (from January
+1 to December 31 each year). The former methodology calculated the length of
+an Israeli’s stay abroad and their length of stay in Israel before departing. The
+system also performed the same calculations on the records of Israelis who
+3
+
+enter Israel. Calculation of departing flow (out-flow) and return flow (in-flow) is
+based on border movements only.
+The products of the former system were two annual files: one for
+departing Israelis and one for returning Israelis (CBS, 2014b). In the ICBS's
+annual Statistical Abstract of Israel, annual data on Israeli residents who stayed
+abroad for 365 days or more continuously, and the returning Israelis from
+among these persons who stayed in Israel for at least ninety days continuously,
+are published according to sex and age. The ICBS also publishes a media
+release each year t entitled "Departures and Returns in [year] (e.g., 2020) of
+Israelis Staying Abroad Continuously for a Year or More", which contains
+estimates for year t-2 of the number of departing and returning Israelis, their
+demographic characteristics, and an estimate of the stock of Israelis residing
+outside Israel.
+Motivations for Updating the former Methodology
+In recent years, there has been growing recognition within the ICBS's Senior
+Department of Demography and Census of the need to update the statistics of
+international migration through the development of an up-to-date methodology
+that is more suitable for its aims. In particular, the need arose to update the
+definitions of departing and returning Israelis such that these reflect the
+changing reality of migration patterns in the present times. These patterns are
+influenced by the increased availability and decreasing costs of international
+travel, the rapidly developing connections of Israel to the global economic
+market, increased business opportunities abroad, the development of the IT
+sector leading to job opportunities requiring relocation and study abroad, and
+the expansion of the dual citizenship phenomenon, along with an Israeli society
+characterized by close familial and social ties.
+These factors have led, on one hand, to an increase in the number of
+departing Israelis and, on the other hand, to an increased tendency to return
+for visits to Israel. Therefore, the former methodology, which requires a stay
+abroad of a full continuous year (if this sequence is 'broken' by a visit to Israel,
+the person will not be considered an Israeli emigrant), is less suited to
+contemporary migration patterns. Additionally, there is no usage of the stock of
+Israelis residing abroad in determining whether a person crossing the border
+belongs to the out-flow or the in-flow migration movements. This can lead to a
+person being registered as a departing Israeli twice without being counted as a
+returning Israeli between one departure and the next). Moreover, there is no
+integration of information regarding the person's civil status in the Population
+Register, as a result of which persons registered in the Population Register who
+have never resided in Israel might be included in the estimates as migrants.
+4
+
+A team was formed within the ICBS's Senior Department of Demography
+and Census which aim was to conducted a research and based upon to
+formulate recommendations for improving and updating the handling of
+international migration statistics. The recommendations of the team were (1) to
+establish one comprehensive "emigrant" stock to serve all of the ICBS’s needs,
+and (2) that this stock should include two main components: (a) a list of Israelis
+(stock) at a specific point in time (an exact date) who are highly likely not to
+belong to the population of Israel at that time; and (b) a multi-year stock of flows
+including a list of people who emigrated and/or returned, with information
+necessary for managing their movements. The definitions of departing and
+returning Israelis would take into account short visits in Israel, and would
+provide information about short-term and long-term emigrants. The operational
+distinction between the needs of the Population Census and the needs of the
+Demography Sector were preserved in the recommendations.
+At the beginning of the development of the new methodology, five
+alternatives for defining departing Israelis and returning Israelis were
+researched, differing in various combinations of three guiding principles: (a) the
+existence or non-existence of a required initial duration of continuous stay
+abroad; (b) the cumulative number of days spent abroad; and (c) maintaining
+symmetry or allowing for asymmetry in the definitions of departing and returning
+Israelis. The alternatives were examined based on data from border crossings
+and calculations of Israelis' stays in Israel and abroad in a closed population
+(without taking into account natural increase or the arrival of "olim" (immigrants
+to Israel under the Law of Return) for 2009–2013. The characteristics of the
+Israelis included in each alternative were examined through use of their
+demographic and socio-economic characteristics.
+The findings of the research recommended the methodological
+alternative presented later in this paper, which implements the goal of including
+as much as possible the population that has likely relocated its centre of life
+outside of Israel and excluding as much as possible the population that has not
+done so, compared to other alternatives. Furthermore, this alternative supports
+the need for an initial period of a continuous stay of ninety days abroad, while
+allowing for an additional period of cumulative days abroad, totalling at least
+nine months out of the twelve months since departing. In addition, this
+alternative maintains symmetry between the definitions of those departing and
+those returning. The research findings and UN recommendations were adopted
+by the advisory committee on demographic issues of the Public Advisory
+Council for Statistics, which included demography experts headed by Dr.
+Eliyahu Ben-Moshe (chairman of the advisory committee) and the former
+National Statistician Professor Danny Pfeffermann, and the development of the
+chosen methodology was initiated.
+5
+
+The New Methodology for Estimating International Migration Among
+Israelis
+The population included in the new methodology was determined according to
+the definitions of the de jure population, upon which population estimates have
+been based by the ICBS since the 2008 census. The de jure population
+includes the total number of Israelis registered in the Population Register
+having the status of citizen, permanent resident, or temporary resident.
+However, there are persons registered in the Population Register who have
+never resided in Israel for an extended period, such as immigrating citizens (a
+person born to an Israeli citizen while residing abroad). These persons should
+not be included in estimates of departing Israelis because they were never part
+of the de jure population in Israel in the first place. These immigrating citizens,
+as well as new registrants in the Population Register with an initial status of not
+an active resident are not included in the estimate of the flow of departing
+Israelis, but are included in the gross stock of Israelis staying abroad (detailed
+explanation of the stock is provided later in the paper).
+The new definitions established are as follows:
+Israeli emigrants: An Israeli who stayed abroad for at least 9 months
+cumulatively during the year following their departure, of which the first 3
+months were continuous.
+Returning Israeli immigrants: An Israeli who stayed in Israel for at least 9
+months cumulatively during the year following their entry, of which the first 3
+months were continuous. This indicates an Israeli who returns to live in Israel
+after emigrating.
+These definitions are based on establishing a transfer of one's centre of life and
+on a substantive cumulative stay abroad versus measurement of just
+continuous residence in a foreign country. They are measured symmetrically
+for departing and returning Israelis, thus providing a uniform, equal-opportunity
+criterion for inclusion in the migration flows and preventing multiple or conflicting
+classifications. Additionally, the initial required threshold of ninety continuous
+days abroad or in Israel serves to distinguish between a tourist and a migrant
+(a regular tourist visa is usually granted for a period of up to ninety days).
+In addition to the updates of definitions for Israeli emigrants and
+Returning Israeli immigrants, we created two additional types of migration flows
+that did not exist previously: Short-term emigrants, referring to persons who
+stayed abroad for between 3 months (initially and continuously) and up to 9
+months (cumulatively) during the year following departure. Visiting Israelis
+refers to Israelis residing permanently abroad who came for a relatively
+prolonged visit in Israel, staying in Israel for between 3 months (initially and
+6
+
+continuously) and 9 months(cumulatively) during the year following entry. In
+addition to the migration flows mentioned above, the first population stock of
+Israelis residing abroad was created.
+The stock of Israelis residing abroad is based on the results of the
+Population and Housing Census 2008, which determined who belonged to the
+population residing in Israel and who did not, at the end of 2008. From 2009
+onward, the stock is updated according to the migration flows into and out of
+the country, and according to population status updates as recorded in the
+Population Register. Contributions to the stock include: (a) Israeli emigrants
+(see above definition) and (b) Israelis registering for the first time in the
+Population Register whose status is " not active", or who are "active" but have
+never resided in Israel for a long period of time. Removal of records from the
+stock include: (a) Returning Israeli immigrants (see above definition), (b) Death
+notifications of persons included in the stock as they are recorded by the
+Population Register, or (c) persons included in the stock reaching the age of
+110, whose death was not officially reported. This gross stock allows
+administrative indication for each person in the Population Register of whether,
+or not, they are part of the population residing permanently in Israel at a certain
+point in time. However, this stock is still an overestimation of the number of
+Israelis emigrants living abroad, because it includes an unknown number of
+deceased persons who have died aboard without their death being reported to
+the Population Register; as well as children of Israeli citizens born abroad who
+are registered in the Population Register without ever been permanent
+residents of Israel.
+Sources of Information for the New Methodology
+The quality of international migration statistics derives from the quality of the
+data sources available to formulate these statistics. The more comprehensive,
+reliable, and up-to-date a data source is, the higher the quality of the data and
+thus the ability of statisticians, decision-makers, researchers, and the general
+public to rely on them.
+The main data source for formulating the new methodology is the
+border control system under the auspices of the Population and Immigration
+Authority. Israel has a unique situation in that its borders are relatively
+controlled and closed compared to other countries. In other words, people
+cannot move freely between Israel and neighbouring countries without
+registering their movement at land border crossing points (the situation differs
+in most European countries, for example), and registration of movements at
+non-land border crossings is done through airport and seaport crossing points.
+This situation allows almost complete coverage and documentation of all
+movements by residents across the borders. The data is gathered via automatic
+7
+
+computerized scanning of passports conducted at all border stations and
+crossing checkpoints and transmitted directly to the ICBS.
+The Population Register serves as a secondary data source. A
+person's citizenship status upon their first registration in the Population Register
+is obtained from this source. An initial registration of an Israeli in the Population
+Register with a status of "not active" (according to the Population Authority's
+discretion), or that of an immigrating citizen who resides abroad, indicates that
+the person is not actually residing in Israel, but that there is a future possibility
+that they will come to reside in Israel if they so wish. These persons are added
+to the stock of Israelis residing abroad. In addition, the Population Register
+serves as a source for receipt of notifications of the deaths of Israeli residents
+living abroad, thus allowing their removal from the stock of Israelis staying
+abroad. This source provides complete coverage of the new registration of
+persons in the Population Register and partial coverage of death notification for
+those residing abroad.
+Data Limitations
+There are several systemic limitations to the obtained data which might affect
+the data quality, but their impact on the overall data quality is marginal. The
+limitations are as follows:
+• Use of a foreign passport when exiting or entering, for someone with
+dual citizenship, might lead to incomplete registration of a person's
+border movements. Since 2008, the new border control system should
+prohibit Israeli passport holders from exiting or entering Israel using a
+foreign passport. Thus, if a border crossing with a foreign passport
+occurs, the system is programmed to link it to their Israeli identity
+information. However, it could occur in some rare cases this linkage is
+not successful.
+• If the death of an Israeli who was included in the stock of Israelis residing
+abroad is not reported by the family to the Population Register in Israel
+(probably more common in cases, in which there is no incentive or
+benefit to report it), this person will not receive a status of deceased in
+the Population Register, and therefore will not be removed from the
+stock. Thus, the gross stock of residents abroad is an overestimate for
+the number of Israelis residing abroad. A certain amount of correction is
+done by removing anyone who has reached the age of 110 (by given the
+status of "presumed deceased").
+• It might be somewhat problematic that our determination of whether a
+person is a departing Israeli, or a returning Israeli, is dependent on their
+presence or lack thereof, in the stock of residents abroad. This applies
+in cases in which the initial determination of place of residency in the
+8
+
+• 2008 census was erroneous. If so, the error will be carried over to future
+years if the person does not cross any of the borders thereafter.
+• Because the new migration definitions are general and are applied
+equally and objectively to the entire population, without considering
+individual travel patterns, it is possible to incorrectly classify persons as
+non-emigrants even if they have relocated their centre of life abroad
+(false negative). This situation can occur if the number of days spent by
+a person abroad does not meet the definition set for Israeli emigrants,
+and therefore they will not be classified as such. For example, persons
+who consider themselves residents of another country, but who have
+never stayed 3 months continuously abroad or who divide their time fairly
+equal between abroad and Israel, will not be defined as emigrants under
+the new definitions. The same might happen with returning Israeli
+immigrants.
+• The data include international border crossings of Israel for Israelis
+(including East Jerusalem residents), and exclude crossings of Israelis
+into the Judea and Samaria Area and the Gaza Strip, and vice versa.
+Examining the impact of transitioning to the new methodology on
+population growth and its estimates
+In order to assess the extent of the impact of transitioning to the new
+methodology on the components and rate of population growth, and thus on the
+population estimates of Israel, the population estimate was calculated in two
+different ways: (a) based on the components of growth under the former
+methodology as published in the ICBS's annual Statistical Abstract; and
+(b) based on the same components of growth (births, deaths, "olim" -
+immigrants, immigrating citizens, and family reunification), excluding the
+international migration balance component of Israelis, which was recalculated
+according to the new methodology. The simulation was conducted for 2012–
+2020. Additionally, it should be noted that the components of growth for 2020
+were exceptional because they were influenced by the global COVID–19
+pandemic, which affected persons’ ability and/or willingness to immigrate to and
+emigrate from Israel, as well as resulting in a decrease in the number of births
+and an increase in the number of deaths in that year. The following diagram
+illustrates the results of the population calculations using both methods.
+9
+
+Diagram 1. Population estimate and percentage population growth
+according to the former and new methodologies, 2012–2020
+Population estimate, former Population estimate, new
+Percentage growth, new Percentage growth, new
+9,500.0 2.5
+9,000.0 2.0
+s
+e
+g
+a
+t
+8,500.0 1.5 n
+s d e c
+n r e
+a P
+s
+u o 8,000.0 1.0
+h
+T
+7,500.0 0.5
+7,000.0 0.0
+2020 2019 2018 2017 2016 2015 2014 2013 2012
+An analysis of the results shows that, as expected, the use of the new
+methodology reduces the population estimate compared to the former
+estimates. Of the population components, the natural increase balance
+component accounts for approximately 83% on average annually for the years
+2012–2020 and the international migration balance component accounts for
+approximately 17% of the total annual population growth in the former
+methodology. In contrast, in the new methodology, the natural increase balance
+component increases to approximately 86% on average, and the international
+migration balance component decreases to approximately 14% on average.
+The contribution of the international migration balance component to population
+growth decreases by 4% on average in the transition from the former to the new
+methodology, and the contribution of the natural increase balance to the
+population growth increases by an equal percentage.
+Because the data on natural increase, immigrants, returning citizens,
+and family reunification were held constant, the reduction in the population
+estimate stems from the new definitions of departing and returning Israelis in
+the new methodology. This mainly results from a larger increase in the number
+of departing Israelis compared to a smaller increase in the number of returning
+Israelis. The new, more flexible and symmetric definitions increase the negative
+10
+
+migration balance between out-flow and in-flow, which in turn reduces the
+overall international migration balance of Israel, though it remains positive. The
+reduction in the international migration balance is also reflected in the slowdown
+of population growth under the new methodology; the population decreased by
+approximately 0.1% per year compared to the growth rate under the former
+methodology.
+The decrease in the growth rate of the total population is not surprising
+because of the broadening of the definitions of who is considered an Israeli
+emigrant. This happens by allowing for cumulative stays abroad, which
+translate into allowing visits to Israel during the first year after departing, rather
+than requiring a stay of a consecutive year abroad. This in turn leads to a higher
+estimate of departing Israelis, thus reducing the share of the international
+migration balance component in the overall population growth of Israel. This
+decrease in the total population growth rate is not dramatic because Israel's
+population growth rate is mainly influenced by the natural increase.
+Nevertheless, it should not be overlooked that there is a cumulative effect: The
+decrease in the growth rate added up to approximately 4.2% cumulatively
+during 2012–2020. Adding up all the differences between the negative
+migration balance (more emigrating than returning Israelis) under the new
+methodology compared to this negative balance under the former methodology
+results in a cumulative population loss of approximately 57,500 persons for
+2010–2020.
+Summary
+The paper highlights the need to update definitions of departing Israelis, by
+allowing visits to Israel within the first year after departing abroad, and by
+maintaining symmetry by using the same definitions among returning Israelis.
+Numerous studies conducted by the ICBS indicate that updating the definitions
+of departing and returning Israelis will help produce more reliable statistics
+regarding the identification of Israelis and who moved their centre of life abroad
+and those who decided to return to Israel. This will contribute to the calculation
+of more reliable estimates of the population residing permanently in Israel which
+will enable better-informed policy planning based on this.
+Additional benefits of the new methodology include creating new
+immigration statuses of short-term emigrants (from three to nine months
+cumulative stay abroad) and of visiting Israelis (from three to nine months
+cumulative stay in Israel), along with the existing statuses of long-term
+emigrants and of returning Israelis. The symmetry between these definitions
+facilitates comparability and eliminates the possibility of overlapping
+immigration statuses in the same year. Furthermore, establishing a database
+of Israelis residing abroad based on migration flows enables the identification
+11
+
+of persons registered in the Population Register who are currently residing
+abroad at a specific point in time, thus enabling the classification of Israelis in
+the Population Register into three primary groups: persons residing in Israel,
+persons residing abroad, and deceased persons. The latter two groups should
+be removed from calculations of population estimates, statistical indices, and
+when sampling populations for surveys, as well as being removed from
+administrative files received from data sources outside the ICBS.
+12

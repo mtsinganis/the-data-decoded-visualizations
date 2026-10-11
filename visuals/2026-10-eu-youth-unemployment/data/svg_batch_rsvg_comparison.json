@@ -1,0 +1,120 @@
+{
+  "renderer": "librsvg 2.61.0",
+  "width": 1800,
+  "height": 1350,
+  "local_lato_available": true,
+  "charts": [
+    {
+      "file": "countries/youth-unemployment-austria-eu.svg",
+      "pixel_identical": true
+    },
+    {
+      "file": "countries/youth-unemployment-belgium-eu.svg",
+      "pixel_identical": true
+    },
+    {
+      "file": "countries/youth-unemployment-bulgaria-eu.svg",
+      "pixel_identical": true
+    },
+    {
+      "file": "countries/youth-unemployment-croatia-eu.svg",
+      "pixel_identical": true
+    },
+    {
+      "file": "countries/youth-unemployment-cyprus-eu.svg",
+      "pixel_identical": true
+    },
+    {
+      "file": "countries/youth-unemployment-czechia-eu.svg",
+      "pixel_identical": true
+    },
+    {
+      "file": "countries/youth-unemployment-denmark-eu.svg",
+      "pixel_identical": true
+    },
+    {
+      "file": "countries/youth-unemployment-estonia-eu.svg",
+      "pixel_identical": true
+    },
+    {
+      "file": "countries/youth-unemployment-finland-eu.svg",
+      "pixel_identical": true
+    },
+    {
+      "file": "countries/youth-unemployment-france-eu.svg",
+      "pixel_identical": true
+    },
+    {
+      "file": "countries/youth-unemployment-germany-eu.svg",
+      "pixel_identical": true
+    },
+    {
+      "file": "countries/youth-unemployment-greece-eu.svg",
+      "pixel_identical": true
+    },
+    {
+      "file": "countries/youth-unemployment-hungary-eu.svg",
+      "pixel_identical": true
+    },
+    {
+      "file": "countries/youth-unemployment-ireland-eu.svg",
+      "pixel_identical": true
+    },
+    {
+      "file": "countries/youth-unemployment-italy-eu.svg",
+      "pixel_identical": true
+    },
+    {
+      "file": "countries/youth-unemployment-latvia-eu.svg",
+      "pixel_identical": true
+    },
+    {
+      "file": "countries/youth-unemployment-lithuania-eu.svg",
+      "pixel_identical": true
+    },
+    {
+      "file": "countries/youth-unemployment-luxembourg-eu.svg",
+      "pixel_identical": true
+    },
+    {
+      "file": "countries/youth-unemployment-malta-eu.svg",
+      "pixel_identical": true
+    },
+    {
+      "file": "countries/youth-unemployment-netherlands-eu.svg",
+      "pixel_identical": true
+    },
+    {
+      "file": "countries/youth-unemployment-poland-eu.svg",
+      "pixel_identical": true
+    },
+    {
+      "file": "countries/youth-unemployment-portugal-eu.svg",
+      "pixel_identical": true
+    },
+    {
+      "file": "countries/youth-unemployment-romania-eu.svg",
+      "pixel_identical": true
+    },
+    {
+      "file": "countries/youth-unemployment-slovakia-eu.svg",
+      "pixel_identical": true
+    },
+    {
+      "file": "countries/youth-unemployment-slovenia-eu.svg",
+      "pixel_identical": true
+    },
+    {
+      "file": "countries/youth-unemployment-spain-eu.svg",
+      "pixel_identical": true
+    },
+    {
+      "file": "countries/youth-unemployment-sweden-eu.svg",
+      "pixel_identical": true
+    },
+    {
+      "file": "youth-unemployment-greece-eu.svg",
+      "pixel_identical": true
+    }
+  ]
+}

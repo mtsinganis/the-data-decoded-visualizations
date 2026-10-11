@@ -1,0 +1,73 @@
+---
+const { project, chartRoute = 'chart' } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const url = (chart) => `${base}${chartRoute}/${project.slug}/${chart.name}`;
+---
+<section class="charts country-explorer" aria-labelledby="explore-country-heading" data-country-explorer>
+  <header class="explorer-heading">
+    <h2 id="explore-country-heading">Explore your country</h2>
+    <p>Choose from all 27 current EU members. Every chart uses the same axes and compares the selected country with the published EU-27 aggregate.</p>
+  </header>
+  <div class="country-controls" hidden>
+    <label for="country-select">Country</label>
+    <select id="country-select" aria-controls="country-figures" aria-describedby="country-status">
+      {project.countryCharts.map((country) => <option value={country.geo}>{country.name}</option>)}
+    </select>
+  </div>
+  <p class="country-status" id="country-status" role="status" aria-live="polite" hidden></p>
+  <div class="country-figures" id="country-figures">
+    {project.countryCharts.map((country, index) => (
+      <figure class="country-figure" id={`country-${country.geo.toLowerCase()}`} data-country={country.geo} data-name={country.name}>
+        <img src={url(country.svg)} alt={country.svg.alt} width="864" height="648" loading={index === 0 ? 'eager' : 'lazy'} />
+        <figcaption>
+          <span>{country.name}</span>
+          <div class="chart-links">
+            <a href={url(country.svg)} target="_blank" rel="noopener noreferrer" aria-label={`View full-size chart ${index + 1}: ${country.name}`}>View full-size ↗</a>
+            <a href={url(country.png)} download={country.png.name} aria-label={`Download ${country.name} chart as PNG`}>Download PNG</a>
+            <a href={url(country.svg)} download={country.svg.name} aria-label={`Download ${country.name} chart as SVG`}>Download SVG</a>
+          </div>
+        </figcaption>
+      </figure>
+    ))}
+  </div>
+  <details class="country-downloads">
+    <summary>Downloads for all 27 countries</summary>
+    <p>PNG: 3,600 × 2,700 pixels at 300 dpi. SVG: scalable vector geometry with editable text.</p>
+    <div class="downloads-scroll">
+      <table>
+        <caption class="visually-hidden">Country chart downloads, listed alphabetically</caption>
+        <thead><tr><th scope="col">Country</th><th scope="col">PNG</th><th scope="col">SVG</th></tr></thead>
+        <tbody>{project.countryCharts.map((country) => (
+          <tr><th scope="row">{country.name}</th>
+            <td><a href={url(country.png)} download={country.png.name} aria-label={`Download ${country.name} chart as PNG`}>PNG</a></td>
+            <td><a href={url(country.svg)} download={country.svg.name} aria-label={`Download ${country.name} chart as SVG`}>SVG</a></td>
+          </tr>
+        ))}</tbody>
+      </table>
+    </div>
+  </details>
+</section>
+<script is:inline>
+  document.querySelectorAll('[data-country-explorer]').forEach((explorer) => {
+    const select = explorer.querySelector('select');
+    const figures = [...explorer.querySelectorAll('[data-country]')];
+    const status = explorer.querySelector('[role="status"]');
+    const showCountry = (geo, updateUrl = false) => {
+      const selected = figures.find((figure) => figure.dataset.country === geo) || figures[0];
+      figures.forEach((figure) => { figure.hidden = figure !== selected; });
+      select.value = selected.dataset.country;
+      status.textContent = `${selected.dataset.name} · ${figures.indexOf(selected) + 1} of ${figures.length}`;
+      if (updateUrl) {
+        const url = new URL(window.location.href);
+        url.searchParams.set('country', selected.dataset.country);
+        window.history.replaceState(null, '', url);
+      }
+    };
+    // Alphabetical order sets the initial view; URL selections are validated.
+    showCountry(new URL(window.location.href).searchParams.get('country'));
+    explorer.querySelector('.country-controls').hidden = false;
+    status.hidden = false;
+    select.addEventListener('change', () => showCountry(select.value, true));
+    window.addEventListener('popstate', () => showCountry(new URL(window.location.href).searchParams.get('country')));
+  });
+</script>

@@ -1,0 +1,6 @@
+freq,unit,sex,s_adj,age,geo,TIME_PERIOD,Comment
+M,*,*,*,Y_LT25,BE,*,Quarterly data
+M,*,*,*,Y_LT25,HR,*,Quarterly data
+M,*,*,*,Y_LT25,CY,*,Quarterly data
+M,*,*,*,Y_LT25,RO,*,Quarterly data
+M,*,*,*,Y_LT25,SI,*,Quarterly data

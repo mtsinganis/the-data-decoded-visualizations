@@ -151,6 +151,38 @@ p_cum <- ggplot() +
   scale_colour_manual(values=styles) + axis_months +
   scale_y_continuous(breaks=seq(0,1500,500),limits=c(0,1780),expand=c(0,0)) + base_theme
 
+# Separate review export: highlight 2022–2024 without changing the published cumulative chart.
+# Added line colors: 2022 indigo (#7251A2), 2023 plum (#B65F8A), 2024 olive (#6D7F3F).
+extended_years <- 2020:2026
+extended_styles <- c(styles, "2022"="#7251A2", "2023"="#B65F8A", "2024"="#6D7F3F")
+cum_ends_extended <- cum %>%
+  filter((year %in% 2020:2025 & month == 12) | (year == 2026 & month == 6)) %>%
+  mutate(label=case_when(year == 2026 ~ "2026: 322\nthrough Jun 30",
+                         TRUE ~ paste0(year, ": ", comma(cumulative))),
+         lx=if_else(year == 2026, 6.35, 12.3),
+         ly=case_when(year == 2020 ~ 1460, year == 2021 ~ 1680,
+                      year == 2022 ~ 1340, year == 2023 ~ 1060,
+                      year == 2024 ~ 910, year == 2025 ~ 710,
+                      TRUE ~ 240))
+p_cum_extended <- ggplot() +
+  annotate("segment",x=.8,xend=12,y=seq(500,1500,500),yend=seq(500,1500,500),colour="#E6E8EB",linewidth=.35) +
+  annotate("segment",x=.8,xend=12,y=0,yend=0,colour="#939BA5",linewidth=.5) +
+  geom_line(data=cum %>% filter(!(year %in% extended_years)),
+    aes(x=month,y=cumulative,group=year),colour=context,alpha=.65,linewidth=.42) +
+  geom_line(data=cum %>% filter(year %in% extended_years & year != 2026),
+    aes(x=month,y=cumulative,group=year,colour=factor(year)),linewidth=1.2) +
+  geom_line(data=cum %>% filter(year == 2026),aes(x=month,y=cumulative),
+    colour=paper,linewidth=1.65) +
+  geom_line(data=cum %>% filter(year == 2026),aes(x=month,y=cumulative),
+    colour=teal,linewidth=1.2) +
+  geom_point(data=cum_ends_extended,aes(x=month,y=cumulative,colour=factor(year)),size=2.5) +
+  geom_segment(data=cum_ends_extended,aes(x=month,y=cumulative,xend=lx,yend=ly,colour=factor(year)),linewidth=.4) +
+  geom_label(data=cum_ends_extended,aes(x=lx,y=ly,label=label,colour=factor(year)),hjust=0,
+    fill=paper,linewidth=0,label.padding=unit(.08,"lines"),family=bold_alias,size=4.6,lineheight=.95) +
+  annotate("text",x=2,y=1250,label="2025 had less than half\nthe shootings of 2021",
+    hjust=0,family=regular_alias,size=4.6,colour=support,lineheight=.95) +
+  scale_colour_manual(values=extended_styles) + axis_months +
+  scale_y_continuous(breaks=seq(0,1500,500),limits=c(0,1780),expand=c(0,0)) + base_theme
 logo_source <- paste(readLines("assets/brand/pterosaur-simplified.svg",warn=FALSE),collapse="\n")
 viewbox <- regmatches(logo_source,regexec('viewBox="[0-9.]+ [0-9.]+ ([0-9.]+) ([0-9.]+)"',logo_source))[[1]]
 logo_ratio <- as.numeric(viewbox[2])/as.numeric(viewbox[3])
@@ -244,8 +276,14 @@ frame <- function(plot,title,subtitle,key,width=8.8,height=8.8,dpi=240) {
   writeLines(svg,svg_path,useBytes=TRUE)
 }
 headline <- "NYC shootings surged in 2020\u20132021, then fell to a record low in 2025"
-frame(p_month,"The summer 2020 spike stands out against 2025\u2019s lower monthly counts",
+export_only <- Sys.getenv("TDD_EXPORT_ONLY", "all")
+if(!(export_only %in% c("all", "monthly", "cumulative", "cumulative-extended"))) {
+  stop("Unknown TDD_EXPORT_ONLY value: ", export_only)
+}
+if(export_only %in% c("all", "monthly")) frame(p_month,"The summer 2020 spike stands out against 2025\u2019s lower monthly counts",
       "Monthly incident counts since 2006; 2026 through June 30", "monthly",8.8,8.8)
-if(Sys.getenv("TDD_EXPORT_ONLY")!="monthly") frame(p_cum,headline,
+if(export_only %in% c("all", "cumulative")) frame(p_cum,headline,
       "Cumulative incident counts since 2006; 2026 through June 30", "cumulative",8.8,8.8)
+if(export_only %in% c("all", "cumulative-extended")) frame(p_cum_extended,headline,
+      "Cumulative incident counts since 2006; 2026 through June 30", "cumulative-extended",8.8,8.8)
 cat(sprintf("Verified calculations retained: 2025=%d; 2021=%d; Jan-Jun 2026=%d vs 2025=%d\n",annual_totals,peak_total,first_half,first_half_25))

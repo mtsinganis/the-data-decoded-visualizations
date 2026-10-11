@@ -1,0 +1,10 @@
+Revision QA, 2026-10-08
+R/ggplot exports: three PNG/SVG pairs, retained 2112-square PNG and 633.6-point-square SVG dimensions.
+Embedded Lato 400/700/900 validated in browser. PNG/SVG mean RGB difference approximately 1/255.
+Rendered header slots match across all three charts. Equal compact gaps within each header; title-line gap never exceeds title-to-subtitle gap.
+Inspected full-size exports and 1080-pixel feed previews; labels, zero lines, waterfall connectors and logo clear.
+Arithmetic residuals: zero at CBS rounded precision. Historical reconstruction audited for 2010–2025, excluded because required additional categories and timing remain unverified.
+ALT synchronized: 440 / 457 / 445 characters. X post lengths: 251 / 221 / 214 / 230 characters.
+Desktop 1280 and phone 390 preview: 3 loaded chart images, no overflow, draft label and gallery exclusion verified.
+Website pnpm build and pnpm verify passed. git diff --check passed.
+No commit, push, publication or deployment.Focused Chart 1 revision: exact requested subtitle; header-aligned annotation in unchanged 4.6 mm size; segments use #2455FF / #C83242, operators #666666. Full-size, 1080-feed and 390-phone previews inspected. Charts 2/3 byte-identical. Exports and draft checks passed; not published.

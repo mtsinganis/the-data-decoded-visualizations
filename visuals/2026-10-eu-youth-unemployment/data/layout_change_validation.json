@@ -1,0 +1,38 @@
+{
+  "panel_and_baseline_geometry_identical": true,
+  "direct_labels_and_branding_positions_identical": true,
+  "tidy_data_unchanged": true,
+  "x_tick_label_shift_svg_points": [
+    6.97,
+    6.97,
+    6.97,
+    6.97,
+    6.97,
+    6.97,
+    6.97,
+    6.97
+  ],
+  "requested_padding_increase_typographic_points": 7,
+  "subtitle": "Monthly, seasonally-adjusted youth unemployment rate, ages 15–24 (%) · Jan 2000–Sep 2026",
+  "source": "Source: Eurostat (une_rt_m)",
+  "footer_note_lines": 2,
+  "visual_inspection": "Final PNG and rendered SVG inspected: subtitle readable; labels clear of footer; no clipping or overlap",
+  "line_point_connector_geometry_identical": true,
+  "other_line_point_connector_styles_identical": true,
+  "eu27_linewidth_ggplot_mm": {
+    "before": 0.8,
+    "after": 1.0
+  },
+  "eu27_svg_style_change": {
+    "before": "stroke-width: 1.71; stroke: #172033; stroke-dasharray: 4.55,4.55; stroke-linecap: butt;",
+    "after": "stroke-width: 2.13; stroke: #172033; stroke-dasharray: 5.69,5.69; stroke-linecap: butt;"
+  },
+  "eu27_linetype": {
+    "before": "22",
+    "after": "42"
+  },
+  "eu27_dash_svg_style_change": {
+    "before": "stroke-width: 2.13; stroke: #172033; stroke-dasharray: 5.69,5.69; stroke-linecap: butt;",
+    "after": "stroke-width: 2.13; stroke: #172033; stroke-dasharray: 11.38,5.69; stroke-linecap: butt;"
+  }
+}

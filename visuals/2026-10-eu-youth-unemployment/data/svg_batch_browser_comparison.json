@@ -1,0 +1,623 @@
+{
+  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36 Edg/154.0.0.0",
+  "width": 1800,
+  "height": 1350,
+  "charts": [
+    {
+      "file": "countries/youth-unemployment-austria-eu.svg",
+      "changed_pixels": 0,
+      "text_bounds_identical": true,
+      "fonts": [
+        {
+          "family": "Lato",
+          "weight": "400",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "700",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "900",
+          "status": "loaded"
+        }
+      ]
+    },
+    {
+      "file": "countries/youth-unemployment-belgium-eu.svg",
+      "changed_pixels": 0,
+      "text_bounds_identical": true,
+      "fonts": [
+        {
+          "family": "Lato",
+          "weight": "400",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "700",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "900",
+          "status": "loaded"
+        }
+      ]
+    },
+    {
+      "file": "countries/youth-unemployment-bulgaria-eu.svg",
+      "changed_pixels": 0,
+      "text_bounds_identical": true,
+      "fonts": [
+        {
+          "family": "Lato",
+          "weight": "400",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "700",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "900",
+          "status": "loaded"
+        }
+      ]
+    },
+    {
+      "file": "countries/youth-unemployment-croatia-eu.svg",
+      "changed_pixels": 0,
+      "text_bounds_identical": true,
+      "fonts": [
+        {
+          "family": "Lato",
+          "weight": "400",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "700",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "900",
+          "status": "loaded"
+        }
+      ]
+    },
+    {
+      "file": "countries/youth-unemployment-cyprus-eu.svg",
+      "changed_pixels": 0,
+      "text_bounds_identical": true,
+      "fonts": [
+        {
+          "family": "Lato",
+          "weight": "400",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "700",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "900",
+          "status": "loaded"
+        }
+      ]
+    },
+    {
+      "file": "countries/youth-unemployment-czechia-eu.svg",
+      "changed_pixels": 0,
+      "text_bounds_identical": true,
+      "fonts": [
+        {
+          "family": "Lato",
+          "weight": "400",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "700",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "900",
+          "status": "loaded"
+        }
+      ]
+    },
+    {
+      "file": "countries/youth-unemployment-denmark-eu.svg",
+      "changed_pixels": 0,
+      "text_bounds_identical": true,
+      "fonts": [
+        {
+          "family": "Lato",
+          "weight": "400",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "700",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "900",
+          "status": "loaded"
+        }
+      ]
+    },
+    {
+      "file": "countries/youth-unemployment-estonia-eu.svg",
+      "changed_pixels": 0,
+      "text_bounds_identical": true,
+      "fonts": [
+        {
+          "family": "Lato",
+          "weight": "400",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "700",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "900",
+          "status": "loaded"
+        }
+      ]
+    },
+    {
+      "file": "countries/youth-unemployment-finland-eu.svg",
+      "changed_pixels": 0,
+      "text_bounds_identical": true,
+      "fonts": [
+        {
+          "family": "Lato",
+          "weight": "400",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "700",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "900",
+          "status": "loaded"
+        }
+      ]
+    },
+    {
+      "file": "countries/youth-unemployment-france-eu.svg",
+      "changed_pixels": 0,
+      "text_bounds_identical": true,
+      "fonts": [
+        {
+          "family": "Lato",
+          "weight": "400",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "700",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "900",
+          "status": "loaded"
+        }
+      ]
+    },
+    {
+      "file": "countries/youth-unemployment-germany-eu.svg",
+      "changed_pixels": 0,
+      "text_bounds_identical": true,
+      "fonts": [
+        {
+          "family": "Lato",
+          "weight": "400",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "700",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "900",
+          "status": "loaded"
+        }
+      ]
+    },
+    {
+      "file": "countries/youth-unemployment-greece-eu.svg",
+      "changed_pixels": 0,
+      "text_bounds_identical": true,
+      "fonts": [
+        {
+          "family": "Lato",
+          "weight": "400",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "700",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "900",
+          "status": "loaded"
+        }
+      ]
+    },
+    {
+      "file": "countries/youth-unemployment-hungary-eu.svg",
+      "changed_pixels": 0,
+      "text_bounds_identical": true,
+      "fonts": [
+        {
+          "family": "Lato",
+          "weight": "400",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "700",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "900",
+          "status": "loaded"
+        }
+      ]
+    },
+    {
+      "file": "countries/youth-unemployment-ireland-eu.svg",
+      "changed_pixels": 0,
+      "text_bounds_identical": true,
+      "fonts": [
+        {
+          "family": "Lato",
+          "weight": "400",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "700",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "900",
+          "status": "loaded"
+        }
+      ]
+    },
+    {
+      "file": "countries/youth-unemployment-italy-eu.svg",
+      "changed_pixels": 0,
+      "text_bounds_identical": true,
+      "fonts": [
+        {
+          "family": "Lato",
+          "weight": "400",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "700",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "900",
+          "status": "loaded"
+        }
+      ]
+    },
+    {
+      "file": "countries/youth-unemployment-latvia-eu.svg",
+      "changed_pixels": 0,
+      "text_bounds_identical": true,
+      "fonts": [
+        {
+          "family": "Lato",
+          "weight": "400",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "700",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "900",
+          "status": "loaded"
+        }
+      ]
+    },
+    {
+      "file": "countries/youth-unemployment-lithuania-eu.svg",
+      "changed_pixels": 0,
+      "text_bounds_identical": true,
+      "fonts": [
+        {
+          "family": "Lato",
+          "weight": "400",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "700",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "900",
+          "status": "loaded"
+        }
+      ]
+    },
+    {
+      "file": "countries/youth-unemployment-luxembourg-eu.svg",
+      "changed_pixels": 0,
+      "text_bounds_identical": true,
+      "fonts": [
+        {
+          "family": "Lato",
+          "weight": "400",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "700",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "900",
+          "status": "loaded"
+        }
+      ]
+    },
+    {
+      "file": "countries/youth-unemployment-malta-eu.svg",
+      "changed_pixels": 0,
+      "text_bounds_identical": true,
+      "fonts": [
+        {
+          "family": "Lato",
+          "weight": "400",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "700",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "900",
+          "status": "loaded"
+        }
+      ]
+    },
+    {
+      "file": "countries/youth-unemployment-netherlands-eu.svg",
+      "changed_pixels": 0,
+      "text_bounds_identical": true,
+      "fonts": [
+        {
+          "family": "Lato",
+          "weight": "400",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "700",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "900",
+          "status": "loaded"
+        }
+      ]
+    },
+    {
+      "file": "countries/youth-unemployment-poland-eu.svg",
+      "changed_pixels": 0,
+      "text_bounds_identical": true,
+      "fonts": [
+        {
+          "family": "Lato",
+          "weight": "400",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "700",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "900",
+          "status": "loaded"
+        }
+      ]
+    },
+    {
+      "file": "countries/youth-unemployment-portugal-eu.svg",
+      "changed_pixels": 0,
+      "text_bounds_identical": true,
+      "fonts": [
+        {
+          "family": "Lato",
+          "weight": "400",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "700",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "900",
+          "status": "loaded"
+        }
+      ]
+    },
+    {
+      "file": "countries/youth-unemployment-romania-eu.svg",
+      "changed_pixels": 0,
+      "text_bounds_identical": true,
+      "fonts": [
+        {
+          "family": "Lato",
+          "weight": "400",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "700",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "900",
+          "status": "loaded"
+        }
+      ]
+    },
+    {
+      "file": "countries/youth-unemployment-slovakia-eu.svg",
+      "changed_pixels": 0,
+      "text_bounds_identical": true,
+      "fonts": [
+        {
+          "family": "Lato",
+          "weight": "400",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "700",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "900",
+          "status": "loaded"
+        }
+      ]
+    },
+    {
+      "file": "countries/youth-unemployment-slovenia-eu.svg",
+      "changed_pixels": 0,
+      "text_bounds_identical": true,
+      "fonts": [
+        {
+          "family": "Lato",
+          "weight": "400",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "700",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "900",
+          "status": "loaded"
+        }
+      ]
+    },
+    {
+      "file": "countries/youth-unemployment-spain-eu.svg",
+      "changed_pixels": 0,
+      "text_bounds_identical": true,
+      "fonts": [
+        {
+          "family": "Lato",
+          "weight": "400",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "700",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "900",
+          "status": "loaded"
+        }
+      ]
+    },
+    {
+      "file": "countries/youth-unemployment-sweden-eu.svg",
+      "changed_pixels": 0,
+      "text_bounds_identical": true,
+      "fonts": [
+        {
+          "family": "Lato",
+          "weight": "400",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "700",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "900",
+          "status": "loaded"
+        }
+      ]
+    },
+    {
+      "file": "youth-unemployment-greece-eu.svg",
+      "changed_pixels": 0,
+      "text_bounds_identical": true,
+      "fonts": [
+        {
+          "family": "Lato",
+          "weight": "400",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "700",
+          "status": "loaded"
+        },
+        {
+          "family": "Lato",
+          "weight": "900",
+          "status": "loaded"
+        }
+      ]
+    }
+  ]
+}

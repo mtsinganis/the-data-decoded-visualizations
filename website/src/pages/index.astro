@@ -17,7 +17,15 @@ const base = import.meta.env.BASE_URL;
       {projects.map((project) => (
         <article class="card">
           <a href={`${base}projects/${project.slug}/`}>
+            {project.presentation === 'country-explorer' ? (
+              <div class="country-preview">
+                <p class="country-preview-title">Explore your country</p>
+                <p class="country-preview-period">Youth unemployment · 2000–2026</p>
+                <ul>{project.countryCharts.map((country) => <li>{country.name}</li>)}</ul>
+              </div>
+            ) : (
             <img class="preview" src={`${base}chart/${project.slug}/${project.charts[0].name}`} alt={project.charts[0].alt} loading="lazy" />
+            )}
             <div class="card-copy">
               <p class="meta"><time datetime={project.date}>{project.date}</time> · {project.topics.join(' · ')}</p>
               <h3>{project.title}</h3>

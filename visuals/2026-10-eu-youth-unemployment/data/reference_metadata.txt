@@ -1,0 +1,186 @@
+ Reference metadata describe statistical concepts and methodologies used for the collection and generation of data. They provide information on data quality and, since they are strongly content-oriented, assist users in interpreting the data. Reference metadata, unlike structural metadata, can be decoupled from the data. 
+ For more information, please consult our metadata website section. 
+Reference Metadata in Euro SDMX Metadata Structure (ESMS)
+ Compiling agency: Eurostat, the statistical office of the European Union.
+Need help? Contact the Eurostat user support 
+Eurostat, the statistical office of the European Union.
+[4D1_F3] Eurostat - Labour market and skills
+Confidential because of GDPR
+Confidential because of GDPR
+2920 Luxembourg LUXEMBOURG
+Confidential because of GDPR
+Confidential because of GDPR
+Confidential because of GDPR
+8 January 2026
+8 January 2026
+8 January 2026
+'Unemployment by sex and age - monthly data' is a dataset with series on a monthly basis which is, where necessary, adjusted and enriched in various ways, in accordance with the specificities of the indicator. The monthly unemployment indicator is calculated with special methods and periodicity which justify the present page.
+Quarterly and annual unemployment is published in the section 'LFS main indicators', which is a collection of the main statistics on the labour market. 
+This page focuses on the particularities of the estimation of harmonised unemployment (including unemployment rates). Other information on 'LFS main indicators' can be found in the respective ESMS page, see link in section 'related metadata'. 
+For more details on classifications, levels of aggregation and transition rules, please consult EU-LFS (Statistics Explained) - Methodology.
+Not applicable.
+The definitions of employment and unemployment, as well as other survey characteristics follow the definitions and recommendations of the International Labour Organisation. The definition of unemployment is further precised in Commission Regulation (EC) No 2019/2240.
+The relevant definitions are as follows:
+Unemployed persons are all persons 15 to 74 years of age who were not employed during the reference week, had actively sought work during the past four weeks and were ready to begin working immediately or within two weeks. Figures show the number of persons unemployed in thousands.
+The duration of unemployment is defined as the duration of a search for a job or as the length of the period since the last job was held (if this period is shorter than the duration of search for a job).
+Employed persons are all persons who worked at least one hour for pay or profit during the reference week or were temporarily absent from such work. This variable is needed for the calculation of the unemployment rate, the long term unemployment rate and the very long term unemployment rate (see definition below). For the unemployment rate, only persons from 15 to 74 years of age are used.
+The unemployment rate is the number of people unemployed as a percentage of the labour force. The labour force is the total number of people employed and unemployed. In the database, unemployment rates can be downloaded by choosing the unit "PC_ACT", Percentage of Active Population.
+The active population (labour force) is defined as the sum of employed and unemployed persons.
+Persons.
+The EU LFS results cover the total population usually residing in Member States, except for persons living in collective or institutional households. While demographic data are gathered for all age groups, questions relating to labour market status are restricted to persons in the age group of 15 years or older. For more details and exceptions, please consult please consult the EU-LFS (Statistics Explained) - Methodology.
+European Union, Euro area, EU Member States, Candidate Countries, EFTA Countries (except for Liechtenstein).
+Data for Cyprus refer only to the areas of Cyprus controlled by the Government of the Republic of Cyprus.
+Data for France include the overseas departments (DOM). 
+Data for USA and Japan are also disseminated.
+Available data ranges differ by Member State. Earliest data series available for unemployment rates and averages are by month start from 1983 onwards.
+Not applicable. 
+Unemployment rates are expressed in percentage (see definition above in section 3.4), while unemployment levels are thousands of persons.
+The reference periods are the calendar months. 
+The EU-LFS implementation is governed by legislative acts of the Council and Parliament, as well as of the Commission. The principal legal act is the Regulation (EU) 2019/1700. The implementation rules are specified in the successive Commission regulations, in particular Commission Implementing Regulation 2019/2241. For more details on the regulations, please consult EU-LFS (Statistics Explained) - Main features and legal basis.
+Not applicable.
+Not applicable.
+Not applicable.
+Monthly unemployment data is bound by a release calendar.
+For monthly unemployment data - the precise date of data release is disseminated on Eurostat's website.
+Please also consult the yearly calendar under Euro indicators - Eurostat (europa.eu)
+In line with the Community legal framework and the European Statistics Code of Practice Eurostat disseminates European statistics on Eurostat's website (see item 10 - 'Accessibility and clarity') respecting professional independence and in an objective, professional and transparent manner in which all users are treated equitably. The detailed arrangements are governed by the Eurostat protocol on impartial access to Eurostat data for users.
+In line with this protocol and on a strictly regulated basis, data on monthly unemployment are sent for information to the European Central Bank (ECB) and to the European Commission Directorate General for Employment, Social Affairs and Equal Opportunities (DG EMPL) under embargo the evening before official release of data.
+Monthly.
+News releases on-line (only for monthly unemployment).
+Monthly news release. Dedicated page on Unemployment Statistics in "Statistics Explained".
+Please consult free data on-line Eurostat database.
+Not applicable.
+See information at this website (Eurostat).
+The EU-LFS disseminates publications on the methodology of the survey. For more information please consult: Quality reports and methodological publications.
+See section 11.1.
+Please refer to the ESMS page on 'Employment and unemployment (LFS)' (see link below in section 'related metadata').
+Please refer to the ESMS page on 'Employment and unemployment (LFS)' (see link below in section 'related metadata').
+Please refer to Annex III - Quality assesment of MUR data. 
+Relevance is high. Unemployment rates are among the most important socio-economic indicators. Monthly unemployment rates are Eurostat Euro-indicators; 
+Overall, users are satisfied with the quality of the monthly unemployment statistics disseminated in Eurostat’s website. This is true for all the assessed quality dimensions with no exception. Accessibility and accuracy are the most highly rated quality dimensions, with accuracy being the most important dimension according to users. 
+The time series are complete from the moment they start.
+The overall accuracy is considered as high. Unemployment is arguably the most important variable collected by EU-LFS, the survey design is optimized to measure unemployment.
+Not available on monthly basis.
+Not available on monthly basis.
+Monthly data on seasonally adjusted unemployment rates are published approximately 31 days after the end of the reference month. 
+Not available.
+For France, the LFS results for the monthly calculations are complemented with the DOM data (départements d'outre-mer).
+In the monthly dataset, the idea is to keep the time series as comparable in time as possible. It means that possible breaks in the LFS series due to changes in the definitions or in the filtering of the micro data have been adjusted.
+Often questions are asked concerning coherence with registered unemployment. Both indicators are not comparable. First they have different definitions, registration rules are not harmonised internationally and they do not correspond to ILO (International Labour Organization) standards. There could be other reasons for differences: different geographical coverage (e.g. regions excluded), different time coverage, etc.
+The headline figures published in the monthly Unemployment News Release are seasonally adjusted unemployment rates. The non-seasonally adjusted monthly data are consistent with the published LFS data.
+Not available.
+To further specify the general Eurostat revision policy, the following revision policy has been established for the monthly unemployment rate.
+All reported errors (once validated) result in corrections of the disseminated data.
+Reported errors are corrected in the disseminated data as soon as the correct data have been validated.
+Data are only published once they are deemed to be sufficiently complete for all data providers contributing to the aggregate.
+ 
+1. Routine revisions
+Whenever new data are provided and validated, the already disseminated data are updated. Aggregates and components are revised at the same time.
+There are routine revisions aiming at adjusting monthly time series to have temporal consistency with the quarterly series.
+Every month new not seasonally adjusted figures are added into the process and new estimates are calculated. This might cause a slight revision in the past figures due to the re-execution of the seasonal adjustment procedure. 
+Seasonal Adjustment models are updated annually. During the years 2020 and 2021, the seasonal coefficients of the months of the year 2019 have been applied due uncertainties in the seasonal figure caused by the Corona crisis. With the January 2023 data release the annual review of models is re-established, using JDemetra+. After each annual review, routine revisions may appear to seasonally adjusted data.
+Whenever new EU-LFS data become available, a potentially larger revision takes place. For countries using registered unemployment counts, data are usually revised for the last 1 to 6 months, upon inclusion of the new LFS data. In addition, for those countries parameters used in the ARIMA models are reviewed every time new EU-LFS quarterly data becomes available. Data are considered to be final after 6 months for routine revisions.
+The revision calendar for the domain is identical with the dissemination calendar of the monthly unemployment release.Routine revisions are communicated in the paragraph “Revisions and timetable” of the monthly news release.
+The revisions due to the latest inclusion of EU-LFS data are noted in the Monthly Unemployment Release published on 1. September 2026. 
+Among EU Member States, the rate has been revised by more than 0.1 percentage points (pp) downwards for Lithuania (by 0.7 pp). The rate has been revised by more than 0.1 percentage points (pp) upwards for Cyprus (by 0.8 pp), Bulgaria and Romania (by 0.5 pp each) as well as for Estonia, Latvia and Poland (by 0.3 pp each).
+ 
+2. Major revisions
+The impact of major revisions is analysed visually. Time series breaks caused by major revisions are flagged until break-free data is provided. Major revisions are documented below (overview of significant revisions of back data published since October 2023):
+Sweden: data revised back to January 2001 due to methodological changes in the Framework Regulation, published on 20 October 2023.
+Croatia: data revised for all months of 2022 due to Census 2021 revisions, published on 3 November 2023.
+Ireland: data revised from July 2016 to September 2023 due to Census 2021 revisions, published on 1 March 2024.
+Poland: data revised from January 2019 to June 2023 due to Census 2021 revisions, published on 1 March 2024.
+Malta: data revised from January 2018 to January 2024 due to Census 2021 revisions, published on 3 April 2024 and partially updated on 2 October.
+Spain: data revised from January 2021 to December 2023 due to Census 2021 revisions, published on 3 May 2024.
+Portugal: data revised from February 2011 to June 2023 due to Census 2021 revisions, published on 30 August 2024.
+Bulgaria: data revised from January 2019 to December 2022 due to Census 2021 revisions, published on 30 August 2024. 
+Cyprus: data revised for all quarters of 2021 due to Census 2021 revisions, published on 2 October 2024.
+Germany: data revised back to 2009 due to Census 2021 revisions, published on 3 June 2025.
+France: data revised back to 2003 due to the inclusion of Mayotte, published on 1 October 2026. 
+Major revisions are communicated via email to the main users such as the EC DG Employment, the ECB and the OECD.
+ 
+3. Unscheduled revisions
+Lithuania: NSA, SA and Trend series revised for the period October - December 2021 as well as the period October - December 2022 (for the breakdowns Employed Male aged 25-74 as well as Unemployed Male aged 25-74) due to an error in the benchmarking.
+Lithuania: NSA, SA, Trend series revised for the period July - September 2023 for all breakdowns due to an error in data restrictions.
+Both revisions for Lithuania were published on 1 March 2024.
+ 
+A link to the most recent news release can be found at the bottom of the page "Unemployment Statistics" in Statistics Explained, section Publications.
+For information on EU-LFS data revisions, please consult EU-LFS (Statistics Explained) - Data and publication. 
+The EU-LFS is the main data source of the monthly unemployment data. A complete overview of the data sources used, by country, could be found in the paper 'Sources and Methods' available as annex to this metadata.
+There are legislative acts of the European Council and Parliament and of the European Commission that govern the EU-LFS (see section 6 ‘Institutional Mandate’ as well as the related metadata "employ_esms" at the bottom of the page) and result in the production of monthly and quarterly  - or only quarterly - labour force statistics.
+For the countries where only quarterly statistics is compiled, Eurostat is complementing this quarterly data with a monthly indicator from public employment authority delivered by the Member States. The results of the complementary calculations yield the monthly unemployment data. See annex 'Technical details unemployment calculations' below in this metadata.
+The data for US and Japan are produced by the U.S. Bureau of Labor Statistics and the Ministry of Internal Affairs and Communications Government of Japan, respectively. Eurostat disseminates those data without any processing.For additional information please refer to the technical annex below or consult the EU-LFS (Statistics Explained) webpage.
+Monthly.
+EU-LFS data are acquired by interviewing the sampled individuals directly. 
+For more information please consult the overview of the data sources used, that could be found in the paper 'Sources and Methods' available as annex to this metadata. the corresponding LFS quality reports.
+Most Member States transmit the data via Edamis, while some just send them via email to the monthly unemployment functional mailbox. The files sent via Edamis are automatically stored in a specific folder on the Fame server, while those sent via email are manually copied in the same folder. All files are then treated exactly in the same way.
+Eurostat performs the seasonal adjustment (SA) for countries delivering monthly unemployment inputs (such as administrative unemployment counts) as detailed in Article 3 of Commission Implementing Regulation (EU) 2019/2241. 
+For the rest of the countries, delivering monthly unemployment statistics or estimates, the SA data is delivered together with the NSA series.
+The following method is used in order to produce monthly unemployment rates: for all countries, the non-seasonally adjusted quarterly averages of the monthly series are benchmarked to the quarterly LFS figures. However, the way the figures for the individual months as well as the provisional figures (for the period when LFS data are not yet available) are calculated depends on the availability and specific characteristics of the sources available in individual Member States. Eurostat aims at harmonizing the calculation process as much as possible. Apart from quarterly figures, in some Member States monthly and/or 3 month moving averages are produced from the LFS as well. Registered unemployment data are used for many Member States as auxiliary source. The length of the series and specific correlation with the unemployment figures as measured with the quarterly LFS varies from country to country.
+Czech Republic, Denmark, Germany, Greece, Hungary, Italy, the Netherlands, Austria, Romania, Finland, Sweden, Iceland, Norway and Turkey.
+Monthly estimates are available directly from the LFS.  For Germany, the Netherlands and Iceland, trend data instead of seasonally adjusted data is published due to the high volatility of the series. For Finland, Sweden and Norway trend data is the headline monthly indicator, while seasonally adjusted data are also available in the online dataset. For Romania, only quarterly LFS figures for youth unemployment are published. For Turkey the age breakdown 25-74 is to be interpreted as 25+ due to the national methodology.
+Estonia and Portugal
+Three month moving averages are available directly from the LFS, and are published as monthly figures under the middle month. The last of the three months is nowcasted for Denmark, Estonia and Portugal.
+Lithuania
+Quarterly LFS data are combined with monthly registered unemployment data using an AR (1) max log approach for temporal disaggregation and forecasting. 
+Belgium, Bulgaria, Spain, France, Cyprus, Latvia, Poland and Slovakia
+Quarterly LFS data are combined with monthly registered unemployment data using a temporal disaggregation Denton model. For the most recent months (for which the LFS data are not yet available), the monthly benchmark factors are forecasted using seasonal ARIMA regression models. The provisional estimates are calculated by multiplying these factors by the available registered unemployment figures. See the Annex for technical details. It is important to note that the LFS in Belgium introduced a panel design in Q1 2017. For Belgium, Croatia, Cyprus and Slovenia only quarterly LFS figures for youth unemployment are published.
+France
+Estimates are calculated using inputs from the French public employment service. An updated national methodology (in French) is in use since January 2025, affecting the time series consistency of the input data. To ensure the comparability of monthly unemployment figures published in this article, Eurostat compiled the evolution between December 2024 and January 2025 youth unemployment figures using statistical models.
+Luxembourg, Croatia, Bosnia and Herzegovina, North Macedonia 
+Benchmarking to moving annual averages of LFS data and linear extrapolation of registered unemployment data.
+Switzerland
+Quarterly LFS data are combined with monthly registered unemployment data using a linear proportional disaggregation. No data are disseminated for the most recent months (for which the LFS data are not yet available).
+For all countries data compilation takes place for eight basic series in the levels: (employed and unemployed)x(males and females)x(young and adults). 
+The levels for the European aggregates are obtained by simply adding up the national data (see below for adjustments on country data).
+Rates both for each country and for the EU aggregates are subsequently calculated from the data expressed in levels (i.e. number of persons).
+Where available, LFS series adjusted for breaks are used in the production for the monthly unemployment series.
+Seasonal adjustment is done by Eurostat for Member States delivering monthly unemployment inputs only, on a disaggregated level (country by gender by age group, indirect approach) using TRAMO/SEATS (and X-13 trend calculation for Germany).
+For more information on the transition to a quarterly continuous survey, see EU-LFS (Statistics Explained) webpage: Development and history.
+See annexes.
+'Unemployment by sex and age - monthly data' is a dataset with series on a monthly basis which is, where necessary, adjusted and enriched in various ways, in accordance with the specificities of the indicator. The monthly unemployment indicator is calculated with special methods and periodicity which justify the present page.
+Quarterly and annual unemployment is published in the section 'LFS main indicators', which is a collection of the main statistics on the labour market. 
+This page focuses on the particularities of the estimation of harmonised unemployment (including unemployment rates). Other information on 'LFS main indicators' can be found in the respective ESMS page, see link in section 'related metadata'. 
+8 January 2026
+The definitions of employment and unemployment, as well as other survey characteristics follow the definitions and recommendations of the International Labour Organisation. The definition of unemployment is further precised in Commission Regulation (EC) No 2019/2240.
+The relevant definitions are as follows:
+Unemployed persons are all persons 15 to 74 years of age who were not employed during the reference week, had actively sought work during the past four weeks and were ready to begin working immediately or within two weeks. Figures show the number of persons unemployed in thousands.
+The duration of unemployment is defined as the duration of a search for a job or as the length of the period since the last job was held (if this period is shorter than the duration of search for a job).
+Employed persons are all persons who worked at least one hour for pay or profit during the reference week or were temporarily absent from such work. This variable is needed for the calculation of the unemployment rate, the long term unemployment rate and the very long term unemployment rate (see definition below). For the unemployment rate, only persons from 15 to 74 years of age are used.
+The unemployment rate is the number of people unemployed as a percentage of the labour force. The labour force is the total number of people employed and unemployed. In the database, unemployment rates can be downloaded by choosing the unit "PC_ACT", Percentage of Active Population.
+The active population (labour force) is defined as the sum of employed and unemployed persons.
+Persons.
+The EU LFS results cover the total population usually residing in Member States, except for persons living in collective or institutional households. While demographic data are gathered for all age groups, questions relating to labour market status are restricted to persons in the age group of 15 years or older. For more details and exceptions, please consult please consult the EU-LFS (Statistics Explained) - Methodology.
+European Union, Euro area, EU Member States, Candidate Countries, EFTA Countries (except for Liechtenstein).
+Data for Cyprus refer only to the areas of Cyprus controlled by the Government of the Republic of Cyprus.
+Data for France include the overseas departments (DOM). 
+Data for USA and Japan are also disseminated.
+The reference periods are the calendar months. 
+The overall accuracy is considered as high. Unemployment is arguably the most important variable collected by EU-LFS, the survey design is optimized to measure unemployment.
+Unemployment rates are expressed in percentage (see definition above in section 3.4), while unemployment levels are thousands of persons.
+The following method is used in order to produce monthly unemployment rates: for all countries, the non-seasonally adjusted quarterly averages of the monthly series are benchmarked to the quarterly LFS figures. However, the way the figures for the individual months as well as the provisional figures (for the period when LFS data are not yet available) are calculated depends on the availability and specific characteristics of the sources available in individual Member States. Eurostat aims at harmonizing the calculation process as much as possible. Apart from quarterly figures, in some Member States monthly and/or 3 month moving averages are produced from the LFS as well. Registered unemployment data are used for many Member States as auxiliary source. The length of the series and specific correlation with the unemployment figures as measured with the quarterly LFS varies from country to country.
+Czech Republic, Denmark, Germany, Greece, Hungary, Italy, the Netherlands, Austria, Romania, Finland, Sweden, Iceland, Norway and Turkey.
+Monthly estimates are available directly from the LFS.  For Germany, the Netherlands and Iceland, trend data instead of seasonally adjusted data is published due to the high volatility of the series. For Finland, Sweden and Norway trend data is the headline monthly indicator, while seasonally adjusted data are also available in the online dataset. For Romania, only quarterly LFS figures for youth unemployment are published. For Turkey the age breakdown 25-74 is to be interpreted as 25+ due to the national methodology.
+Estonia and Portugal
+Three month moving averages are available directly from the LFS, and are published as monthly figures under the middle month. The last of the three months is nowcasted for Denmark, Estonia and Portugal.
+Lithuania
+Quarterly LFS data are combined with monthly registered unemployment data using an AR (1) max log approach for temporal disaggregation and forecasting. 
+Belgium, Bulgaria, Spain, France, Cyprus, Latvia, Poland and Slovakia
+Quarterly LFS data are combined with monthly registered unemployment data using a temporal disaggregation Denton model. For the most recent months (for which the LFS data are not yet available), the monthly benchmark factors are forecasted using seasonal ARIMA regression models. The provisional estimates are calculated by multiplying these factors by the available registered unemployment figures. See the Annex for technical details. It is important to note that the LFS in Belgium introduced a panel design in Q1 2017. For Belgium, Croatia, Cyprus and Slovenia only quarterly LFS figures for youth unemployment are published.
+France
+Estimates are calculated using inputs from the French public employment service. An updated national methodology (in French) is in use since January 2025, affecting the time series consistency of the input data. To ensure the comparability of monthly unemployment figures published in this article, Eurostat compiled the evolution between December 2024 and January 2025 youth unemployment figures using statistical models.
+Luxembourg, Croatia, Bosnia and Herzegovina, North Macedonia 
+Benchmarking to moving annual averages of LFS data and linear extrapolation of registered unemployment data.
+Switzerland
+Quarterly LFS data are combined with monthly registered unemployment data using a linear proportional disaggregation. No data are disseminated for the most recent months (for which the LFS data are not yet available).
+For all countries data compilation takes place for eight basic series in the levels: (employed and unemployed)x(males and females)x(young and adults). 
+The levels for the European aggregates are obtained by simply adding up the national data (see below for adjustments on country data).
+Rates both for each country and for the EU aggregates are subsequently calculated from the data expressed in levels (i.e. number of persons).
+The EU-LFS is the main data source of the monthly unemployment data. A complete overview of the data sources used, by country, could be found in the paper 'Sources and Methods' available as annex to this metadata.
+There are legislative acts of the European Council and Parliament and of the European Commission that govern the EU-LFS (see section 6 ‘Institutional Mandate’ as well as the related metadata "employ_esms" at the bottom of the page) and result in the production of monthly and quarterly  - or only quarterly - labour force statistics.
+For the countries where only quarterly statistics is compiled, Eurostat is complementing this quarterly data with a monthly indicator from public employment authority delivered by the Member States. The results of the complementary calculations yield the monthly unemployment data. See annex 'Technical details unemployment calculations' below in this metadata.
+The data for US and Japan are produced by the U.S. Bureau of Labor Statistics and the Ministry of Internal Affairs and Communications Government of Japan, respectively. Eurostat disseminates those data without any processing.For additional information please refer to the technical annex below or consult the EU-LFS (Statistics Explained) webpage.
+Monthly.
+Monthly data on seasonally adjusted unemployment rates are published approximately 31 days after the end of the reference month. 
+For France, the LFS results for the monthly calculations are complemented with the DOM data (départements d'outre-mer).
+In the monthly dataset, the idea is to keep the time series as comparable in time as possible. It means that possible breaks in the LFS series due to changes in the definitions or in the filtering of the micro data have been adjusted.

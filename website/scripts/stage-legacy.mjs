@@ -109,7 +109,7 @@ for (const relative of assets) {
 let migratedChartCount = 0;
 for (const project of published) {
   for (const chart of project.charts) {
-    const target = path.join(dist, 'visuals', project.folder, 'plots', chart.name);
+    const target = path.join(dist, 'visuals', project.folder, 'plots', chart.relative);
     await mkdir(path.dirname(target), { recursive: true });
     await copyFile(chart.file, target); // Only explicitly designated exports retain old direct chart URLs.
     migratedChartCount++;

@@ -1,0 +1,285 @@
+{
+  "chart_count": 28,
+  "charts": [
+    {
+      "file": "plots/countries/youth-unemployment-austria-eu.svg",
+      "weights": [
+        400,
+        700,
+        900
+      ],
+      "format": "woff2",
+      "all_required_characters_present": true
+    },
+    {
+      "file": "plots/countries/youth-unemployment-belgium-eu.svg",
+      "weights": [
+        400,
+        700,
+        900
+      ],
+      "format": "woff2",
+      "all_required_characters_present": true
+    },
+    {
+      "file": "plots/countries/youth-unemployment-bulgaria-eu.svg",
+      "weights": [
+        400,
+        700,
+        900
+      ],
+      "format": "woff2",
+      "all_required_characters_present": true
+    },
+    {
+      "file": "plots/countries/youth-unemployment-croatia-eu.svg",
+      "weights": [
+        400,
+        700,
+        900
+      ],
+      "format": "woff2",
+      "all_required_characters_present": true
+    },
+    {
+      "file": "plots/countries/youth-unemployment-cyprus-eu.svg",
+      "weights": [
+        400,
+        700,
+        900
+      ],
+      "format": "woff2",
+      "all_required_characters_present": true
+    },
+    {
+      "file": "plots/countries/youth-unemployment-czechia-eu.svg",
+      "weights": [
+        400,
+        700,
+        900
+      ],
+      "format": "woff2",
+      "all_required_characters_present": true
+    },
+    {
+      "file": "plots/countries/youth-unemployment-denmark-eu.svg",
+      "weights": [
+        400,
+        700,
+        900
+      ],
+      "format": "woff2",
+      "all_required_characters_present": true
+    },
+    {
+      "file": "plots/countries/youth-unemployment-estonia-eu.svg",
+      "weights": [
+        400,
+        700,
+        900
+      ],
+      "format": "woff2",
+      "all_required_characters_present": true
+    },
+    {
+      "file": "plots/countries/youth-unemployment-finland-eu.svg",
+      "weights": [
+        400,
+        700,
+        900
+      ],
+      "format": "woff2",
+      "all_required_characters_present": true
+    },
+    {
+      "file": "plots/countries/youth-unemployment-france-eu.svg",
+      "weights": [
+        400,
+        700,
+        900
+      ],
+      "format": "woff2",
+      "all_required_characters_present": true
+    },
+    {
+      "file": "plots/countries/youth-unemployment-germany-eu.svg",
+      "weights": [
+        400,
+        700,
+        900
+      ],
+      "format": "woff2",
+      "all_required_characters_present": true
+    },
+    {
+      "file": "plots/countries/youth-unemployment-greece-eu.svg",
+      "weights": [
+        400,
+        700,
+        900
+      ],
+      "format": "woff2",
+      "all_required_characters_present": true
+    },
+    {
+      "file": "plots/countries/youth-unemployment-hungary-eu.svg",
+      "weights": [
+        400,
+        700,
+        900
+      ],
+      "format": "woff2",
+      "all_required_characters_present": true
+    },
+    {
+      "file": "plots/countries/youth-unemployment-ireland-eu.svg",
+      "weights": [
+        400,
+        700,
+        900
+      ],
+      "format": "woff2",
+      "all_required_characters_present": true
+    },
+    {
+      "file": "plots/countries/youth-unemployment-italy-eu.svg",
+      "weights": [
+        400,
+        700,
+        900
+      ],
+      "format": "woff2",
+      "all_required_characters_present": true
+    },
+    {
+      "file": "plots/countries/youth-unemployment-latvia-eu.svg",
+      "weights": [
+        400,
+        700,
+        900
+      ],
+      "format": "woff2",
+      "all_required_characters_present": true
+    },
+    {
+      "file": "plots/countries/youth-unemployment-lithuania-eu.svg",
+      "weights": [
+        400,
+        700,
+        900
+      ],
+      "format": "woff2",
+      "all_required_characters_present": true
+    },
+    {
+      "file": "plots/countries/youth-unemployment-luxembourg-eu.svg",
+      "weights": [
+        400,
+        700,
+        900
+      ],
+      "format": "woff2",
+      "all_required_characters_present": true
+    },
+    {
+      "file": "plots/countries/youth-unemployment-malta-eu.svg",
+      "weights": [
+        400,
+        700,
+        900
+      ],
+      "format": "woff2",
+      "all_required_characters_present": true
+    },
+    {
+      "file": "plots/countries/youth-unemployment-netherlands-eu.svg",
+      "weights": [
+        400,
+        700,
+        900
+      ],
+      "format": "woff2",
+      "all_required_characters_present": true
+    },
+    {
+      "file": "plots/countries/youth-unemployment-poland-eu.svg",
+      "weights": [
+        400,
+        700,
+        900
+      ],
+      "format": "woff2",
+      "all_required_characters_present": true
+    },
+    {
+      "file": "plots/countries/youth-unemployment-portugal-eu.svg",
+      "weights": [
+        400,
+        700,
+        900
+      ],
+      "format": "woff2",
+      "all_required_characters_present": true
+    },
+    {
+      "file": "plots/countries/youth-unemployment-romania-eu.svg",
+      "weights": [
+        400,
+        700,
+        900
+      ],
+      "format": "woff2",
+      "all_required_characters_present": true
+    },
+    {
+      "file": "plots/countries/youth-unemployment-slovakia-eu.svg",
+      "weights": [
+        400,
+        700,
+        900
+      ],
+      "format": "woff2",
+      "all_required_characters_present": true
+    },
+    {
+      "file": "plots/countries/youth-unemployment-slovenia-eu.svg",
+      "weights": [
+        400,
+        700,
+        900
+      ],
+      "format": "woff2",
+      "all_required_characters_present": true
+    },
+    {
+      "file": "plots/countries/youth-unemployment-spain-eu.svg",
+      "weights": [
+        400,
+        700,
+        900
+      ],
+      "format": "woff2",
+      "all_required_characters_present": true
+    },
+    {
+      "file": "plots/countries/youth-unemployment-sweden-eu.svg",
+      "weights": [
+        400,
+        700,
+        900
+      ],
+      "format": "woff2",
+      "all_required_characters_present": true
+    },
+    {
+      "file": "plots/youth-unemployment-greece-eu.svg",
+      "weights": [
+        400,
+        700,
+        900
+      ],
+      "format": "woff2",
+      "all_required_characters_present": true
+    }
+  ]
+}
