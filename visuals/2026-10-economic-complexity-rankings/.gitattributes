@@ -1,0 +1,3 @@
+# Preserve pinned source checksums and approved export hashes on all platforms.
+data/** -text
+plots/** -text

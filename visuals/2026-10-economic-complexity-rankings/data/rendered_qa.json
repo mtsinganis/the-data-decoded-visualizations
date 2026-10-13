@@ -1,0 +1,73 @@
+{
+  "chart_final.png": {
+    "dimensions": [
+      3283,
+      3317
+    ],
+    "header_ink_bounds": [
+      [
+        130,
+        239
+      ],
+      [
+        265,
+        379
+      ],
+      [
+        406,
+        478
+      ],
+      [
+        501,
+        573
+      ]
+    ],
+    "header_gaps_pixels": [
+      25,
+      26,
+      22
+    ],
+    "white_corners": true
+  },
+  "preview_svg.png": {
+    "dimensions": [
+      1000,
+      1010
+    ],
+    "header_ink_bounds": [
+      [
+        46,
+        73
+      ],
+      [
+        81,
+        114
+      ],
+      [
+        124,
+        144
+      ],
+      [
+        153,
+        173
+      ]
+    ],
+    "header_gaps_pixels": [
+      7,
+      9,
+      8
+    ],
+    "white_corners": true
+  },
+  "alt_length": 899,
+  "alt_synchronized": true,
+  "final_matches_full": true,
+  "economies": {
+    "total": 145,
+    "highlighted": 4,
+    "grey": 141
+  },
+  "notes_divider_gap_inches": 0.1507635916603931,
+  "annotation_highlight_collisions": [],
+  "endpoint_label_collisions": []
+}

@@ -1,0 +1,19 @@
+{
+  "vintage": "12.0",
+  "classification": "HS92",
+  "release_utc": "2026-02-08T19:59:09Z",
+  "ranked_rows": 4319,
+  "years": [1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
+  "economies": 145,
+  "duplicate_country_years": 0,
+  "rank_ties": 0,
+  "mirror_matches": 4319,
+  "rank_recalculation": false,
+  "interpolation": false,
+  "background_count": 141,
+  "highlight_count": 4,
+  "missing_highlighted": 0,
+  "identifiers": "Official country_id and country_iso3_code retained",
+  "aggregate_check": "All ranked identifiers match the mirror country list; no region or income aggregate",
+  "rounded_score_ties": "Rounded ECI scores can tie; supplied global ranks remain unique. No re-ranking."
+}

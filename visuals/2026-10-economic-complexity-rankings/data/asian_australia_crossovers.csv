@@ -1,0 +1,55 @@
+country_code,country,subregion,from_year,to_year,overtaking,global_rank,australia_rank
+ARE,United Arab Emirates,Western Asia,2009,2010,ARE,48,59
+ARM,Armenia,Western Asia,1995,1996,ARM,29,35
+ARM,Armenia,Western Asia,1998,1999,AUS,39,35
+ARM,Armenia,Western Asia,1999,2000,ARM,37,42
+ARM,Armenia,Western Asia,2000,2001,AUS,42,40
+ARM,Armenia,Western Asia,2006,2007,ARM,39,50
+ARM,Armenia,Western Asia,2007,2008,AUS,59,52
+ARM,Armenia,Western Asia,2010,2011,ARM,44,56
+ARM,Armenia,Western Asia,2012,2013,AUS,76,62
+ARM,Armenia,Western Asia,2020,2021,ARM,67,68
+BHR,Bahrain,Western Asia,2009,2010,BHR,54,59
+CHN,China,Eastern Asia,1997,1998,CHN,36,40
+CYP,Cyprus,Western Asia,2004,2005,CYP,46,48
+GEO,Georgia,Western Asia,1995,1996,AUS,50,35
+GEO,Georgia,Western Asia,1999,2000,GEO,40,42
+GEO,Georgia,Western Asia,2001,2002,AUS,40,38
+GEO,Georgia,Western Asia,2017,2018,GEO,63,65
+GEO,Georgia,Western Asia,2019,2020,AUS,67,63
+GEO,Georgia,Western Asia,2020,2021,GEO,65,68
+IDN,Indonesia,South-eastern Asia,2013,2014,IDN,63,65
+IND,India,Southern Asia,2007,2008,IND,51,52
+JOR,Jordan,Western Asia,2013,2014,JOR,61,65
+JOR,Jordan,Western Asia,2014,2015,AUS,66,63
+KAZ,Kazakhstan,Central Asia,2021,2022,KAZ,62,71
+KGZ,Kyrgyzstan,Central Asia,2022,2023,KGZ,70,71
+KWT,Kuwait,Western Asia,2018,2019,KWT,59,63
+KWT,Kuwait,Western Asia,2022,2023,AUS,74,71
+KWT,Kuwait,Western Asia,2023,2024,KWT,62,73
+LBN,Lebanon,Western Asia,2008,2009,LBN,53,55
+LBN,Lebanon,Western Asia,2010,2011,AUS,57,56
+LBN,Lebanon,Western Asia,2011,2012,LBN,55,60
+MYS,Malaysia,South-eastern Asia,1999,2000,MYS,34,42
+PHL,Philippines,South-eastern Asia,2009,2010,PHL,51,59
+QAT,Qatar,Western Asia,2006,2007,QAT,48,50
+QAT,Qatar,Western Asia,2007,2008,AUS,76,52
+QAT,Qatar,Western Asia,2008,2009,QAT,48,55
+QAT,Qatar,Western Asia,2009,2010,AUS,72,59
+QAT,Qatar,Western Asia,2019,2020,QAT,59,63
+QAT,Qatar,Western Asia,2020,2021,AUS,73,68
+QAT,Qatar,Western Asia,2021,2022,QAT,59,71
+QAT,Qatar,Western Asia,2022,2023,AUS,84,71
+SAU,Saudi Arabia,Western Asia,1997,1998,SAU,34,40
+SAU,Saudi Arabia,Western Asia,1998,1999,AUS,41,35
+SAU,Saudi Arabia,Western Asia,1999,2000,SAU,36,42
+SAU,Saudi Arabia,Western Asia,2001,2002,AUS,44,38
+SAU,Saudi Arabia,Western Asia,2003,2004,SAU,38,44
+SAU,Saudi Arabia,Western Asia,2007,2008,AUS,57,52
+SAU,Saudi Arabia,Western Asia,2008,2009,SAU,51,55
+THA,Thailand,South-eastern Asia,2003,2004,THA,42,44
+TUR,Türkiye,Western Asia,2007,2008,TUR,50,52
+UZB,Uzbekistan,Central Asia,2022,2023,UZB,64,71
+VNM,Vietnam,South-eastern Asia,2013,2014,VNM,62,65
+VNM,Vietnam,South-eastern Asia,2014,2015,AUS,65,63
+VNM,Vietnam,South-eastern Asia,2015,2016,VNM,59,61

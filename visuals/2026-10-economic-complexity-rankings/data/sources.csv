@@ -1,0 +1,5 @@
+file,url,vintage,accessed_berlin,sha256
+harvard_metadata.json,https://dataverse.harvard.edu/api/datasets/:persistentId/versions/12.0?persistentId=doi:10.7910/DVN/XTAQMC,Harvard Dataverse 12.0 / HS92,2026-10-12,4fc69873391baeb4348df1948d283664a94e16df53d65761dfba41e08cdce424
+eci_historical_raw.csv,https://dataverse.harvard.edu/api/access/datafile/13439575,Harvard Dataverse 12.0 / HS92,2026-10-12,51faff164e10c00872118c823d1f342f38f6fc170b8aeef75a9b783b51f5ed0a
+rankings_data_dictionary.csv,https://dataverse.harvard.edu/api/access/datafile/13439574,Harvard Dataverse 12.0 / HS92,2026-10-12,96b1be4765f5ee86b91f2232d216c9ed3015761f868577b7b30522a613ddb677
+eci_mirror_raw.csv,https://nationsinquiry.com/datasets/economic-complexity/all.csv,Harvard Dataverse 12.0 / HS92,2026-10-12,40514b89dd3ffd41cf05bc7e2d0e47b57b6e677e9dcce9a2a59d8c2a79bda1b0

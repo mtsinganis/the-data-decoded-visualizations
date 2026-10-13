@@ -1,0 +1,44 @@
+country_code,country,subregion,rank_1995,rank_2024,overtaking_intervals,overtake_count,last_overtake,observed_years,started_behind_ended_ahead,other_than_china_vietnam
+KAZ,Kazakhstan,Central Asia,61,56,2021-2022,1,2022,30,TRUE,TRUE
+UZB,Uzbekistan,Central Asia,89,70,2022-2023,1,2023,30,TRUE,TRUE
+KGZ,Kyrgyzstan,Central Asia,62,71,2022-2023,1,2023,30,TRUE,TRUE
+TKM,Turkmenistan,Central Asia,118,126,-,0,NA,30,FALSE,TRUE
+TJK,Tajikistan,Central Asia,81,129,-,0,NA,30,FALSE,TRUE
+JPN,Japan,Eastern Asia,1,1,-,0,NA,30,FALSE,TRUE
+TWN,Taiwan,Eastern Asia,8,2,-,0,NA,30,FALSE,TRUE
+KOR,South Korea,Eastern Asia,21,3,-,0,NA,30,FALSE,TRUE
+CHN,China,Eastern Asia,42,10,1997-1998,1,1998,30,TRUE,FALSE
+HKG,Hong Kong,Eastern Asia,26,15,-,0,NA,30,FALSE,TRUE
+MNG,Mongolia,Eastern Asia,116,131,-,0,NA,30,FALSE,TRUE
+SGP,Singapore,South-eastern Asia,25,5,-,0,NA,30,FALSE,TRUE
+MYS,Malaysia,South-eastern Asia,46,29,1999-2000,1,2000,30,TRUE,TRUE
+THA,Thailand,South-eastern Asia,53,33,2003-2004,1,2004,30,TRUE,TRUE
+PHL,Philippines,South-eastern Asia,69,38,2009-2010,1,2010,30,TRUE,TRUE
+VNM,Vietnam,South-eastern Asia,119,44,2013-2014; 2015-2016,2,2016,30,TRUE,FALSE
+IDN,Indonesia,South-eastern Asia,78,69,2013-2014,1,2014,30,TRUE,TRUE
+KHM,Cambodia,South-eastern Asia,131,82,-,0,NA,30,FALSE,TRUE
+LAO,Laos,South-eastern Asia,133,105,-,0,NA,30,FALSE,TRUE
+MMR,Myanmar,South-eastern Asia,135,113,-,0,NA,30,FALSE,TRUE
+IND,India,Southern Asia,57,42,2007-2008,1,2008,30,TRUE,TRUE
+LKA,Sri Lanka,Southern Asia,114,83,-,0,NA,30,FALSE,TRUE
+IRN,Iran,Southern Asia,103,87,-,0,NA,30,FALSE,TRUE
+NPL,Nepal,Southern Asia,101,88,-,0,NA,30,FALSE,TRUE
+PAK,Pakistan,Southern Asia,98,89,-,0,NA,30,FALSE,TRUE
+BGD,Bangladesh,Southern Asia,117,96,-,0,NA,30,FALSE,TRUE
+AFG,Afghanistan,Southern Asia,100,108,-,0,NA,30,FALSE,TRUE
+ISR,Israel,Western Asia,19,7,-,0,NA,30,FALSE,TRUE
+TUR,Türkiye,Western Asia,59,43,2007-2008,1,2008,30,TRUE,TRUE
+ARM,Armenia,Western Asia,71,46,1995-1996; 1999-2000; 2006-2007; 2010-2011; 2020-2021,5,2021,30,TRUE,TRUE
+SAU,Saudi Arabia,Western Asia,37,48,1997-1998; 1999-2000; 2003-2004; 2008-2009,4,2009,30,TRUE,TRUE
+CYP,Cyprus,Western Asia,50,51,2004-2005,1,2005,30,TRUE,TRUE
+ARE,United Arab Emirates,Western Asia,65,53,2009-2010,1,2010,30,TRUE,TRUE
+LBN,Lebanon,Western Asia,68,54,2008-2009; 2011-2012,2,2012,30,TRUE,TRUE
+KWT,Kuwait,Western Asia,51,62,2018-2019; 2023-2024,2,2024,30,TRUE,TRUE
+BHR,Bahrain,Western Asia,49,64,2009-2010,1,2010,30,TRUE,TRUE
+GEO,Georgia,Western Asia,28,66,1999-2000; 2017-2018; 2020-2021,3,2021,30,FALSE,TRUE
+JOR,Jordan,Western Asia,64,75,2013-2014,1,2014,30,FALSE,TRUE
+QAT,Qatar,Western Asia,55,76,2006-2007; 2008-2009; 2019-2020; 2021-2022,4,2022,30,FALSE,TRUE
+AZE,Azerbaijan,Western Asia,92,95,-,0,NA,30,FALSE,TRUE
+OMN,Oman,Western Asia,79,100,-,0,NA,30,FALSE,TRUE
+IRQ,Iraq,Western Asia,75,130,-,0,NA,30,FALSE,TRUE
+YEM,Yemen,Western Asia,102,135,-,0,NA,30,FALSE,TRUE

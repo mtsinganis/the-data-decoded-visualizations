@@ -1,0 +1,6 @@
+country_a,country_b,from_year,to_year,overtaking,a_rank_before,b_rank_before,a_rank_after,b_rank_after
+VNM,AUS,2013,2014,VNM,64,62,62,65
+VNM,AUS,2014,2015,AUS,62,65,65,63
+VNM,AUS,2015,2016,VNM,65,63,59,61
+CHN,AUS,1997,1998,CHN,39,35,36,40
+AUS,PHL,2009,2010,PHL,55,56,59,51
