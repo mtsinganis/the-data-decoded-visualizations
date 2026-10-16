@@ -1,0 +1,80 @@
+{
+  "fonts": [
+    {
+      "family": "Lato",
+      "weight": "400",
+      "status": "loaded"
+    },
+    {
+      "family": "Lato",
+      "weight": "700",
+      "status": "loaded"
+    },
+    {
+      "family": "Lato",
+      "weight": "900",
+      "status": "loaded"
+    }
+  ],
+  "editable_text_elements": 43,
+  "raster_images": 0,
+  "highlighted_points": 3,
+  "point_radii": [
+    "1.81"
+  ],
+  "country_line_counts": {
+    "grey": 142,
+    "blue": 1,
+    "green": 0,
+    "purple": 1,
+    "orange": 1
+  },
+  "endpoint_label_collisions": [],
+  "notes_divider_gap_inches": 0.14976325352986603,
+  "colored_title_words": [
+    {
+      "word": "Vietnam",
+      "color": "rgb(128, 86, 179)"
+    },
+    {
+      "word": "Philippines",
+      "color": "rgb(208, 138, 40)"
+    },
+    {
+      "word": "Australia",
+      "color": "rgb(36, 85, 255)"
+    }
+  ],
+  "annotation_highlight_collisions": [],
+  "clipped_text": [],
+  "title_bounds": [
+    {
+      "text": "Vietnam",
+      "x": 24.590774536132812,
+      "y": 22.006641387939453,
+      "width": 85.93922424316406,
+      "height": 26.80744171142578
+    },
+    {
+      "text": " and the ",
+      "x": 110.52999877929688,
+      "y": 22.006641387939453,
+      "width": 86.45000457763672,
+      "height": 26.80744171142578
+    },
+    {
+      "text": "Philippines",
+      "x": 196.98001098632812,
+      "y": 22.006641387939453,
+      "width": 110.55001831054688,
+      "height": 26.80744171142578
+    },
+    {
+      "text": " also overtook",
+      "x": 307.5299987792969,
+      "y": 22.006641387939453,
+      "width": 142.87387084960938,
+      "height": 26.80744171142578
+    }
+  ]
+}

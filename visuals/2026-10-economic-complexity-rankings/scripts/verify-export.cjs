@@ -5,9 +5,12 @@ const path = require('path');
 const { chromium } = require('playwright');
 (async () => {
   const project = path.resolve('visuals/2026-10-economic-complexity-rankings');
+  const chartName = process.env.TDD_CHART_BASENAME || 'chart_final';
+  const comparison = chartName==='chart_asian_comparison';
+  const expectedPoints = comparison ? 3 : 2;
   const browser = await chromium.launch({ headless: true, channel: 'msedge' });
   const page = await browser.newPage({ viewport: { width: 1000, height: 1000 } });
-  await page.goto('file:///' + path.join(project, 'plots/chart_final.svg').replaceAll('\\', '/'));
+  await page.goto('file:///' + path.join(project, `plots/${chartName}.svg`).replaceAll('\\', '/'));
   await page.evaluate(() => document.fonts.ready);
   const dimensions = await page.evaluate(async () => {
     for (const weight of [400,700,900]) await document.fonts.load(`${weight} 16px "Lato"`);
@@ -34,7 +37,7 @@ const { chromium } = require('playwright');
     })(),
     endpoint_label_collisions: (()=> {
       const texts=[...document.querySelectorAll('text')];
-      const boxes=[['China',10],['Philippines',38],['Vietnam',44],['Australia',73]].map(([name,rank])=> {
+      const boxes=[['China',10],['Philippines',38],['Vietnam',44],['Australia',73]].filter(([name])=>texts.some(t=>t.textContent===name&&/font-weight:\s*(700|bold)/.test(t.getAttribute('style')||''))).map(([name,rank])=> {
         const a=texts.find(t=>t.textContent===name&&/font-weight:\s*(700|bold)/.test(t.getAttribute('style')||'')).getBBox();
         const b=texts.find(t=>t.textContent.startsWith(`#${rank} `)).getBBox();
         return {name,x:Math.min(a.x,b.x),y:Math.min(a.y,b.y),right:Math.max(a.x+a.width,b.x+b.width),bottom:Math.max(a.y+a.height,b.y+b.height)};
@@ -47,7 +50,7 @@ const { chromium } = require('playwright');
       return (height-.43*72-b.y-b.height)/72;
     })(),
     colored_title_words: [...document.querySelectorAll('text')].filter(t=>
-      /font-weight:\s*900/.test(t.getAttribute('style')||'') && /^(Vietnam|China|Australia)$/.test(t.textContent))
+      /font-weight:\s*900/.test(t.getAttribute('style')||'') && /^(Vietnam|China|Australia|Philippines)$/.test(t.textContent))
       .map(t=>({word:t.textContent,color:getComputedStyle(t).fill})),
     annotation_highlight_collisions: (()=> {
       const fragments=['Rapid diversification into','electronics and machinery',
@@ -71,16 +74,17 @@ const { chromium } = require('playwright');
     })
   }));
   if(result.fonts.some(f=>f.status!=='loaded') || result.clipped_text.length || result.editable_text_elements<30 ||
-      result.highlighted_points!==120 || result.point_radii.length!==1 ||
-      result.colored_title_words.length!==1 || result.colored_title_words[0].word!=='Australia' ||
-      result.colored_title_words[0].color!=='rgb(36, 85, 255)' || result.annotation_highlight_collisions.length ||
+      result.highlighted_points!==expectedPoints || result.point_radii.length!==(expectedPoints ? 1 : 0) ||
+      result.colored_title_words.length!==expectedPoints ||
+      (!comparison && !result.colored_title_words.some(t=>t.word==='China'&&t.color==='rgb(22, 135, 101)')) ||
+      !result.colored_title_words.some(t=>t.word==='Australia'&&t.color==='rgb(36, 85, 255)') || result.annotation_highlight_collisions.length ||
       result.notes_divider_gap_inches<.10 || result.endpoint_label_collisions.length ||
-      result.country_line_counts.grey!==141 || result.country_line_counts.blue!==1 ||
-      result.country_line_counts.green!==1 || result.country_line_counts.purple!==1 || result.country_line_counts.orange!==1)
+      result.country_line_counts.grey!==(145-expectedPoints) || result.country_line_counts.blue!==1 ||
+      result.country_line_counts.green!==(comparison ? 0 : 1) || result.country_line_counts.purple!==(comparison ? 1 : 0) || result.country_line_counts.orange!==(comparison ? 1 : 0))
     throw Error(JSON.stringify(result));
   // Optional visual QA screenshot goes outside the project exports.
   if (process.env.TDD_QA_SCREENSHOT) await page.screenshot({path:process.env.TDD_QA_SCREENSHOT});
-  fs.writeFileSync(path.join(project,'data/svg_qa.json'),JSON.stringify(result,null,2));
+  fs.writeFileSync(path.join(project,`data/${chartName==='chart_final' ? 'svg_qa' : 'svg_comparison_qa'}.json`),JSON.stringify(result,null,2));
   console.log(JSON.stringify(result));
   await browser.close();
 })().catch(e=>{console.error(e);process.exitCode=1;});

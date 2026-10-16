@@ -1,2 +1,3 @@
-canvas_width,canvas_height,previous_panel_height,plot_height_extra,panel_vertical_scale,previous_panel_width,plot_width_extra,panel_horizontal_scale,point_size,right_limit,highlighted_economies,background_economies,total_economies
-8.461985156340173,9.29121722202779,5.241666666666666,0.9972270833333322,1.1902499999999998,7.215831417625,0.2525540996168744,1.035,1.35,2029.7,4,141,145
+canvas_width,canvas_height,previous_panel_height,plot_height_extra,panel_vertical_scale,previous_panel_width,plot_width_extra,panel_horizontal_scale,point_size,right_limit,chart,highlighted_economies,background_economies,total_economies
+8.461985156340173,9.29121722202779,5.241666666666666,0.9972270833333322,1.1902499999999998,7.215831417625,0.2525540996168744,1.035,1.35,2029.7,chart_final,2,143,145
+8.461985156340173,9.29121722202779,5.241666666666666,0.9972270833333322,1.1902499999999998,7.215831417625,0.2525540996168744,1.035,1.35,2029.7,chart_asian_comparison,3,142,145

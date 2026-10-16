@@ -16,22 +16,26 @@
       "status": "loaded"
     }
   ],
-  "editable_text_elements": 43,
+  "editable_text_elements": 36,
   "raster_images": 0,
-  "highlighted_points": 120,
+  "highlighted_points": 2,
   "point_radii": [
     "1.81"
   ],
   "country_line_counts": {
-    "grey": 141,
+    "grey": 143,
     "blue": 1,
     "green": 1,
-    "purple": 1,
-    "orange": 1
+    "purple": 0,
+    "orange": 0
   },
   "endpoint_label_collisions": [],
   "notes_divider_gap_inches": 0.1497625912560352,
   "colored_title_words": [
+    {
+      "word": "China",
+      "color": "rgb(22, 135, 101)"
+    },
     {
       "word": "Australia",
       "color": "rgb(36, 85, 255)"
@@ -41,31 +45,31 @@
   "clipped_text": [],
   "title_bounds": [
     {
-      "text": "Since 1995, several Asian economies have overtaken",
+      "text": "China",
       "x": 25.200002670288086,
       "y": 22.006559371948242,
-      "width": 526.7000732421875,
+      "width": 57.690006256103516,
       "height": 26.807540893554688
     },
     {
-      "text": "Global Economic Complexity Index rankings, 1995–2024.",
-      "x": 25.200002670288086,
-      "y": 69.60697174072266,
-      "width": 358.55999755859375,
-      "height": 17.059343338012695
-    },
-    {
-      "text": "resource-rich ",
-      "x": 25.200002670288086,
-      "y": 42.76655578613281,
-      "width": 138.67001342773438,
+      "text": "'s industrial rise fueled ",
+      "x": 82.89000701904297,
+      "y": 22.006559371948242,
+      "width": 229.97003173828125,
       "height": 26.807540893554688
     },
     {
       "text": "Australia",
-      "x": 163.26065063476562,
-      "y": 42.76655578613281,
-      "width": 90.29936981201172,
+      "x": 311.86065673828125,
+      "y": 22.006559371948242,
+      "width": 90.29935455322266,
+      "height": 26.807540893554688
+    },
+    {
+      "text": "'s resource",
+      "x": 401.3900146484375,
+      "y": 22.006559371948242,
+      "width": 106.8937759399414,
       "height": 26.807540893554688
     }
   ]
