@@ -1,7 +1,7 @@
 ---
 title: "Switzerland's Net Migration, 1971–2025"
 slug: "switzerland-net-migration"
-date: "2026-10-29"
+date: "2026-10-30"
 topics:
   - Switzerland
   - International migration
