@@ -1,0 +1,74 @@
+{
+  "fonts": [
+    {
+      "family": "Lato",
+      "weight": "400",
+      "status": "loaded"
+    },
+    {
+      "family": "Lato",
+      "weight": "700",
+      "status": "loaded"
+    },
+    {
+      "family": "Lato",
+      "weight": "900",
+      "status": "loaded"
+    }
+  ],
+  "editable_text_elements": 45,
+  "raster_images": 0,
+  "highlighted_points": 0,
+  "point_radii": [],
+  "country_line_counts": {
+    "grey": 141,
+    "blue": 1,
+    "green": 1,
+    "purple": 1,
+    "orange": 1
+  },
+  "endpoint_label_collisions": [],
+  "notes_divider_gap_inches": 0.14976325352986603,
+  "colored_title_words": [
+    {
+      "word": "China",
+      "color": "rgb(22, 135, 101)"
+    },
+    {
+      "word": "Australia",
+      "color": "rgb(36, 85, 255)"
+    }
+  ],
+  "annotation_highlight_collisions": [],
+  "clipped_text": [],
+  "title_bounds": [
+    {
+      "text": "Since 1995, ",
+      "x": 25.200000762939453,
+      "y": 22.006641387939453,
+      "width": 121.91999816894531,
+      "height": 26.80744171142578
+    },
+    {
+      "text": "China",
+      "x": 147.1199951171875,
+      "y": 22.006641387939453,
+      "width": 57.690006256103516,
+      "height": 26.80744171142578
+    },
+    {
+      "text": " and several other Asian economies",
+      "x": 204.80999755859375,
+      "y": 22.006641387939453,
+      "width": 352.3399963378906,
+      "height": 26.80744171142578
+    },
+    {
+      "text": "have overtaken resource-rich ",
+      "x": 25.200000762939453,
+      "y": 42.766639709472656,
+      "width": 298.3599853515625,
+      "height": 26.80744171142578
+    }
+  ]
+}

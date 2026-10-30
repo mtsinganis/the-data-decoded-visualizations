@@ -4,3 +4,7 @@
 /visuals/2026-10-israel-migration-balance/data/** -text
 /visuals/2026-10-israel-migration-balance/plots/** -text
 /visuals/2026-10-nyc-shootings/plots/cumulative-extended.svg -text
+
+# Keep the two distributed copies of the Lato license byte-identical on Windows.
+/assets/fonts/lato/Lato-OFL.txt text eol=lf
+/website/public/fonts/Lato-OFL.txt text eol=lf
