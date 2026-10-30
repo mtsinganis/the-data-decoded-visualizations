@@ -15,3 +15,5 @@ The chart note summarizes the FSO definition change in 2011 and the inclusion in
 Historical annotation sources and interpretation are documented in `story.md`.
 
 The historical annotations use the official Lato SemiBold 600 font, preserved as `data/Lato-SemiBold.ttf` from the same pinned [Google Fonts revision](https://github.com/google/fonts/tree/9710da1eacb3be272583c3224dcb70f9da6eadbb/ofl/lato) as the repository fonts, under the existing Lato OFL license. The SVG embeds this font.
+
+To regenerate the Swiss German companion chart, run `Rscript visuals/2026-10-switzerland-net-migration/analysis-de.R` from the repository root. It reuses the English analysis and archived data, translates the text, and creates `plots/switzerland-net-migration-de.png` and `.svg`. The German exports are separate from the published English chart.
