@@ -1,0 +1,7 @@
+# Canton vacancy rates in 2026
+
+This chart ranks the 26 cantons by the published vacancy rate, lowest to highest, with alphabetical abbreviation ordering for ties. The red vertical reference is the official Swiss national rate (0.93%), not an unweighted mean of cantonal rates. The rates are measured on 1 June 2026 and cover vacant dwellings offered for long-term rent or sale.
+
+`cantons-2026.R` reads the existing cleaned `data/canton-vacancy-rate.csv` and `data/annual-vacancy-rate.csv`, checks all 26 canton records and the national value, and writes `data/canton-vacancy-rate-2026.csv`. The original FSO workbooks and extraction methodology are documented in [README.md](README.md). The published rates range from 0.20% in Zug to 3.35% in Jura, a ratio of 16.75 based on the published rounded values; this supports “nearly 17-fold”.
+
+Run the script from the repository root with the R and Python SVG optimizer dependencies listed in the main README. It exports a 4500 × 4500 PNG at 300 dpi and an optimized SVG. Locally cached square canton flags are aligned in a column between the right-aligned names and the bars. The SVG flag assets and their license notices are in `data/canton-flags/`, as documented in the change-chart README. Labels for a few rates just below the national benchmark sit immediately to the right of its red line so that the line does not cross the numbers. Text is smaller when the entire chart is reduced to a mobile feed; the high-resolution version is easier to inspect.

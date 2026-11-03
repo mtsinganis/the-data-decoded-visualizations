@@ -1,0 +1,27 @@
+canton_abbreviation,canton,vacancy_rate_pct
+ZG,Zug,0.2
+GE,Geneva,0.31
+OW,Obwalden,0.38
+UR,Uri,0.42
+SZ,Schwyz,0.5
+GL,Glarus,0.51
+GR,Graubünden,0.51
+ZH,Zurich,0.52
+NW,Nidwalden,0.62
+BL,Basel-Landschaft,0.64
+LU,Lucerne,0.7
+BS,Basel-Stadt,0.78
+SH,Schaffhausen,0.84
+VD,Vaud,0.87
+AI,Appenzell Innerrhoden,0.96
+BE,Bern,1.04
+VS,Valais,1.04
+AG,Aargau,1.05
+TG,Thurgau,1.1
+AR,Appenzell Ausserrhoden,1.12
+SG,St. Gallen,1.16
+FR,Fribourg,1.26
+NE,Neuchâtel,1.64
+TI,Ticino,1.78
+SO,Solothurn,1.91
+JU,Jura,3.35
