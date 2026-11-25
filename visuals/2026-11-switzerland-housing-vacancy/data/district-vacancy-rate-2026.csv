@@ -1,0 +1,145 @@
+year,district_id,district,canton_id,geography_type,vacancy_rate_pct,status,canton_code
+2026,1728,Wil,17,district,0.91,A,SG
+2026,108,Pfäffikon,1,district,0.63,A,ZH
+2026,314,Sursee,3,district,0.41,A,LU
+2026,107,Meilen,1,district,0.91,A,ZH
+2026,2015,Weinfelden,20,district,1.07,A,TG
+2026,503,Höfe,5,district,0.86,A,SZ
+2026,2309,Raron,23,district,0.95,A,VS
+2026,2305,Hérens,23,district,0.58,A,VS
+2026,1003,La Gruyère,10,district,1.15,A,FR
+2026,243,Seeland,2,district,1.34,A,BE
+2026,2012,Frauenfeld,20,district,0.91,A,TG
+2026,501,Einsiedeln,5,district,0.33,A,SZ
+2026,2225,Lausanne,22,district,0.71,A,VD
+2026,315,Willisau,3,district,0.9,A,LU
+2026,506,Schwyz,5,district,0.34,A,SZ
+2026,2011,Arbon,20,district,1.21,A,TG
+2026,311,Luzern-Stadt,3,district,0.85,A,LU
+2026,2603,Porrentruy,26,district,3.09,A,JU
+2026,1905,Kulm,19,district,2.43,A,AG
+2026,313,Hochdorf,3,district,0.91,A,LU
+2026,1842,Bernina,18,district,0.8,A,GR
+2026,1726,See-Gaster,17,district,1.06,A,SG
+2026,2311,Sierre,23,district,1.26,A,VS
+2026,104,Dielsdorf,1,district,0.83,A,ZH
+2026,103,Bülach,1,district,0.64,A,ZH
+2026,1404,Schleitheim,14,district,2.12,A,SH
+2026,2302,Conthey,23,district,1.39,A,VS
+2026,2013,Kreuzlingen,20,district,1.26,A,TG
+2026,1904,Brugg,19,district,1.2,A,AG
+2026,2310,Saint-Maurice,23,district,1.91,A,VS
+2026,2601,Delémont,26,district,3,A,JU
+2026,1723,Rheintal,17,district,1.15,A,SG
+2026,1303,Liestal,13,district,0.73,A,BL
+2026,242,Biel/Bienne,2,district,1.79,A,BE
+2026,112,Zürich,1,district,0.11,A,ZH
+2026,2304,Goms,23,district,1.23,A,VS
+2026,1903,Bremgarten,19,district,0.8,A,AG
+2026,2303,Entremont,23,district,0.99,A,VS
+2026,1844,Imboden,18,district,0.62,A,GR
+2026,1845,Landquart,18,district,0.38,A,GR
+2026,316,Entlebuch,3,district,0.78,A,LU
+2026,1848,Plessur,18,district,0.19,A,GR
+2026,1910,Zofingen,19,district,1.57,A,AG
+2026,1849,Prättigau/Davos,18,district,0.37,A,GR
+2026,2228,Nyon,22,district,1.24,A,VD
+2026,1006,Sense,10,district,0.97,A,FR
+2026,246,Bern-Mittelland,2,district,0.68,A,BE
+2026,1846,Maloja,18,district,0.48,A,GR
+2026,2221,Aigle,22,district,1.28,A,VD
+2026,1906,Laufenburg,19,district,0.96,A,AG
+2026,1501,Hinterland,15,district,1.06,A,AR
+2026,1727,Toggenburg,17,district,0.82,A,SG
+2026,1721,St. Gallen,17,district,1.62,A,SG
+2026,2230,Riviera-Pays-d'Enhaut,22,district,0.78,A,VD
+2026,1902,Baden,19,district,0.9,A,AG
+2026,1304,Sissach,13,district,0.42,A,BL
+2026,1301,Arlesheim,13,district,0.66,A,BL
+2026,1503,Vorderland,15,district,1.14,A,AR
+2026,504,Küssnacht (SZ),5,district,0.36,A,SZ
+2026,1908,Muri,19,district,0.56,A,AG
+2026,1841,Albula,18,district,0.46,A,GR
+2026,2602,Les Franches-Montagnes,26,district,2.46,A,JU
+2026,1107,Lebern,11,district,1.54,A,SO
+2026,2307,Martigny,23,district,1.31,A,VS
+2026,245,Emmental,2,district,1.09,A,BE
+2026,247,Thun,2,district,0.45,A,BE
+2026,2604,Moutier,26,district,7.27,A,JU
+2026,2224,Jura-Nord vaudois,22,district,0.89,A,VD
+2026,1406,Unterklettgau,14,district,0.95,A,SH
+2026,2102,Blenio,21,district,0.27,A,TI
+2026,109,Uster,1,district,0.94,A,ZH
+2026,2312,Sion,23,district,0.92,A,VS
+2026,1110,Thierstein,11,district,2.04,A,SO
+2026,1302,Laufen,13,district,0.83,A,BL
+2026,2107,Riviera,21,district,1.67,A,TI
+2026,1725,Sarganserland,17,district,0.52,A,SG
+2026,312,Luzern-Land,3,district,0.5,A,LU
+2026,1843,Engiadina Bassa/Val Müstair,18,district,0.87,A,GR
+2026,502,Gersau,5,district,0.98,A,SZ
+2026,2223,Gros-de-Vaud,22,district,0.75,A,VD
+2026,1403,Schaffhausen,14,district,0.68,A,SH
+2026,2106,Mendrisio,21,district,3.9,A,TI
+2026,2306,Leuk,23,district,1.51,A,VS
+2026,2222,Broye-Vully,22,district,1.35,A,VD
+2026,241,Jura bernois,2,district,3.54,A,BE
+2026,2105,Lugano,21,district,1.87,A,TI
+2026,1851,Viamala,18,district,0.71,A,GR
+2026,105,Hinwil,1,district,0.93,A,ZH
+2026,1104,Dorneck,11,district,1.35,A,SO
+2026,2301,Brig,23,district,0.53,A,VS
+2026,2229,Ouest lausannois,22,district,0.67,A,VD
+2026,1101,Gäu,11,district,1.03,A,SO
+2026,1002,La Glâne,10,district,1.01,A,FR
+2026,2104,Locarno,21,district,0.97,A,TI
+2026,1106,Wasseramt,11,district,1.99,A,SO
+2026,1847,Moesa,18,district,1.96,A,GR
+2026,1724,Werdenberg,17,district,0.95,A,SG
+2026,1502,Mittelland,15,district,1.19,A,AR
+2026,2108,Vallemaggia,21,district,0.59,A,TI
+2026,2103,Leventina,21,district,1.78,A,TI
+2026,1305,Waldenburg,13,district,0.42,A,BL
+2026,1401,Oberklettgau,14,district,1.08,A,SH
+2026,1405,Stein,14,district,1.2,A,SH
+2026,244,Oberaargau,2,district,1.8,A,BE
+2026,1105,Gösgen,11,district,3.26,A,SO
+2026,1402,Reiat,14,district,0.92,A,SH
+2026,101,Affoltern,1,district,0.75,A,ZH
+2026,1102,Thal,11,district,2.29,A,SO
+2026,1109,Solothurn,11,district,1.27,A,SO
+2026,110,Winterthur,1,district,0.34,A,ZH
+2026,106,Horgen,1,district,0.52,A,ZH
+2026,1005,See,10,district,1.27,A,FR
+2026,2101,Bellinzona,21,district,1.6,A,TI
+2026,248,Obersimmental-Saanen,2,district,0.9,A,BE
+2026,2014,Münchwilen,20,district,1.12,A,TG
+2026,1909,Rheinfelden,19,district,1.1,A,AG
+2026,2308,Monthey,23,district,0.79,A,VS
+2026,250,Interlaken-Oberhasli,2,district,0.42,A,BE
+2026,2313,Visp,23,district,0.63,A,VS
+2026,505,March,5,district,0.55,A,SZ
+2026,1911,Zurzach,19,district,0.98,A,AG
+2026,1007,La Veveyse,10,district,0.49,A,FR
+2026,2226,Lavaux-Oron,22,district,0.64,A,VD
+2026,249,Frutigen-Niedersimmental,2,district,0.44,A,BE
+2026,1722,Rorschach,17,district,1.63,A,SG
+2026,1108,Olten,11,district,2.26,A,SO
+2026,2227,Morges,22,district,0.76,A,VD
+2026,102,Andelfingen,1,district,0.78,A,ZH
+2026,1004,La Sarine,10,district,1.46,A,FR
+2026,1103,Bucheggberg,11,district,1.26,A,SO
+2026,1901,Aarau,19,district,0.68,A,AG
+2026,1850,Surselva,18,district,0.39,A,GR
+2026,1907,Lenzburg,19,district,0.77,A,AG
+2026,1001,La Broye,10,district,1.8,A,FR
+2026,111,Dietikon,1,district,0.78,A,ZH
+2026,1200,Basel-Stadt (canton),12,canton equivalent,0.78,A,BS
+2026,1600,Appenzell Innerrhoden (canton),16,canton equivalent,0.96,A,AI
+2026,2400,Neuchâtel (canton),24,canton equivalent,1.64,A,NE
+2026,2500,Genève (canton),25,canton equivalent,0.31,A,GE
+2026,400,Uri (canton),4,canton equivalent,0.42,A,UR
+2026,600,Obwalden (canton),6,canton equivalent,0.38,A,OW
+2026,700,Nidwalden (canton),7,canton equivalent,0.62,A,NW
+2026,800,Glarus (canton),8,canton equivalent,0.51,A,GL
+2026,900,Zug (canton),9,canton equivalent,0.2,A,ZG

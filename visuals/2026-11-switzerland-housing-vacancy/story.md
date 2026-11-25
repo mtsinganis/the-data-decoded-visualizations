@@ -17,6 +17,10 @@ charts:
     alt: "Bars rank changes in vacancy rates from 2020 to 2026. Rates fell in 25 cantons; Aargau fell the most, by 1.60 percentage points, followed by Thurgau at 1.38 and Valais at 1.36. Jura alone rose, by 0.83 points. The Swiss rate fell 0.79 points."
   - file: plots/switzerland-housing-vacancy-cantons.png
     alt: "Twenty-six small line charts show cantonal dwelling vacancy rates from 1999 to 2026 in blue against the Swiss national rate in red. Cantons are ordered by their 2026 rates, from Zug at 0.20% to Jura at 3.35%. Grey ribbons show the gap between each canton and Switzerland."
+  - file: plots/switzerland-housing-vacancy-districts-2026-stepped.png
+    alt: "A map shows 2026 dwelling vacancy rates across Swiss districts, in red below or at the Swiss rate of 0.93% and blue above it. Zürich district is lowest at 0.11%; Moutier district is highest at 7.27%. Nine canton-equivalent areas are shown at canton level."
+  - file: plots/switzerland-housing-vacancy-districts-2026-stepped_de.png
+    alt: "German-language version of the district vacancy map. Zürich district has the lowest rate at 0.11%, Moutier the highest at 7.27%, and the Swiss national rate is 0.93%. Nine canton-equivalent areas are shown at canton level."
 ---
 
 Switzerland’s dwelling vacancy rate fell from 1.72% in 2020 to 0.93% in 2026—a decline of 46%, or 0.79 percentage points. But the national picture hides both a longer history of changing vacancy levels and wide differences between cantons.
@@ -35,10 +39,18 @@ In June 2026, Zug had the lowest vacancy rate at 0.20%, followed by Geneva at 0.
 
 Vacancy rates fell in 25 of Switzerland’s 26 cantons between 2020 and 2026. Aargau recorded the largest decline, at 1.60 percentage points, followed by Thurgau (1.38 points) and Valais (1.36 points). Jura was the exception, rising by 0.83 percentage points. These are differences between rates, expressed in percentage points, rather than relative percentage changes.
 
-The final chart puts those endpoints in a longer context. It compares each canton’s annual series with the national rate from 1999 to 2026, using the same vertical scale for all 26 panels. The grey ribbon shows the gap between each canton and the national rate; its width and direction change as the two series move.
+The cantonal small multiples put those endpoints in a longer context. It compares each canton’s annual series with the national rate from 1999 to 2026, using the same vertical scale for all 26 panels. The grey ribbon shows the gap between each canton and the national rate; its width and direction change as the two series move.
+
+## Differences within and between cantons
+
+The district map adds geographic detail to the 2026 canton ranking. Zürich district had the lowest vacancy rate among the areas shown, at 0.11%, while Moutier district in Jura had the highest, at 7.27%. Of the 144 mapped statistical areas, 74 were below the Swiss rate of 0.93%, one was equal to it and 69 were above. These counts give each area equal weight; they do not describe the share of people or homes in each group.
+
+The map uses seven colour classes, with red tones for rates up to the national figure and blue tones for higher rates. It shows districts where available; nine areas are canton equivalents in the FSO’s statistical geography. Both English and German versions of the map appear below.
 
 ## Sources and methodology
 
 The charts use the Swiss Federal Statistical Office’s Empty Dwellings Census: the [national historical table](https://statistik.admin.ch/de/asset/36841126), [annual cantonal table](https://statistik.admin.ch/en/asset/36841127), and [five-year cantonal comparison table](https://statistik.admin.ch/en/asset/36841131). Vacancy rates measure the share of the relevant housing stock that was vacant on June 1 and offered for sale or for rent for at least three months. The national rate is based on the national housing stock; it is not an unweighted average of the 26 cantonal rates.
+
+For the district map, the [FSO district-level vacancy dataset](https://statistik.admin.ch/en/asset/36836250) is matched by geographic identifier to [swisstopo’s 2026 administrative boundaries](https://www.swisstopo.admin.ch/en/landscape-model-swissboundaries3d). Nine FSO canton-equivalent areas use canton polygons. The maps show the same data in English and German.
 
 The national chart covers 1984–2026. The complete published cantonal rate series used here starts in 1999. For overlapping canton tables, the project uses the most recent available revisions; figures are shown to two decimal places. Since 1994 the census has also included furnished dwellings offered for long-term rent. The housing-stock denominator changed around 2010, and some historical observations were revised, so comparisons across the full series require care. The national workbook’s denominator footnotes overlap at 2010, leaving the exact transition boundary ambiguous. See the [FSO methodology](https://statistik.admin.ch/de/daten-statistiken-verstehen/erhebungen/lwz) and the project’s README for details.

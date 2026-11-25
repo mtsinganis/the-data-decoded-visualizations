@@ -1,6 +1,6 @@
 # X thread preparation
 
-The supplied X thread is the editorial reference. The three charts selected for the thread are the national historical series, the 2026 canton ranking, and the 2020–2026 change chart, in that order. The cantonal small multiples are included in the website article as a fourth chart. Posting to X is manual; no post has been published.
+The supplied X thread is the editorial reference. The three charts selected for the thread are the national historical series, the 2026 canton ranking, and the 2020–2026 change chart, in that order. The website article also includes the cantonal small multiples and district maps in English and German. Posting to X is manual; no post has been published.
 
 ## Images and ALT text
 
