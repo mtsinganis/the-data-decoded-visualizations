@@ -1,13 +1,13 @@
 ---
 title: "Israel is still growing as migration subtracts from its population"
 slug: "israel-migration-balance"
-date: "2026-10-08"
+date: "2026-11-26"
 topics:
   - Israel
   - International migration
   - Population growth
 description: "How migration became a drag on population growth: annual balances, the latest arrivals and departures, and why births minus deaths kept growth positive."
-status: draft
+status: published
 featured: false
 charts:
   - file: plots/02-annual-migration-balance.png
